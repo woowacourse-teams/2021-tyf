@@ -1,0 +1,21 @@
+{
+  "name": "tyf-client",
+  "version": "0.0.1",
+  "description": "thank you for __ 의 클라이언트 앱",
+  "main": "index.js",
+  "repository": "https://github.com/woowacourse-teams/2021-tyf",
+  "contributors": [
+    {
+      "name": "hchayan",
+      "email": "hchayan196@gmail.com",
+      "url": "https://chayan.oopy.io/"
+    },
+    {
+      "name": "jho2301",
+      "email": "jho2301@gmail.com",
+      "url": "https://github.com/jho2301"
+    }
+  ],
+  "license": "GPL",
+  "private": false
+}
