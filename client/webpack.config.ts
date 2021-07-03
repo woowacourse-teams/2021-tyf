@@ -24,26 +24,6 @@ const config: WebpackConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    useBuiltIns: 'usage',
-                    corejs: { version: 3, proposals: true },
-                  },
-                ],
-                [
-                  '@babel/preset-react',
-                  {
-                    'runtime': 'automatic',
-                  },
-                ],
-              ],
-            },
-          },
-          {
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
