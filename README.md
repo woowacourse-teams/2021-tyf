@@ -29,4 +29,4 @@
   - 관련 이슈 할당 잘하기
 
 ### Branch 컨벤션
-- feat-3
+- feature/{issue-number}-{feature-name}
