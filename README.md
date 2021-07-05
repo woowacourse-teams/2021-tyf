@@ -29,6 +29,4 @@
   - 관련 이슈 할당 잘하기
 
 ### Branch 컨벤션
-
-- feature
-- feature/feat-3
+- feat-3
