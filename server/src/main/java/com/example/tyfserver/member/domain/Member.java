@@ -21,7 +21,6 @@ public class Member {
     @Column(unique = true)
     private String email;
 
-    // todo Point VO 감싸기(최소값 0)
     @Embedded
     private Point point;
 
