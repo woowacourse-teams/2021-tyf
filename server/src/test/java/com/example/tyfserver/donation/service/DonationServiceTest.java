@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 class DonationServiceTest {
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    DonationRepository donationRepository;
+    private DonationRepository donationRepository;
 
     @Autowired
-    DonationService donationService;
+    private DonationService donationService;
 
     private Member member;
 

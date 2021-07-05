@@ -13,10 +13,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 class DonationRepositoryTest {
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    DonationRepository donationRepository;
+    private DonationRepository donationRepository;
 
     @DisplayName("후원을 등록한다.")
     @Test
