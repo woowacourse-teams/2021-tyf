@@ -23,7 +23,7 @@ public class DonationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(donationRequest));
     }
 
-    @PostMapping("{donationId}/messgaes")
+    @PostMapping("{donationId}/messages")
     public ResponseEntity<Void> addDonationMessage(@PathVariable Long donationId,
                                                    @RequestBody DonationMessageRequest donationMessageRequest) {
 
