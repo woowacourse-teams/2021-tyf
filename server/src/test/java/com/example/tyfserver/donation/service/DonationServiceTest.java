@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
@@ -47,7 +48,7 @@ class DonationServiceTest {
         DonationRequest donationRequest = new DonationRequest(member.id(), 1000L);
 
         //when
-        final DonationResponse donationResponse = donationService.createDonation(donationRequest);
+        DonationResponse donationResponse = donationService.createDonation(donationRequest);
         //then
         Assertions.assertEquals(member.id(), donationResponse.getDonationId());
     }
@@ -61,10 +62,26 @@ class DonationServiceTest {
         //when
         donationService.createDonation(donationRequest);
         //then
-        final Member findMember = memberRepository.findById(this.member.id()).get();
+        Member findMember = memberRepository.findById(this.member.id()).get();
         Assertions.assertTrue(findMember.isSamePoint(1000L));
     }
 
 
+    @DisplayName("후원 메시지를 추가한다.")
+    @Test
+    void addDonationMessage() throws Exception {
+        //given
+        Donation donation = new Donation(1000L);
+        final Donation savedDonation = donationRepository.save(donation);
+        DonationMessageRequest donationMessageRequest = new DonationMessageRequest("test", "this is test message");
 
+        //when
+        donationService.addMessageToDonation(savedDonation.id(), donationMessageRequest);
+
+        //then
+        final Donation findDonation = donationRepository.findById(savedDonation.id()).get();
+        Assertions.assertEquals(donationMessageRequest.getName(), findDonation.name());
+        Assertions.assertEquals(donationMessageRequest.getMessage(), findDonation.message());
+
+    }
 }

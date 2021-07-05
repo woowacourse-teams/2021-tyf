@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
@@ -26,5 +27,12 @@ public class DonationService {
         member.addDonation(donation);
         member.addPoint(donationRequest.getDonationAmount());
         return DonationResponse.from(member);
+    }
+
+    public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
+        Donation donation = donationRepository.findById(donationId)
+                .orElseThrow(() -> new RuntimeException("error_donation_message_send"));
+
+        donation.addMessage(donationMessageRequest.getName(), donationMessageRequest.getMessage());
     }
 }

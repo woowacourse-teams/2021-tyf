@@ -35,4 +35,17 @@ public class Donation {
     public Long id() {
         return id;
     }
+
+    public String name() {
+        return this.name;
+    }
+
+    public String message() {
+        return this.message;
+    }
+
+    public void addMessage(String name, String message) {
+        this.name = name;
+        this.message = message;
+    }
 }
