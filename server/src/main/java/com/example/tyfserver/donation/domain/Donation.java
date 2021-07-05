@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,17 +14,25 @@ public class Donation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigInteger amount;
+    private Long amount;
 
-    private String name;
+    private String name = "익명";
 
-    private String message;
+    private String message = "당신을 응원합니다.";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Donation(BigInteger amount) {
+    public Donation(Long amount) {
         this.amount = amount;
+    }
+
+    public void to(final Member member) {
+        this.member = member;
+    }
+
+    public Long id() {
+        return id;
     }
 }
