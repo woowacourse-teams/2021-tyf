@@ -4,6 +4,7 @@ import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.service.DonationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ public class DonationController {
 
     @PostMapping
     public ResponseEntity<DonationResponse> createDonation(@RequestBody DonationRequest donationRequest) {
-        return ResponseEntity.ok(donationService.createDonation(donationRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(donationRequest));
     }
 
 }
