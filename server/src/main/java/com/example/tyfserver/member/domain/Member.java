@@ -3,6 +3,7 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.donation.domain.Donation;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -21,17 +23,26 @@ public class Member {
     @Column(unique = true)
     private String email;
 
-    // todo Point VO 감싸기(최소값 0)
-    private BigInteger point;
+    @Embedded
+    private Point point;
 
     @OneToMany(mappedBy = "member")
-    private List<Banner> banners = new ArrayList<>();
+    private final List<Banner> banners = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Donation> donations = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private final List<Donation> donations = new ArrayList<>();
 
     public Member(String email) {
         this.email = email;
-        this.point = BigInteger.valueOf(0L);
+        this.point = new Point(0L);
+    }
+
+    public void addDonation(final Donation donation) {
+        this.donations.add(donation);
+        donation.to(this);
+    }
+
+    public void addPoint(final long donationAmount) {
+        this.point.add(donationAmount);
     }
 }
