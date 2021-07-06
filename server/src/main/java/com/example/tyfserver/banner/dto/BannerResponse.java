@@ -1,15 +1,11 @@
 package com.example.tyfserver.banner.dto;
 
 import com.example.tyfserver.banner.domain.Banner;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 public class BannerResponse {
 
     private Long id;

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-// todo Setter?
 public class BannerRequest {
 
     private String imageUrl;

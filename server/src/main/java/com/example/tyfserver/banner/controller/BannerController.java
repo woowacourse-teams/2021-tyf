@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/banners")
 @RequiredArgsConstructor
 public class BannerController {
 
     private final BannerService bannerService;
 
-    @GetMapping("/banners")
+    @GetMapping
     public ResponseEntity<List<BannerResponse>> getBanners(Member member) {
         return ResponseEntity
                 .ok(bannerService.getBanners(member));
     }
 
-    @PostMapping("/banners")
+    @PostMapping
     public ResponseEntity<Void> createBanner(Member member, @RequestBody BannerRequest bannerRequest) {
         bannerService.createBanner(member, bannerRequest.getImageUrl());
         return ResponseEntity
