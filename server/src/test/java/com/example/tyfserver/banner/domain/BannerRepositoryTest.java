@@ -1,7 +1,7 @@
 package com.example.tyfserver.banner.domain;
 
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.domain.MemberRepository;
+import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
