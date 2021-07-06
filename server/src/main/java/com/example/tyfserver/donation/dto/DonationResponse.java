@@ -13,6 +13,6 @@ public class DonationResponse {
     }
 
     public static DonationResponse from(final Member member) {
-        return new DonationResponse(member.id());
+        return new DonationResponse(member.getId());
     }
 }

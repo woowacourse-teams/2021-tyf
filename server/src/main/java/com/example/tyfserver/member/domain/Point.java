@@ -1,10 +1,13 @@
 package com.example.tyfserver.member.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
+
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Point {
@@ -17,9 +20,5 @@ public class Point {
 
     public void add(final long donationAmount) {
         this.point += donationAmount;
-    }
-
-    public boolean isSamePoint(final long amount) {
-        return this.point == amount;
     }
 }

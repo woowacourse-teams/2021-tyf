@@ -7,13 +7,14 @@ import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -40,25 +41,25 @@ class DonationServiceTest {
     @Test
     void createDonation() throws Exception {
         //given
-        DonationRequest donationRequest = new DonationRequest(member.id(), 1000L);
+        DonationRequest donationRequest = new DonationRequest(member.getId(), 1000L);
 
         //when
         DonationResponse donationResponse = donationService.createDonation(donationRequest);
         //then
-        Assertions.assertEquals(member.id(), donationResponse.getDonationId());
+        assertThat(member.getId()).isEqualTo(donationResponse.getDonationId());
     }
 
     @DisplayName("후원받은 포인트만큼 멤버의 포인트에 누적된다.")
     @Test
     void accumulateMemberPoint() throws Exception {
         //given
-        DonationRequest donationRequest = new DonationRequest(member.id(), 1000L);
+        DonationRequest donationRequest = new DonationRequest(member.getId(), 1000L);
 
         //when
         donationService.createDonation(donationRequest);
         //then
-        Member findMember = memberRepository.findById(this.member.id()).get();
-        Assertions.assertTrue(findMember.isSamePoint(1000L));
+        Member findMember = memberRepository.findById(this.member.getId()).get();
+        assertThat(1000L).isEqualTo(findMember.getPoint().getPoint());
     }
 
 
@@ -71,12 +72,11 @@ class DonationServiceTest {
         DonationMessageRequest donationMessageRequest = new DonationMessageRequest("test", "this is test message");
 
         //when
-        donationService.addMessageToDonation(savedDonation.id(), donationMessageRequest);
+        donationService.addMessageToDonation(savedDonation.getId(), donationMessageRequest);
 
         //then
-        final Donation findDonation = donationRepository.findById(savedDonation.id()).get();
-        Assertions.assertEquals(donationMessageRequest.getName(), findDonation.name());
-        Assertions.assertEquals(donationMessageRequest.getMessage(), findDonation.message());
-
+        final Donation findDonation = donationRepository.findById(savedDonation.getId()).get();
+        assertThat(donationMessageRequest.getName()).isEqualTo(findDonation.getName());
+        assertThat(donationMessageRequest.getMessage()).isEqualTo(findDonation.getMessage());
     }
 }

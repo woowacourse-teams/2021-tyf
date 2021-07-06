@@ -31,7 +31,7 @@ class DonationRepositoryTest {
         final Donation savedDonation = donationRepository.save(donation);
 
         //then
-        Assertions.assertNotNull(savedDonation.id());
+        Assertions.assertNotNull(savedDonation.getId());
     }
 
 }
