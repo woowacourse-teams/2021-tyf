@@ -1,5 +1,6 @@
 package com.example.tyfserver.donation.domain;
 
+import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Donation {
+public class Donation extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

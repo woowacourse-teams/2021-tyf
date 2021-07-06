@@ -24,7 +24,7 @@ public class BannerService {
     }
 
     public List<BannerResponse> getBanners(Member member) {
-        List<Banner> banners = bannerRepository.findAllByMemberId(member.id());
+        List<Banner> banners = bannerRepository.findAllByMemberId(member.getId());
 
         return banners.stream()
                 .map(BannerResponse::new)
