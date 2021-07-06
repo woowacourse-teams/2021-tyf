@@ -30,7 +30,7 @@ class BannerRepositoryTest {
         Banner banner = bannerRepository.save(new Banner(member, "image.png"));
 
         // when
-        List<Banner> banners = bannerRepository.findAllByMemberId(member.id());
+        List<Banner> banners = bannerRepository.findAllByMemberId(member.getId());
 
         // then
         assertThat(banners).hasSize(1);
