@@ -3,13 +3,16 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.donation.domain.Donation;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -39,15 +42,7 @@ public class Member {
         donation.to(this);
     }
 
-    public Long id() {
-        return this.id;
-    }
-
     public void addPoint(final long donationAmount) {
         this.point.add(donationAmount);
-    }
-
-    public boolean isSamePoint(final long amount) {
-        return point.isSamePoint(amount);
     }
 }

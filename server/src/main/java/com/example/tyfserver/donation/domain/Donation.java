@@ -2,11 +2,13 @@ package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Donation {
 
@@ -30,18 +32,6 @@ public class Donation {
 
     public void to(final Member member) {
         this.member = member;
-    }
-
-    public Long id() {
-        return id;
-    }
-
-    public String name() {
-        return this.name;
-    }
-
-    public String message() {
-        return this.message;
     }
 
     public void addMessage(String name, String message) {
