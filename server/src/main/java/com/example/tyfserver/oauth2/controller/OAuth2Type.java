@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.util.function.Function;
 
+// todo 제거@!!!!@@
 public enum OAuth2Type {
     GOOGLE(
             "153785509866-72pebue5t5qqcpci2d1bncrh497ootcc.apps.googleusercontent.com",
