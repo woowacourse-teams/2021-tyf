@@ -10,9 +10,15 @@ const GlobalStyle = createGlobalStyle`
   }
 
 
+
   :root {
     font-size: 16px;
-    color: ${({ theme }) => theme.color.main}
+    color: ${({ theme }) => theme.color.main};
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  button {
+    font-family: 'Noto Sans KR', sans-serif;
   }
 
 `;

@@ -15,6 +15,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   appearance: none;
   transition: 0.2s background-color;
+  /* font-family: monospace; */
 
   &:hover {
     background-color: ${(props) => props.theme.primary.dimmed};

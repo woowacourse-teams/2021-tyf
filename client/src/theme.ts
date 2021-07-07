@@ -1,6 +1,6 @@
 import PALETTE from './constants/palette';
 
-const theme = {
+export const theme = {
   primary: { base: PALETTE.CORAL_400, dimmed: PALETTE.CORAL_700, blackened: PALETTE.CORAL_900 },
 
   color: {
