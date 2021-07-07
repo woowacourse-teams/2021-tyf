@@ -2,7 +2,6 @@ package com.example.tyfserver.common.domain;
 
 import com.example.tyfserver.common.dto.LoginMember;
 import com.example.tyfserver.common.service.AuthenticationService;
-import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -28,6 +27,6 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         String token = AuthorizationExtractor.extract(request);
-        return authenticationService.findMemberByToken(token);
+        return authenticationService.createLoginMemberByToken(token);
     }
 }

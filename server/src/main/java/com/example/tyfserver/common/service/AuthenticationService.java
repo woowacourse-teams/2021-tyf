@@ -17,7 +17,7 @@ public class AuthenticationService {
         return new TokenResponse(token);
     }
 
-    public LoginMember findMemberByToken(String token) {
+    public LoginMember createLoginMemberByToken(String token) {
         return new LoginMember(jwtTokenProvider.findEmailByToken(token));
     }
 
