@@ -2,8 +2,8 @@ interface Props {
   hi: string;
 }
 
-const App = ({ hi }: Props) => {
-  return <h1>{hi}</h1>;
+const App = () => {
+  return <div>App Componenet</div>;
 };
 
 export default App;
