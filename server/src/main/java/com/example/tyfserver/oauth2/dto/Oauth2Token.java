@@ -1,6 +1,6 @@
 package com.example.tyfserver.oauth2.dto;
 
-public class OauthToken {
+public class Oauth2Token {
     private String access_token;
     private String token_type;
     private String refresh_token;
@@ -8,10 +8,10 @@ public class OauthToken {
     private String scope;
     private int refresh_token_expires_in;
 
-    public OauthToken() {
+    public Oauth2Token() {
     }
 
-    public OauthToken(final String access_token, final String token_type, final String refresh_token, final int expires_in, final String scope, final int refresh_token_expires_in) {
+    public Oauth2Token(final String access_token, final String token_type, final String refresh_token, final int expires_in, final String scope, final int refresh_token_expires_in) {
         this.access_token = access_token;
         this.token_type = token_type;
         this.refresh_token = refresh_token;
@@ -46,7 +46,7 @@ public class OauthToken {
 
     @Override
     public String toString() {
-        return "OauthToken{" +
+        return "Oauth2Token{" +
                 "access_token='" + access_token + '\'' +
                 ", token_type='" + token_type + '\'' +
                 ", refresh_token='" + refresh_token + '\'' +

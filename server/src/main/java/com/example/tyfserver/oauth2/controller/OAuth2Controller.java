@@ -21,7 +21,13 @@ public class OAuth2Controller {
      */
     @GetMapping("/kakao/login")
     public ResponseEntity<String> loginKakao(@RequestParam String code) {
-        final String email = oAuth2Service.loginKakao(code);
+        final String email = oAuth2Service.login(code, OAuth2Type.KAKAO);
+        return ResponseEntity.ok(email);
+    }
+
+    @GetMapping("google/login")
+    public ResponseEntity<String> loginGoogle(@RequestParam String code) {
+        final String email = oAuth2Service.login(code, OAuth2Type.GOOGLE);
         return ResponseEntity.ok(email);
     }
 }
