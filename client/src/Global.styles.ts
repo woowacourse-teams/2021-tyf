@@ -9,6 +9,14 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
+  a {
+    text-decoration: none;
+
+    &:active, &:hover {
+      color: inherit
+    }
+  }
+
 
 
   :root {
