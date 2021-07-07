@@ -3,6 +3,7 @@ const PALETTE = {
   GRAY_100: '#F9F9fa',
   GRAY_200: '#edf0f2',
   GRAY_300: '#e7e7e7',
+  GRAY_400: '#979797',
   GRAY_500: '#757575',
   BLACK_400: '#333333',
   CORAL_400: '#F3706E',

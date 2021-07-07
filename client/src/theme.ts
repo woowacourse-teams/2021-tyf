@@ -6,6 +6,7 @@ export const theme = {
   color: {
     main: PALETTE.BLACK_400,
     sub: PALETTE.WHITE_400,
+    placeholder: PALETTE.GRAY_400,
   },
 } as const;
 
