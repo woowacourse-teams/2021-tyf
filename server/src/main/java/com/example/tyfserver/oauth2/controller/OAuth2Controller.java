@@ -9,25 +9,49 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("oauth2") //todo url 정하기
+@RequestMapping("/oauth2")
 @RequiredArgsConstructor
 public class OAuth2Controller {
 
     private final OAuth2Service oAuth2Service;
 
-    /**
-     * 리다이렉트 Url
-     * https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=ff77c9c32b464ffb0d98f3d04f7a7a48&redirect_uri=http://localhost:8080/oauth2/kakao/login
-     */
-    @GetMapping("/kakao/login")
+    // todo get? post?
+    @GetMapping("/login/kakao")
     public ResponseEntity<String> loginKakao(@RequestParam String code) {
-        final String email = oAuth2Service.login(code, OAuth2Type.KAKAO);
+        final String email = oAuth2Service.loginKakao(code);
         return ResponseEntity.ok(email);
     }
 
-    @GetMapping("google/login")
+    @GetMapping("/login/google")
     public ResponseEntity<String> loginGoogle(@RequestParam String code) {
-        final String email = oAuth2Service.login(code, OAuth2Type.GOOGLE);
+        final String email = oAuth2Service.loginGoogle(code);
         return ResponseEntity.ok(email);
     }
+
+    @GetMapping("/login/naver")
+    public ResponseEntity<String> loginNaver(@RequestParam String code) {
+        final String email = oAuth2Service.loginNaver(code);
+        return ResponseEntity.ok(email);
+    }
+
+    // todo get? post?
+    @GetMapping("/signup/kakao")
+    public ResponseEntity<String> signUpKakao(@RequestParam String code) {
+        final String email = oAuth2Service.signUpKakao(code);
+        return ResponseEntity.ok(email);
+    }
+
+    @GetMapping("/signup/google")
+    public ResponseEntity<String> signUpGoogle(@RequestParam String code) {
+        final String email = oAuth2Service.signUpGoogle(code);
+        return ResponseEntity.ok(email);
+    }
+
+    @GetMapping("/signup/naver")
+    public ResponseEntity<String> signUpNaver(@RequestParam String code) {
+        final String email = oAuth2Service.signUpNaver(code);
+        return ResponseEntity.ok(email);
+    }
+
+
 }

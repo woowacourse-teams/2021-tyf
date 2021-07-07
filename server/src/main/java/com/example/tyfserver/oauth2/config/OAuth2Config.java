@@ -2,6 +2,7 @@ package com.example.tyfserver.oauth2.config;
 
 import com.example.tyfserver.oauth2.domain.Google;
 import com.example.tyfserver.oauth2.domain.Kakao;
+import com.example.tyfserver.oauth2.domain.Naver;
 import com.example.tyfserver.oauth2.domain.Oauth2Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -38,15 +39,14 @@ public class OAuth2Config {
         );
     }
 
-//    @Bean
-//    public Oauth2Type kakao() {
-//        return new Kakao(
-//                env.getProperty("kakao.client_id"),
-//                env.getProperty("kakao.client_secret"),
-//                env.getProperty("redirect_url"),
-//                env.getProperty("access_token_api"),
-//                env.getProperty("profile_api")
-//        );
-//    }
-
+    @Bean
+    public Oauth2Type naver() {
+        return new Naver(
+                env.getProperty("naver.client_id"),
+                env.getProperty("naver.client_secret"),
+                env.getProperty("naver.redirect_url"),
+                env.getProperty("naver.access_token_api"),
+                env.getProperty("naver.profile_api")
+        );
+    }
 }
