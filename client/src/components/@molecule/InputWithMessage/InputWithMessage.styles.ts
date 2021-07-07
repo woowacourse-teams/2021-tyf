@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PALETTE from '../../../constants/palette';
 
-const StyledInputWithMessage = styled.div``;
+export const StyledInputWithMessage = styled.div``;
 
 const Message = styled.div`
   margin-top: 0.5rem;
@@ -9,12 +9,10 @@ const Message = styled.div`
   font-size: 0.75rem;
 `;
 
-const SuccessMessage = styled(Message)`
+export const SuccessMessage = styled(Message)`
   color: ${PALETTE.GREEN_700};
 `;
 
-const FailureMessage = styled(Message)`
+export const FailureMessage = styled(Message)`
   color: ${PALETTE.CORAL_700};
 `;
-
-export { StyledInputWithMessage, SuccessMessage, FailureMessage };
