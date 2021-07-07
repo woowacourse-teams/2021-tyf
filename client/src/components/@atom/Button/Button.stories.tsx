@@ -1,8 +1,9 @@
 import Button, { ButtonProps } from './Button';
+
 import { Meta, Story } from '@storybook/react';
 
 export default {
-  title: 'Commons/Button',
+  title: 'components/atom/Button',
   component: Button,
   argTypes: {},
 } as Meta;
@@ -10,3 +11,7 @@ export default {
 const Template: Story<ButtonProps> = (args) => <Button {...args}>버튼</Button>;
 
 export const Default = Template.bind({});
+
+Default.args = {
+  disabled: false,
+};
