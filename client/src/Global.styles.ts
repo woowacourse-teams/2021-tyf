@@ -1,8 +1,7 @@
-import { ThemeType } from './theme';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
-const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
+const GlobalStyle = createGlobalStyle`
   ${reset}
 
   * {
@@ -13,7 +12,7 @@ const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
 
   :root {
     font-size: 16px;
-    color: ${(props) => props.theme.color.main}
+    color: ${({ theme }) => theme.color.main}
   }
 
 `;

@@ -1,13 +1,8 @@
 import styled from 'styled-components';
 
 import PALETTE from '../../../constants/palette';
-import { ThemeType } from '../../../theme';
 
-interface Props {
-  theme: ThemeType;
-}
-
-const StyledButton = styled.button<Props>`
+const StyledButton = styled.button`
   height: 3rem;
   min-width: 5rem;
   width: 100%;
