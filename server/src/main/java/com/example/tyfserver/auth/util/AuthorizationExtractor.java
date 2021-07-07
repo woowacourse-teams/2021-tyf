@@ -1,7 +1,7 @@
-package com.example.tyfserver.common.domain;
+package com.example.tyfserver.auth.util;
 
-import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 public class AuthorizationExtractor {
 

@@ -1,13 +1,12 @@
-package com.example.tyfserver.common.config;
+package com.example.tyfserver.auth.config;
 
-import com.example.tyfserver.common.domain.AuthenticationArgumentResolver;
-import com.example.tyfserver.common.domain.AuthenticationInterceptor;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor);
-            //.addPathPatterns();
+        //.addPathPatterns(); //todo: 정하기
     }
 
     @Override

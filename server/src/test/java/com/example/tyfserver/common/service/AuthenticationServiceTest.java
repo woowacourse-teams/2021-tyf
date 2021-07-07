@@ -2,8 +2,9 @@ package com.example.tyfserver.common.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.tyfserver.common.domain.JwtTokenProvider;
-import com.example.tyfserver.common.dto.LoginMember;
+import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.auth.util.JwtTokenProvider;
+import com.example.tyfserver.auth.dto.LoginMember;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

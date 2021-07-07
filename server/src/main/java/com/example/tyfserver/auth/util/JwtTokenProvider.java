@@ -1,11 +1,12 @@
-package com.example.tyfserver.common.domain;
+package com.example.tyfserver.auth.util;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
@@ -21,17 +22,17 @@ public class JwtTokenProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-            .claim("email", email)
-            .setIssuedAt(now)
-            .setExpiration(validity)
-            .signWith(SignatureAlgorithm.HS256, secreteKey)
-            .compact();
+                .claim("email", email)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secreteKey)
+                .compact();
     }
 
     public void validateToken(String token) {
         try {
             Jwts.parser()
-                .setSigningKey(secreteKey).parseClaimsJws(token);
+                    .setSigningKey(secreteKey).parseClaimsJws(token);
         } catch (JwtException | IllegalArgumentException e) {
             throw new RuntimeException(); //todo: 예외 컨벤션 정하기
         }
@@ -39,8 +40,8 @@ public class JwtTokenProvider {
 
     public String findEmailByToken(String token) {
         return Jwts.parser()
-            .setSigningKey(secreteKey).parseClaimsJws(token)
-            .getBody()
-            .get("email", String.class);
+                .setSigningKey(secreteKey).parseClaimsJws(token)
+                .getBody()
+                .get("email", String.class);
     }
 }

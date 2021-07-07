@@ -1,11 +1,12 @@
 package com.example.tyfserver.common.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@AllArgsConstructor
 @Getter
-@RequiredArgsConstructor
 public class ErrorResponse {
 
-    private final String message;
+    private String message;
 }

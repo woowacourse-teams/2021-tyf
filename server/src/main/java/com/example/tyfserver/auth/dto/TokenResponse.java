@@ -1,4 +1,4 @@
-package com.example.tyfserver.common.dto;
+package com.example.tyfserver.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
