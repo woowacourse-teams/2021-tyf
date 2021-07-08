@@ -20,6 +20,6 @@ public class AuthorizationExtractor {
             }
         }
 
-        return null;
+        throw new RuntimeException("Authorization Header Not Found");
     }
 }
