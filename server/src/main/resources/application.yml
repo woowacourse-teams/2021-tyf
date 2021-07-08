@@ -18,3 +18,7 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+
+jwt:
+  secreteKey: ABCDEFG
+  expire-length: 600000

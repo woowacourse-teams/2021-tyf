@@ -4,7 +4,7 @@ import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.domain.MemberRepository;
+import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
