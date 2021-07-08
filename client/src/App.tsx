@@ -1,9 +1,5 @@
-interface Props {
-  hi: string;
-}
-
 const App = () => {
-  return <div>App Componenet</div>;
+  return <div>App Component</div>;
 };
 
 export default App;
