@@ -9,7 +9,9 @@ const PALETTE = {
   CORAL_400: '#F3706E',
   CORAL_700: '#E26666',
   CORAL_900: '#d15353',
+  YELLOW_400: '#fee500',
   GREEN_700: '#50d36c',
+  GREEN_900: '#03c75a',
 } as const;
 
 export default PALETTE;
