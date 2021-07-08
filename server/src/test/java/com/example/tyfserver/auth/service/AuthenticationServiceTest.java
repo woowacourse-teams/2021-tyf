@@ -1,4 +1,4 @@
-package com.example.tyfserver.common.service;
+package com.example.tyfserver.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
