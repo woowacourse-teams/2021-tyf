@@ -13,7 +13,8 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
 
     &:active, &:hover {
-      color: inherit
+      color: inherit;
+
     }
   }
 
