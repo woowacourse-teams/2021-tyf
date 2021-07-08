@@ -1,7 +1,8 @@
 package com.example.tyfserver.oauth2.service;
 
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.oauth2.domain.Oauth2Type;
+import com.example.tyfserver.oauth2.domain.OAuth2Type;
+import com.example.tyfserver.oauth2.domain.OAuth2Types;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -15,37 +16,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 public class OAuth2Service {
+
+    private final OAuth2Types oauth2Types;
     private final MemberRepository memberRepository;
 
-    private final Oauth2Type kakao;
-    private final Oauth2Type google;
-    private final Oauth2Type naver;
-
-    public String loginKakao(String code) {
-        return login(code, kakao);
-    }
-
-    public String loginGoogle(String code) {
-        return login(code, google);
-    }
-
-    public String loginNaver(String code) {
-        return login(code, naver);
-    }
-
-    public String signUpKakao(String code) {
-        return signUp(code, kakao);
-    }
-
-    public String signUpGoogle(String code) {
-        return signUp(code, google);
-    }
-
-    public String signUpNaver(String code) {
-        return signUp(code, naver);
-    }
-
-    private String login(String code, Oauth2Type oAuth2Type) {
+    // todo 리턴타입 JWT로
+    public String login(final String oauth, final String code) {
+        final OAuth2Type oAuth2Type = oauth2Types.getOauth2Type(oauth);
         final String accessToken = requestAccessToken(code, oAuth2Type);
         final String email = requestEmail(accessToken, oAuth2Type);
 
@@ -56,7 +33,8 @@ public class OAuth2Service {
         return email;
     }
 
-    private String signUp(String code, Oauth2Type oAuth2Type) {
+    public String signUp(final String oauth, final String code) {
+        final OAuth2Type oAuth2Type = oauth2Types.getOauth2Type(oauth);
         final String accessToken = requestAccessToken(code, oAuth2Type);
         final String email = requestEmail(accessToken, oAuth2Type);
 
@@ -69,7 +47,7 @@ public class OAuth2Service {
         return email;
     }
 
-    private String requestAccessToken(String code, Oauth2Type oAuth2Type) {
+    private String requestAccessToken(String code, OAuth2Type oAuth2Type) {
         final RestTemplate restTemplate = new RestTemplate();
 
         final String body = restTemplate.postForObject(
@@ -82,7 +60,7 @@ public class OAuth2Service {
         return jsonObject.getString("access_token");
     }
 
-    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2Type oAuth2Type) {
+    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, OAuth2Type oAuth2Type) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -96,7 +74,7 @@ public class OAuth2Service {
         return new HttpEntity<>(params, headers);
     }
 
-    private String requestEmail(String accessToken, Oauth2Type oAuth2Type) {
+    private String requestEmail(String accessToken, OAuth2Type oAuth2Type) {
         RestTemplate restTemplate = new RestTemplate();
 
         final String body = restTemplate.exchange(
@@ -116,7 +94,7 @@ public class OAuth2Service {
         return new HttpEntity<>(headers);
     }
 
-    private String extractEmail(Oauth2Type oAuth2Type, String response) {
+    private String extractEmail(OAuth2Type oAuth2Type, String response) {
         final JSONObject jsonObject = new JSONObject(response);
         return oAuth2Type.extractEmail(jsonObject);
     }

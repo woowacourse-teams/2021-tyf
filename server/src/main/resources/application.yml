@@ -15,6 +15,9 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  profiles:
+    include: oauth2
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace

@@ -2,16 +2,21 @@ package com.example.tyfserver.oauth2.domain;
 
 
 import org.json.JSONObject;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
-public class Google extends Oauth2Type {
+@ConstructorBinding
+@ConfigurationProperties("google")
+public class GoogleOAuth2 extends OAuth2Type {
 
-    public Google(
+    public GoogleOAuth2(
+            final String type,
             final String clientId,
             final String clientSecret,
             final String redirectUrl,
             final String accessTokenApi,
             final String profileApi) {
-        super(clientId, clientSecret, redirectUrl, accessTokenApi, profileApi);
+        super(type, clientId, clientSecret, redirectUrl, accessTokenApi, profileApi);
     }
 
     @Override
