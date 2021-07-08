@@ -31,6 +31,10 @@ const config: WebpackConfig = {
           },
         ],
       },
+      {
+        test: /\.(svg|png|jpg|gif)$/i,
+        type: 'asset',
+      },
     ],
   },
   plugins: [
