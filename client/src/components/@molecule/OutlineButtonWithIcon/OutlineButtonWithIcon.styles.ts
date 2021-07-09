@@ -12,6 +12,7 @@ export const StyledOutlineButtonWithIcon = styled(Button)`
   &:hover {
     background-color: ${PALETTE.GRAY_100};
   }
+
   &:active {
     background-color: ${PALETTE.GRAY_200};
     border: 1px solid ${PALETTE.GRAY_200};
