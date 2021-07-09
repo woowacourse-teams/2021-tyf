@@ -5,7 +5,7 @@ import {
   StyledOutlineBarButtonWithIcon,
 } from './OutlineBarButtonWithIcon.styles';
 
-type OutlineBarButtonWithIconProps = ButtonHTMLAttributes<HTMLButtonElement> &
+export type OutlineBarButtonWithIconProps = ButtonHTMLAttributes<HTMLButtonElement> &
   ImgHTMLAttributes<HTMLImageElement>;
 
 const OutlineBarButtonWithIcon: VFC<OutlineBarButtonWithIconProps> = ({
