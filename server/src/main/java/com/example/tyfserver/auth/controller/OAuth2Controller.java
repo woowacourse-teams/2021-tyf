@@ -1,6 +1,6 @@
-package com.example.tyfserver.oauth2.controller;
+package com.example.tyfserver.auth.controller;
 
-import com.example.tyfserver.oauth2.service.OAuth2Service;
+import com.example.tyfserver.auth.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,14 +1,14 @@
-package com.example.tyfserver.oauth2.domain;
+package com.example.tyfserver.auth.domain;
 
 import org.json.JSONObject;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
-@ConfigurationProperties("naver")
-public class NaverOAuth2 extends OAuth2Type {
+@ConfigurationProperties("kakao")
+public class KakaoOAuth2 extends OAuth2Type {
 
-    public NaverOAuth2(
+    public KakaoOAuth2(
             final String type,
             final String clientId,
             final String clientSecret,
@@ -20,6 +20,6 @@ public class NaverOAuth2 extends OAuth2Type {
 
     @Override
     public String extractEmail(final JSONObject jsonObject) {
-        return jsonObject.getJSONObject("response").getString("email");
+        return jsonObject.getJSONObject("kakao_account").getString("email");
     }
 }

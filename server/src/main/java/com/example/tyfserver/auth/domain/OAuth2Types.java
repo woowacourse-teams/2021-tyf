@@ -1,4 +1,4 @@
-package com.example.tyfserver.oauth2.domain;
+package com.example.tyfserver.auth.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

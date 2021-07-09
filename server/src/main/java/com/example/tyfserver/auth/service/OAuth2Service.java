@@ -1,8 +1,8 @@
-package com.example.tyfserver.oauth2.service;
+package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.oauth2.domain.OAuth2Type;
-import com.example.tyfserver.oauth2.domain.OAuth2Types;
+import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.auth.domain.OAuth2Types;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
