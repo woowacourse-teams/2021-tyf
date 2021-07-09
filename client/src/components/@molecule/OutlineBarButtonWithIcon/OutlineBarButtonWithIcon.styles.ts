@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button';
 
-export const StyledOutlineButtonWithIcon = styled(Button)`
+export const StyledOutlineBarButtonWithIcon = styled(Button)`
   display: flex;
   align-items: center;
   background-color: transparent;
