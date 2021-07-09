@@ -1,5 +1,5 @@
+import { MIN_WIDTH } from './../../constants/style';
 import styled from 'styled-components';
-import PALETTE from '../../constants/palette';
 
 import Container from '../@atom/Container/Container';
 import IconButton from '../@atom/IconButton/IconButton';
@@ -12,6 +12,7 @@ export const StyledNavBar = styled(Container)`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 1rem;
+  min-width: ${MIN_WIDTH};
 `;
 
 export const HamburgerButton = styled(IconButton).attrs({
@@ -21,6 +22,6 @@ export const HamburgerButton = styled(IconButton).attrs({
 export const StyledLogo = styled(IconButton).attrs({
   src: logoImg,
 })`
-  width: 8.75rem;
-  height: 2rem;
+  width: 10rem;
+  height: 2.5rem;
 `;
