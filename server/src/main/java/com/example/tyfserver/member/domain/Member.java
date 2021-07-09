@@ -1,5 +1,6 @@
 package com.example.tyfserver.member.domain;
 
+import com.example.tyfserver.auth.domain.OAuth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
@@ -26,6 +27,9 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Point point;
 
+    @Enumerated(EnumType.STRING)
+    private OAuth2Type oAuth2Type;
+
     @OneToMany(mappedBy = "member")
     private final List<Banner> banners = new ArrayList<>();
 
@@ -44,5 +48,9 @@ public class Member extends BaseTimeEntity {
 
     public void addPoint(final long donationAmount) {
         this.point.add(donationAmount);
+    }
+
+    public boolean isSameOAuthType(String type) {
+        return this.oAuth2Type.name().equals(type);
     }
 }

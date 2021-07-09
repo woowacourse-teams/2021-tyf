@@ -1,4 +1,4 @@
-package com.example.tyfserver.oauth2.dto;
+package com.example.tyfserver.auth.dto;
 
 public class Oauth2Token {
     private String access_token;
