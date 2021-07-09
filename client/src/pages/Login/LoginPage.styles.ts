@@ -4,8 +4,8 @@ import PALETTE from '../../constants/palette';
 import Checkbox from '../../components/@atom/Checkbox/Checkbox';
 import Container from '../../components/@atom/Container/Container';
 import Title from '../../components/@atom/Title/Title';
-import ButtonWithIcon from '../../components/@molecule/BarButtonWithIcon/BarButtonWithIcon';
-import OutlineButtonWithIcon from '../../components/@molecule/OutlineBarButtonWithIcon/OutlineBarButtonWithIcon';
+import BarButtonWithIcon from '../../components/@molecule/BarButtonWithIcon/BarButtonWithIcon';
+import OutlineBarButtonWithIcon from '../../components/@molecule/OutlineBarButtonWithIcon/OutlineBarButtonWithIcon';
 
 export const LoginContainer = styled(Container)`
   min-height: 100vh;
@@ -18,7 +18,6 @@ export const LoginButtonContainer = styled(Container)`
 export const LoginOptionContainer = styled(Container)`
   flex-direction: row;
   justify-content: flex-end;
-  // TODO: 아래와 같은 subText의 색상을 theme으로 설정해두면 이후 다크테마 구현에 적절할듯합니다
   color: ${PALETTE.GRAY_500};
 `;
 
@@ -39,12 +38,12 @@ export const KeepLoginCheckbox = styled(Checkbox)`
   cursor: pointer;
 `;
 
-export const GoogleButton = styled(OutlineButtonWithIcon)`
+export const GoogleButton = styled(OutlineBarButtonWithIcon)`
   color: ${PALETTE.GRAY_500};
   margin-bottom: 1rem;
 `;
 
-export const NaverButton = styled(ButtonWithIcon)`
+export const NaverButton = styled(BarButtonWithIcon)`
   background-color: #03c75a;
   color: ${PALETTE.WHITE_400};
   margin-bottom: 1rem;
@@ -55,7 +54,7 @@ export const NaverButton = styled(ButtonWithIcon)`
   }
 `;
 
-export const KakaoButton = styled(ButtonWithIcon)`
+export const KakaoButton = styled(BarButtonWithIcon)`
   background-color: ${PALETTE.YELLOW_400};
   color: ${PALETTE.BLACK_400};
   margin-bottom: 1rem;
