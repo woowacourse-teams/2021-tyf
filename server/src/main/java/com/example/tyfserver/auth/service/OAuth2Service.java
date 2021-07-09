@@ -5,6 +5,7 @@ import com.example.tyfserver.auth.domain.OAuth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.dto.SignUpRequest;
 import com.example.tyfserver.member.dto.SignUpResponse;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class OAuth2Service {
     }
 
     private String getEmailFromOauth2(String oAuthType, String code) {
-        final OAuth2 oAuth2 = OAuth2Type.findOAuth2Type(oAuthType);
+        final OAuth2 oAuth2 = OAuth2Type.findOAuth2(oAuthType);
         final String accessToken = requestAccessToken(code, oAuth2);
         return requestEmail(accessToken, oAuth2);
     }
@@ -72,6 +73,12 @@ public class OAuth2Service {
         );
 
         return extractAccessToken(body);
+    }
+
+    public TokenResponse signUp(SignUpRequest signUpRequest) {
+        Member member = signUpRequest.toMember();
+        memberRepository.save(member);
+        return new TokenResponse(authenticationService.createToken(member.getEmail()));
     }
 
     private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, OAuth2 oAuth2) {

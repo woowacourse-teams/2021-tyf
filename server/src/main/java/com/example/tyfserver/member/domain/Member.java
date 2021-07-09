@@ -24,11 +24,17 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
+    private String nickName;
+
     @Embedded
     private Point point;
 
     @Enumerated(EnumType.STRING)
     private OAuth2Type oAuth2Type;
+
+    @Column(unique = true)
+    private String ownPageUrl;
 
     @OneToMany(mappedBy = "member")
     private final List<Banner> banners = new ArrayList<>();
@@ -36,8 +42,10 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email) {
+    public Member(String email, String nickName, String ownPageUrl, OAuth2Type oAuth2Type) {
         this.email = email;
+        this.nickName = nickName;
+        this.oAuth2Type = oAuth2Type;
         this.point = new Point(0L);
     }
 
