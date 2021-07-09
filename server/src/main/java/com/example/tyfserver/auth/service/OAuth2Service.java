@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class OAuth2Service {
@@ -37,14 +35,8 @@ public class OAuth2Service {
     public SignUpResponse readySignUp(final String oAuthType, final String code) {
         final String email = getEmailFromOauth2(oAuthType, code);
 
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-        if (findMember.isPresent()) {
-            Member member = findMember.get();
-            if (member.isSameOAuthType(oAuthType)) {
-                throw new RuntimeException("token : " + authenticationService.createToken(email)); //todo: 에러 컨벤션
-            }
-            throw new RuntimeException(member.getOAuth2Type().name() + " 로 이미 가입된 회원입니다.");
-        }
+        memberRepository.findByEmail(email)
+                .ifPresent(member -> validateRegisteredMember(oAuthType, email, member));
 
         return new SignUpResponse(email, oAuthType);
     }
@@ -63,6 +55,13 @@ public class OAuth2Service {
         );
 
         return extractEmail(oAuth2, body);
+    }
+
+    private void validateRegisteredMember(String oAuthType, String email, Member member) {
+        if (member.isSameOAuthType(oAuthType)) {
+            throw new RuntimeException("token : " + authenticationService.createToken(email)); //todo: 에러 컨벤션
+        }
+        throw new RuntimeException(member.getOAuth2Type().name() + " 로 이미 가입된 회원입니다.");
     }
 
     private String requestAccessToken(String code, OAuth2 oAuth2) {

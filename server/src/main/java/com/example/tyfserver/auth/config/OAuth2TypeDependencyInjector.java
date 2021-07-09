@@ -1,9 +1,9 @@
 package com.example.tyfserver.auth.config;
 
-import com.example.tyfserver.auth.domain.OAuth2Type;
 import com.example.tyfserver.auth.domain.GoogleOAuth2;
 import com.example.tyfserver.auth.domain.KakaoOAuth2;
 import com.example.tyfserver.auth.domain.NaverOAuth2;
+import com.example.tyfserver.auth.domain.OAuth2Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 

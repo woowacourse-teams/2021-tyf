@@ -1,7 +1,6 @@
 package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
-import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
