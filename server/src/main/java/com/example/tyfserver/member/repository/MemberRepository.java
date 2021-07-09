@@ -9,7 +9,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    Optional<Member> findByEmailAndOAuth2Type(String email, String oAuth2Type);
+    Optional<Member> findByEmailAndOauth2Type(String email, String oauth2Type);
 
     boolean existsByEmail(String email);
 }

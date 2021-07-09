@@ -1,6 +1,6 @@
 package com.example.tyfserver.member.dto;
 
-import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,6 +23,6 @@ public class SignUpRequest {
     }
 
     public Member toMember() {
-        return new Member(email, nickName, ownPageUrl, OAuth2Type.findOAuth2Type(oAuthType));
+        return new Member(email, nickName, ownPageUrl, Oauth2Type.findOAuth2Type(oAuthType));
     }
 }

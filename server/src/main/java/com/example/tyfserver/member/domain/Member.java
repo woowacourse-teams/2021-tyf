@@ -1,6 +1,6 @@
 package com.example.tyfserver.member.domain;
 
-import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
@@ -31,7 +31,7 @@ public class Member extends BaseTimeEntity {
     private Point point;
 
     @Enumerated(EnumType.STRING)
-    private OAuth2Type oAuth2Type;
+    private Oauth2Type oauth2Type;
 
     @Column(unique = true)
     private String ownPageUrl;
@@ -42,10 +42,11 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email, String nickName, String ownPageUrl, OAuth2Type oAuth2Type) {
+    public Member(String email, String nickName, String ownPageUrl, Oauth2Type oauth2Type) {
         this.email = email;
         this.nickName = nickName;
-        this.oAuth2Type = oAuth2Type;
+        this.ownPageUrl = ownPageUrl;
+        this.oauth2Type = oauth2Type;
         this.point = new Point(0L);
     }
 
@@ -59,6 +60,6 @@ public class Member extends BaseTimeEntity {
     }
 
     public boolean isSameOAuthType(String type) {
-        return this.oAuth2Type.name().equals(type);
+        return this.oauth2Type.name().equals(type);
     }
 }
