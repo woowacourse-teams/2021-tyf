@@ -2,6 +2,7 @@ package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.auth.domain.OAuth2;
 import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -46,17 +47,24 @@ public class OAuth2Service {
         return email;
     }
 
-    private String requestAccessToken(String code, OAuth2 oAuth2) {
-        final RestTemplate restTemplate = new RestTemplate();
-
-        final String body = restTemplate.postForObject(
-                oAuth2.getAccessTokenApi(),
-                generateAccessTokenRequest(code, oAuth2),
-                String.class
+    private String requestEmail(String accessToken, OAuth2 oAuth2) {
+        String body = ApiSender.send(
+                oAuth2.getProfileApi(),
+                HttpMethod.GET,
+                generateProfileRequest(accessToken)
         );
 
-        final JSONObject jsonObject = new JSONObject(body);
-        return jsonObject.getString("access_token");
+        return extractEmail(oAuth2, body);
+    }
+
+    private String requestAccessToken(String code, OAuth2 oAuth2) {
+        String body = ApiSender.send(
+                oAuth2.getAccessTokenApi(),
+                HttpMethod.POST,
+                generateAccessTokenRequest(code, oAuth2)
+        );
+
+        return extractAccessToken(body);
     }
 
     private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, OAuth2 oAuth2) {
@@ -73,19 +81,6 @@ public class OAuth2Service {
         return new HttpEntity<>(params, headers);
     }
 
-    private String requestEmail(String accessToken, OAuth2 oAuth2) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        final String body = restTemplate.exchange(
-                oAuth2.getProfileApi(),
-                HttpMethod.GET,
-                generateProfileRequest(accessToken),
-                String.class
-        ).getBody();
-
-        return extractEmail(oAuth2, body);
-    }
-
     private HttpEntity<MultiValueMap<String, String>> generateProfileRequest(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
@@ -96,5 +91,10 @@ public class OAuth2Service {
     private String extractEmail(OAuth2 oAuth2, String response) {
         final JSONObject jsonObject = new JSONObject(response);
         return oAuth2.extractEmail(jsonObject);
+    }
+
+    private String extractAccessToken(String body) {
+        final JSONObject jsonObject = new JSONObject(body);
+        return jsonObject.getString("access_token");
     }
 }
