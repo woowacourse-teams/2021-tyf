@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Button from '../../@atom/Button/Button';
 
-export const StyledButtonWithIcon = styled(Button)`
+export const StyledBarButtonWithIcon = styled(Button)`
   display: flex;
   align-items: center;
 `;

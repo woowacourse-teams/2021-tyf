@@ -4,8 +4,8 @@ import PALETTE from '../../constants/palette';
 import Checkbox from '../../components/@atom/Checkbox/Checkbox';
 import Container from '../../components/@atom/Container/Container';
 import Title from '../../components/@atom/Title/Title';
-import ButtonWithIcon from '../../components/@molecule/ButtonWithIcon/ButtonWithIcon';
-import OutlineButtonWithIcon from '../../components/@molecule/OutlineButtonWithIcon/OutlineButtonWithIcon';
+import ButtonWithIcon from '../../components/@molecule/BarButtonWithIcon/BarButtonWithIcon';
+import OutlineButtonWithIcon from '../../components/@molecule/OutlineBarButtonWithIcon/OutlineBarButtonWithIcon';
 
 export const LoginContainer = styled(Container)`
   min-height: 100vh;
