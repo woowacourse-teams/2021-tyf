@@ -9,6 +9,7 @@ const StyledInput = styled.input`
   border: none;
   border-bottom: 1px solid ${PALETTE.GRAY_300};
   padding: 0 1rem;
+  font-size: 1rem;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.placeholder};
