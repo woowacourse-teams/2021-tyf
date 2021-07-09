@@ -1,26 +1,28 @@
 package com.example.tyfserver.auth.domain;
 
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
+@Getter
+@RequiredArgsConstructor
 @ConfigurationProperties("google")
-public class GoogleOAuth2 extends OAuth2Type {
+public class GoogleOAuth2 implements OAuth2 {
 
-    public GoogleOAuth2(
-            final String type,
-            final String clientId,
-            final String clientSecret,
-            final String redirectUrl,
-            final String accessTokenApi,
-            final String profileApi) {
-        super(type, clientId, clientSecret, redirectUrl, accessTokenApi, profileApi);
-    }
+    private final String type;
+    private final String clientId;
+    private final String clientSecret;
+    private final String redirectUrl;
+    private final String accessTokenApi;
+    private final String profileApi;
 
     @Override
     public String extractEmail(final JSONObject jsonObject) {
         return jsonObject.getString("email");
     }
+
 }
