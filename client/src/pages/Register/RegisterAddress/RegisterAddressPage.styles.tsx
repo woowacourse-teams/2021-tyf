@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import PALETTE from '../../../constants/palette';
-
 import Container from '../../../components/@atom/Container/Container';
 import Title from '../../../components/@atom/Title/Title';
+import PALETTE from '../../../constants/palette';
 
 export const RegisterAddressContainer = styled(Container)`
   min-height: 100vh;
