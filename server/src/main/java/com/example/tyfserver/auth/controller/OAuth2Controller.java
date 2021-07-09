@@ -2,6 +2,7 @@ package com.example.tyfserver.auth.controller;
 
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.service.OAuth2Service;
+import com.example.tyfserver.member.dto.SignUpRequest;
 import com.example.tyfserver.member.dto.SignUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,13 @@ public class OAuth2Controller {
         return ResponseEntity.ok(oAuth2Service.login(oauth, code));
     }
 
-    // todo get? post?
     @GetMapping("/signup/ready/{oauth}")
     public ResponseEntity<SignUpResponse> readySignUp(@PathVariable String oauth, @RequestParam String code) {
         return ResponseEntity.ok(oAuth2Service.readySignUp(oauth, code));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<TokenResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
+        return ResponseEntity.ok(oAuth2Service.signUp(signUpRequest));
     }
 }

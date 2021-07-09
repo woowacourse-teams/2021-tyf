@@ -8,12 +8,15 @@ public enum OAuth2Type {
 
     private OAuth2 oAuth2;
 
-    public static OAuth2 findOAuth2Type(String type) {
+    public static OAuth2Type findOAuth2Type(String type) {
         return Arrays.stream(OAuth2Type.values())
                 .filter(value -> value.name().equals(type))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("type not found"))//todo: error 컨벤션
-                .oAuth2;
+                .orElseThrow(() -> new RuntimeException("type not found"));//todo: error 컨벤션
+    }
+
+    public static OAuth2 findOAuth2(String type) {
+        return findOAuth2Type(type).oAuth2;
     }
 
     public void setoAuth2TypeInterface(OAuth2 oAuth2) {
