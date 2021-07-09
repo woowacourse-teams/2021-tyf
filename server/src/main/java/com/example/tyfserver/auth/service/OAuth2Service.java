@@ -1,7 +1,7 @@
 package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.auth.domain.OAuth2;
-import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.member.domain.Member;
@@ -27,7 +27,7 @@ public class OAuth2Service {
     public TokenResponse login(final String oAuthType, final String code) {
         final String email = getEmailFromOauth2(oAuthType, code);
 
-        Member findMember = memberRepository.findByEmailAndOAuth2Type(email, oAuthType)
+        Member findMember = memberRepository.findByEmailAndOauth2Type(email, oAuthType)
                 .orElseThrow(() -> new RuntimeException("가입되어 있지 않은 유저"));// todo 예외클래스, 메시지
 
         return new TokenResponse(authenticationService.createToken(findMember.getEmail()));
@@ -43,7 +43,7 @@ public class OAuth2Service {
     }
 
     private String getEmailFromOauth2(String oAuthType, String code) {
-        final OAuth2 oAuth2 = OAuth2Type.findOAuth2(oAuthType);
+        final OAuth2 oAuth2 = Oauth2Type.findOAuth2(oAuthType);
         final String accessToken = requestAccessToken(code, oAuth2);
         return requestEmail(accessToken, oAuth2);
     }
@@ -62,7 +62,7 @@ public class OAuth2Service {
         if (member.isSameOAuthType(oAuthType)) {
             throw new RuntimeException("token : " + authenticationService.createToken(email)); //todo: 에러 컨벤션
         }
-        throw new RuntimeException(member.getOAuth2Type().name() + " 로 이미 가입된 회원입니다.");
+        throw new RuntimeException(member.getOauth2Type().name() + " 로 이미 가입된 회원입니다.");
     }
 
     private String requestAccessToken(String code, OAuth2 oAuth2) {

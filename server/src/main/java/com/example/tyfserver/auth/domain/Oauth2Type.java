@@ -2,14 +2,14 @@ package com.example.tyfserver.auth.domain;
 
 import java.util.Arrays;
 
-public enum OAuth2Type {
+public enum Oauth2Type {
 
     GOOGLE, NAVER, KAKAO;
 
     private OAuth2 oAuth2;
 
-    public static OAuth2Type findOAuth2Type(String type) {
-        return Arrays.stream(OAuth2Type.values())
+    public static Oauth2Type findOAuth2Type(String type) {
+        return Arrays.stream(Oauth2Type.values())
                 .filter(value -> value.name().equals(type))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("type not found"));//todo: error 컨벤션

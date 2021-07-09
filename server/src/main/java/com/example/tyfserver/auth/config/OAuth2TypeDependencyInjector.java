@@ -3,7 +3,7 @@ package com.example.tyfserver.auth.config;
 import com.example.tyfserver.auth.domain.GoogleOAuth2;
 import com.example.tyfserver.auth.domain.KakaoOAuth2;
 import com.example.tyfserver.auth.domain.NaverOAuth2;
-import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,14 +19,14 @@ public class OAuth2TypeDependencyInjector {
 
     @PostConstruct
     public void inject() {
-        for (OAuth2Type value : OAuth2Type.values()) {
-            if (value.equals(OAuth2Type.GOOGLE)) {
+        for (Oauth2Type value : Oauth2Type.values()) {
+            if (value.equals(Oauth2Type.GOOGLE)) {
                 value.setoAuth2TypeInterface(googleOAuth2);
             }
-            if (value.equals(OAuth2Type.NAVER)) {
+            if (value.equals(Oauth2Type.NAVER)) {
                 value.setoAuth2TypeInterface(naverOAuth2);
             }
-            if (value.equals(OAuth2Type.KAKAO)) {
+            if (value.equals(Oauth2Type.KAKAO)) {
                 value.setoAuth2TypeInterface(kakaoOAuth2);
             }
         }
