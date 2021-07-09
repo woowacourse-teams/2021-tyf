@@ -1,24 +1,22 @@
-import { ButtonHTMLAttributes, VFC } from 'react';
+import { ButtonHTMLAttributes, ImgHTMLAttributes, VFC } from 'react';
 import {
   ButtonContent,
   ButtonIcon,
   StyledOutlineButtonWithIcon,
 } from './OutlineButtonWithIcon.styles';
 
-interface OutlineButtonWithIconProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  logoSrc: string;
-  logoAlt: string;
-}
+type OutlineButtonWithIconProps = ButtonHTMLAttributes<HTMLButtonElement> &
+  ImgHTMLAttributes<HTMLImageElement>;
 
 const OutlineButtonWithIcon: VFC<OutlineButtonWithIconProps> = ({
-  logoSrc,
-  logoAlt,
+  src,
+  alt,
   children,
   ...args
 }) => {
   return (
     <StyledOutlineButtonWithIcon {...args}>
-      <ButtonIcon src={logoSrc} alt={logoAlt} />
+      <ButtonIcon src={src} alt={alt} />
       <ButtonContent>{children}</ButtonContent>
     </StyledOutlineButtonWithIcon>
   );

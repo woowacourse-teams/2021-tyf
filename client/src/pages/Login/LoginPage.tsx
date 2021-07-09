@@ -25,13 +25,13 @@ const LoginPage: FC<HTMLAttributes<HTMLElement>> = () => {
         <LoginTitle>로그인</LoginTitle>
 
         <LoginButtonContainer>
-          <GoogleButton logoSrc={GoogleLogo} logoAlt="google_logo">
+          <GoogleButton src={GoogleLogo} alt="google_logo">
             구글 로그인
           </GoogleButton>
-          <NaverButton logoSrc={NaverLogo} logoAlt="naver_logo">
+          <NaverButton src={NaverLogo} alt="naver_logo">
             네이버 로그인
           </NaverButton>
-          <KakaoButton logoSrc={KakaoLogo} logoAlt="kakao_logo">
+          <KakaoButton src={KakaoLogo} alt="kakao_logo">
             카카오 로그인
           </KakaoButton>
           <LoginOptionContainer>

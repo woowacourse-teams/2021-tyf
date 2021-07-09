@@ -1,15 +1,13 @@
-import { ButtonHTMLAttributes, VFC } from 'react';
+import { ButtonHTMLAttributes, ImgHTMLAttributes, VFC } from 'react';
 import { ButtonContent, ButtonIcon, StyledButtonWithIcon } from './ButtonWithIcon.styles';
 
-interface ButtonWithIconProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  logoSrc: string;
-  logoAlt: string;
-}
+type ButtonWithIconProps = ButtonHTMLAttributes<HTMLButtonElement> &
+  ImgHTMLAttributes<HTMLImageElement>;
 
-const ButtonWithIcon: VFC<ButtonWithIconProps> = ({ logoSrc, logoAlt, children, ...args }) => {
+const ButtonWithIcon: VFC<ButtonWithIconProps> = ({ src, alt, children, ...args }) => {
   return (
     <StyledButtonWithIcon {...args}>
-      <ButtonIcon src={logoSrc} alt={logoAlt} />
+      <ButtonIcon src={src} alt={alt} />
       <ButtonContent>{children}</ButtonContent>
     </StyledButtonWithIcon>
   );
