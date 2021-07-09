@@ -12,9 +12,8 @@ public class AuthenticationService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public TokenResponse createToken(String email) {
-        String token = jwtTokenProvider.createToken(email);
-        return new TokenResponse(token);
+    public String createToken(String email) {
+        return jwtTokenProvider.createToken(email);
     }
 
     public LoginMember createLoginMemberByToken(String token) {

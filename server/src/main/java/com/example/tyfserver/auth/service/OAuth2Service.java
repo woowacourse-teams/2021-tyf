@@ -2,7 +2,10 @@ package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.auth.domain.OAuth2;
 import com.example.tyfserver.auth.domain.OAuth2Type;
+import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.dto.SignUpResponse;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -12,39 +15,44 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class OAuth2Service {
 
     private final MemberRepository memberRepository;
+    private final AuthenticationService authenticationService;
 
-    // todo 리턴타입 JWT로
-    public String login(final String oauth, final String code) {
-        final OAuth2 oAuth2 = OAuth2Type.findOAuth2Type(oauth);
-        final String accessToken = requestAccessToken(code, oAuth2);
-        final String email = requestEmail(accessToken, oAuth2);
+    public TokenResponse login(final String oAuthType, final String code) {
+        final String email = getEmailFromOauth2(oAuthType, code);
 
-        memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("가입되어 있지 않은 유저")); // todo 예외클래스, 메시지
+        Member findMember = memberRepository.findByEmailAndOAuth2Type(email, oAuthType)
+                .orElseThrow(() -> new RuntimeException("가입되어 있지 않은 유저"));// todo 예외클래스, 메시지
 
-        // todo JWT 발급
-        return email;
+        return new TokenResponse(authenticationService.createToken(findMember.getEmail()));
     }
 
-    public String signUp(final String oauth, final String code) {
-        final OAuth2 oAuth2 = OAuth2Type.findOAuth2Type(oauth);
+    public SignUpResponse readySignUp(final String oAuthType, final String code) {
+        final String email = getEmailFromOauth2(oAuthType, code);
+
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            if (member.isSameOAuthType(oAuthType)) {
+                throw new RuntimeException("token : " + authenticationService.createToken(email)); //todo: 에러 컨벤션
+            }
+            throw new RuntimeException(member.getOAuth2Type().name() + " 로 이미 가입된 회원입니다.");
+        }
+
+        return new SignUpResponse(email, oAuthType);
+    }
+
+    private String getEmailFromOauth2(String oAuthType, String code) {
+        final OAuth2 oAuth2 = OAuth2Type.findOAuth2Type(oAuthType);
         final String accessToken = requestAccessToken(code, oAuth2);
-        final String email = requestEmail(accessToken, oAuth2);
-
-        // 멤버가 있는지 확인
-        // 1. 멤버가 없음: 가입
-        // 2. 멤버가 있고 다른 타입: 어떤 타입으로 가입되어있는지 안내
-        // 3. 멤버가 있고 같은 타입: 이미 가입되어있다 안내하고 로그인
-
-        // todo JWT 발급
-        return email;
+        return requestEmail(accessToken, oAuth2);
     }
 
     private String requestEmail(String accessToken, OAuth2 oAuth2) {

@@ -14,7 +14,7 @@ public enum OAuth2Type {
 
     public static OAuth2 findOAuth2Type(String type) {
         return Arrays.stream(OAuth2Type.values())
-                .filter(value -> value.name().equals(type.toUpperCase()))
+                .filter(value -> value.name().equals(type))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("type not found"))//todo: error 컨벤션
                 .oAuth2;
