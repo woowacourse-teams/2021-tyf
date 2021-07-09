@@ -8,7 +8,7 @@ import logoImg from '../../assets/images/logo.png';
 
 export const StyledNavBar = styled(Container)`
   height: 5rem;
-  border-bottom: 1px solid ${PALETTE.GRAY_200};
+  border-bottom: 1px solid ${({ theme }) => theme.color.border};
   flex-direction: row;
   justify-content: space-between;
   padding: 0 1rem;
