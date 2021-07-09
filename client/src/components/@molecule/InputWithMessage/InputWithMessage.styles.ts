@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import PALETTE from '../../../constants/palette';
 
-export const StyledInputWithMessage = styled.div``;
+export const StyledInputWithMessage = styled.div`
+  width: 100%;
+  min-height: 4.25rem;
+`;
 
 const Message = styled.div`
   margin-top: 0.5rem;
