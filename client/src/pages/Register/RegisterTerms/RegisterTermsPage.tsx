@@ -1,8 +1,8 @@
 import { FC, HTMLAttributes } from 'react';
+
 import Button from '../../../components/@atom/Button/Button';
 import Container from '../../../components/@atom/Container/Container';
 import Template from '../../../components/@atom/Template/Template';
-
 import {
   Divider,
   RegisterTermsContainer,

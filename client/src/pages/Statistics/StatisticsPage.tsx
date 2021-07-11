@@ -1,9 +1,9 @@
-import Container from '../../components/@atom/Container/Container';
-import Template from '../../components/@atom/Template/Template';
+import { FC, HTMLAttributes } from 'react';
 
+import Template from '../../components/@atom/Template/Template';
 import { InfoTitle, MoneyInfo, StatisticsContainer } from './StatisticsPage.styles';
 
-const StatisticsPage = () => {
+const StatisticsPage: FC<HTMLAttributes<HTMLElement>> = () => {
   return (
     <Template>
       <StatisticsContainer>

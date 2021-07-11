@@ -1,10 +1,9 @@
 import { FC, HTMLAttributes } from 'react';
+
 import Comments from '../../components/Creator/Comments/Comments';
 import Profile from '../../components/Creator/Profile/Profile';
-
 import Button from '../../components/@atom/Button/Button';
 import Template from '../../components/@atom/Template/Template';
-
 import { CreatorPageContainer, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
 
 const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
