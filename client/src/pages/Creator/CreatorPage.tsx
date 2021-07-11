@@ -12,7 +12,9 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
       <CreatorPageContainer>
         <ProfileContainer>
           <Profile />
-          <DescriptionContainer>제 페이지에 와주셔서 감사합니다!!</DescriptionContainer>
+          <DescriptionContainer>
+            <p>제 페이지에 와주셔서 감사합니다!!</p>
+          </DescriptionContainer>
           <Button>내 페이지 공유하기</Button>
         </ProfileContainer>
         <Comments />
