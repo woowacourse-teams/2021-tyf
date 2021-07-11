@@ -13,6 +13,7 @@ export const InfoTitle = styled(SubTitle)`
 
 export const MoneyInfo = styled(Title)`
   margin-bottom: 4rem;
+  font-size: 3rem;
 
   span {
     font-size: 1rem;
