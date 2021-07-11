@@ -12,6 +12,7 @@ export const StyledMessageForm = styled.form`
 `;
 
 export const StyledSubTitle = styled(SubTitle)`
+  font-size: 1.375rem;
   margin-bottom: 4.25rem;
 `;
 

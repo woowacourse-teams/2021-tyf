@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/react';
-import SuccessPage from './RegisterSuccessPage';
+import SuccessPage from './DonationSuccessPage';
 
 export default {
-  title: 'pages/register/success',
+  title: 'pages/donation/success',
 } as Meta;
 
 const Template: Story = (args) => <SuccessPage {...args} />;

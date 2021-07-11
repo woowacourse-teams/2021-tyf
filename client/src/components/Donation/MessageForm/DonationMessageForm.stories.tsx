@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import MessageForm from './MessageForm';
+import MessageForm from './DonationMessageForm';
 
 export default {
   title: 'components/donation/messageForm',

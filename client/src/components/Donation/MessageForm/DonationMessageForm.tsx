@@ -1,4 +1,3 @@
-import Button from '../../@atom/Button/Button';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Textarea from '../../@atom/Textarea/Textarea';
 import {
@@ -8,9 +7,9 @@ import {
   TextareaControllerContainer,
   CheckboxLabel,
   SubmitButton,
-} from './MessageForm.styles';
+} from './DonationMessageForm.styles';
 
-const MessageForm = () => {
+const DonationMessageForm = () => {
   return (
     <StyledMessageForm>
       <StyledSubTitle>창작자에게 응원의 한마디를 남겨주세요!</StyledSubTitle>
@@ -27,4 +26,4 @@ const MessageForm = () => {
   );
 };
 
-export default MessageForm;
+export default DonationMessageForm;
