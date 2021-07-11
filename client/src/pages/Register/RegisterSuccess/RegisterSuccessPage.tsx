@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes } from 'react';
+
 import Anchor from '../../../components/@atom/Anchor/Anchor';
 import Template from '../../../components/@atom/Template/Template';
-
 import {
   MyPageOutlineButton,
   RegisterSuccessContainer,
