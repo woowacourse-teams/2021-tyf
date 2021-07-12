@@ -5,7 +5,7 @@ const NavBar = () => {
     <StyledNavBar>
       <HamburgerButton />
       <StyledLogo />
-      <LoginButton>로그인</LoginButton>
+      <LoginButton to="/login">로그인</LoginButton>
     </StyledNavBar>
   );
 };

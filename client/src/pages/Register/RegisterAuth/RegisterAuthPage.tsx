@@ -14,7 +14,7 @@ import {
   StyledTemplate,
 } from './RegisterAuthPage.styles';
 
-const RegisterAuthPage: VFC<HTMLAttributes<HTMLElement>> = () => {
+const RegisterAuthPage: VFC = () => {
   return (
     <StyledTemplate>
       <RegisterTitle>회원가입</RegisterTitle>

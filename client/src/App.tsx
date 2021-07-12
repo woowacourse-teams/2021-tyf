@@ -30,12 +30,12 @@ const App = () => {
         <Route path="/register/name" component={RegisterNamePage} />
         <Route path="/register/success" component={RegisterSuccessPage} />
 
-        <Route path="/donation" component={DonationPage} exact />
-        <Route path="/donation/message" component={DonationMessagePage} />
-        <Route path="/donation/success" component={DonationSuccessPage} />
+        <Route path="/donation/:creatorId" component={DonationPage} exact />
+        <Route path="/donation/:creatorId/message" component={DonationMessagePage} />
+        <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
-        <Route path="/creator" component={CreatorPage} />
-        <Route path="/statistic" component={StatisticsPage} />
+        <Route path="/creator/:creatorId" component={CreatorPage} />
+        <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
 
         <Redirect from="*" to="/" />
       </Switch>
