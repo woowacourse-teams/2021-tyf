@@ -4,17 +4,18 @@ import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
 import Input from '../../@atom/Input/Input';
-import SubTitle from '../../@atom/SubTitle/SubTitle';
+import Title from '../../@atom/Title/Title';
 
 export const StyledMessageForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 `;
 
-export const StyledSubTitle = styled(SubTitle)`
-  font-size: 1.375rem;
-  margin-bottom: 4.25rem;
+export const DonationMessageTitle = styled(Title)`
+  margin-bottom: 4rem;
+  text-align: left;
 `;
 
 export const NickNameInput = styled(Input)`
@@ -41,7 +42,5 @@ export const CheckboxLabel = styled.label`
 `;
 
 export const SubmitButton = styled(Button)`
-  height: 3.125rem;
-  width: 90%;
   margin: 0 auto;
 `;

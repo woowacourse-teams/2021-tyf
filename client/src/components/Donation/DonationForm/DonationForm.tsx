@@ -1,3 +1,4 @@
+import Anchor from '../../@atom/Anchor/Anchor';
 import Button from '../../@atom/Button/Button';
 import SubTitle from '../../@atom/SubTitle/SubTitle';
 import {
@@ -20,7 +21,9 @@ const DonationForm = () => {
         <MoneyAddButton>+2,000원</MoneyAddButton>
         <MoneyAddButton>+3,000원</MoneyAddButton>
       </ButtonContainer>
-      <Button>후원하기</Button>
+      <Button>
+        <Anchor to="/donation/message">후원하기</Anchor>
+      </Button>
     </StyledDonationForm>
   );
 };

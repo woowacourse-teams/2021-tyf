@@ -1,8 +1,9 @@
+import Anchor from '../../@atom/Anchor/Anchor';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Textarea from '../../@atom/Textarea/Textarea';
 import {
   StyledMessageForm,
-  StyledSubTitle,
+  DonationMessageTitle,
   NickNameInput,
   TextareaControllerContainer,
   CheckboxLabel,
@@ -12,7 +13,11 @@ import {
 const DonationMessageForm = () => {
   return (
     <StyledMessageForm>
-      <StyledSubTitle>창작자에게 응원의 한마디를 남겨주세요!</StyledSubTitle>
+      <DonationMessageTitle>
+        창작자에게
+        <br /> 응원의 한마디를
+        <br /> 남겨주세요!
+      </DonationMessageTitle>
       <NickNameInput placeholder="닉네임 입력하기" />
       <Textarea placeholder="응원메세지 작성하기" />
       <TextareaControllerContainer>
@@ -21,7 +26,9 @@ const DonationMessageForm = () => {
         </CheckboxLabel>
         <span>( 0 / 30 ) 자</span>
       </TextareaControllerContainer>
-      <SubmitButton>메세지 남기기</SubmitButton>
+      <SubmitButton>
+        <Anchor to="/donation/success">메세지 남기기</Anchor>
+      </SubmitButton>
     </StyledMessageForm>
   );
 };

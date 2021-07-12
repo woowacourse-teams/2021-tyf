@@ -4,7 +4,9 @@ import Container from '../../@atom/Container/Container';
 import Input from '../../@atom/Input/Input';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
 
-export const StyledDonationForm = styled.form``;
+export const StyledDonationForm = styled.form`
+  width: 100%;
+`;
 
 export const InputLabel = styled.label`
   position: relative;
@@ -37,12 +39,12 @@ export const MoneyInput = styled(Input).attrs({ type: 'number' })`
 export const ButtonContainer = styled(Container)`
   flex-direction: row;
   padding: 0 0.75rem;
-  margin-bottom: 8.5rem;
+  margin-bottom: 6rem;
 `;
 
 export const MoneyAddButton = styled(OutlineButton).attrs({ type: 'button' })`
   width: 100%;
-  min-width: 7rem;
+  min-width: 6.5rem;
   height: 2.25rem;
   margin: 0 0.5rem;
   font-size: 0.875rem;
