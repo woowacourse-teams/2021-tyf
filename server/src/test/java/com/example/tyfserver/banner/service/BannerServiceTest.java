@@ -1,8 +1,10 @@
 package com.example.tyfserver.banner.service;
 
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
+import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -34,7 +36,7 @@ class BannerServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member("member1@woowa.com");
+        member = new Member("tyf@gmail.com", "nickname", "urlName", Oauth2Type.NAVER);
         memberRepository.save(member);
     }
 
@@ -63,12 +65,11 @@ class BannerServiceTest {
     void testGetBanners() {
         // given
         String email = "member2";
-        Member member2 = memberRepository.save(new Member(email));
         String imageUrl = "image.png";
-        bannerRepository.save(new Banner(member2, imageUrl));
+        bannerRepository.save(new Banner(member, imageUrl));
 
         // when
-        List<BannerResponse> banners = bannerService.getBanners(member2);
+        List<BannerResponse> banners = bannerService.getBanners(member);
 
         // then
         assertThat(banners).hasSize(1);

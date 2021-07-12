@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 public class SignUpRequest {
 
     private String email;
-    private String oAuthType;
-    private String nickName;
-    private String ownPageUrl;
+    private String oauthType;
+    private String nickname;
+    private String urlName;
 
-    public SignUpRequest(String email, String oAuthType, String nickName, String ownPageUrl) {
+    public SignUpRequest(String email, String oauthType, String nickname, String urlName) {
         this.email = email;
-        this.oAuthType = oAuthType;
-        this.nickName = nickName;
-        this.ownPageUrl = ownPageUrl;
+        this.oauthType = oauthType;
+        this.nickname = nickname;
+        this.urlName = urlName;
     }
 
     public Member toMember() {
-        return new Member(email, nickName, ownPageUrl, Oauth2Type.findOAuth2Type(oAuthType));
+        return new Member(email, nickname, urlName, Oauth2Type.findOauth2Type(oauthType));
     }
 }

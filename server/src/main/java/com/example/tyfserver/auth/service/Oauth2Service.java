@@ -1,6 +1,6 @@
 package com.example.tyfserver.auth.service;
 
-import com.example.tyfserver.auth.domain.OAuth2;
+import com.example.tyfserver.auth.domain.Oauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.ApiSender;
@@ -19,57 +19,57 @@ import org.springframework.util.MultiValueMap;
 
 @Service
 @RequiredArgsConstructor
-public class OAuth2Service {
+public class Oauth2Service {
 
     private final MemberRepository memberRepository;
     private final AuthenticationService authenticationService;
 
-    public TokenResponse login(final String oAuthType, final String code) {
-        final String email = getEmailFromOauth2(oAuthType, code);
+    public TokenResponse login(final String oauthType, final String code) {
+        final String email = getEmailFromOauth2(oauthType, code);
 
-        Member findMember = memberRepository.findByEmailAndOauth2Type(email, oAuthType)
+        Member findMember = memberRepository.findByEmailAndOauth2Type(email, oauthType)
                 .orElseThrow(() -> new RuntimeException("가입되어 있지 않은 유저"));// todo 예외클래스, 메시지
 
-        return new TokenResponse(authenticationService.createToken(findMember.getEmail()));
+        return new TokenResponse(authenticationService.createToken(findMember));
     }
 
-    public SignUpResponse readySignUp(final String oAuthType, final String code) {
-        final String email = getEmailFromOauth2(oAuthType, code);
+    public SignUpResponse readySignUp(final String oauthType, final String code) {
+        final String email = getEmailFromOauth2(oauthType, code);
 
         memberRepository.findByEmail(email)
-                .ifPresent(member -> validateRegisteredMember(oAuthType, email, member));
+                .ifPresent(member -> validateRegisteredMember(oauthType, member));
 
-        return new SignUpResponse(email, oAuthType);
+        return new SignUpResponse(email, oauthType);
     }
 
-    private String getEmailFromOauth2(String oAuthType, String code) {
-        final OAuth2 oAuth2 = Oauth2Type.findOAuth2(oAuthType);
-        final String accessToken = requestAccessToken(code, oAuth2);
-        return requestEmail(accessToken, oAuth2);
+    private String getEmailFromOauth2(String oauthType, String code) {
+        final Oauth2 oauth2 = Oauth2Type.findOauth2(oauthType);
+        final String accessToken = requestAccessToken(code, oauth2);
+        return requestEmail(accessToken, oauth2);
     }
 
-    private String requestEmail(String accessToken, OAuth2 oAuth2) {
+    private String requestEmail(String accessToken, Oauth2 oauth2) {
         String body = ApiSender.send(
-                oAuth2.getProfileApi(),
+                oauth2.getProfileApi(),
                 HttpMethod.GET,
                 generateProfileRequest(accessToken)
         );
 
-        return extractEmail(oAuth2, body);
+        return extractEmail(oauth2, body);
     }
 
-    private void validateRegisteredMember(String oAuthType, String email, Member member) {
-        if (member.isSameOAuthType(oAuthType)) {
-            throw new RuntimeException("token : " + authenticationService.createToken(email)); //todo: 에러 컨벤션
+    private void validateRegisteredMember(String oauthType, Member member) {
+        if (member.isSameOauthType(oauthType)) {
+            throw new RuntimeException("token : " + authenticationService.createToken(member)); //todo: 에러 컨벤션
         }
         throw new RuntimeException(member.getOauth2Type().name() + " 로 이미 가입된 회원입니다.");
     }
 
-    private String requestAccessToken(String code, OAuth2 oAuth2) {
+    private String requestAccessToken(String code, Oauth2 oauth2) {
         String body = ApiSender.send(
-                oAuth2.getAccessTokenApi(),
+                oauth2.getAccessTokenApi(),
                 HttpMethod.POST,
-                generateAccessTokenRequest(code, oAuth2)
+                generateAccessTokenRequest(code, oauth2)
         );
 
         return extractAccessToken(body);
@@ -78,19 +78,19 @@ public class OAuth2Service {
     public TokenResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
         memberRepository.save(member);
-        return new TokenResponse(authenticationService.createToken(member.getEmail()));
+        return new TokenResponse(authenticationService.createToken(member));
     }
 
-    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, OAuth2 oAuth2) {
+    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2 oauth2) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", oAuth2.getClientId());
-        params.add("redirect_uri", oAuth2.getRedirectUrl());
+        params.add("client_id", oauth2.getClientId());
+        params.add("redirect_uri", oauth2.getRedirectUrl());
         params.add("code", code);
-        params.add("client_secret", oAuth2.getClientSecret());
+        params.add("client_secret", oauth2.getClientSecret());
 
         return new HttpEntity<>(params, headers);
     }
@@ -102,9 +102,9 @@ public class OAuth2Service {
         return new HttpEntity<>(headers);
     }
 
-    private String extractEmail(OAuth2 oAuth2, String response) {
+    private String extractEmail(Oauth2 oauth2, String response) {
         final JSONObject jsonObject = new JSONObject(response);
-        return oAuth2.extractEmail(jsonObject);
+        return oauth2.extractEmail(jsonObject);
     }
 
     private String extractAccessToken(String body) {

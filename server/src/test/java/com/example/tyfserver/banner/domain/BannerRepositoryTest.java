@@ -1,5 +1,6 @@
 package com.example.tyfserver.banner.domain;
 
+import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +25,7 @@ class BannerRepositoryTest {
     @Test
     void testFindAllByMemberId() {
         // given
-        Member member = new Member("email@woowa.com");
+        Member member = MemberTest.testMember();
         memberRepository.save(member);
 
         Banner banner = bannerRepository.save(new Banner(member, "image.png"));

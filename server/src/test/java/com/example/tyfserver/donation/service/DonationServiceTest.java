@@ -1,18 +1,22 @@
 package com.example.tyfserver.donation.service;
 
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,8 +37,13 @@ class DonationServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member("tyf@gmail.com");
+        member = new Member("tyf@gmail.com", "nickname", "urlName", Oauth2Type.NAVER);
         memberRepository.save(member);
+    }
+
+    @AfterEach
+    void tearDown() {
+        memberRepository.deleteAll();
     }
 
     @DisplayName("후원을 등록한다.")

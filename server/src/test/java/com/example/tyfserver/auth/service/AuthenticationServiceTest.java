@@ -23,7 +23,8 @@ class AuthenticationServiceTest {
     @DisplayName("토큰을 이용해 LoginMember 생성")
     public void createLoginMemberByToken() {
         String email = "abc@chocolate.com";
-        String token = jwtTokenProvider.createToken(email);
+        long id = 1L;
+        String token = jwtTokenProvider.createToken(id, email);
 
         LoginMember actual = authenticationService.createLoginMemberByToken(token);
         assertThat(actual.getEmail()).isEqualTo(email);

@@ -1,5 +1,6 @@
 package com.example.tyfserver.auth.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,11 +18,12 @@ public class JwtTokenProvider {
     @Value("${jwt.expire-length}")
     private long validityInMilliseconds;
 
-    public String createToken(String email) {
+    public String createToken(long id, String email) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
+                .claim("id", id)
                 .claim("email", email)
                 .setIssuedAt(now)
                 .setExpiration(validity)
@@ -38,10 +40,19 @@ public class JwtTokenProvider {
         }
     }
 
+    public Long findIdByToken(String token) {
+        return claims(token)
+                .get("id", Long.class);
+    }
+
     public String findEmailByToken(String token) {
+        return claims(token)
+                .get("email", String.class);
+    }
+
+    private Claims claims(String token) {
         return Jwts.parser()
                 .setSigningKey(secreteKey).parseClaimsJws(token)
-                .getBody()
-                .get("email", String.class);
+                .getBody();
     }
 }

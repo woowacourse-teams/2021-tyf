@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ class DonationRepositoryTest {
     @Test
     void createDonation() throws Exception {
         //given
-        final Member member = new Member("tyf@gmail.com");
+        final Member member = MemberTest.testMember();
         memberRepository.save(member);
 
         final Donation donation = new Donation(1000L);

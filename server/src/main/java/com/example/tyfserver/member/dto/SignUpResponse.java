@@ -6,10 +6,10 @@ import lombok.Getter;
 public class SignUpResponse {
 
     private String email;
-    private String oAuthType;
+    private String oauthType;
 
-    public SignUpResponse(String email, String oAuthType) {
+    public SignUpResponse(String email, String oauthType) {
         this.email = email;
-        this.oAuthType = oAuthType;
+        this.oauthType = oauthType;
     }
 }
