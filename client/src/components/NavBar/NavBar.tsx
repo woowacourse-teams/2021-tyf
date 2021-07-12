@@ -1,4 +1,3 @@
-import Anchor from '../@atom/Anchor/Anchor';
 import { StyledNavBar, StyledLogo, HamburgerButton, LoginButton } from './NavBar.styles';
 
 const NavBar = () => {

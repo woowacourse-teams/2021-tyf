@@ -1,4 +1,5 @@
 import { FC, HTMLAttributes } from 'react';
+import { Link } from 'react-router-dom';
 
 import Button from '../../../components/@atom/Button/Button';
 import Container from '../../../components/@atom/Container/Container';
@@ -42,7 +43,9 @@ const RegisterTermsPage: FC<HTMLAttributes<HTMLElement>> = () => {
         </TermLabel>
       </TermsContainer>
       <Container>
-        <Button disabled>계속하기</Button>
+        <Button disabled>
+          <Link to="/register/auth">계속하기</Link>
+        </Button>
       </Container>
     </StyledTemplate>
   );
