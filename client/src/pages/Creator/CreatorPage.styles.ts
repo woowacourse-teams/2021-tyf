@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 import Container from '../../components/@atom/Container/Container';
+import Template from '../../components/@atom/Template/Template';
 
 import PALETTE from '../../constants/palette';
 
-export const CreatorPageContainer = styled(Container)`
-  height: 100vh;
+export const StyledTemplate = styled(Template)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 export const ProfileContainer = styled(Container)`
-  margin-bottom: 8rem;
+  margin-bottom: 4rem;
 `;
 
 export const DescriptionContainer = styled(Container)`
