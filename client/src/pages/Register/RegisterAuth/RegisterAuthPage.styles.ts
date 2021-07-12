@@ -1,12 +1,16 @@
 import styled from 'styled-components';
 import Container from '../../../components/@atom/Container/Container';
+import Template from '../../../components/@atom/Template/Template';
 import Title from '../../../components/@atom/Title/Title';
 import BarButtonWithIcon from '../../../components/@molecule/BarButtonWithIcon/BarButtonWithIcon';
 import OutlineBarButtonWithIcon from '../../../components/@molecule/OutlineBarButtonWithIcon/OutlineBarButtonWithIcon';
 import PALETTE from '../../../constants/palette';
 
-export const RegisterContainer = styled(Container)`
-  min-height: 100vh;
+export const StyledTemplate = styled(Template)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 export const RegisterButtonContainer = styled(Container)`

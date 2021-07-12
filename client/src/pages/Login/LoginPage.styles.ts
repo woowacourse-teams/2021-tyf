@@ -6,9 +6,13 @@ import Container from '../../components/@atom/Container/Container';
 import Title from '../../components/@atom/Title/Title';
 import BarButtonWithIcon from '../../components/@molecule/BarButtonWithIcon/BarButtonWithIcon';
 import OutlineBarButtonWithIcon from '../../components/@molecule/OutlineBarButtonWithIcon/OutlineBarButtonWithIcon';
+import Template from '../../components/@atom/Template/Template';
 
-export const LoginContainer = styled(Container)`
-  min-height: 100vh;
+export const StyledTemplate = styled(Template)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 export const LoginButtonContainer = styled(Container)`

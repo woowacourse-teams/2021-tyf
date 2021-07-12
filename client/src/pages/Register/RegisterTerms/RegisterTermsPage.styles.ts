@@ -15,16 +15,11 @@ export const StyledTemplate = styled(Template)`
 export const TermsContainer = styled(Container)`
   margin-bottom: 4rem;
   align-items: flex-start;
-
-  /* padding-bottom: 8rem; */
 `;
 
 export const RegisterTermsTitle = styled(Title)`
   margin-bottom: 4rem;
-  width: 100%;
   text-align: left;
-  line-height: 2.5rem;
-  padding: 0 1rem;
 `;
 
 export const TermLabel = styled.label`
