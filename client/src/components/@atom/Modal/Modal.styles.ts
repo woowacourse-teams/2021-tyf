@@ -1,4 +1,3 @@
-import { theme } from './../../../theme';
 import { Z_INDEX, MIN_WIDTH } from './../../../constants/style';
 import styled from 'styled-components';
 
@@ -18,5 +17,4 @@ export const ModalOuter = styled.div`
 export const ModalInner = styled.div`
   background-color: ${({ theme }) => theme.color.sub};
   min-width: ${MIN_WIDTH};
-  border-radius: 1rem;
 `;
