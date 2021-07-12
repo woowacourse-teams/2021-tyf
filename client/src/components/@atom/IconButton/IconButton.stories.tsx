@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+
 import IconButton, { IconButtonProps } from './IconButton';
 
 export default {

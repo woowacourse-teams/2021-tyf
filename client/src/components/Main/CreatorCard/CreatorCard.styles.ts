@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import PALETTE from '../../../constants/palette';
 
 export const StyledCreatorCard = styled.article`

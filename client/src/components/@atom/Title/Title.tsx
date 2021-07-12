@@ -1,4 +1,5 @@
 import { FC, HTMLAttributes } from 'react';
+
 import { StyledTitle } from './Title.styles';
 
 export type TitleProps = HTMLAttributes<HTMLHeadingElement>;

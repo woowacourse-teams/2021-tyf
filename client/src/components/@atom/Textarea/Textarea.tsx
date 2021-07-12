@@ -1,5 +1,4 @@
-import { TextareaHTMLAttributes } from 'react';
-import { VFC } from 'react';
+import { TextareaHTMLAttributes, VFC } from 'react';
 
 import { StyledTextarea } from './Textarea.styles';
 

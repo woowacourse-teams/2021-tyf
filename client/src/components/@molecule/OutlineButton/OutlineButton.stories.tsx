@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
-import { ButtonProps } from '../../@atom/Button/Button';
 
+import { ButtonProps } from '../../@atom/Button/Button';
 import OutlineButton from './OutlineButton';
 
 export default {

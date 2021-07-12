@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ImgHTMLAttributes, VFC } from 'react';
+
 import { ButtonContent, ButtonIcon, StyledBarButtonWithIcon } from './BarButtonWithIcon.styles';
 
 export type BarButtonWithIconProps = ButtonHTMLAttributes<HTMLButtonElement> &

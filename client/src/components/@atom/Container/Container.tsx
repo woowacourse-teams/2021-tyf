@@ -1,4 +1,5 @@
 import { HTMLAttributes, FC } from 'react';
+
 import { StyledContainer } from './Container.styles';
 
 export type ContainerProps = HTMLAttributes<HTMLElement>;
