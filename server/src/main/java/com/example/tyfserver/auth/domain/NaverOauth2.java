@@ -1,6 +1,5 @@
 package com.example.tyfserver.auth.domain;
 
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -10,8 +9,8 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConstructorBinding
 @Getter
 @RequiredArgsConstructor
-@ConfigurationProperties("google")
-public class GoogleOAuth2 implements OAuth2 {
+@ConfigurationProperties("naver")
+public class NaverOauth2 implements Oauth2 {
 
     private final String type;
     private final String clientId;
@@ -22,7 +21,6 @@ public class GoogleOAuth2 implements OAuth2 {
 
     @Override
     public String extractEmail(final JSONObject jsonObject) {
-        return jsonObject.getString("email");
+        return jsonObject.getJSONObject("response").getString("email");
     }
-
 }

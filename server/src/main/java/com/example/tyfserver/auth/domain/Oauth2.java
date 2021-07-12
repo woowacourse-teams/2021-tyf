@@ -2,7 +2,7 @@ package com.example.tyfserver.auth.domain;
 
 import org.json.JSONObject;
 
-public interface OAuth2 {
+public interface Oauth2 {
 
     public String extractEmail(final JSONObject jsonObject);
 

@@ -1,5 +1,6 @@
 package com.example.tyfserver.auth.domain;
 
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -9,8 +10,8 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConstructorBinding
 @Getter
 @RequiredArgsConstructor
-@ConfigurationProperties("kakao")
-public class KakaoOAuth2 implements OAuth2 {
+@ConfigurationProperties("google")
+public class GoogleOauth2 implements Oauth2 {
 
     private final String type;
     private final String clientId;
@@ -21,6 +22,7 @@ public class KakaoOAuth2 implements OAuth2 {
 
     @Override
     public String extractEmail(final JSONObject jsonObject) {
-        return jsonObject.getJSONObject("kakao_account").getString("email");
+        return jsonObject.getString("email");
     }
+
 }

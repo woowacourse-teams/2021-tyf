@@ -1,6 +1,6 @@
 package com.example.tyfserver.auth.service;
 
-import com.example.tyfserver.auth.domain.OAuth2;
+import com.example.tyfserver.auth.domain.Oauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.ApiSender;
@@ -43,12 +43,12 @@ public class OAuth2Service {
     }
 
     private String getEmailFromOauth2(String oAuthType, String code) {
-        final OAuth2 oAuth2 = Oauth2Type.findOAuth2(oAuthType);
+        final Oauth2 oAuth2 = Oauth2Type.findOAuth2(oAuthType);
         final String accessToken = requestAccessToken(code, oAuth2);
         return requestEmail(accessToken, oAuth2);
     }
 
-    private String requestEmail(String accessToken, OAuth2 oAuth2) {
+    private String requestEmail(String accessToken, Oauth2 oAuth2) {
         String body = ApiSender.send(
                 oAuth2.getProfileApi(),
                 HttpMethod.GET,
@@ -65,7 +65,7 @@ public class OAuth2Service {
         throw new RuntimeException(member.getOauth2Type().name() + " 로 이미 가입된 회원입니다.");
     }
 
-    private String requestAccessToken(String code, OAuth2 oAuth2) {
+    private String requestAccessToken(String code, Oauth2 oAuth2) {
         String body = ApiSender.send(
                 oAuth2.getAccessTokenApi(),
                 HttpMethod.POST,
@@ -81,7 +81,7 @@ public class OAuth2Service {
         return new TokenResponse(authenticationService.createToken(member.getEmail()));
     }
 
-    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, OAuth2 oAuth2) {
+    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2 oAuth2) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -102,7 +102,7 @@ public class OAuth2Service {
         return new HttpEntity<>(headers);
     }
 
-    private String extractEmail(OAuth2 oAuth2, String response) {
+    private String extractEmail(Oauth2 oAuth2, String response) {
         final JSONObject jsonObject = new JSONObject(response);
         return oAuth2.extractEmail(jsonObject);
     }

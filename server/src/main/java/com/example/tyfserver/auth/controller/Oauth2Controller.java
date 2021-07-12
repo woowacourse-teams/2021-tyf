@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/oauth2")
 @RequiredArgsConstructor
-public class OAuth2Controller {
+public class Oauth2Controller {
 
     private final OAuth2Service oAuth2Service;
 

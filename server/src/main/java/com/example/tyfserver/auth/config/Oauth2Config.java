@@ -1,21 +1,23 @@
 package com.example.tyfserver.auth.config;
 
-import com.example.tyfserver.auth.domain.GoogleOAuth2;
-import com.example.tyfserver.auth.domain.KakaoOAuth2;
-import com.example.tyfserver.auth.domain.NaverOAuth2;
+import com.example.tyfserver.auth.domain.GoogleOauth2;
+import com.example.tyfserver.auth.domain.KakaoOauth2;
+import com.example.tyfserver.auth.domain.NaverOauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
 @Configuration
 @RequiredArgsConstructor
-public class OAuth2TypeDependencyInjector {
+@EnableConfigurationProperties(value = {GoogleOauth2.class, KakaoOauth2.class, NaverOauth2.class})
+public class Oauth2Config {
 
-    private final GoogleOAuth2 googleOAuth2;
-    private final KakaoOAuth2 kakaoOAuth2;
-    private final NaverOAuth2 naverOAuth2;
+    private final GoogleOauth2 googleOAuth2;
+    private final KakaoOauth2 kakaoOAuth2;
+    private final NaverOauth2 naverOAuth2;
 
     @PostConstruct
     public void inject() {

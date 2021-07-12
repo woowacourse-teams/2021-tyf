@@ -9,8 +9,8 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConstructorBinding
 @Getter
 @RequiredArgsConstructor
-@ConfigurationProperties("naver")
-public class NaverOAuth2 implements OAuth2 {
+@ConfigurationProperties("kakao")
+public class KakaoOauth2 implements Oauth2 {
 
     private final String type;
     private final String clientId;
@@ -21,6 +21,6 @@ public class NaverOAuth2 implements OAuth2 {
 
     @Override
     public String extractEmail(final JSONObject jsonObject) {
-        return jsonObject.getJSONObject("response").getString("email");
+        return jsonObject.getJSONObject("kakao_account").getString("email");
     }
 }
