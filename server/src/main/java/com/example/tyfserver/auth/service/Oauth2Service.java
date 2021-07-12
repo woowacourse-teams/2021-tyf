@@ -30,14 +30,14 @@ public class Oauth2Service {
         Member findMember = memberRepository.findByEmailAndOauth2Type(email, oauthType)
                 .orElseThrow(() -> new RuntimeException("가입되어 있지 않은 유저"));// todo 예외클래스, 메시지
 
-        return new TokenResponse(authenticationService.createToken(findMember.getEmail()));
+        return new TokenResponse(authenticationService.createToken(findMember));
     }
 
     public SignUpResponse readySignUp(final String oauthType, final String code) {
         final String email = getEmailFromOauth2(oauthType, code);
 
         memberRepository.findByEmail(email)
-                .ifPresent(member -> validateRegisteredMember(oauthType, email, member));
+                .ifPresent(member -> validateRegisteredMember(oauthType, member));
 
         return new SignUpResponse(email, oauthType);
     }
@@ -58,9 +58,9 @@ public class Oauth2Service {
         return extractEmail(oauth2, body);
     }
 
-    private void validateRegisteredMember(String oauthType, String email, Member member) {
+    private void validateRegisteredMember(String oauthType, Member member) {
         if (member.isSameOauthType(oauthType)) {
-            throw new RuntimeException("token : " + authenticationService.createToken(email)); //todo: 에러 컨벤션
+            throw new RuntimeException("token : " + authenticationService.createToken(member)); //todo: 에러 컨벤션
         }
         throw new RuntimeException(member.getOauth2Type().name() + " 로 이미 가입된 회원입니다.");
     }
@@ -78,7 +78,7 @@ public class Oauth2Service {
     public TokenResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
         memberRepository.save(member);
-        return new TokenResponse(authenticationService.createToken(member.getEmail()));
+        return new TokenResponse(authenticationService.createToken(member));
     }
 
     private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2 oauth2) {

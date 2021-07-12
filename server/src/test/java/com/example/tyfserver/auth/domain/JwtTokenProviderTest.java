@@ -47,11 +47,14 @@ class JwtTokenProviderTest {
     @Test
     void testFindEmailByToken() {
         //given
+        long id = 1L;
         String expectedEmail = "abc@chocolate.com";
-        String token = jwtTokenProvider.createToken(expectedEmail);
+        String token = jwtTokenProvider.createToken(id, expectedEmail);
         //when
         String actualEmail = jwtTokenProvider.findEmailByToken(token);
+        Long actualId = jwtTokenProvider.findIdByToken(token);
         //then
         assertThat(actualEmail).isEqualTo(expectedEmail);
+        assertThat(actualId).isEqualTo(id);
     }
 }

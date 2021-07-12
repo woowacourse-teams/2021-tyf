@@ -13,16 +13,16 @@ public class SignUpRequest {
     private String email;
     private String oauthType;
     private String nickname;
-    private String landingPageUrl;
+    private String urlName;
 
-    public SignUpRequest(String email, String oauthType, String nickname, String landingPageUrl) {
+    public SignUpRequest(String email, String oauthType, String nickname, String urlName) {
         this.email = email;
         this.oauthType = oauthType;
         this.nickname = nickname;
-        this.landingPageUrl = landingPageUrl;
+        this.urlName = urlName;
     }
 
     public Member toMember() {
-        return new Member(email, nickname, landingPageUrl, Oauth2Type.findOauth2Type(oauthType));
+        return new Member(email, nickname, urlName, Oauth2Type.findOauth2Type(oauthType));
     }
 }
