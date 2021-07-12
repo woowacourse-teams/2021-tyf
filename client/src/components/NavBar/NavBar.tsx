@@ -1,12 +1,12 @@
 import Anchor from '../@atom/Anchor/Anchor';
-import { StyledNavBar, StyledLogo, HamburgerButton } from './NavBar.styles';
+import { StyledNavBar, StyledLogo, HamburgerButton, LoginButton } from './NavBar.styles';
 
 const NavBar = () => {
   return (
     <StyledNavBar>
       <HamburgerButton />
       <StyledLogo />
-      <Anchor>LOGIN</Anchor>
+      <LoginButton>로그인</LoginButton>
     </StyledNavBar>
   );
 };
