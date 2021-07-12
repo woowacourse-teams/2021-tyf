@@ -10,28 +10,32 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin:0;
   }
-
+  
   a {
     text-decoration: none;
-
+    
     &:active, &:hover {
       color: inherit;
-
+      
     }
   }
-
-
-
+  
+  
+  
   :root {
     font-size: 16px;
     color: ${({ theme }) => theme.color.main};
     font-family: 'Noto Sans KR', sans-serif;
-  }
 
+    ::-webkit-scrollbar {
+      display: none;
+    };
+  }
+  
   button {
     font-family: 'Noto Sans KR', sans-serif;
   }
-
-`;
+  
+  `;
 
 export default GlobalStyle;

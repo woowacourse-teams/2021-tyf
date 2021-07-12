@@ -6,9 +6,10 @@ export const StyledIconButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 export const Icon = styled.img`
   width: 100%;
-  height: 100%;
 `;
