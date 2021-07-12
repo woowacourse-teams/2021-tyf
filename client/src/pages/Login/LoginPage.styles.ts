@@ -30,12 +30,14 @@ export const LoginTitle = styled(Title)`
 export const KeepLoginLabel = styled.label`
   margin: 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: 0.625rem;
+  font-size: 0.875rem;
 `;
 
 export const KeepLoginCheckbox = styled(Checkbox)`
-  left: -1.5rem;
-  top: -0.75rem;
-  cursor: pointer;
+  margin-right: 0.5rem;
 `;
 
 export const GoogleButton = styled(OutlineBarButtonWithIcon)`
