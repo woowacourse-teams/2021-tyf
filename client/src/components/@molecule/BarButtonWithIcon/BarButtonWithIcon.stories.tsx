@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+
 import BarButtonWithIcon, { BarButtonWithIconProps } from './BarButtonWithIcon';
 import GoogleLogo from '../../../assets/icons/google.svg';
 

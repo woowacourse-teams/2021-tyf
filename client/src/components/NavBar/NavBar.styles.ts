@@ -1,6 +1,6 @@
-import { MIN_WIDTH } from './../../constants/style';
 import styled from 'styled-components';
 
+import { MIN_WIDTH } from './../../constants/style';
 import Container from '../@atom/Container/Container';
 import IconButton from '../@atom/IconButton/IconButton';
 import hamburgerImg from '../../assets/icons/hamburger-btn.svg';

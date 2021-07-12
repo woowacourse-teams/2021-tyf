@@ -1,4 +1,5 @@
 import { FC, HTMLAttributes } from 'react';
+
 import { StyledSubTitle } from './SubTitle.styles';
 
 export type SubTitleProps = HTMLAttributes<HTMLHeadingElement>;

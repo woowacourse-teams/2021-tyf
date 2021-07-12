@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+
 import CreatorCard from './CreatorCard';
 
 export default {

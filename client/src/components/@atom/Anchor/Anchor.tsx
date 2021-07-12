@@ -1,4 +1,5 @@
 import { AnchorHTMLAttributes, FC } from 'react';
+
 import { StyledAnchor } from './Anchor.styles';
 
 export type AnchorProps = AnchorHTMLAttributes<HTMLAnchorElement>;

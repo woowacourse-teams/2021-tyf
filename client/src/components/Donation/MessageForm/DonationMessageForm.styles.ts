@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
