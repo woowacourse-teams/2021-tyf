@@ -5,6 +5,7 @@ export const StyledCheckbox = styled.input`
   appearance: none;
   width: 1rem;
   height: 1rem;
+  cursor: inherit;
 
   &:after {
     content: '';

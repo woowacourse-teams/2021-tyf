@@ -5,8 +5,7 @@ import Template from '../../components/@atom/Template/Template';
 import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton';
 
 export const MainTemplate = styled(Template)`
-  padding-top: 5rem;
-  padding-bottom: 6.25rem;
+  padding: 5rem 0 6.25rem;
 
   section:nth-of-type(1) {
     margin-bottom: 9rem;
@@ -21,6 +20,7 @@ export const HeroContent = styled.img.attrs({
   src: MainImage,
 })`
   width: 100%;
+  padding-left: 1rem;
 `;
 
 export const RouteButton = styled(OutlineButton)`
