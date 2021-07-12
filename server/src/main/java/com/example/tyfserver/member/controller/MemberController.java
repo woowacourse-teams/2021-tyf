@@ -1,6 +1,6 @@
 package com.example.tyfserver.member.controller;
 
-import com.example.tyfserver.member.dto.NickNameValidationRequest;
+import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.UrlValidationRequest;
 import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickName(@Valid @RequestBody NickNameValidationRequest request) {
-        memberService.validateNickName(request);
+    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request) {
+        memberService.validateNickname(request);
         return ResponseEntity.ok().build();
     }
 

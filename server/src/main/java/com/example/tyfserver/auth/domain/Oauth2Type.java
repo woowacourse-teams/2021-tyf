@@ -6,20 +6,20 @@ public enum Oauth2Type {
 
     GOOGLE, NAVER, KAKAO;
 
-    private Oauth2 oAuth2;
+    private Oauth2 oauth2;
 
-    public static Oauth2Type findOAuth2Type(String type) {
+    public static Oauth2Type findOauth2Type(String type) {
         return Arrays.stream(Oauth2Type.values())
                 .filter(value -> value.name().equals(type))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("type not found"));//todo: error 컨벤션
     }
 
-    public static Oauth2 findOAuth2(String type) {
-        return findOAuth2Type(type).oAuth2;
+    public static Oauth2 findOauth2(String type) {
+        return findOauth2Type(type).oauth2;
     }
 
-    public void setoAuth2TypeInterface(Oauth2 oAuth2) {
-        this.oAuth2 = oAuth2;
+    public void setOauth2TypeInterface(Oauth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 }

@@ -25,7 +25,7 @@ public class Member extends BaseTimeEntity {
     private String email;
 
     @Column(unique = true)
-    private String nickName;
+    private String nickname;
 
     @Embedded
     private Point point;
@@ -42,9 +42,9 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email, String nickName, String landingPageUrl, Oauth2Type oauth2Type) {
+    public Member(String email, String nickname, String landingPageUrl, Oauth2Type oauth2Type) {
         this.email = email;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.landingPageUrl = landingPageUrl;
         this.oauth2Type = oauth2Type;
         this.point = new Point(0L);
@@ -59,7 +59,7 @@ public class Member extends BaseTimeEntity {
         this.point.add(donationAmount);
     }
 
-    public boolean isSameOAuthType(String type) {
+    public boolean isSameOauthType(String type) {
         return this.oauth2Type.name().equals(type);
     }
 }

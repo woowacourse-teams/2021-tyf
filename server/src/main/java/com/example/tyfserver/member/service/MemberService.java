@@ -1,6 +1,6 @@
 package com.example.tyfserver.member.service;
 
-import com.example.tyfserver.member.dto.NickNameValidationRequest;
+import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.UrlValidationRequest;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ public class MemberService {
         }
     }
 
-    public void validateNickName(NickNameValidationRequest request) {
-        if (memberRepository.existsByNickName(request.getNickName())) {
+    public void validateNickname(NicknameValidationRequest request) {
+        if (memberRepository.existsByNickname(request.getNickname())) {
             throw new RuntimeException("이미 존재하는 닉네임 입니다.");
         }
     }
