@@ -12,4 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAndOauth2Type(String email, String oauth2Type);
 
     boolean existsByEmail(String email);
+
+    boolean existsByLandingPageUrl(String url);
 }
