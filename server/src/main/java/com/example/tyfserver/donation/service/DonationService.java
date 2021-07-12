@@ -33,6 +33,7 @@ public class DonationService {
         Donation donation = donationRepository.findById(donationId)
                 .orElseThrow(() -> new RuntimeException("error_donation_message_send"));
 
-        donation.addMessage(donationMessageRequest.getName(), donationMessageRequest.getMessage());
+        donation.addMessage(
+                donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isPublic());
     }
 }
