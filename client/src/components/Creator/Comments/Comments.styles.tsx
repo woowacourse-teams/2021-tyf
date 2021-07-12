@@ -17,7 +17,7 @@ export const CommentsList = styled.ul`
 `;
 
 export const CommentsListItem = styled.li`
-  padding: 1rem 0;
+  padding: 1rem 0.5rem;
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
 `;
 
