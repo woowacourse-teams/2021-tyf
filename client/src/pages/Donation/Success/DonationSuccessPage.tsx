@@ -22,7 +22,7 @@ const DonationSuccessPage: VFC = () => {
       </SuccessMessageContainer>
       <SuccessButtonContainer>
         <CreatorRouteButton>🏠 창작자 페이지로 놀러가기</CreatorRouteButton>
-        <CloseButton>창 닫기</CloseButton>
+        <CloseButton to="/">창 닫기</CloseButton>
       </SuccessButtonContainer>
     </StyledTemplate>
   );
