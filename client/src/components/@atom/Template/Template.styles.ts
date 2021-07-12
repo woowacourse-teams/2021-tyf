@@ -7,7 +7,8 @@ export const StyledTemplate = styled.main`
 `;
 
 export const InnerTemplate = styled.section`
-  padding: 0 1rem;
+  padding: 3rem 1rem;
+
   min-width: ${MIN_WIDTH};
   width: 100%;
   max-width: ${MAX_WIDTH};

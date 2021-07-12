@@ -34,8 +34,8 @@ const App = () => {
         <Route path="/donation/message" component={DonationMessagePage} />
         <Route path="/donation/success" component={DonationSuccessPage} />
 
-        <Route path="/creator/:creatorId" component={CreatorPage} />
-        <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
+        <Route path="/creator" component={CreatorPage} />
+        <Route path="/creator/statistic" component={StatisticsPage} />
 
         <Redirect from="*" to="/" />
       </Switch>

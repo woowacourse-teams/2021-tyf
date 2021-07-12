@@ -1,14 +1,23 @@
 import styled from 'styled-components';
 import Anchor from '../../../components/@atom/Anchor/Anchor';
 import Button from '../../../components/@atom/Button/Button';
+import Container from '../../../components/@atom/Container/Container';
 
 import Template from '../../../components/@atom/Template/Template';
 
 export const StyledTemplate = styled(Template)`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+`;
+
+export const SuccessMessageContainer = styled(Container)`
+  flex-grow: 4;
+`;
+
+export const SuccessButtonContainer = styled(Container)`
+  flex-grow: 1;
 `;
 
 export const MainText = styled.p`

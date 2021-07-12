@@ -1,17 +1,16 @@
 import { FC, HTMLAttributes } from 'react';
 
-import Title from '../../@atom/SubTitle/SubTitle';
 import Anchor from '../../@atom/Anchor/Anchor';
 import DefaultUserProfile from '../../../assets/images/defualtUserProfile.png';
-import { ProfileImg, StyledProfileContainer } from './Profile.styles';
+import { NickName, ProfileImg, StyledProfileContainer } from './Profile.styles';
 
 const Profile: FC<HTMLAttributes<HTMLElement>> = () => {
   return (
     <StyledProfileContainer>
-      <Anchor href="">
+      <Anchor to="">
         <ProfileImg style={{ backgroundImage: `url(${DefaultUserProfile})` }}></ProfileImg>
       </Anchor>
-      <Title>파노</Title>
+      <NickName>파노</NickName>
     </StyledProfileContainer>
   );
 };
