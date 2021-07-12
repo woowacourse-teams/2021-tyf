@@ -39,6 +39,6 @@ public class MemberController {
 
     @GetMapping("/point")
     public ResponseEntity<PointResponse> memberPoint(LoginMember loginMember) {
-        return ResponseEntity.ok(memberService.findMemberPoint(loginMember.getEmail()));
+        return ResponseEntity.ok(memberService.findMemberPoint(loginMember.getId()));
     }
 }

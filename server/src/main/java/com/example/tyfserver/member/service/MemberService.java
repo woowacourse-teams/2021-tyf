@@ -33,8 +33,8 @@ public class MemberService {
         return new MemberResponse(findMember);
     }
 
-    public PointResponse findMemberPoint(String email) {
-        Member findMember = memberRepository.findByEmail(email)
+    public PointResponse findMemberPoint(Long id) {
+        Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
         return new PointResponse(findMember.getPoint().getPoint());
     }
