@@ -1,4 +1,5 @@
 import { ThemeProvider } from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from '../src/Global.styles';
 import { theme } from '../src/theme';
 
@@ -17,9 +18,11 @@ export const decorators = [
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <div style={{ height: '100vh' }}>
-          <Story />
-        </div>
+        <BrowserRouter>
+          <div style={{ height: '100vh' }}>
+            <Story />
+          </div>
+        </BrowserRouter>
       </ThemeProvider>
     </>
   ),
