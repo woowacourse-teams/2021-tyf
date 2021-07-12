@@ -17,8 +17,8 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticationInterceptor);
-        //.addPathPatterns(); //todo: 정하기
+        registry.addInterceptor(authenticationInterceptor)
+                .addPathPatterns("/banners", "/members/point");
     }
 
     @Override
