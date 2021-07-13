@@ -34,6 +34,6 @@ public class DonationService {
                 .orElseThrow(() -> new RuntimeException("error_donation_message_send"));
 
         donation.addMessage(
-                donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isPublic());
+                donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isSecret());
     }
 }

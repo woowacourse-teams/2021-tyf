@@ -10,15 +10,15 @@ public class DonationMessageRequest {
 
     private String name;
     private String message;
-    private boolean isPublic;
+    private boolean secret;
 
     public DonationMessageRequest(String name, String message) {
         this(name, message, true);
     }
 
-    public DonationMessageRequest(String name, String message, boolean isPublic) {
+    public DonationMessageRequest(String name, String message, boolean secret) {
         this.name = name;
         this.message = message;
-        this.isPublic = isPublic;
+        this.secret = secret;
     }
 }

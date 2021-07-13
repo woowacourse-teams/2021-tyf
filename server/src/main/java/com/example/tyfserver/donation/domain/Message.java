@@ -15,11 +15,11 @@ public class Message {
 
     private String message;
 
-    private boolean isPublic;
+    private boolean secret;
 
-    public Message(String name, String message, boolean isPublic) {
+    public Message(String name, String message, boolean secret) {
         this.name = name;
         this.message = message;
-        this.isPublic = isPublic;
+        this.secret = secret;
     }
 }

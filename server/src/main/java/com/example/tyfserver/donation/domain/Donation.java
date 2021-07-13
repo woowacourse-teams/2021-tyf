@@ -27,7 +27,7 @@ public class Donation extends BaseTimeEntity {
     private Member member;
 
     public Donation(Long amount) {
-        this(amount, new Message("익명", "당신을 응원합니다.", true));
+        this(amount, new Message("익명", "당신을 응원합니다.", false));
     }
 
     public Donation(Long amount, Message message) {
@@ -39,8 +39,8 @@ public class Donation extends BaseTimeEntity {
         this.member = member;
     }
 
-    public void addMessage(String name, String message, boolean isPublic) {
-        this.message = new Message(name, message, isPublic);
+    public void addMessage(String name, String message, boolean secret) {
+        this.message = new Message(name, message, secret);
     }
 
     public String getName() {
@@ -51,7 +51,7 @@ public class Donation extends BaseTimeEntity {
         return message.getMessage();
     }
 
-    public boolean isPublic() {
-        return message.isPublic();
+    public boolean isSecret() {
+        return message.isSecret();
     }
 }
