@@ -34,13 +34,11 @@ public class DonationController {
 
     @GetMapping("/me")
     public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember, Pageable pageable) {
-        List<DonationResponse> donationResponses = donationService.findMyDonations(loginMember.getId(), pageable);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(donationService.findMyDonations(loginMember.getId(), pageable));
     }
 
     @GetMapping("/public/{pageName}")
     public ResponseEntity<List<DonationResponse>> publicDonations(@PathVariable String pageName) {
-        List<DonationResponse> donationResponses = donationService.findPublicDonations(pageName);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(donationService.findPublicDonations(pageName));
     }
 }
