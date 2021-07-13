@@ -13,7 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByEmail(String email);
 
-    boolean existsByPageName(String url);
+    boolean existsByPageName(String pageName);
 
     boolean existsByNickname(String nickname);
 
