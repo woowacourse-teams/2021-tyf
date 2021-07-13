@@ -13,14 +13,14 @@ const Menu = () => {
             <URLCopyButton>후원URL 복사</URLCopyButton>
           </>
         ) : (
-          <Anchor>로그인을 해주세요 {'>'}</Anchor>
+          <Anchor to="">로그인을 해주세요 {'>'}</Anchor>
         )}
       </ProfileContainer>
       {isLogin && (
         <>
-          <Anchor>마이페이지</Anchor>
-          <Anchor>후원 통계</Anchor>
-          <Anchor>로그아웃</Anchor>
+          <Anchor to="">마이페이지</Anchor>
+          <Anchor to="">후원 통계</Anchor>
+          <Anchor to="">로그아웃</Anchor>
         </>
       )}
     </StyledModal>

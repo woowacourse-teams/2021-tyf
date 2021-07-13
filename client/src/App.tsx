@@ -1,4 +1,5 @@
 import { Route, Switch, Redirect } from 'react-router-dom';
+
 import Footer from './components/Footer/Footer';
 import NavBar from './components/NavBar/NavBar';
 import CreatorPage from './pages/Creator/CreatorPage';
@@ -6,7 +7,6 @@ import DonationPage from './pages/Donation/Donation/DonationPage';
 import DonationMessagePage from './pages/Donation/Message/DonationMessagePage';
 import DonationSuccessPage from './pages/Donation/Success/DonationSuccessPage';
 import LoginPage from './pages/Login/LoginPage';
-
 import MainPage from './pages/Main/MainPage';
 import RegisterAddressPage from './pages/Register/RegisterAddress/RegisterAddressPage';
 import RegisterAuthPage from './pages/Register/RegisterAuth/RegisterAuthPage';
