@@ -22,7 +22,7 @@ public class BannerService {
     private final MemberService memberService;
 
     public Long createBanner(LoginMember loginMember, String imageUrl) {
-        Member member = memberService.findMember(loginMember.getId());
+        Member member = memberService.findMember(loginMember.getId());  //todo: 통일 시켜야할 것 같음. 다른곳에서 이것 외의 조건으로 찾는 경우가 있는데 이 때 MemberResponse여서...
         Banner banner = bannerRepository.save(new Banner(member, imageUrl));
         return banner.getId();
     }

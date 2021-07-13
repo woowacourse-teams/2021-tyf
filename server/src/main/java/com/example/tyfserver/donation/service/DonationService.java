@@ -8,8 +8,13 @@ import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +31,7 @@ public class DonationService {
         donationRepository.save(donation);
         member.addDonation(donation);
         member.addPoint(donationRequest.getDonationAmount());
-        return DonationResponse.from(donation);
+        return new DonationResponse(donation);
     }
 
     public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
@@ -35,5 +40,21 @@ public class DonationService {
 
         donation.addMessage(
                 donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isSecret());
+    }
+
+    public List<DonationResponse> findMyDonations(Long memberId) {
+        return null;
+    }
+
+    public List<DonationResponse> findPublicDonations(String pageName) {
+        Member findMember = memberRepository.findByPageName(pageName)
+                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
+
+        List<Donation> donations = donationRepository.findPublicDonations(
+                findMember, false, PageRequest.of(0,5, Sort.by(Sort.Direction.DESC, "createdAt")));
+
+        return donations.stream()
+                .map(DonationResponse::new)
+                .collect(Collectors.toList());
     }
 }
