@@ -12,9 +12,8 @@ public class DonationMessageRequest {
     private String message;
     private boolean isPublic;
 
-    public DonationMessageRequest(final String name, final String message) {
-        this.name = name;
-        this.message = message;
+    public DonationMessageRequest(String name, String message) {
+        this(name, message, true);
     }
 
     public DonationMessageRequest(String name, String message, boolean isPublic) {

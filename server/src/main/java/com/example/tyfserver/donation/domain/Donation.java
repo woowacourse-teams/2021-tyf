@@ -19,18 +19,20 @@ public class Donation extends BaseTimeEntity {
 
     private Long amount;
 
-    private String name = "익명";
-
-    private String message = "당신을 응원합니다.";
-
-    private boolean isPublic = false;
+    @Embedded
+    private Message message;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     public Donation(Long amount) {
+        this(amount, new Message("익명", "당신을 응원합니다.", true));
+    }
+
+    public Donation(Long amount, Message message) {
         this.amount = amount;
+        this.message = message;
     }
 
     public void to(final Member member) {
@@ -38,8 +40,18 @@ public class Donation extends BaseTimeEntity {
     }
 
     public void addMessage(String name, String message, boolean isPublic) {
-        this.name = name;
-        this.message = message;
-        this.isPublic = isPublic;
+        this.message = new Message(name, message, isPublic);
+    }
+
+    public String getName() {
+        return message.getName();
+    }
+
+    public String getMessage() {
+        return message.getMessage();
+    }
+
+    public boolean isPublic() {
+        return message.isPublic();
     }
 }
