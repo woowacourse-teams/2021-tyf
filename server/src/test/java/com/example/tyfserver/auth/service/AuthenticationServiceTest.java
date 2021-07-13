@@ -1,14 +1,13 @@
 package com.example.tyfserver.auth.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.example.tyfserver.auth.service.AuthenticationService;
-import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.auth.util.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class AuthenticationServiceTest {
@@ -29,5 +28,4 @@ class AuthenticationServiceTest {
         LoginMember actual = authenticationService.createLoginMemberByToken(token);
         assertThat(actual.getEmail()).isEqualTo(email);
     }
-
 }

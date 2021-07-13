@@ -10,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@Sql(scripts = "/cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-//@Transactional
 @ActiveProfiles("test")
 public class AcceptanceTest {
 
@@ -29,13 +27,9 @@ public class AcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
-    protected static RequestSpecification apiTemplate(Object body) {
-        return apiTemplate()
-                .body(body);
-    }
-
     protected static ValidatableResponse post(String url, Object body) {
-        return apiTemplate(body)
+        return apiTemplate()
+                .body(body)
                 .post(url)
                 .then().log().all();
     }
@@ -46,11 +40,22 @@ public class AcceptanceTest {
                 .then().log().all();
     }
 
-    protected static RequestSpecification authTemplate(String bearerToken) {
+    private static RequestSpecification authTemplate(String bearerToken) {
         return apiTemplate()
                 .headers("Authorization",
                         "Bearer " + bearerToken);
     }
 
+    protected static ValidatableResponse authPost(String url, String token, Object body) {
+        return authTemplate(token)
+                .body(body)
+                .post(url)
+                .then().log().all();
+    }
 
+    protected static ValidatableResponse authGet(String url, String token) {
+        return authTemplate(token)
+                .get(url)
+                .then().log().all();
+    }
 }
