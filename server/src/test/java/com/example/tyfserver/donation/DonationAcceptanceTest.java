@@ -1,6 +1,8 @@
 package com.example.tyfserver.donation;
 
 import com.example.tyfserver.AcceptanceTest;
+import com.example.tyfserver.auth.util.JwtTokenProvider;
+import com.example.tyfserver.banner.dto.BannerResponse;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
@@ -25,6 +27,9 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private DonationRepository donationRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     private Member member;
 
@@ -79,5 +84,43 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         // when // then
         post(url, messageRequest)
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    @DisplayName("공개된 후원 목록을 조회한다.")
+    public void 공개_후원_리스트() {
+        //given
+        Long donationId = 후원을_생성한다();
+        DonationMessageRequest messageRequest = new DonationMessageRequest(
+                "joy", "응원합니다", true);
+        후원메시지를_생성한다(donationId, messageRequest);
+
+        //when
+        String url = "/donations/public/pageName";
+        //then
+        get(url)
+            .statusCode(HttpStatus.OK.value())
+            .extract().body()
+            .jsonPath().getList(".", DonationResponse.class);
+
+    }
+
+    @Test
+    @DisplayName("창작자가 자신이 받은 후원 목록을 조회한다.")
+    public void 전체_후원_리스트() {
+        //given
+        Long donationId = 후원을_생성한다();
+        DonationMessageRequest messageRequest = new DonationMessageRequest(
+                "joy", "응원합니다", true);
+        후원메시지를_생성한다(donationId, messageRequest);
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
+        //when
+        String url = "/donations/me";
+        //then
+        authGet(url, token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().body()
+                .jsonPath().getList(".", DonationResponse.class);
+
     }
 }
