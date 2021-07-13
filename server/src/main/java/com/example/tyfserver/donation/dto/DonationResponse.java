@@ -1,6 +1,6 @@
 package com.example.tyfserver.donation.dto;
 
-import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.donation.domain.Donation;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class DonationResponse {
         this.donationId = donationId;
     }
 
-    public static DonationResponse from(final Member member) {
-        return new DonationResponse(member.getId());
+    public static DonationResponse from(final Donation donation) {
+        return new DonationResponse(donation.getId());
     }
 }

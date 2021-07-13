@@ -8,9 +8,11 @@ import com.example.tyfserver.member.dto.UrlValidationRequest;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -25,6 +27,11 @@ public class MemberService {
         if (memberRepository.existsByNickname(request.getNickname())) {
             throw new RuntimeException("이미 존재하는 닉네임 입니다.");
         }
+    }
+
+    public Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
     }
 
     public MemberResponse findMember(String pageName) {

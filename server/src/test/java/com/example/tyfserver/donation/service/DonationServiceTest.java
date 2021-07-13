@@ -1,6 +1,5 @@
 package com.example.tyfserver.donation.service;
 
-import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
@@ -9,14 +8,15 @@ import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -54,8 +54,12 @@ class DonationServiceTest {
 
         //when
         DonationResponse donationResponse = donationService.createDonation(donationRequest);
+
         //then
-        assertThat(member.getId()).isEqualTo(donationResponse.getDonationId());
+        List<Donation> donations = donationRepository.findAll();
+        assertThat(donations).hasSize(1);
+        assertThat(donationResponse.getDonationId()).usingRecursiveComparison()
+                .isEqualTo(donations.get(0).getId());
     }
 
     @DisplayName("후원받은 포인트만큼 멤버의 포인트에 누적된다.")
