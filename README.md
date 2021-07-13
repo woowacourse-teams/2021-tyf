@@ -48,3 +48,4 @@
 
 - 젠킨스
 - springboot
+- jpa
