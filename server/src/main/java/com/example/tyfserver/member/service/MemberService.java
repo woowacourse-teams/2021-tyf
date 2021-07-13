@@ -16,7 +16,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public void validateUrl(UrlValidationRequest request) {
-        if (memberRepository.existsByUrlName(request.getUrlName())) {
+        if (memberRepository.existsByPageName(request.getPageName())) {
             throw new RuntimeException("이미 존재하는 url 입니다.");
         }
     }
@@ -27,8 +27,8 @@ public class MemberService {
         }
     }
 
-    public MemberResponse findMember(String urlName) {
-        Member findMember = memberRepository.findByUrlName(urlName)
+    public MemberResponse findMember(String pageName) {
+        Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
         return new MemberResponse(findMember);
     }

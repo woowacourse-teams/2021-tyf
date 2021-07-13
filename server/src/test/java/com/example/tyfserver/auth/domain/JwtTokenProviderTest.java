@@ -1,5 +1,6 @@
 package com.example.tyfserver.auth.domain;
 
+import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -51,8 +52,9 @@ class JwtTokenProviderTest {
         String expectedEmail = "abc@chocolate.com";
         String token = jwtTokenProvider.createToken(id, expectedEmail);
         //when
-        String actualEmail = jwtTokenProvider.findEmailByToken(token);
-        Long actualId = jwtTokenProvider.findIdByToken(token);
+        IdAndEmail idAndEmail = jwtTokenProvider.findIdAndEmailFromToken(token);
+        Long actualId = idAndEmail.getId();
+        String actualEmail = idAndEmail.getEmail();
         //then
         assertThat(actualEmail).isEqualTo(expectedEmail);
         assertThat(actualId).isEqualTo(id);

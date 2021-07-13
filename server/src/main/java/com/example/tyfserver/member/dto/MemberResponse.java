@@ -8,11 +8,11 @@ public class MemberResponse {
 
     private String email;
     private String nickname;
-    private String urlName;
+    private String pageName;
 
     public MemberResponse(Member member) {
         email = member.getEmail();
         nickname = member.getNickname();
-        urlName = member.getUrlName();
+        pageName = member.getPageName();
     }
 }

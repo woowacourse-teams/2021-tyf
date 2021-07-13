@@ -37,7 +37,7 @@ class DonationServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member("tyf@gmail.com", "nickname", "urlName", Oauth2Type.NAVER);
+        member = MemberTest.testMember();
         memberRepository.save(member);
     }
 

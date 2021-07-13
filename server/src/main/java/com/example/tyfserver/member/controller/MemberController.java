@@ -20,8 +20,8 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/validate/url-name")
-    public ResponseEntity<Void> validateUrlName(@Valid @RequestBody UrlValidationRequest request) {
+    @PostMapping("/validate/pageName")
+    public ResponseEntity<Void> validatePageName(@Valid @RequestBody UrlValidationRequest request) {
         memberService.validateUrl(request);
         return ResponseEntity.ok().build();
     }
@@ -32,9 +32,9 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{urlName}")
-    public ResponseEntity<MemberResponse> memberInfo(@PathVariable String urlName) {
-        return ResponseEntity.ok(memberService.findMember(urlName));
+    @GetMapping("/{pageName}")
+    public ResponseEntity<MemberResponse> memberInfo(@PathVariable String pageName) {
+        return ResponseEntity.ok(memberService.findMember(pageName));
     }
 
     @GetMapping("/point")
