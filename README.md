@@ -32,3 +32,12 @@
 - feature/{feature-name}
 - 본인 fork 레포지토리에 위와 같이 브랜치를 만들어 작업한다.
 - 완료되면 upstream의 develop-server develop-client로 pr 요청
+
+
+
+### 백엔드 크루
+
+- 수리
+- 파즈
+- 조이
+- 로키
