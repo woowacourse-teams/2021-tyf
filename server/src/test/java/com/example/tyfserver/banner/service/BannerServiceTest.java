@@ -1,6 +1,5 @@
 package com.example.tyfserver.banner.service;
 
-import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
@@ -13,14 +12,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 class BannerServiceTest {
 
     @Autowired
@@ -36,7 +34,7 @@ class BannerServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member("tyf@gmail.com", "nickname", "urlName", Oauth2Type.NAVER);
+        member = MemberTest.testMember();
         memberRepository.save(member);
     }
 

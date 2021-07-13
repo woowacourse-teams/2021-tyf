@@ -18,7 +18,7 @@ public class BannerController {
 
     private final BannerService bannerService;
 
-    @GetMapping
+    @GetMapping("/me")
     public ResponseEntity<List<BannerResponse>> getBanners(Member member) {
         return ResponseEntity
                 .ok(bannerService.getBanners(member));

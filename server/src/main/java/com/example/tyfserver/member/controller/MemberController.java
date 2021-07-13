@@ -37,7 +37,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findMember(pageName));
     }
 
-    @GetMapping("/point")
+    @GetMapping("/me/point")
     public ResponseEntity<PointResponse> memberPoint(LoginMember loginMember) {
         return ResponseEntity.ok(memberService.findMemberPoint(loginMember.getId()));
     }
