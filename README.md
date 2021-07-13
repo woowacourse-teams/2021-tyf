@@ -49,3 +49,4 @@
 - 젠킨스
 - springboot
 - jpa
+- mysql
