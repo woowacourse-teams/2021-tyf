@@ -1,5 +1,6 @@
 package com.example.tyfserver.auth.util;
 
+import com.example.tyfserver.auth.dto.IdAndEmail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -40,17 +41,15 @@ public class JwtTokenProvider {
         }
     }
 
-    public Long findIdByToken(String token) {
-        return claims(token)
-                .get("id", Long.class);
+    public IdAndEmail findIdAndEmailFromToken(String token) {
+        Claims claims = claims(token);
+
+        return new IdAndEmail(
+                claims.get("id", Long.class),
+                claims.get("email", String.class));
     }
 
-    public String findEmailByToken(String token) {
-        return claims(token)
-                .get("email", String.class);
-    }
-
-    private Claims claims(String token) {
+    public Claims claims(String token) {
         return Jwts.parser()
                 .setSigningKey(secreteKey).parseClaimsJws(token)
                 .getBody();

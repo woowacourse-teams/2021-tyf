@@ -21,19 +21,19 @@ public class DonationService {
 
     public DonationResponse createDonation(final DonationRequest donationRequest) {
         Member member = memberRepository.findById(donationRequest.getCreatorId())
-                .orElseThrow(() -> new RuntimeException("error_donation_request"));
-
+                .orElseThrow(() -> new RuntimeException("회원이 없습니다"));
         Donation donation = new Donation(donationRequest.getDonationAmount());
+        donationRepository.save(donation);
         member.addDonation(donation);
         member.addPoint(donationRequest.getDonationAmount());
-        return DonationResponse.from(member);
+        return DonationResponse.from(donation);
     }
 
     public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
         Donation donation = donationRepository.findById(donationId)
-                .orElseThrow(() -> new RuntimeException("error_donation_message_send"));
+                .orElseThrow(() -> new RuntimeException("후원 데이터가 존재하지 않습니다"));
 
         donation.addMessage(
-                donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isPublic());
+                donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isSecret());
     }
 }

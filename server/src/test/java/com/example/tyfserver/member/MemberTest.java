@@ -6,6 +6,6 @@ import com.example.tyfserver.member.domain.Member;
 public class MemberTest {
 
     public static Member testMember() {
-        return new Member("tyf@gmail.com", "nickname", "urlName", Oauth2Type.NAVER);
+        return new Member("tyf@gmail.com", "nickname", "pageName", Oauth2Type.NAVER);
     }
 }

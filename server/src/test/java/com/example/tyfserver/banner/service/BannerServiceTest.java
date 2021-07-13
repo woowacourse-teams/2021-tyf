@@ -1,6 +1,6 @@
 package com.example.tyfserver.banner.service;
 
-import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
@@ -13,14 +13,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Transactional
 class BannerServiceTest {
 
     @Autowired
@@ -33,11 +31,13 @@ class BannerServiceTest {
     private BannerRepository bannerRepository;
 
     private Member member;
+    private LoginMember loginMember;
 
     @BeforeEach
     void setUp() {
-        member = new Member("tyf@gmail.com", "nickname", "urlName", Oauth2Type.NAVER);
+        member = MemberTest.testMember();
         memberRepository.save(member);
+        loginMember = new LoginMember(member.getId(), member.getEmail());
     }
 
     @AfterEach
@@ -53,7 +53,7 @@ class BannerServiceTest {
         String imageUrl = "image.png";
 
         // when
-        Long bannerId = bannerService.createBanner(member, imageUrl);
+        Long bannerId = bannerService.createBanner(loginMember, imageUrl);
 
         // then
         Banner findBanner = bannerRepository.findById(bannerId).get();
@@ -69,7 +69,7 @@ class BannerServiceTest {
         bannerRepository.save(new Banner(member, imageUrl));
 
         // when
-        List<BannerResponse> banners = bannerService.getBanners(member);
+        List<BannerResponse> banners = bannerService.getBanners(loginMember);
 
         // then
         assertThat(banners).hasSize(1);

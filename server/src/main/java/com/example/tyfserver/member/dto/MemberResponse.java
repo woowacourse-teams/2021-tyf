@@ -8,11 +8,15 @@ public class MemberResponse {
 
     private String email;
     private String nickname;
-    private String urlName;
+    private String pageName;
 
     public MemberResponse(Member member) {
-        email = member.getEmail();
-        nickname = member.getNickname();
-        urlName = member.getUrlName();
+        this(member.getEmail(), member.getNickname(), member.getPageName());
+    }
+
+    public MemberResponse(String email, String nickname, String pageName) {
+        this.email = email;
+        this.nickname = nickname;
+        this.pageName = pageName;
     }
 }
