@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
+import Modal from '../../@atom/Modal/Modal';
 import {
   Divider,
   RegisterTermsTitle,
@@ -14,6 +15,8 @@ import {
 
 const RegisterTermsForm: VFC = () => {
   const history = useHistory();
+  const [isTermsOfServiceModalOpen, setIsTermsOfServiceModalOpen] = useState(false);
+  const [isPersonalInformationUsageOpen, setIsPersonalInformationUsageOpen] = useState(false);
   const [termsChecked, setTermsChecked] = useState({
     termsOfService: false,
     personalInformationUsage: false,
@@ -57,10 +60,8 @@ const RegisterTermsForm: VFC = () => {
             checked={termsChecked['termsOfService']}
             onChange={toggleTermChecked}
           ></TermCheckbox>
-          <TermLink href="" target="_blank">
-            서비스 약관
-          </TermLink>
-          에 동의 (필수)
+          <TermLink onClick={() => setIsTermsOfServiceModalOpen(true)}>서비스 약관</TermLink>에 동의
+          (필수)
         </TermLabel>
         <TermLabel>
           <TermCheckbox
@@ -68,7 +69,7 @@ const RegisterTermsForm: VFC = () => {
             checked={termsChecked['personalInformationUsage']}
             onChange={toggleTermChecked}
           ></TermCheckbox>
-          <TermLink href="" target="_blank">
+          <TermLink onClick={() => setIsPersonalInformationUsageOpen(true)}>
             개인정보 수집 및 이용
           </TermLink>
           에 동의 (필수)
@@ -79,6 +80,8 @@ const RegisterTermsForm: VFC = () => {
           계속하기
         </Button>
       </Container>
+      {isTermsOfServiceModalOpen && <Modal>서비스 이용약관</Modal>}
+      {isPersonalInformationUsageOpen && <Modal>개인정보 수집 및 이용</Modal>}
     </>
   );
 };
