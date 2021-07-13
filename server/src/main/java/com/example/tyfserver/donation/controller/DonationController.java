@@ -6,6 +6,7 @@ import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.service.DonationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +33,8 @@ public class DonationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember) {
-        List<DonationResponse> donationResponses = donationService.findMyDonations(loginMember.getId());
+    public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember, Pageable pageable) {
+        List<DonationResponse> donationResponses = donationService.findMyDonations(loginMember.getId(), pageable);
         return ResponseEntity.ok().build();
     }
 

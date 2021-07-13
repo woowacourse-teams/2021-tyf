@@ -9,6 +9,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,17 +43,32 @@ public class DonationService {
                 donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isSecret());
     }
 
-    public List<DonationResponse> findMyDonations(Long memberId) {
-        return null;
+    public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
+
+        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(findMember, pageable);
+
+        return convertDonationsToResponses(donations);
     }
 
     public List<DonationResponse> findPublicDonations(String pageName) {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
 
-        List<Donation> donations = donationRepository.findPublicDonations(
-                findMember, false, PageRequest.of(0,5, Sort.by(Sort.Direction.DESC, "createdAt")));
+        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(findMember);
+        hideSecretDonation(donations);
 
+        return convertDonationsToResponses(donations);
+    }
+
+    private void hideSecretDonation(List<Donation> donations) {
+        for (Donation donation : donations) {
+            donation.hideNameAndMessage();
+        }
+    }
+
+    private List<DonationResponse> convertDonationsToResponses(List<Donation> donations) {
         return donations.stream()
                 .map(DonationResponse::new)
                 .collect(Collectors.toList());

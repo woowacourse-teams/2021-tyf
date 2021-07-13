@@ -43,6 +43,10 @@ public class Donation extends BaseTimeEntity {
         this.message = new Message(name, message, secret);
     }
 
+    public void hideNameAndMessage() {
+        message.hideNameAndMessage();
+    }
+
     public String getName() {
         return message.getName();
     }
