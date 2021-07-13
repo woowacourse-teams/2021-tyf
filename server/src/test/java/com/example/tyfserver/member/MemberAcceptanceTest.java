@@ -83,12 +83,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .isEqualTo(new MemberResponse(member));
     }
 
-//    @Test
-//    @DisplayName("창작자 정보 조회 - 실패")
-//    public void getMemberInfo_fail() {
+    @Test
+    @DisplayName("창작자 정보 조회 - 실패")
+    public void getMemberInfo_fail() {
+        // todo 예외 컨벤션 확립 후 주석풀기
 //        get("/members/" + "INVALID_PAGE_NAME")
 //                .statusCode(HttpStatus.BAD_REQUEST.value());
-//    }
+    }
 
     @Test
     @DisplayName("창작자 포인트 조회")
@@ -102,14 +103,15 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .isEqualTo(new PointResponse(0L));
     }
 
-//    @Test
-//    @DisplayName("창작자 포인트 조회 - 실패: 토큰없음")
-//    public void getMemberPoint_fail() {
+    @Test
+    @DisplayName("창작자 포인트 조회 - 실패: 토큰없음")
+    public void getMemberPoint_fail() {
+        // todo 예외 컨벤션 확립 후 주석풀기
 //        MemberResponse memberResponse = get("/members/me/point")
 //                .statusCode(HttpStatus.UNAUTHORIZED.value())
 //                .extract().as(MemberResponse.class);
 //
 //        assertThat(memberResponse).usingRecursiveComparison()
 //                .isEqualTo(new MemberResponse(member));
-//    }
+    }
 }
