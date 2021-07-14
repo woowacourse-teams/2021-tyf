@@ -1,21 +1,21 @@
+import { Link } from 'react-router-dom';
+import useCreatorList from '../../../service/hooks/useCreatorList';
+import { StyledAnchor } from '../../@atom/Anchor/Anchor.styles';
 import CreatorCard from '../CreatorCard/CreatorCard';
 import { List } from './CreatorList.styles';
 
 const CreatorList = () => {
+  const { creatorList } = useCreatorList();
+
   return (
     <List>
-      <li>
-        <CreatorCard />
-      </li>
-      <li>
-        <CreatorCard />
-      </li>
-      <li>
-        <CreatorCard />
-      </li>
-      <li>
-        <CreatorCard />
-      </li>
+      {creatorList.map((creator, index) => (
+        <li key={index}>
+          <StyledAnchor to={'/creator/' + creator.pageName}>
+            <CreatorCard creator={creator} />
+          </StyledAnchor>
+        </li>
+      ))}
     </List>
   );
 };
