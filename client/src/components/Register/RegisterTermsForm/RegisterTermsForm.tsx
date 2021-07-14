@@ -1,5 +1,6 @@
 import { useState, VFC } from 'react';
 import { useHistory } from 'react-router-dom';
+import useRegister from '../../../service/hooks/useRegister';
 
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
@@ -15,32 +16,14 @@ import {
 
 const RegisterTermsForm: VFC = () => {
   const history = useHistory();
-  const [isTermsOfServiceModalOpen, setIsTermsOfServiceModalOpen] = useState(false);
-  const [isPersonalInformationUsageOpen, setIsPersonalInformationUsageOpen] = useState(false);
-  const [termsChecked, setTermsChecked] = useState({
-    termsOfService: false,
-    personalInformationUsage: false,
-  });
+  const { termsChecked, toggleTermChecked, toggleAllTermsChecked } = useRegister();
 
-  const toggleTermChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-
-    setTermsChecked({ ...termsChecked, [name]: checked });
-  };
-
-  const toggleAllTermsChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const toggleAll = Object.keys(termsChecked).reduce((acc, term) => {
-      return Object.assign(acc, { [term]: event.target.checked });
-    }, {} as typeof termsChecked);
-
-    setTermsChecked(toggleAll);
-  };
+  const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
 
   const movePage = () => {
     history.push('/register/auth');
   };
 
-  const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
   return (
     <>
       <RegisterTermsTitle>
@@ -60,8 +43,10 @@ const RegisterTermsForm: VFC = () => {
             checked={termsChecked['termsOfService']}
             onChange={toggleTermChecked}
           ></TermCheckbox>
-          <TermLink onClick={() => setIsTermsOfServiceModalOpen(true)}>서비스 약관</TermLink>에 동의
-          (필수)
+          <TermLink href="/" target="_blank">
+            서비스 약관
+          </TermLink>
+          에 동의 (필수)
         </TermLabel>
         <TermLabel>
           <TermCheckbox
@@ -69,7 +54,7 @@ const RegisterTermsForm: VFC = () => {
             checked={termsChecked['personalInformationUsage']}
             onChange={toggleTermChecked}
           ></TermCheckbox>
-          <TermLink onClick={() => setIsPersonalInformationUsageOpen(true)}>
+          <TermLink href="/" target="_blank">
             개인정보 수집 및 이용
           </TermLink>
           에 동의 (필수)
@@ -80,8 +65,6 @@ const RegisterTermsForm: VFC = () => {
           계속하기
         </Button>
       </Container>
-      {isTermsOfServiceModalOpen && <Modal>서비스 이용약관</Modal>}
-      {isPersonalInformationUsageOpen && <Modal>개인정보 수집 및 이용</Modal>}
     </>
   );
 };
