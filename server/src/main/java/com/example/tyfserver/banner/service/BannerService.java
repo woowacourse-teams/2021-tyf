@@ -5,6 +5,7 @@ import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class BannerService {
 
     public Long createBanner(LoginMember loginMember, String imageUrl) {
         Member member = memberRepository.findById(loginMember.getId())
-                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
+                .orElseThrow(MemberNotFoundException::new);
         Banner banner = bannerRepository.save(new Banner(member, imageUrl));
         return banner.getId();
     }
