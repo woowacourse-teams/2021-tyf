@@ -1,4 +1,5 @@
-import React, { VFC } from 'react';
+import { VFC } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import GoogleLogo from '../../../assets/icons/google.svg';
 import NaverLogo from '../../../assets/icons/naver.svg';
@@ -12,31 +13,24 @@ import {
   NaverButton,
 } from './RegisterAuthForm.styles';
 import Anchor from '../../@atom/Anchor/Anchor';
-import { useHistory } from 'react-router';
+
+import { OAUTH } from '../../../constants/constant';
 
 const RegisterAuthForm: VFC = () => {
+  const history = useHistory();
   const openOAuthPage = (name: string) => {
     switch (name) {
       case 'goggle':
-        window.open(
-          'https://accounts.google.com/o/oauth2/v2/auth?client_id=153785509866-72pebue5t5qqcpci2d1bncrh497ootcc.apps.googleusercontent.com&redirect_uri=http://localhost:9000/register/url&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile email&access_type=offline',
-          '_self'
-        );
-
+        window.open(OAUTH.GOOGLE);
         break;
 
       case 'naver':
-        alert('서비스 준비중입니다');
-
+        history.push('/register/url');
         break;
 
       case 'kakao':
         // TODO: oauth 회원가입 절차 진행
-        window.open(
-          'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=d187d243372db29c85e85eef81d4723a&redirect_uri=http://localhost:9000/register/url',
-          '_self'
-        );
-
+        window.open(OAUTH.KAKAO);
         break;
 
       default:
