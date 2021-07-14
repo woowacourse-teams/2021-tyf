@@ -6,6 +6,7 @@ import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,7 @@ public class DonationService {
 
     public DonationResponse createDonation(final DonationRequest donationRequest) {
         Member member = memberRepository.findById(donationRequest.getCreatorId())
-                .orElseThrow(() -> new RuntimeException("회원이 없습니다"));
+                .orElseThrow(MemberNotFoundException::new);
         Donation donation = new Donation(donationRequest.getDonationAmount());
         donationRepository.save(donation);
         member.addDonation(donation);
