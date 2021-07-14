@@ -1,10 +1,10 @@
-import { useState, VFC } from 'react';
+import { VFC } from 'react';
 import { useHistory } from 'react-router-dom';
 import useRegister from '../../../service/hooks/useRegister';
 
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
-import Modal from '../../@atom/Modal/Modal';
+
 import {
   Divider,
   RegisterTermsTitle,
