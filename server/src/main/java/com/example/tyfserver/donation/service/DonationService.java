@@ -4,6 +4,7 @@ import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
+import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
@@ -35,7 +36,7 @@ public class DonationService {
 
     public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
         Donation donation = donationRepository.findById(donationId)
-                .orElseThrow(() -> new RuntimeException("후원 데이터가 존재하지 않습니다"));
+                .orElseThrow(DonationNotFoundException::new);
 
         donation.addMessage(donationMessageRequest.toEntity());
     }

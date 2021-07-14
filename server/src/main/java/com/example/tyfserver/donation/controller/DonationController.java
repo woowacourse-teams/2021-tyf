@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
+import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,10 @@ public class DonationController {
 
     @PostMapping("{donationId}/messages")
     public ResponseEntity<Void> addDonationMessage(@PathVariable Long donationId,
-                                                   @RequestBody DonationMessageRequest donationMessageRequest) {
+                              @RequestBody DonationMessageRequest donationMessageRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new DonationMessageRequestException();
+        }
         donationService.addMessageToDonation(donationId, donationMessageRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
