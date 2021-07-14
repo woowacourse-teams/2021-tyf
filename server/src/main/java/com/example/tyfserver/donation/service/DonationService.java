@@ -38,8 +38,7 @@ public class DonationService {
         Donation donation = donationRepository.findById(donationId)
                 .orElseThrow(() -> new RuntimeException("후원 데이터가 존재하지 않습니다"));
 
-        donation.addMessage(
-                donationMessageRequest.getName(), donationMessageRequest.getMessage(), donationMessageRequest.isSecret());
+        donation.addMessage(donationMessageRequest.toEntity());
     }
 
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {

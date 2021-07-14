@@ -39,8 +39,8 @@ public class Donation extends BaseTimeEntity {
         this.member = member;
     }
 
-    public void addMessage(String name, String message, boolean secret) {
-        this.message = new Message(name, message, secret);
+    public void addMessage(Message message) {
+        this.message = message;
     }
 
     public void hideNameAndMessage() {

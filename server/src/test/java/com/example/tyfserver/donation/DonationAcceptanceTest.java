@@ -68,13 +68,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         DonationRequest donationRequest = new DonationRequest(memberId, amount);
 
         // when // then
-        Long donationId = post("/donations", donationRequest)
+        return post("/donations", donationRequest)
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(DonationResponse.class).getDonationId();
-
-        assertThat(donationId).isEqualTo(memberId);
-        return donationId;
     }
 
     private void 후원메시지를_생성한다(Long donationId, DonationMessageRequest messageRequest) {
