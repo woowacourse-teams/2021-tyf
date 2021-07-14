@@ -32,7 +32,7 @@ public class BannerService {
 
     public List<BannerResponse> getBanners(LoginMember loginMember) {
         List<Banner> banners = bannerRepository.findAllByMemberId(loginMember.getId());
-
+        //todo: 이 부분 비어있는 경우 고려해봐야 할 듯
         return banners.stream()
                 .map(BannerResponse::new)
                 .collect(Collectors.toList());

@@ -4,7 +4,8 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.MemberResponse;
 import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.PointResponse;
-import com.example.tyfserver.member.dto.UrlValidationRequest;
+import com.example.tyfserver.member.dto.PageNameValidationRequest;
+import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void validateUrl(UrlValidationRequest request) {
+    public void validatePageName(PageNameValidationRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
-            throw new RuntimeException("이미 존재하는 url 입니다.");
+            throw new DuplicatedPageNameException();
         }
     }
 

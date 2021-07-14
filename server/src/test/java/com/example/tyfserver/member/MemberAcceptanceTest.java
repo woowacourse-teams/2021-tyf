@@ -6,7 +6,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.MemberResponse;
 import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.PointResponse;
-import com.example.tyfserver.member.dto.UrlValidationRequest;
+import com.example.tyfserver.member.dto.PageNameValidationRequest;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +42,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("랜딩 페이지 유효성 검사")
     public void validateLandingPageValidation() {
-        UrlValidationRequest validationRequest = new UrlValidationRequest("tyf");
+        PageNameValidationRequest validationRequest = new PageNameValidationRequest("tyf");
         post("/members/validate/pageName", validationRequest)
                 .statusCode(HttpStatus.OK.value());
     }
@@ -50,7 +50,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("랜딩 페이지 유효성 검사 - 실패의 경우")
     public void validateLandingPageValidationWithNotValidCase() {
-        UrlValidationRequest validationRequest = new UrlValidationRequest("ㅁㄴㅇㄹ");
+        PageNameValidationRequest validationRequest = new PageNameValidationRequest("ㅁㄴㅇㄹ");
         post("/members/validate/pageName", validationRequest)
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }

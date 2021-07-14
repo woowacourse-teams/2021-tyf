@@ -4,10 +4,12 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.member.dto.MemberResponse;
 import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.PointResponse;
-import com.example.tyfserver.member.dto.UrlValidationRequest;
+import com.example.tyfserver.member.dto.PageNameValidationRequest;
+import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,8 +23,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/validate/pageName")
-    public ResponseEntity<Void> validatePageName(@Valid @RequestBody UrlValidationRequest request) {
-        memberService.validateUrl(request);
+    public ResponseEntity<Void> validatePageName(@Valid @RequestBody PageNameValidationRequest request,
+                                                 BindingResult result) {
+        if (result.hasErrors()) {
+            throw new PageNameValidationRequestException();
+        }
+        memberService.validatePageName(request);
         return ResponseEntity.ok().build();
     }
 
