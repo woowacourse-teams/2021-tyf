@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class BannerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createBanner(LoginMember loginMember, @RequestBody BannerRequest bannerRequest,
+    public ResponseEntity<Void> createBanner(LoginMember loginMember, @Valid @RequestBody BannerRequest bannerRequest,
                                              BindingResult result) {
         if (result.hasErrors()) {
             throw new BannerRequestException();

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class DonationController {
     private final DonationService donationService;
 
     @PostMapping
-    public ResponseEntity<DonationResponse> createDonation(@RequestBody DonationRequest donationRequest, BindingResult result) {
+    public ResponseEntity<DonationResponse> createDonation(@Valid @RequestBody DonationRequest donationRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new DonationRequestException();
         }

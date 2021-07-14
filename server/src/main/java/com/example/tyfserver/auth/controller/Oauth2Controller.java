@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/oauth2")
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class Oauth2Controller {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<TokenResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<TokenResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.ok(oauth2Service.signUp(signUpRequest));
     }
 }
