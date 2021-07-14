@@ -5,6 +5,7 @@ import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,11 @@ import java.util.stream.Collectors;
 public class BannerService {
 
     private final BannerRepository bannerRepository;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     public Long createBanner(LoginMember loginMember, String imageUrl) {
-        Member member = memberService.findMember(loginMember.getId());  //todo: 통일 시켜야할 것 같음. 다른곳에서 이것 외의 조건으로 찾는 경우가 있는데 이 때 MemberResponse여서...
+        Member member = memberRepository.findById(loginMember.getId())
+                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
         Banner banner = bannerRepository.save(new Banner(member, imageUrl));
         return banner.getId();
     }
