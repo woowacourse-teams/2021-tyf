@@ -1,5 +1,6 @@
 package com.example.tyfserver.donation.dto;
 
+import com.example.tyfserver.donation.domain.Message;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,9 @@ public class DonationMessageRequest {
         this.name = name;
         this.message = message;
         this.secret = secret;
+    }
+
+    public Message toEntity() {
+        return new Message(name, message, secret);
     }
 }

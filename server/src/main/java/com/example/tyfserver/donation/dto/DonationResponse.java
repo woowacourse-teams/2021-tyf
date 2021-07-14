@@ -10,12 +10,18 @@ import lombok.NoArgsConstructor;
 public class DonationResponse {
 
     private Long donationId;
+    private String name;
+    private String message;
+    private Long amount;
 
-    public DonationResponse(final Long donationId) {
+    public DonationResponse(Long donationId, String name, String message, Long amount) {
         this.donationId = donationId;
+        this.name = name;
+        this.message = message;
+        this.amount = amount;
     }
 
-    public static DonationResponse from(final Donation donation) {
-        return new DonationResponse(donation.getId());
+    public DonationResponse(Donation donation) {
+        this(donation.getId(), donation.getName(), donation.getMessage(), donation.getAmount());
     }
 }

@@ -22,4 +22,9 @@ public class Message {
         this.message = message;
         this.secret = secret;
     }
+
+    public void hideNameAndMessage() {
+        name = "익명";
+        message = "비공개 메세지입니다.";
+    }
 }
