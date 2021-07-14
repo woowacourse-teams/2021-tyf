@@ -5,6 +5,7 @@ import com.example.tyfserver.member.dto.MemberResponse;
 import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.PointResponse;
 import com.example.tyfserver.member.dto.PageNameValidationRequest;
+import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class MemberService {
 
     public void validateNickname(NicknameValidationRequest request) {
         if (memberRepository.existsByNickname(request.getNickname())) {
-            throw new RuntimeException("이미 존재하는 닉네임 입니다.");
+            throw new DuplicatedNicknameException();
         }
     }
 

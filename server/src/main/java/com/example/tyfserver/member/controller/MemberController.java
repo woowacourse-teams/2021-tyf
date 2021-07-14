@@ -3,8 +3,9 @@ package com.example.tyfserver.member.controller;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.member.dto.MemberResponse;
 import com.example.tyfserver.member.dto.NicknameValidationRequest;
-import com.example.tyfserver.member.dto.PointResponse;
 import com.example.tyfserver.member.dto.PageNameValidationRequest;
+import com.example.tyfserver.member.dto.PointResponse;
+import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,11 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request) {
+    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request,
+                                                 BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NicknameValidationRequestException();
+        }
         memberService.validateNickname(request);
         return ResponseEntity.ok().build();
     }
