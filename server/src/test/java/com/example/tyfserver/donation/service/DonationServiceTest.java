@@ -50,7 +50,7 @@ class DonationServiceTest {
     @Test
     void createDonation() throws Exception {
         //given
-        DonationRequest donationRequest = new DonationRequest(member.getId(), 1000L);
+        DonationRequest donationRequest = new DonationRequest(member.getPageName(), 1000L);
 
         //when
         DonationResponse donationResponse = donationService.createDonation(donationRequest);
@@ -66,7 +66,7 @@ class DonationServiceTest {
     @Test
     void accumulateMemberPoint() throws Exception {
         //given
-        DonationRequest donationRequest = new DonationRequest(member.getId(), 1000L);
+        DonationRequest donationRequest = new DonationRequest(member.getPageName(), 1000L);
 
         //when
         donationService.createDonation(donationRequest);

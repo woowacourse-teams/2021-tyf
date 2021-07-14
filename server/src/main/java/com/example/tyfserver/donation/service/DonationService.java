@@ -9,9 +9,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +25,7 @@ public class DonationService {
     private final MemberRepository memberRepository;
 
     public DonationResponse createDonation(final DonationRequest donationRequest) {
-        Member member = memberRepository.findById(donationRequest.getCreatorId())
+        Member member = memberRepository.findByPageName(donationRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
         Donation donation = new Donation(donationRequest.getDonationAmount());
         donationRepository.save(donation);

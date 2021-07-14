@@ -63,9 +63,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     private Long 후원을_생성한다() {
         // given
+        String memberPageName = member.getPageName();
         long memberId = member.getId();
         long amount = 10000L;
-        DonationRequest donationRequest = new DonationRequest(memberId, amount);
+        DonationRequest donationRequest = new DonationRequest(memberPageName, amount);
 
         // when // then
         return post("/donations", donationRequest)

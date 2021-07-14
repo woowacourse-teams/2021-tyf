@@ -12,12 +12,12 @@ import javax.validation.constraints.Positive;
 public class DonationRequest {
 
     @NotBlank
-    private Long creatorId;
+    private String pageName;
     @Positive
     private Long donationAmount;
 
-    public DonationRequest(Long creatorId, Long donationAmount) {
-        this.creatorId = creatorId;
+    public DonationRequest(String pageName, Long donationAmount) {
+        this.pageName = pageName;
         this.donationAmount = donationAmount;
     }
 }
