@@ -1,6 +1,7 @@
 package com.example.tyfserver.auth.util;
 
 import com.example.tyfserver.auth.dto.IdAndEmail;
+import com.example.tyfserver.auth.exception.NotValidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -37,7 +38,7 @@ public class JwtTokenProvider {
             Jwts.parser()
                     .setSigningKey(secreteKey).parseClaimsJws(token);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException(); //todo: 예외 컨벤션 정하기
+            throw new NotValidTokenException();
         }
     }
 
