@@ -21,6 +21,7 @@ const RegisterTermsForm: VFC = () => {
   const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
 
   const movePage = () => {
+    // TODO: route명들 다 상수화하기
     history.push('/register/auth');
   };
 
