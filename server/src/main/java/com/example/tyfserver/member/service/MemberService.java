@@ -1,10 +1,7 @@
 package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.dto.MemberResponse;
-import com.example.tyfserver.member.dto.NicknameValidationRequest;
-import com.example.tyfserver.member.dto.PageNameValidationRequest;
-import com.example.tyfserver.member.dto.PointResponse;
+import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
@@ -32,20 +29,24 @@ public class MemberService {
         }
     }
 
-    public Member findMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
     public MemberResponse findMember(String pageName) {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
         return new MemberResponse(findMember);
     }
 
+    public MemberPrivateResponse findMemberPrivate(Long id) {
+        Member findMember = findMember(id);
+        return new MemberPrivateResponse(findMember);
+    }
+
     public PointResponse findMemberPoint(Long id) {
-        Member findMember = memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+        Member findMember = findMember(id);
         return new PointResponse(findMember.getPoint().getPoint());
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }
