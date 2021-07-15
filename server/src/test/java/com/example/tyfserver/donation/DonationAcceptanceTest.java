@@ -65,6 +65,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     public void 공개_후원_리스트() {
         //given
         Long donationId = 후원을_생성한다();
+
         DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
         후원메시지를_보낸다(donationId, messageRequest);
 

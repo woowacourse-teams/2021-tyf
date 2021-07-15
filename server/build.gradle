@@ -30,6 +30,7 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20210307'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compileOnly 'org.projectlombok:lombok'
+    implementation 'mysql:mysql-connector-java:8.0.22'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
@@ -37,6 +38,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:2.1.2'
 }
 
 test {

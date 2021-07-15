@@ -15,14 +15,13 @@ spring:
   profiles:
     include: oauth2
 
+  config:
+    use-legacy-processing: true
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
 jwt:
   secreteKey: ABCDEFG
-  expire-length: 600000
-
-jasypt:
-  encryptor:
-    password: jasypt
+  expire-length: 60000

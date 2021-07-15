@@ -16,11 +16,6 @@ public class AcceptanceTest {
     @LocalServerPort
     int port;
 
-    @BeforeEach
-    protected void setUp() {
-        RestAssured.port = port;
-    }
-
     protected static RequestSpecification apiTemplate() {
         return RestAssured
                 .given().log().all()
@@ -56,5 +51,10 @@ public class AcceptanceTest {
         return authTemplate(token)
                 .get(url)
                 .then().log().all();
+    }
+
+    @BeforeEach
+    protected void setUp() {
+        RestAssured.port = port;
     }
 }

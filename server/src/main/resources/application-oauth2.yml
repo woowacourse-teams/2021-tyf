@@ -1,0 +1,23 @@
+google:
+  type: google
+  client-id: google-client-id
+  client_secret: google-client_secret
+  redirect_url: google-redirect-url
+  access_token_api: https://oauth2.googleapis.com/token
+  profile_api: https://www.googleapis.com/oauth2/v2/userinfo
+
+kakao:
+  type: kakao
+  client_id: kakao-client-id
+  client_secret: kakao-client-secret
+  redirect_url: kakao-redirect-url
+  access_token_api: https://kauth.kakao.com/oauth/token
+  profile_api: https://kapi.kakao.com/v2/user/me
+
+naver:
+  type: naver
+  client_id: naver-client-id
+  client_secret: naver-client-secret
+  redirect_url: naver-redirect-url
+  access_token_api: https://nid.naver.com/oauth2.0/token
+  profile_api: https://openapi.naver.com/v1/nid/me

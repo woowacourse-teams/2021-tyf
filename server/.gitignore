@@ -37,4 +37,3 @@ out/
 .vscode/
 
 ### secrets ###
-application-oauth2.yml
