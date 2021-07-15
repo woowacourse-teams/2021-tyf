@@ -13,16 +13,12 @@ spring:
       ddl-auto: create
 
   profiles:
-    include: oauth2
+    include: oauth2-prod
 
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
 jwt:
-  secreteKey: ABCDEFG
-  expire-length: 600000
-
-jasypt:
-  encryptor:
-    password: jasypt
+  secreteKey: ENC(mmZ1HEay3J/Z6OVymvsmOHxMMHNIjIBVKLA2J30uSz4=)
+  expire-length: ENC(T0QT610v/hcrlQa6+DM/2Q==)
