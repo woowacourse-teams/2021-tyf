@@ -1,6 +1,6 @@
 import { VFC } from 'react';
 import { useHistory } from 'react-router-dom';
-import useRegister from '../../../service/hooks/useRegister';
+import useRegister from '../../../service/hooks/useRegisterTerms';
 
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
@@ -41,7 +41,7 @@ const RegisterTermsForm: VFC = () => {
           <TermCheckbox
             name="termsOfService"
             checked={termsChecked['termsOfService']}
-            onChange={toggleTermChecked}
+            onChange={(e) => toggleTermChecked(e.target)}
           ></TermCheckbox>
           <TermLink href="/" target="_blank">
             서비스 약관
@@ -52,7 +52,7 @@ const RegisterTermsForm: VFC = () => {
           <TermCheckbox
             name="personalInformationUsage"
             checked={termsChecked['personalInformationUsage']}
-            onChange={toggleTermChecked}
+            onChange={(e) => toggleTermChecked(e.target)}
           ></TermCheckbox>
           <TermLink href="/" target="_blank">
             개인정보 수집 및 이용
