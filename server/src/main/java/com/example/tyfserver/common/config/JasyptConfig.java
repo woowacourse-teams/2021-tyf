@@ -16,7 +16,7 @@ public class JasyptConfig {
         this.environment = environment;
     }
 
-    @Bean("jasyptStringEncryptor")
+    @Bean
     public StringEncryptor jasyptStringEncryptor() {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         encryptor.setConfig(generateConfig());
