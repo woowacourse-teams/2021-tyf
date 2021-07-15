@@ -1,7 +1,7 @@
-import { OAUTH } from '../constants/constant';
+import { OAUTH } from '../constants/oauth';
 
 type OAuthRouteType = keyof typeof OAUTH;
 
-export const routeToOAuthPage = (name: OAuthRouteType) => {
-  window.open(OAUTH[name].URL, '_target');
+export const routeToOAuthPage = (oauthName: OAuthRouteType) => {
+  window.open(OAUTH[oauthName].URL, '_target');
 };

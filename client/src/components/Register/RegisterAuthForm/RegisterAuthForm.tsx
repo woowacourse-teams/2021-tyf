@@ -7,7 +7,7 @@ import {
   RegisterButtonContainer,
   RegisterTitle,
 } from './RegisterAuthForm.styles';
-import { OAUTH } from '../../../constants/constant';
+import { OAUTH } from '../../../constants/oauth';
 import GoogleBarButton from '../../@molecule/GoogleBarButton/GoogleBarButton.styles';
 import NaverBarButton from '../../@molecule/NaverBarButton/NaverBarButton.styles';
 import KakaoBarButton from '../../@molecule/KakaoBarButton/KaKaoBarButton.styles';
@@ -21,18 +21,14 @@ const RegisterAuthForm: VFC = () => {
     <>
       <RegisterTitle>회원가입</RegisterTitle>
       <RegisterButtonContainer>
-        <GoogleBarButton onClick={() => routeToOAuthPage(OAUTH.GOOGLE.NAME)}>
-          구글 회원가입
-        </GoogleBarButton>
-        {/* <NaverBarButton onClick={() => routeToOAuthPage(OAUTH.NAVER.NAME)}>
+        <GoogleBarButton onClick={() => routeToOAuthPage('GOOGLE')}>구글 회원가입</GoogleBarButton>
+        {/* <NaverBarButton onClick={() => routeToOAuthPage('NAVER')}>
           네이버 회원가입
         </NaverBarButton> */}
         <NaverBarButton onClick={() => history.push('/register/name')}>
           네이버 회원가입
         </NaverBarButton>
-        <KakaoBarButton onClick={() => routeToOAuthPage(OAUTH.KAKAO.NAME)}>
-          카카오 회원가입
-        </KakaoBarButton>
+        <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO')}>카카오 회원가입</KakaoBarButton>
       </RegisterButtonContainer>
       <RegisterAnchorContainer>
         <Anchor to="/login">로그인하기</Anchor>
