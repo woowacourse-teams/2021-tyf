@@ -1,12 +1,15 @@
 package com.example.tyfserver.member;
 
 import com.example.tyfserver.AcceptanceTest;
+import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
+import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.MemberResponse;
 import com.example.tyfserver.member.dto.NicknameValidationRequest;
 import com.example.tyfserver.member.dto.PageNameValidationRequest;
 import com.example.tyfserver.member.dto.PointResponse;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
+
+    private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME";
 
     @Autowired
     private MemberRepository memberRepository;
@@ -84,11 +89,14 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("창작자 정보 조회 - 실패")
+    @DisplayName("창작자 정보 조회 - 실패: 인증헤더 없음")
     public void getMemberInfo_fail() {
-        // todo 예외 컨벤션 확립 후 주석풀기
-//        get("/members/" + "INVALID_PAGE_NAME")
-//                .statusCode(HttpStatus.BAD_REQUEST.value());
+        ErrorResponse error = get("/members/" + INVALID_PAGE_NAME)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(error.getErrorCode())
+                .isEqualTo(MemberNotFoundException.ERROR_CODE);
     }
 
     @Test
@@ -104,14 +112,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("창작자 포인트 조회 - 실패: 토큰없음")
+    @DisplayName("창작자 포인트 조회 - 실패: 인증헤더 없음")
     public void getMemberPoint_fail() {
-        // todo 예외 컨벤션 확립 후 주석풀기
-//        MemberResponse memberResponse = get("/members/me/point")
-//                .statusCode(HttpStatus.UNAUTHORIZED.value())
-//                .extract().as(MemberResponse.class);
-//
-//        assertThat(memberResponse).usingRecursiveComparison()
-//                .isEqualTo(new MemberResponse(member));
+        ErrorResponse error = get("/members/me/point")
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(error.getErrorCode())
+                .isEqualTo(AuthorizationHeaderNotFoundException.ERROR_CODE);
     }
 }
