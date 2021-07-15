@@ -19,6 +19,11 @@ public class JasyptConfig {
     @Bean("jasyptStringEncryptor")
     public StringEncryptor jasyptStringEncryptor() {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        encryptor.setConfig(generateConfig());
+        return encryptor;
+    }
+
+    private SimpleStringPBEConfig generateConfig() {
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         config.setPassword(environment.getProperty("jasypt.encryptor.password"));
         config.setAlgorithm("PBEWithMD5AndDES");
@@ -28,7 +33,6 @@ public class JasyptConfig {
         config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
         config.setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator");
         config.setStringOutputType("base64");
-        encryptor.setConfig(config);
-        return encryptor;
+        return config;
     }
 }
