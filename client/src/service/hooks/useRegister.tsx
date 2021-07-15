@@ -20,7 +20,9 @@ const useRegister = () => {
     setTermsChecked(toggleAll);
   };
 
-  return { termsChecked, toggleTermChecked, toggleAllTermsChecked };
+  const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
+
+  return { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked };
 };
 
 export default useRegister;
