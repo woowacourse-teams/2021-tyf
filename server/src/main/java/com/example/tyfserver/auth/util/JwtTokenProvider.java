@@ -35,8 +35,7 @@ public class JwtTokenProvider {
 
     public void validateToken(String token) {
         try {
-            Jwts.parser()
-                    .setSigningKey(secreteKey).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(secreteKey).parseClaimsJws(token);
         } catch (JwtException | IllegalArgumentException e) {
             throw new NotValidTokenException();
         }

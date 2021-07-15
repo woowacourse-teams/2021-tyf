@@ -11,6 +11,6 @@ public class ControllerAdviceHandler {
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ErrorResponse> errorHandling(BaseException exception) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(exception.getErrorCode(), exception.getMessage()));
+        return ResponseEntity.badRequest().body(exception.toResponse());
     }
 }

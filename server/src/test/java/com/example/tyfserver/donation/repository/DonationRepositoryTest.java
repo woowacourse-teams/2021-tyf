@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -83,9 +82,9 @@ class DonationRepositoryTest {
     @DisplayName("해당 Member가 받은 secret false인 최신 5개의 도네이션을 가져온다.")
     public void findPublicDonations() {
 
-        List<Donation> donations = donationRepository.findPublicDonations(member, false, PageRequest.of(0,5, Sort.by(Sort.Direction.DESC, "createdAt")));
+        List<Donation> donations = donationRepository.findPublicDonations(member, false, PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdAt")));
         assertThat(donations).containsExactlyInAnyOrder(
-                 donation7, donation2, donation3, donation4, donation6
+                donation7, donation2, donation3, donation4, donation6
         );
     }
 

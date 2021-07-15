@@ -42,10 +42,26 @@ public class Oauth2Service {
         return new SignUpResponse(email, oauthType);
     }
 
+    public TokenResponse signUp(SignUpRequest signUpRequest) {
+        Member member = signUpRequest.toMember();
+        memberRepository.save(member);
+        return new TokenResponse(authenticationService.createToken(member));
+    }
+
     private String getEmailFromOauth2(String oauthType, String code) {
         final Oauth2 oauth2 = Oauth2Type.findOauth2(oauthType);
         final String accessToken = requestAccessToken(code, oauth2);
         return requestEmail(accessToken, oauth2);
+    }
+
+    private String requestAccessToken(String code, Oauth2 oauth2) {
+        String body = ApiSender.send(
+                oauth2.getAccessTokenApi(),
+                HttpMethod.POST,
+                generateAccessTokenRequest(code, oauth2)
+        );
+
+        return extractAccessToken(body);
     }
 
     private String requestEmail(String accessToken, Oauth2 oauth2) {
@@ -63,22 +79,6 @@ public class Oauth2Service {
             throw new RuntimeException("token : " + authenticationService.createToken(member)); //todo: 에러 컨벤션
         }
         throw new RuntimeException(member.getOauth2Type().name() + " 로 이미 가입된 회원입니다.");
-    }
-
-    private String requestAccessToken(String code, Oauth2 oauth2) {
-        String body = ApiSender.send(
-                oauth2.getAccessTokenApi(),
-                HttpMethod.POST,
-                generateAccessTokenRequest(code, oauth2)
-        );
-
-        return extractAccessToken(body);
-    }
-
-    public TokenResponse signUp(SignUpRequest signUpRequest) {
-        Member member = signUpRequest.toMember();
-        memberRepository.save(member);
-        return new TokenResponse(authenticationService.createToken(member));
     }
 
     private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2 oauth2) {
