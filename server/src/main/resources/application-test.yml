@@ -24,8 +24,4 @@ logging.level:
 
 jwt:
   secreteKey: ABCDEFG
-  expire-length: 600000
-
-jasypt:
-  encryptor:
-    password: jasypt
+  expire-length: 60000
