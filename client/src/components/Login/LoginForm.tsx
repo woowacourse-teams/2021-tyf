@@ -1,20 +1,17 @@
 import { VFC } from 'react';
 
 import Anchor from '../@atom/Anchor/Anchor';
-import GoogleLogo from '../../assets/icons/google.svg';
-import NaverLogo from '../../assets/icons/naver.svg';
-import KakaoLogo from '../../assets/icons/kakao.svg';
 import {
-  GoogleButton,
-  KakaoButton,
   KeepLoginCheckbox,
   KeepLoginLabel,
   LoginAnchorContainer,
   LoginButtonContainer,
   LoginOptionContainer,
   LoginTitle,
-  NaverButton,
 } from './LoginForm.styles';
+import GoogleBarButton from '../@molecule/GoogleBarButton/GoogleBarButton.styles';
+import NaverBarButton from '../@molecule/NaverBarButton/NaverBarButton.styles';
+import KakaoBarButton from '../@molecule/KakaoBarButton/KaKaoBarButton.styles';
 
 const LoginForm: VFC = () => {
   return (
@@ -22,15 +19,9 @@ const LoginForm: VFC = () => {
       <LoginTitle>로그인</LoginTitle>
 
       <LoginButtonContainer>
-        <GoogleButton src={GoogleLogo} alt="google_logo">
-          구글 로그인
-        </GoogleButton>
-        <NaverButton src={NaverLogo} alt="naver_logo">
-          네이버 로그인
-        </NaverButton>
-        <KakaoButton src={KakaoLogo} alt="kakao_logo">
-          카카오 로그인
-        </KakaoButton>
+        <GoogleBarButton>구글 로그인</GoogleBarButton>
+        <NaverBarButton>네이버 로그인</NaverBarButton>
+        <KakaoBarButton>카카오 로그인</KakaoBarButton>
         <LoginOptionContainer>
           <KeepLoginLabel>
             <KeepLoginCheckbox></KeepLoginCheckbox>
