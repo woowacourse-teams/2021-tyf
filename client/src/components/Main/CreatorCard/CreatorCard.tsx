@@ -9,7 +9,7 @@ export interface CreatorCardProps {
 
 const CreatorCard: VFC<CreatorCardProps> = ({ creator }) => {
   return (
-    <StyledCreatorCard>
+    <StyledCreatorCard role="creator-card">
       <ProfileImg src={creator.profileImgSrc} alt={creator.name + '의 프로필 사진'} />
       <Name>{creator.name}</Name>
     </StyledCreatorCard>
