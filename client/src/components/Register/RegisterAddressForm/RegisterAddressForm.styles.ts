@@ -20,11 +20,11 @@ export const AddressInputContainer = styled(Container)`
     content: 'https://thankyoufor.com/';
     position: absolute;
     top: 20%;
-    left: 0;
+    left: 0.5rem;
     color: ${PALETTE.GRAY_500};
   }
 
   input {
-    padding-left: 12rem;
+    padding-left: 12.5rem;
   }
 `;
