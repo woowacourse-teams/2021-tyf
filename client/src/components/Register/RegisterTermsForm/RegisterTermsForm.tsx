@@ -16,11 +16,10 @@ import {
 
 const RegisterTermsForm: VFC = () => {
   const history = useHistory();
-  const { termsChecked, toggleTermChecked, toggleAllTermsChecked } = useRegister();
+  const { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked } =
+    useRegister();
 
-  const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
-
-  const movePage = () => {
+  const moveRegisterAuthPage = () => {
     // TODO: route명들 다 상수화하기
     history.push('/register/auth');
   };
@@ -62,7 +61,7 @@ const RegisterTermsForm: VFC = () => {
         </TermLabel>
       </TermsContainer>
       <Container>
-        <Button disabled={!isAllTermsChecked} onClick={movePage}>
+        <Button disabled={!isAllTermsChecked} onClick={moveRegisterAuthPage}>
           계속하기
         </Button>
       </Container>

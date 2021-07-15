@@ -1,5 +1,5 @@
-import { myRender } from './utils/testUtil';
 import { fireEvent, screen } from '@testing-library/react';
+import { myRender } from './utils/testUtil';
 
 import RegisterTermsPage from '../pages/Register/RegisterTerms/RegisterTermsPage';
 
