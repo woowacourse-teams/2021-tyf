@@ -18,7 +18,8 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/banners", "/members/point");
+                // todo 인증 테스트 필요
+                .addPathPatterns("/banners", "/banners/me", "/donations/me", "/members/me/point");
     }
 
     @Override

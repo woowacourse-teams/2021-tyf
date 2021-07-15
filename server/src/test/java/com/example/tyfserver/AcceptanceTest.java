@@ -37,8 +37,7 @@ public class AcceptanceTest {
 
     private static RequestSpecification authTemplate(String bearerToken) {
         return apiTemplate()
-                .headers("Authorization",
-                        "Bearer " + bearerToken);
+                .auth().oauth2(bearerToken);
     }
 
     protected static ValidatableResponse authPost(String url, String token, Object body) {

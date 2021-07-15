@@ -4,13 +4,17 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
+import com.example.tyfserver.donation.exception.DonationMessageRequestException;
+import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,13 +25,19 @@ public class DonationController {
     private final DonationService donationService;
 
     @PostMapping
-    public ResponseEntity<DonationResponse> createDonation(@RequestBody DonationRequest donationRequest) {
+    public ResponseEntity<DonationResponse> createDonation(@Valid @RequestBody DonationRequest donationRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new DonationRequestException();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(donationRequest));
     }
 
     @PostMapping("{donationId}/messages")
     public ResponseEntity<Void> addDonationMessage(@PathVariable Long donationId,
-                                                   @RequestBody DonationMessageRequest donationMessageRequest) {
+                                                   @Valid @RequestBody DonationMessageRequest donationMessageRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new DonationMessageRequestException();
+        }
         donationService.addMessageToDonation(donationId, donationMessageRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

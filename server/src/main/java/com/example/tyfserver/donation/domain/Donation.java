@@ -27,7 +27,7 @@ public class Donation extends BaseTimeEntity {
     private Member member;
 
     public Donation(Long amount) {
-        this(amount, new Message("익명", "당신을 응원합니다.", false));
+        this(amount, Message.defaultMessage());
     }
 
     public Donation(Long amount, Message message) {
