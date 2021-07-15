@@ -46,8 +46,8 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberPrivateResponse> memberPrivate(LoginMember loginMember) {
-        return ResponseEntity.ok(memberService.findMemberPrivate(loginMember.getId()));
+    public ResponseEntity<MemberDetailResponse> memberDetail(LoginMember loginMember) {
+        return ResponseEntity.ok(memberService.findMemberDetail(loginMember.getId()));
     }
 
     @GetMapping("/me/point")

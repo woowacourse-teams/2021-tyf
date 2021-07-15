@@ -30,19 +30,19 @@ public class MemberService {
     }
 
     public MemberResponse findMember(String pageName) {
-        Member findMember = memberRepository.findByPageName(pageName)
+        Member member = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
-        return new MemberResponse(findMember);
+        return new MemberResponse(member);
     }
 
-    public MemberPrivateResponse findMemberPrivate(Long id) {
-        Member findMember = findMember(id);
-        return new MemberPrivateResponse(findMember);
+    public MemberDetailResponse findMemberDetail(Long id) {
+        Member member = findMember(id);
+        return new MemberDetailResponse(member);
     }
 
     public PointResponse findMemberPoint(Long id) {
-        Member findMember = findMember(id);
-        return new PointResponse(findMember.getPoint().getPoint());
+        Member member = findMember(id);
+        return new PointResponse(member.getPoint().getPoint());
     }
 
     private Member findMember(Long id) {
