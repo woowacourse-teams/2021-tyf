@@ -14,6 +14,11 @@ import RegisterNamePage from './pages/Register/RegisterName/RegisterNamePage';
 import RegisterSuccessPage from './pages/Register/RegisterSuccess/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/RegisterTerms/RegisterTermsPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
+import { OAuthProvider } from './types';
+
+export interface ParamTypes {
+  oauthProvider?: OAuthProvider;
+}
 
 const App = () => {
   return (
@@ -22,7 +27,7 @@ const App = () => {
       <Switch>
         <Route path="/" component={MainPage} exact />
 
-        <Route path="/login" component={LoginPage} />
+        <Route path="/login/:oauthProvider?" component={LoginPage} />
 
         <Route path="/register" component={RegisterTermsPage} exact />
         <Route path="/register/auth" component={RegisterAuthPage} />
