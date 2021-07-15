@@ -1,10 +1,11 @@
 package com.example.tyfserver.auth.controller;
 
+import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.exception.SignUpRequestException;
 import com.example.tyfserver.auth.service.Oauth2Service;
+import com.example.tyfserver.member.dto.SignUpReadyResponse;
 import com.example.tyfserver.member.dto.SignUpRequest;
-import com.example.tyfserver.member.dto.SignUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,13 +26,13 @@ public class Oauth2Controller {
     }
 
     @GetMapping("/signup/ready/{oauth}")
-    public ResponseEntity<SignUpResponse> readySignUp(@PathVariable String oauth, @RequestParam String code) {
+    public ResponseEntity<SignUpReadyResponse> readySignUp(@PathVariable String oauth, @RequestParam String code) {
         return ResponseEntity.ok(oauth2Service.readySignUp(oauth, code));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<TokenResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest,
-                                                BindingResult result) {
+    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest,
+                                                 BindingResult result) {
         if (result.hasErrors()) {
             throw new SignUpRequestException();
         }

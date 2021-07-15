@@ -2,13 +2,11 @@ package com.example.tyfserver.member;
 
 import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
+import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.dto.MemberResponse;
-import com.example.tyfserver.member.dto.NicknameValidationRequest;
-import com.example.tyfserver.member.dto.PageNameValidationRequest;
-import com.example.tyfserver.member.dto.PointResponse;
+import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MemberAcceptanceTest extends AcceptanceTest {
 
     private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME";
+    private static final String INVALID_TOKEN = "INVALID_TOKEN";
 
     @Autowired
     private MemberRepository memberRepository;
@@ -31,12 +30,14 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     private JwtTokenProvider jwtTokenProvider;
 
     private Member member = MemberTest.testMember();
+    private Member member2 = MemberTest.testMember2();
 
     @Override
     @BeforeEach
     public void setUp() {
         super.setUp();
         member = memberRepository.save(member);
+        member2 = memberRepository.save(member2);
     }
 
     @AfterEach
@@ -53,7 +54,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("랜딩 페이지 유효성 검사 - 실패의 경우")
+    @DisplayName("랜딩 페이지 유효성 검사 - 실패")
     public void validateLandingPageValidationWithNotValidCase() {
         PageNameValidationRequest validationRequest = new PageNameValidationRequest("ㅁㄴㅇㄹ");
         post("/members/validate/pageName", validationRequest)
@@ -70,7 +71,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("닉네임 유효성 검사 - 실패의 경우")
+    @DisplayName("닉네임 유효성 검사 - 실패")
     public void validateNicknameValidationWithNotValidCase() {
         NicknameValidationRequest validationRequest = new NicknameValidationRequest("NotValidNickname!!");
         post("/members/validate/nickname", validationRequest)
@@ -89,7 +90,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("창작자 정보 조회 - 실패: 인증헤더 없음")
+    @DisplayName("창작자 정보 조회 - 실패: 존재하지 않는 멤버")
     public void getMemberInfo_fail() {
         ErrorResponse error = get("/members/" + INVALID_PAGE_NAME)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -97,6 +98,40 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(error.getErrorCode())
                 .isEqualTo(MemberNotFoundException.ERROR_CODE);
+    }
+
+    @Test
+    @DisplayName("창작자 자신의 정보 조회")
+    public void getMemberInfoSelf() {
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
+        MemberDetailResponse memberResponse = authGet("/members/me", token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(MemberDetailResponse.class);
+
+        assertThat(memberResponse).usingRecursiveComparison()
+                .isEqualTo(new MemberDetailResponse(member));
+    }
+
+    @Test
+    @DisplayName("창작자 자신의 정보 조회 - 실패: 인증헤더 없음")
+    public void getMemberInfoSelf_fail1() {
+        ErrorResponse error = get("/members/me")
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(error.getErrorCode())
+                .isEqualTo(AuthorizationHeaderNotFoundException.ERROR_CODE);
+    }
+
+    @Test
+    @DisplayName("창작자 자신의 정보 조회 - 실패: 유효하지 않은 토큰")
+    public void getMemberInfoSelf_fail2() {
+        ErrorResponse error = authGet("/members/me", INVALID_TOKEN)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(error.getErrorCode())
+                .isEqualTo(InvalidTokenException.ERROR_CODE);
     }
 
     @Test

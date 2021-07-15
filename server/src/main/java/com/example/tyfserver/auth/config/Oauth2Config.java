@@ -21,15 +21,15 @@ public class Oauth2Config {
 
     @PostConstruct
     public void inject() {
-        for (Oauth2Type value : Oauth2Type.values()) {
-            if (value.equals(Oauth2Type.GOOGLE)) {
-                value.setOauth2TypeInterface(googleOauth2);
+        for (Oauth2Type oauth2Type : Oauth2Type.values()) {
+            if (oauth2Type.equals(Oauth2Type.GOOGLE)) {
+                oauth2Type.setOauth2TypeInterface(googleOauth2);
             }
-            if (value.equals(Oauth2Type.NAVER)) {
-                value.setOauth2TypeInterface(naverOauth2);
+            if (oauth2Type.equals(Oauth2Type.NAVER)) {
+                oauth2Type.setOauth2TypeInterface(naverOauth2);
             }
-            if (value.equals(Oauth2Type.KAKAO)) {
-                value.setOauth2TypeInterface(kakaoOauth2);
+            if (oauth2Type.equals(Oauth2Type.KAKAO)) {
+                oauth2Type.setOauth2TypeInterface(kakaoOauth2);
             }
         }
     }
