@@ -43,7 +43,7 @@ public class DonationService {
 
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
+                .orElseThrow(MemberNotFoundException::new);
 
         List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(findMember, pageable);
 
@@ -52,7 +52,7 @@ public class DonationService {
 
     public List<DonationResponse> findPublicDonations(String pageName) {
         Member findMember = memberRepository.findByPageName(pageName)
-                .orElseThrow(() -> new RuntimeException("해당 회원을 찾을 수 없습니다."));
+                .orElseThrow(MemberNotFoundException::new);
 
         List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(findMember);
         hideSecretDonation(donations);
