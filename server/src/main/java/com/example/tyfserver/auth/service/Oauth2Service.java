@@ -4,7 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.exception.AlreadyRegisteredException;
-import com.example.tyfserver.auth.exception.AlreadyRegisteredInSameOath2TypeException;
+import com.example.tyfserver.auth.exception.AlreadyRegisteredInSameOauth2TypeException;
 import com.example.tyfserver.auth.exception.UnregisteredMemberException;
 import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.member.domain.Member;
@@ -79,7 +79,7 @@ public class Oauth2Service {
 
     private void validateRegisteredMember(String oauthType, Member member) {
         if (member.isSameOauthType(oauthType)) {
-            throw new AlreadyRegisteredInSameOath2TypeException(authenticationService.createToken(member));
+            throw new AlreadyRegisteredInSameOauth2TypeException(authenticationService.createToken(member));
         }
         throw new AlreadyRegisteredException(member.getOauth2Type().name());
     }

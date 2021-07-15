@@ -34,7 +34,7 @@ public class DonationController {
 
     @PostMapping("{donationId}/messages")
     public ResponseEntity<Void> addDonationMessage(@PathVariable Long donationId,
-                              @RequestBody DonationMessageRequest donationMessageRequest, BindingResult result) {
+                                                   @RequestBody DonationMessageRequest donationMessageRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new DonationMessageRequestException();
         }
