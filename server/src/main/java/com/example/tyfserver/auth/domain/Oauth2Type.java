@@ -1,5 +1,7 @@
 package com.example.tyfserver.auth.domain;
 
+import com.example.tyfserver.auth.exception.InvalidOauth2TypeException;
+
 import java.util.Arrays;
 
 public enum Oauth2Type {
@@ -12,7 +14,7 @@ public enum Oauth2Type {
         return Arrays.stream(Oauth2Type.values())
                 .filter(value -> value.name().equals(type))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("type not found"));//todo: error 컨벤션
+                .orElseThrow(InvalidOauth2TypeException::new);
     }
 
     public static Oauth2 findOauth2(String type) {

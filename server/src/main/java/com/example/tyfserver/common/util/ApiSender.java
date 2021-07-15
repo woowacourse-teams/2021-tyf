@@ -6,15 +6,12 @@ import org.springframework.web.client.RestTemplate;
 
 public class ApiSender {
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
+
+    private ApiSender() {
+    }
 
     public static String send(String url, HttpMethod method, HttpEntity entity) {
-
-        return restTemplate.exchange(
-                url,
-                method,
-                entity,
-                String.class
-        ).getBody();
+        return REST_TEMPLATE.exchange(url, method, entity, String.class).getBody();
     }
 }

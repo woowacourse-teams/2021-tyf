@@ -1,5 +1,7 @@
 package com.example.tyfserver.auth.util;
 
+import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
@@ -20,6 +22,6 @@ public class AuthorizationExtractor {
             }
         }
 
-        throw new RuntimeException("Authorization Header Not Found");
+        throw new AuthorizationHeaderNotFoundException();
     }
 }
