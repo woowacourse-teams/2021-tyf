@@ -1,7 +1,8 @@
-import { OAUTH } from '../constants/oauth';
+import { OAUTH, REDIRECT_PATH } from '../constants/oauth';
+import { OAuthProvider } from '../types';
 
-type OAuthRouteType = keyof typeof OAUTH;
+type RedirectPathType = keyof typeof REDIRECT_PATH;
 
-export const routeToOAuthPage = (oauthName: OAuthRouteType) => {
-  window.open(OAUTH[oauthName].URL, '_target');
+export const routeToOAuthPage = (oauthName: OAuthProvider, redirectPath: RedirectPathType) => {
+  window.open(OAUTH[oauthName].URL + redirectPath + oauthName, '_target');
 };
