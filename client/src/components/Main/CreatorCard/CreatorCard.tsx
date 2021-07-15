@@ -1,9 +1,19 @@
 import { VFC } from 'react';
 
-import { StyledCreatorCard } from './CreatorCard.styles';
+import { Creator } from '../../../types';
+import { Name, ProfileImg, StyledCreatorCard } from './CreatorCard.styles';
 
-const CreatorCard: VFC = () => {
-  return <StyledCreatorCard></StyledCreatorCard>;
+export interface CreatorCardProps {
+  creator: Creator;
+}
+
+const CreatorCard: VFC<CreatorCardProps> = ({ creator }) => {
+  return (
+    <StyledCreatorCard role="creator-card">
+      <ProfileImg src={creator.profileImgSrc} alt={creator.name + '의 프로필 사진'} />
+      <Name>{creator.name}</Name>
+    </StyledCreatorCard>
+  );
 };
 
 export default CreatorCard;
