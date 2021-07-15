@@ -6,9 +6,9 @@ const useRegister = () => {
     personalInformationUsage: false,
   });
 
-  const toggleTermChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
+  const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
 
+  const toggleTermChecked = ({ name, checked }: { name: string; checked: boolean }) => {
     setTermsChecked({ ...termsChecked, [name]: checked });
   };
 
@@ -19,8 +19,6 @@ const useRegister = () => {
 
     setTermsChecked(toggleAll);
   };
-
-  const isAllTermsChecked = Object.values(termsChecked).every((isChecked) => isChecked === true);
 
   return { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked };
 };
