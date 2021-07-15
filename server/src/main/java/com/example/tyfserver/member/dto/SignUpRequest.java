@@ -22,11 +22,11 @@ public class SignUpRequest {
     private String oauthType;
     @NotBlank
     @Length(min = 3, max = 20)
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$") //todo: 정규표현식 수정 필요
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$") //todo: 정규표현식 수정 필요, NicknameValidationRequest와 Validator 통일
     private String nickname;
     @Length(min = 3, max = 20)
     @NotBlank
-    @Pattern(regexp = "^[a-z0-9_-]*$") //todo: 정규표현식 수정 필요
+    @Pattern(regexp = "^[a-z0-9_-]*$") //todo: 정규표현식 수정 필요, PageNameValidationRequest와 Validator 통일
     private String pageName;
 
     public SignUpRequest(String email, String oauthType, String nickname, String pageName) {
