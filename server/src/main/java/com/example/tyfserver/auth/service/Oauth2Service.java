@@ -3,6 +3,9 @@ package com.example.tyfserver.auth.service;
 import com.example.tyfserver.auth.domain.Oauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
+import com.example.tyfserver.auth.exception.AlreadyRegisteredException;
+import com.example.tyfserver.auth.exception.AlreadyRegisteredInSameOath2TypeException;
+import com.example.tyfserver.auth.exception.UnregisteredMemberException;
 import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.SignUpRequest;
@@ -28,7 +31,7 @@ public class Oauth2Service {
         final String email = getEmailFromOauth2(oauthType, code);
 
         Member findMember = memberRepository.findByEmailAndOauth2Type(email, oauthType)
-                .orElseThrow(() -> new RuntimeException("가입되어 있지 않은 유저"));// todo 예외클래스, 메시지
+                .orElseThrow(UnregisteredMemberException::new);
 
         return new TokenResponse(authenticationService.createToken(findMember));
     }
@@ -76,9 +79,9 @@ public class Oauth2Service {
 
     private void validateRegisteredMember(String oauthType, Member member) {
         if (member.isSameOauthType(oauthType)) {
-            throw new RuntimeException("token : " + authenticationService.createToken(member)); //todo: 에러 컨벤션
+            throw new AlreadyRegisteredInSameOath2TypeException(authenticationService.createToken(member));
         }
-        throw new RuntimeException(member.getOauth2Type().name() + " 로 이미 가입된 회원입니다.");
+        throw new AlreadyRegisteredException(member.getOauth2Type().name());
     }
 
     private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2 oauth2) {
@@ -103,11 +106,13 @@ public class Oauth2Service {
     }
 
     private String extractEmail(Oauth2 oauth2, String response) {
+        // todo OAuth2 에서 발생한 예외 잡기
         final JSONObject jsonObject = new JSONObject(response);
         return oauth2.extractEmail(jsonObject);
     }
 
     private String extractAccessToken(String body) {
+        // todo OAuth2 에서 발생한 예외 잡기
         final JSONObject jsonObject = new JSONObject(body);
         return jsonObject.getString("access_token");
     }

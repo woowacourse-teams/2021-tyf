@@ -1,6 +1,7 @@
 package com.example.tyfserver.auth.controller;
 
 import com.example.tyfserver.auth.dto.TokenResponse;
+import com.example.tyfserver.auth.exception.AlreadyRegisteredInSameOath2TypeException;
 import com.example.tyfserver.auth.service.Oauth2Service;
 import com.example.tyfserver.member.dto.SignUpRequest;
 import com.example.tyfserver.member.dto.SignUpResponse;
