@@ -4,17 +4,17 @@ import org.json.JSONObject;
 
 public interface Oauth2 {
 
-    public String extractEmail(final JSONObject jsonObject);
+    String extractEmail(final JSONObject jsonObject);
 
-    public String getType();
+    String getType();
 
-    public String getClientId();
+    String getClientId();
 
-    public String getClientSecret();
+    String getClientSecret();
 
-    public String getRedirectUrl();
+    String getRedirectUrl();
 
-    public String getAccessTokenApi();
+    String getAccessTokenApi();
 
-    public String getProfileApi();
+    String getProfileApi();
 }
