@@ -13,7 +13,10 @@ spring:
       ddl-auto: create
 
   profiles:
-    include: oauth2-prod
+    include: oauth2-encrypted
+
+  config:
+    use-legacy-processing: true
 
 logging.level:
   org.hibernate.SQL: debug
