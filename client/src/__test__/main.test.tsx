@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import MainPage from '../pages/Main/MainPage';
 import { myRender } from './utils/testUtil';
