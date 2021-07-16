@@ -1,6 +1,6 @@
 package com.example.tyfserver.donation.service;
 
-import com.example.tyfserver.donation.DonationTest;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;

@@ -62,9 +62,7 @@ public class DonationService {
 
     private void hideSecretDonation(List<Donation> donations) {
         for (Donation donation : donations) {
-            if (donation.isSecret()) {
-                donation.hideNameAndMessage();
-            }
+            donation.hideNameAndMessageWhenSecret();
         }
     }
 

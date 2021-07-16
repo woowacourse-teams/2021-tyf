@@ -3,6 +3,7 @@ package com.example.tyfserver.donation;
 import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;

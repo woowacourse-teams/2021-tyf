@@ -59,7 +59,7 @@ public class Member extends BaseTimeEntity {
     private void addPoint(final long donationAmount) {
         this.point.add(donationAmount);
     }
-    
+
     public long getPoint() {
         return this.point.getPoint();
     }
