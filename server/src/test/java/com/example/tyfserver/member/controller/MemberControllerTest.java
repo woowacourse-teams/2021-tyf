@@ -79,7 +79,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("/members/validate/pageName - 중복된 pageName")
-    public void validatePageNametDuplicatedFailed() throws Exception {
+    public void validatePageNameDuplicatedFailed() throws Exception {
         //given
         PageNameValidationRequest request = new PageNameValidationRequest("pagename");
 
@@ -129,7 +129,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("/members/validate/nickname - 중복된 nickname")
-    public void validateNicknametDuplicatedFailed() throws Exception {
+    public void validateNicknameDuplicatedFailed() throws Exception {
         //given
         NicknameValidationRequest request = new NicknameValidationRequest("nickname");
 
