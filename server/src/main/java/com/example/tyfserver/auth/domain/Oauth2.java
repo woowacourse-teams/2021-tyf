@@ -12,7 +12,9 @@ public interface Oauth2 {
 
     String getClientSecret();
 
-    String getRedirectUrl();
+    String getSignUpRedirectUrl();
+
+    String getLoginRedirectUrl();
 
     String getAccessTokenApi();
 

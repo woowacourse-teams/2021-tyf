@@ -1,5 +1,6 @@
 package com.example.tyfserver.auth.controller;
 
+import com.example.tyfserver.auth.dto.Oauth2Request;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.exception.SignUpRequestException;
@@ -22,12 +23,17 @@ public class Oauth2Controller {
 
     @GetMapping("/login/{oauth}")
     public ResponseEntity<TokenResponse> login(@PathVariable String oauth, @RequestParam String code) {
-        return ResponseEntity.ok(oauth2Service.login(oauth, code));
+        return ResponseEntity.ok(
+                oauth2Service.login(Oauth2Request.generateLoginInfoFrom(oauth), code)
+        );
     }
 
     @GetMapping("/signup/ready/{oauth}")
     public ResponseEntity<SignUpReadyResponse> readySignUp(@PathVariable String oauth, @RequestParam String code) {
-        return ResponseEntity.ok(oauth2Service.readySignUp(oauth, code));
+
+        return ResponseEntity.ok(
+                oauth2Service.readySignUp(Oauth2Request.generateSignUpInfoFrom(oauth), code)
+        );
     }
 
     @PostMapping("/signup")

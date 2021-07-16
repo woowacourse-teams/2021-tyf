@@ -15,7 +15,8 @@ public class KakaoOauth2 implements Oauth2 {
     private final String type;
     private final String clientId;
     private final String clientSecret;
-    private final String redirectUrl;
+    private final String signUpRedirectUrl;
+    private final String loginRedirectUrl;
     private final String accessTokenApi;
     private final String profileApi;
 
