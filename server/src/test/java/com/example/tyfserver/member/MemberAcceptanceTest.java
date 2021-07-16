@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
 
-    private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME";
+    private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME!@#$";
+    private static final String INVALID_NICK_NAME = "INVALID_NICK_NAME!@#$";
     private static final String INVALID_TOKEN = "INVALID_TOKEN";
 
     @Autowired
@@ -55,7 +56,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("랜딩 페이지 유효성 검사 - 실패")
-    public void validateLandingPageValidationWithNotValidCase() {
+    public void validateLandingPageValidation_fail() {
         PageNameValidationRequest validationRequest = new PageNameValidationRequest("ㅁㄴㅇㄹ");
         post("/members/validate/pageName", validationRequest)
                 .statusCode(HttpStatus.BAD_REQUEST.value());
@@ -72,9 +73,26 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("닉네임 유효성 검사 - 실패")
-    public void validateNicknameValidationWithNotValidCase() {
-        NicknameValidationRequest validationRequest = new NicknameValidationRequest("NotValidNickname!!");
+    public void validateNicknameValidation_fail() {
+        NicknameValidationRequest validationRequest = new NicknameValidationRequest(INVALID_NICK_NAME);
         post("/members/validate/nickname", validationRequest)
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("토큰 유효성 검사")
+    public void validateTokenValidation() {
+        String token = jwtTokenProvider.createToken(1L, "joy@naver.com");
+        TokenValidationRequest validationRequest = new TokenValidationRequest(token);
+        post("/members/validate/token", validationRequest)
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("토큰 유효성 검사 - 실패")
+    public void validateTokenValidation_fail() {
+        TokenValidationRequest validationRequest = new TokenValidationRequest(INVALID_TOKEN);
+        post("/members/validate/token", validationRequest)
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
@@ -93,7 +111,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("창작자 정보 조회 - 실패: 존재하지 않는 멤버")
     public void getMemberInfo_fail() {
         ErrorResponse error = get("/members/" + INVALID_PAGE_NAME)
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+//                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
 
         assertThat(error.getErrorCode())

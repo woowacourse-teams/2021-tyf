@@ -1,6 +1,7 @@
 package com.example.tyfserver.member.controller;
 
 import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
@@ -20,6 +21,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/validate/pageName")
     public ResponseEntity<Void> validatePageName(@Valid @RequestBody PageNameValidationRequest request,
@@ -38,6 +40,12 @@ public class MemberController {
             throw new NicknameValidationRequestException();
         }
         memberService.validateNickname(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/validate/token")
+    public ResponseEntity<Void> validateToken(@RequestBody TokenValidationRequest request) {
+        authenticationService.validateToken(request.getToken());
         return ResponseEntity.ok().build();
     }
 
