@@ -1,11 +1,21 @@
 import { VFC } from 'react';
+import { useHistory } from 'react-router-dom';
+import useRegister from '../../../service/hooks/useRegister';
 
-import Anchor from '../../@atom/Anchor/Anchor';
 import Button from '../../@atom/Button/Button';
 import InputWithMessage from '../../@molecule/InputWithMessage/InputWithMessage';
 import { NameInputContainer, RegisterNameTitle } from './RegisterNameForm.styles';
 
 const RegisterNameForm: VFC = () => {
+  const history = useHistory();
+  const { nickName, nickNameErrorMessage, isValidNickName, onChangeNickName } = useRegister();
+
+  const moveRegisterSuccessPage = () => {
+    // TODO: 회원가입 절차
+
+    history.push('/register/success');
+  };
+
   return (
     <>
       <RegisterNameTitle>
@@ -15,14 +25,16 @@ const RegisterNameForm: VFC = () => {
       </RegisterNameTitle>
       <NameInputContainer>
         <InputWithMessage
-          isSuccess={false}
+          value={nickName}
+          isSuccess={isValidNickName}
           successMessage="좋은 닉네임이네요!"
-          failureMessage="이미 존재하는 닉네임이에요... 다른 닉네임으로 시도해주세요!"
+          failureMessage={nickNameErrorMessage}
           placeholder="닉네임 입력하기"
+          onChange={(e) => onChangeNickName(e.target)}
         />
       </NameInputContainer>
-      <Button disabled>
-        <Anchor to="/register/success">회원가입 완료</Anchor>
+      <Button disabled={!!nickNameErrorMessage} onClick={moveRegisterSuccessPage}>
+        회원가입 완료
       </Button>
     </>
   );

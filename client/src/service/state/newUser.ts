@@ -1,6 +1,4 @@
 import { atom, selector } from 'recoil';
-import { apiClient } from '../../API';
-import { requestValidatePageName } from '../request/register';
 
 export const newUserState = atom({
   key: 'newUserState',
@@ -51,5 +49,37 @@ export const urlNameDBValidationQuery = selector({
     } catch (error) {
       return error.message;
     }
+  },
+});
+
+export const nickNameValidationQuery = selector({
+  key: 'nickNameValidationQuery',
+  get: ({ get }) => {
+    const { nickName } = get(newUserState);
+
+    // - 최소, 최대 길이 검사 (3 이상 20 이하)
+    if (nickName.length < 3) {
+      return '닉네임은 최소 3글자 이상이여합니다.';
+    }
+
+    if (20 < nickName.length) {
+      return '닉네임은 최대 20글자 이하여야 합니다';
+    }
+
+    if (nickName !== nickName.trim()) {
+      return '닉네임의 맨 앞과 뒤에는 공백이 불가능합니다.';
+    }
+
+    if (nickName !== nickName.replace(/ +/g, ' ')) {
+      return '닉네임 사이에 공백은 한칸만 가능합니다.';
+    }
+
+    // 한글, 영어, 한자, 일본어, 숫자 매칭
+    const regExp = /^[a-zA-Z0-9가-힇ㄱ-ㅎㅏ-ㅣぁ-ゔァ-ヴー々〆〤一-龥]*$/;
+    if (!regExp.test(nickName)) {
+      return '닉네임은 한글, 영어, 한자, 일본어, 숫자만 가능합니다.';
+    }
+
+    return '';
   },
 });
