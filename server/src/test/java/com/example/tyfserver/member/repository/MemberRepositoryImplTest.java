@@ -70,7 +70,7 @@ class MemberRepositoryImplTest {
         assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nickname3", 7000L, "pageName3"));
         assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nickname5", 5000L, "pageName5"));
         assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nickname2", 2000L, "pageName2"));
-        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nickname1", 1000L, "pageName111111"));
+        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nickname1", 1000L, "pageName1"));
     }
 
 }
