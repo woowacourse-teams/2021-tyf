@@ -1,26 +1,55 @@
-import Anchor from '../@atom/Anchor/Anchor';
-import { StyledModal, ProfileContainer, URLCopyButton } from './Menu.styles';
+import { VFC } from 'react';
 
-const Menu = () => {
-  const isLogin = true;
+import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
+import Anchor from '../@atom/Anchor/Anchor';
+import { StyledModal, ProfileContainer, URLCopyButton, StyledAnchor } from './Menu.styles';
+import useLogout from '../../service/hooks/useLogout';
+import { donationUrlShare } from '../../service/share';
+
+export interface MenuProps {
+  onClose: () => void;
+}
+
+const Menu: VFC<MenuProps> = ({ onClose }) => {
+  const { userInfo } = useLoginUserInfo();
+  const { logout } = useLogout();
+
+  const onLogout = () => {
+    logout();
+    onClose();
+  };
+
+  const shareURL = () => {
+    if (!userInfo) return;
+
+    donationUrlShare(userInfo.name, userInfo.pageName);
+  };
 
   return (
-    <StyledModal>
+    <StyledModal onClose={onClose}>
       <ProfileContainer>
-        {isLogin ? (
+        {userInfo ? (
           <>
-            <span>파노</span>
-            <URLCopyButton>후원URL 복사</URLCopyButton>
+            <span>{userInfo.name}</span>
+            <URLCopyButton onClick={shareURL}>후원URL 복사</URLCopyButton>
           </>
         ) : (
-          <Anchor to="">로그인을 해주세요 {'>'}</Anchor>
+          <StyledAnchor to="/login" onClick={onClose}>
+            로그인을 해주세요&nbsp;&nbsp; {'>'}
+          </StyledAnchor>
         )}
       </ProfileContainer>
-      {isLogin && (
+      {userInfo && (
         <>
-          <Anchor to="">마이페이지</Anchor>
-          <Anchor to="">후원 통계</Anchor>
-          <Anchor to="">로그아웃</Anchor>
+          <StyledAnchor to={`/creator/${userInfo?.pageName}`} onClick={onClose}>
+            마이페이지
+          </StyledAnchor>
+          <StyledAnchor to={`/creator/${userInfo?.pageName}/statistic`} onClick={onClose}>
+            후원 통계
+          </StyledAnchor>
+          <StyledAnchor to="/" onClick={onLogout}>
+            로그아웃
+          </StyledAnchor>
         </>
       )}
     </StyledModal>
