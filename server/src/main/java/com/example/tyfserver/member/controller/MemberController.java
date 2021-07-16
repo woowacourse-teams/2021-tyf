@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -53,5 +54,10 @@ public class MemberController {
     @GetMapping("/me/point")
     public ResponseEntity<PointResponse> memberPoint(LoginMember loginMember) {
         return ResponseEntity.ok(memberService.findMemberPoint(loginMember.getId()));
+    }
+
+    @GetMapping("/curations")
+    public ResponseEntity<List<CurationsResponse>> curations() {
+        return ResponseEntity.ok(memberService.findCurations());
     }
 }
