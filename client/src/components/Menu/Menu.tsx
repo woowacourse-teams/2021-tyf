@@ -20,6 +20,8 @@ const Menu: VFC<MenuProps> = ({ onClose }) => {
   };
 
   const shareURL = () => {
+    if (!userInfo) return;
+
     donationUrlShare(userInfo.name, userInfo.pageName);
   };
 
