@@ -9,4 +9,4 @@ export const apiClient: AxiosInstance = axios.create({
   },
 });
 
-export const createAuthorizationHeader = () => {};
+// export const createAuthorizationHeader = () => {};
