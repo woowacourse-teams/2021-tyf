@@ -1,11 +1,16 @@
+import { VFC } from 'react';
 import Anchor from '../@atom/Anchor/Anchor';
 import { StyledModal, ProfileContainer, URLCopyButton } from './Menu.styles';
 
-const Menu = () => {
+export interface MenuProps {
+  onClose: () => void;
+}
+
+const Menu: VFC<MenuProps> = ({ onClose }) => {
   const isLogin = true;
 
   return (
-    <StyledModal>
+    <StyledModal onClose={onClose}>
       <ProfileContainer>
         {isLogin ? (
           <>
