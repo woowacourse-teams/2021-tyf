@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { newUserState, nickNameValidationQuery, urlNameValidationQuery } from '../state/newUser';
+import { newUserState, nickNameValidationQuery, urlNameValidationQuery } from '../state/register';
 
 const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);

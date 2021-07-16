@@ -1,6 +1,6 @@
 import { VFC } from 'react';
 import { useHistory } from 'react-router-dom';
-import useRegister from '../../../service/hooks/useRegisterTerms';
+import useTerms from '../../../service/hooks/useTerms';
 
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
@@ -16,8 +16,7 @@ import {
 
 const RegisterTermsForm: VFC = () => {
   const history = useHistory();
-  const { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked } =
-    useRegister();
+  const { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked } = useTerms();
 
   const moveRegisterAuthPage = () => {
     // TODO: route명들 다 상수화하기

@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 
-import { OAUTH } from '../../constants/constant';
+import { OAuth } from '../../constants/constant';
 
 enum OAuthSites {
   google,
@@ -12,18 +12,18 @@ const useRegisterAuth = () => {
   const history = useHistory();
   const openOAuthPage = (name: keyof typeof OAuthSites) => {
     switch (name) {
-      case OAUTH.GOOGLE.NAME:
-        window.open(OAUTH.GOOGLE.URL, '_target');
+      case OAuth.google.name:
+        window.open(OAuth.google.url, '_target');
         break;
 
-      case OAUTH.NAVER.NAME:
+      case OAuth.naver.name:
         // (다음 페이지로 넘어가기 위한 임시 코드로 대체)
-        // window.open(OAUTH.NAVER, '_target');
+        // window.open(OAuth.naver, '_target');
         history.push('/register/url');
         break;
 
-      case OAUTH.KAKAO.NAME:
-        window.open(OAUTH.KAKAO.URL, '_target');
+      case OAuth.kakao.name:
+        window.open(OAuth.kakao.url, '_target');
         break;
 
       default:

@@ -1,5 +1,4 @@
 import { atom, selector } from 'recoil';
-import { requestValidatePageName } from '../request/register';
 
 export const newUserState = atom({
   key: 'newUserState',
@@ -41,7 +40,6 @@ export const nickNameValidationQuery = selector({
   get: ({ get }) => {
     const { nickName } = get(newUserState);
 
-    // - 최소, 최대 길이 검사 (3 이상 20 이하)
     if (nickName.length < 3) {
       return '닉네임은 최소 3글자 이상이여합니다.';
     }
