@@ -5,7 +5,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import lombok.Getter;
 
 @Getter
-public class Oauth2InfoDto {
+public class Oauth2Request {
 
     private String type;
     private String clientId;
@@ -15,8 +15,8 @@ public class Oauth2InfoDto {
     private String profileApi;
 
 
-    private Oauth2InfoDto(String type, String clientId, String clientSecret, String redirectUrl, String accessTokenApi,
-                         String profileApi) {
+    private Oauth2Request(String type, String clientId, String clientSecret, String redirectUrl, String accessTokenApi,
+                          String profileApi) {
         this.type = type;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -25,15 +25,15 @@ public class Oauth2InfoDto {
         this.profileApi = profileApi;
     }
 
-    public static Oauth2InfoDto generateLoginInfoFrom (String oauthType) {
+    public static Oauth2Request generateLoginInfoFrom(String oauthType) {
         Oauth2 oauth = Oauth2Type.findOauth2(oauthType);
-        return new Oauth2InfoDto(oauth.getType(), oauth.getClientId(), oauth.getClientSecret(),
+        return new Oauth2Request(oauth.getType(), oauth.getClientId(), oauth.getClientSecret(),
                 oauth.getLoginRedirectUrl(), oauth.getAccessTokenApi(), oauth.getProfileApi());
     }
 
-    public static Oauth2InfoDto generateSignUpInfoFrom (String oauthType) {
+    public static Oauth2Request generateSignUpInfoFrom(String oauthType) {
         Oauth2 oauth = Oauth2Type.findOauth2(oauthType);
-        return new Oauth2InfoDto(oauth.getType(), oauth.getClientId(), oauth.getClientSecret(),
+        return new Oauth2Request(oauth.getType(), oauth.getClientId(), oauth.getClientSecret(),
                 oauth.getSignUpRedirectUrl(), oauth.getAccessTokenApi(), oauth.getProfileApi());
     }
 }

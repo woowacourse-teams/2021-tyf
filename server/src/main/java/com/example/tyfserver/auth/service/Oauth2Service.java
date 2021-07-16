@@ -2,7 +2,7 @@ package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.auth.domain.Oauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.auth.dto.Oauth2InfoDto;
+import com.example.tyfserver.auth.dto.Oauth2Request;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.exception.AlreadyRegisteredException;
@@ -33,22 +33,22 @@ public class Oauth2Service {
     private final MemberRepository memberRepository;
     private final AuthenticationService authenticationService;
 
-    public TokenResponse login(final Oauth2InfoDto oauth2InfoDto, final String code) {
-        final String email = getEmailFromOauth2(oauth2InfoDto, code);
+    public TokenResponse login(final Oauth2Request oauth2Request, final String code) {
+        final String email = getEmailFromOauth2(oauth2Request, code);
 
-        Member findMember = memberRepository.findByEmailAndOauth2Type(email, oauth2InfoDto.getType())
+        Member findMember = memberRepository.findByEmailAndOauth2Type(email, oauth2Request.getType())
                 .orElseThrow(UnregisteredMemberException::new);
 
         return new TokenResponse(authenticationService.createToken(findMember));
     }
 
-    public SignUpReadyResponse readySignUp(final Oauth2InfoDto oauth2InfoDto, final String code) {
-        final String email = getEmailFromOauth2(oauth2InfoDto, code);
+    public SignUpReadyResponse readySignUp(final Oauth2Request oauth2Request, final String code) {
+        final String email = getEmailFromOauth2(oauth2Request, code);
 
         memberRepository.findByEmail(email)
-                .ifPresent(member -> validateRegisteredMember(oauth2InfoDto.getType(), member));
+                .ifPresent(member -> validateRegisteredMember(oauth2Request.getType(), member));
 
-        return new SignUpReadyResponse(email, oauth2InfoDto.getType());
+        return new SignUpReadyResponse(email, oauth2Request.getType());
     }
 
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
@@ -58,29 +58,29 @@ public class Oauth2Service {
         return new SignUpResponse(authenticationService.createToken(persistMember), persistMember.getPageName());
     }
 
-    private String getEmailFromOauth2(Oauth2InfoDto oauth2InfoDto, String code) {
-        final String accessToken = requestAccessToken(code, oauth2InfoDto);
-        return requestEmail(accessToken, oauth2InfoDto);
+    private String getEmailFromOauth2(Oauth2Request oauth2Request, String code) {
+        final String accessToken = requestAccessToken(code, oauth2Request);
+        return requestEmail(accessToken, oauth2Request);
     }
 
-    private String requestAccessToken(String code, Oauth2InfoDto oauth2InfoDto) {
+    private String requestAccessToken(String code, Oauth2Request oauth2Request) {
         String body = ApiSender.send(
-                oauth2InfoDto.getAccessTokenApi(),
+                oauth2Request.getAccessTokenApi(),
                 HttpMethod.POST,
-                generateAccessTokenRequest(code, oauth2InfoDto)
+                generateAccessTokenRequest(code, oauth2Request)
         );
 
         return extractAccessToken(body);
     }
 
-    private String requestEmail(String accessToken, Oauth2InfoDto oauth2InfoDto) {
+    private String requestEmail(String accessToken, Oauth2Request oauth2Request) {
         String body = ApiSender.send(
-                oauth2InfoDto.getProfileApi(),
+                oauth2Request.getProfileApi(),
                 HttpMethod.GET,
                 generateProfileRequest(accessToken)
         );
 
-        Oauth2 oauth2 = Oauth2Type.findOauth2(oauth2InfoDto.getType());
+        Oauth2 oauth2 = Oauth2Type.findOauth2(oauth2Request.getType());
         return extractEmail(oauth2, body);
     }
 
@@ -91,17 +91,17 @@ public class Oauth2Service {
         throw new AlreadyRegisteredException(member.getOauth2Type().name());
     }
 
-    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2InfoDto oauth2InfoDto) {
+    private HttpEntity<MultiValueMap<String, String>> generateAccessTokenRequest(String code, Oauth2Request oauth2Request) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", oauth2InfoDto.getClientId());
-        params.add("redirect_uri", oauth2InfoDto.getRedirectUrl());
+        params.add("client_id", oauth2Request.getClientId());
+        params.add("redirect_uri", oauth2Request.getRedirectUrl());
         params.add("code", code);
-        params.add("client_secret", oauth2InfoDto.getClientSecret());
+        params.add("client_secret", oauth2Request.getClientSecret());
 
         return new HttpEntity<>(params, headers);
     }
