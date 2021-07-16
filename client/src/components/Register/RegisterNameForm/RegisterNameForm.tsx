@@ -8,11 +8,12 @@ import { NameInputContainer, RegisterNameTitle } from './RegisterNameForm.styles
 
 const RegisterNameForm: VFC = () => {
   const history = useHistory();
-  const { nickName, nickNameErrorMessage, isValidNickName, onChangeRegister } = useRegister();
+  const { nickName, nickNameErrorMessage, isValidNickName, onChangeRegister, registerUser } =
+    useRegister();
 
-  const moveRegisterSuccessPage = () => {
+  const moveRegisterSuccessPage = async () => {
     // TODO: 회원가입 절차
-
+    // await registerUser();
     history.push('/register/success');
   };
 

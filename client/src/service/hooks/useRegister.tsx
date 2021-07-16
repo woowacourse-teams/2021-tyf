@@ -1,4 +1,5 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { requestRegister } from '../request/register';
 import { newUserState, nickNameValidationQuery, urlNameValidationQuery } from '../state/register';
 
 const useRegister = () => {
@@ -23,16 +24,24 @@ const useRegister = () => {
     setUser({ email: '', nickName: '', oauthType: '', urlName: '' });
   };
 
+  const registerUser = async () => {
+    try {
+      await requestRegister(user);
+    } catch (error) {
+      alert(error.message ?? '회원가입에 실패했습니다.');
+    }
+  };
+
   return {
     urlName,
     addressErrorMessage,
     isValidAddress,
-
     nickName,
     nickNameErrorMessage,
     isValidNickName,
     onChangeRegister,
     onResetRegister,
+    registerUser,
   };
 };
 

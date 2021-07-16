@@ -1,7 +1,8 @@
 import { atom, selector } from 'recoil';
 import { register } from '../../constants/constant';
+import { Register } from '../../types';
 
-export const newUserState = atom({
+export const newUserState = atom<Register>({
   key: 'newUserState',
   default: { email: '', nickName: '', oauthType: '', urlName: '' },
 });
@@ -68,7 +69,7 @@ export const nickNameValidationQuery = selector({
 });
 
 // DB 를 통한 유효성 검증
-export const urlNameDBValidationQuery = selector({
+export const urlNameDBValidationQuery = selector<string>({
   key: 'urlNameDBValidationQuery',
   get: async ({ get }) => {
     const { urlName } = get(newUserState);
@@ -85,7 +86,7 @@ export const urlNameDBValidationQuery = selector({
   },
 });
 
-export const nickNameDBValidationQuery = selector({
+export const nickNameDBValidationQuery = selector<string>({
   key: 'nickNameDBValidationQuery',
   get: async ({ get }) => {
     const { nickName } = get(newUserState);

@@ -4,3 +4,10 @@ export interface Creator {
   profileImgSrc: string;
   introduce: string;
 }
+
+export interface Register {
+  email: string;
+  nickName: string;
+  oauthType: string;
+  urlName: string;
+}
