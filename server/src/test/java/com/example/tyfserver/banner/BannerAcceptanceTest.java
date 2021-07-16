@@ -3,7 +3,7 @@ package com.example.tyfserver.banner;
 import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.banner.domain.Banner;
-import com.example.tyfserver.banner.domain.BannerRepository;
+import com.example.tyfserver.banner.repository.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerRequest;
 import com.example.tyfserver.banner.dto.BannerResponse;
 import com.example.tyfserver.member.domain.MemberTest;

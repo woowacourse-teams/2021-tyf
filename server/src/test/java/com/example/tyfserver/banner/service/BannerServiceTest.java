@@ -2,7 +2,7 @@ package com.example.tyfserver.banner.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.banner.domain.Banner;
-import com.example.tyfserver.banner.domain.BannerRepository;
+import com.example.tyfserver.banner.repository.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.domain.Member;
