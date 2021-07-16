@@ -14,7 +14,8 @@ public class MemberRepositoryImpl implements MemberQueryRepository{
     @Override
     public List<CurationsResponse> findCurations() {
         return em.createQuery(
-                "select new com.example.tyfserver.member.dto.CurationsResponse(d.member.nickname, sum(d.amount)) " +
+                "select new com.example.tyfserver.member.dto.CurationsResponse(" +
+                        "           d.member.nickname, sum(d.amount), d.member.pageName) " +
                         "from Donation d " +
                         "join d.member " +
                         "group by d.member " +
