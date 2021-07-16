@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+import { register } from '../../constants/constant';
 
 export const newUserState = atom({
   key: 'newUserState',
@@ -10,12 +11,12 @@ export const urlNameValidationQuery = selector({
   get: ({ get }) => {
     const { urlName } = get(newUserState);
 
-    if (urlName.length < 3) {
-      return '주소는 최소 3글자 이상이여합니다.';
+    if (urlName.length < register.address.minLength) {
+      return `주소는 최소 ${register.address.minLength}글자 이상이여합니다.`;
     }
 
-    if (20 < urlName.length) {
-      return '주소는 최대 20글자 이하여야 합니다';
+    if (register.address.maxLength < urlName.length) {
+      return `주소는 최대 ${register.address.maxLength}글자 이하여야 합니다`;
     }
 
     if (urlName !== urlName.replace(/ /g, '')) {
@@ -40,12 +41,12 @@ export const nickNameValidationQuery = selector({
   get: ({ get }) => {
     const { nickName } = get(newUserState);
 
-    if (nickName.length < 3) {
-      return '닉네임은 최소 3글자 이상이여합니다.';
+    if (nickName.length < register.nickName.minLength) {
+      return `닉네임은 최소 ${register.nickName.minLength}글자 이상이여합니다.`;
     }
 
-    if (20 < nickName.length) {
-      return '닉네임은 최대 20글자 이하여야 합니다';
+    if (register.nickName.maxLength < nickName.length) {
+      return `닉네임은 최대 ${register.nickName.maxLength}글자 이하여야 합니다`;
     }
 
     if (nickName !== nickName.trim()) {
