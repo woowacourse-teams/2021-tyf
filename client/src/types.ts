@@ -10,3 +10,5 @@ export interface Creator {
 export interface LoginUserInfo extends Creator {}
 
 export type OAuthProvider = keyof typeof OAUTH;
+
+export type StorageType = 'LOCAL' | 'SESSION';

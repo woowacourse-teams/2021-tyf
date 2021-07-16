@@ -1,22 +1,25 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+
 import { AUTH_ERROR } from '../../constants/errorCode';
-import { AUTH_CODE, OAUTH, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
-import { OAuthProvider } from '../../types';
+import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
+import { OAuthProvider, StorageType } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';
 import { requestLogin } from '../request/auth';
-import { accessTokenState } from '../state/login';
+import { loginPersistenceTypeState } from '../state/login';
+import useAccessToken from './useAccessToken';
 
 const useLoginEffect = (oauthProvider?: OAuthProvider) => {
   const history = useHistory();
-  const setAccessToken = useSetRecoilState(accessTokenState);
+  const { storeAccessToken } = useAccessToken();
+  const loginPersistenceType = useRecoilValue(loginPersistenceTypeState);
 
   const login = async (oauthProvider: OAuthProvider, authCode: string) => {
     try {
       const accessToken = await requestLogin(oauthProvider, authCode);
 
-      setAccessToken(accessToken);
+      storeAccessToken(accessToken, loginPersistenceType);
       history.push('/');
     } catch (error) {
       if (error.errorCode === AUTH_ERROR.NOT_USER) {
