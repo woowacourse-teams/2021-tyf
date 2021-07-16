@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Footer from './components/Footer/Footer';
@@ -40,7 +42,11 @@ const App = () => {
         <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
         <Route path="/creator/:creatorId" component={CreatorPage} exact />
-        <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
+        <ErrorBoundary fallback={<h1>데이터를 가져오는데 실패했습니다.</h1>}>
+          <Suspense fallback={true}>
+            <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
+          </Suspense>
+        </ErrorBoundary>
 
         <Redirect from="*" to="/" />
       </Switch>
