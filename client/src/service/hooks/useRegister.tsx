@@ -4,9 +4,11 @@ import { newUserState, nickNameValidationQuery, urlNameValidationQuery } from '.
 const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);
   const addressErrorMessage = useRecoilValue(urlNameValidationQuery);
+  const nickNameErrorMessage = useRecoilValue(nickNameValidationQuery);
+
   // TODO: db로의 검증
   // const addressDBErrorMessage = useRecoilValueLoadable(urlNameDBValidationQuery);
-  const nickNameErrorMessage = useRecoilValue(nickNameValidationQuery);
+  // const nickNameDBErrorMessage = useRecoilValueLoadable(nickNameDBValidationQuery);
 
   const { urlName, nickName } = user;
 

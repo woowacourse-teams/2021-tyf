@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+import { requestValidatePageName } from '../request/register';
 
 export const newUserState = atom({
   key: 'newUserState',
@@ -35,23 +36,6 @@ export const urlNameValidationQuery = selector({
   },
 });
 
-export const urlNameDBValidationQuery = selector({
-  key: 'urlNameDBValidationQuery',
-  get: async ({ get }) => {
-    const { urlName } = get(newUserState);
-
-    // TODO : 검증 디바운싱 적용.
-    // cors 오류 해결전까지 주석처리
-    try {
-      // await requestValidatePageName(urlName);
-
-      return '';
-    } catch (error) {
-      return error.message;
-    }
-  },
-});
-
 export const nickNameValidationQuery = selector({
   key: 'nickNameValidationQuery',
   get: ({ get }) => {
@@ -81,5 +65,40 @@ export const nickNameValidationQuery = selector({
     }
 
     return '';
+  },
+});
+
+// DB 를 통한 유효성 검증
+export const urlNameDBValidationQuery = selector({
+  key: 'urlNameDBValidationQuery',
+  get: async ({ get }) => {
+    const { urlName } = get(newUserState);
+
+    // TODO : 검증 디바운싱 적용.
+    // cors 오류 해결전까지 주석처리
+    try {
+      // await requestValidatePageName(urlName);
+
+      return '';
+    } catch (error) {
+      return error.message;
+    }
+  },
+});
+
+export const nickNameDBValidationQuery = selector({
+  key: 'nickNameDBValidationQuery',
+  get: async ({ get }) => {
+    const { nickName } = get(newUserState);
+
+    // TODO : 검증 디바운싱 적용.
+    // cors 오류 해결전까지 주석처리
+    try {
+      // await requestValidatePageName(urlName);
+
+      return '';
+    } catch (error) {
+      return error.message;
+    }
   },
 });
