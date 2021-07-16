@@ -7,7 +7,7 @@ import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.MemberTest;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;

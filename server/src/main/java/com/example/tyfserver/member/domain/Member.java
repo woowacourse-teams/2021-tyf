@@ -59,6 +59,10 @@ public class Member extends BaseTimeEntity {
     private void addPoint(final long donationAmount) {
         this.point.add(donationAmount);
     }
+    
+    public long getPoint() {
+        return this.point.getPoint();
+    }
 
     public boolean isSameOauthType(String type) {
         return this.oauth2Type.name().equals(type);

@@ -2,7 +2,7 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
-import com.example.tyfserver.member.MemberTest;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.Assertions;

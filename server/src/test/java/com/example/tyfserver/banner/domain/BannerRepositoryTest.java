@@ -1,6 +1,6 @@
 package com.example.tyfserver.banner.domain;
 
-import com.example.tyfserver.member.MemberTest;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;

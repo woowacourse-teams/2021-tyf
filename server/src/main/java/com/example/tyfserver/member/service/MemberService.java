@@ -44,7 +44,7 @@ public class MemberService {
 
     public PointResponse findMemberPoint(Long id) {
         Member member = findMember(id);
-        return new PointResponse(member.getPoint().getPoint());
+        return new PointResponse(member.getPoint());
     }
 
     private Member findMember(Long id) {
