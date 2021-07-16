@@ -1,5 +1,6 @@
 package com.example.tyfserver.member.repository;
 
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,9 +10,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberQue
 
     Optional<Member> findByEmail(String email);
 
-    Optional<Member> findByEmailAndOauth2Type(String email, String oauth2Type);
-
-    boolean existsByEmail(String email);
+    Optional<Member> findByEmailAndOauth2Type(String email, Oauth2Type oauth2Type);
 
     boolean existsByPageName(String pageName);
 

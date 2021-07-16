@@ -36,7 +36,7 @@ public class Oauth2Service {
     public TokenResponse login(final Oauth2Request oauth2Request, final String code) {
         final String email = getEmailFromOauth2(oauth2Request, code);
 
-        Member findMember = memberRepository.findByEmailAndOauth2Type(email, oauth2Request.getType())
+        Member findMember = memberRepository.findByEmailAndOauth2Type(email, Oauth2Type.findOauth2Type(oauth2Request.getType()))
                 .orElseThrow(UnregisteredMemberException::new);
 
         return new TokenResponse(authenticationService.createToken(findMember));
