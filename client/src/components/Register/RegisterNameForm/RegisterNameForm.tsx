@@ -8,7 +8,7 @@ import { NameInputContainer, RegisterNameTitle } from './RegisterNameForm.styles
 
 const RegisterNameForm: VFC = () => {
   const history = useHistory();
-  const { nickName, nickNameErrorMessage, isValidNickName, onChangeNickName } = useRegister();
+  const { nickName, nickNameErrorMessage, isValidNickName, onChangeRegister } = useRegister();
 
   const moveRegisterSuccessPage = () => {
     // TODO: 회원가입 절차
@@ -25,12 +25,13 @@ const RegisterNameForm: VFC = () => {
       </RegisterNameTitle>
       <NameInputContainer>
         <InputWithMessage
+          name="nickName"
           value={nickName}
           isSuccess={isValidNickName}
           successMessage="좋은 닉네임이네요!"
           failureMessage={nickNameErrorMessage}
           placeholder="닉네임 입력하기"
-          onChange={(e) => onChangeNickName(e.target)}
+          onChange={(e) => onChangeRegister(e.target)}
         />
       </NameInputContainer>
       <Button disabled={!!nickNameErrorMessage} onClick={moveRegisterSuccessPage}>

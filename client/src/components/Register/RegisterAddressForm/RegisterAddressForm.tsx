@@ -8,7 +8,7 @@ import { AddressInputContainer, RegisterAddressTitle } from './RegisterAddressFo
 
 const RegisterAddressForm: VFC = () => {
   const history = useHistory();
-  const { urlName, addressErrorMessage, isValidAddress, onChangeAddress } = useRegister();
+  const { urlName, addressErrorMessage, isValidAddress, onChangeRegister } = useRegister();
 
   const moveRegisterNamePage = () => {
     history.push('/register/name');
@@ -23,11 +23,12 @@ const RegisterAddressForm: VFC = () => {
       </RegisterAddressTitle>
       <AddressInputContainer>
         <InputWithMessage
+          name="urlName"
           value={urlName}
           isSuccess={isValidAddress}
           successMessage="좋은 주소명이네요!"
           failureMessage={addressErrorMessage}
-          onChange={(e) => onChangeAddress(e.target)}
+          onChange={(e) => onChangeRegister(e.target)}
         />
       </AddressInputContainer>
       <Button disabled={!!addressErrorMessage} onClick={moveRegisterNamePage}>

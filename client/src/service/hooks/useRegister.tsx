@@ -15,23 +15,24 @@ const useRegister = () => {
   const isValidAddress = !addressErrorMessage;
   const isValidNickName = !nickNameErrorMessage;
 
-  const onChangeAddress = ({ value }: { value: string }) => {
-    setUser({ ...user, urlName: value });
+  const onChangeRegister = ({ value, name }: { value: string; name: string }) => {
+    setUser({ ...user, [name]: value });
   };
 
-  const onChangeNickName = ({ value }: { value: string }) => {
-    setUser({ ...user, nickName: value });
+  const onResetRegister = () => {
+    setUser({ email: '', nickName: '', oauthType: '', urlName: '' });
   };
 
   return {
     urlName,
     addressErrorMessage,
     isValidAddress,
-    onChangeAddress,
+
     nickName,
     nickNameErrorMessage,
     isValidNickName,
-    onChangeNickName,
+    onChangeRegister,
+    onResetRegister,
   };
 };
 
