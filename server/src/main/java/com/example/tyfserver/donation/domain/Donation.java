@@ -26,6 +26,12 @@ public class Donation extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public Donation(Long id, Long amount, Message message) {
+        this.id = id;
+        this.amount = amount;
+        this.message = message;
+    }
+
     public Donation(Long amount) {
         this(amount, Message.defaultMessage());
     }
