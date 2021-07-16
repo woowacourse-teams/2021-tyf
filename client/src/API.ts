@@ -9,4 +9,9 @@ export const apiClient: AxiosInstance = axios.create({
   },
 });
 
-export const createAuthorizationHeader = () => {};
+apiClient.interceptors.response.use(
+  (response) => response.data,
+  (error) => error.response
+);
+
+// export const createAuthorizationHeader = () => {};

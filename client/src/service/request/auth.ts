@@ -1,12 +1,16 @@
 import { apiClient } from '../../API';
-import { OAuthProvider } from '../../types';
+import { LoginUserInfo, OAuthProvider } from '../../types';
 
-export const requestLogin = (provider: OAuthProvider, authCode: string): Promise<string> => {
-  return apiClient.get(`/oauth2/login/${provider}?code=${authCode}`);
+export const requestLogin = (provider: OAuthProvider, authCode: string) => {
+  return apiClient
+    .get<string>(`/oauth2/login/${provider}?code=${authCode}`)
+    .then((response) => response.data);
 };
 
 export const requestLoginUserInfo = (accessToken: string) => {
-  return apiClient.get('/members/me', {
-    headers: { Authorization: `bearer ${accessToken}` },
-  });
+  return apiClient
+    .get<LoginUserInfo>('/members/me', {
+      headers: { Authorization: `bearer ${accessToken}` },
+    })
+    .then((response) => response.data);
 };
