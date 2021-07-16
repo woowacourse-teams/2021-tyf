@@ -1,15 +1,9 @@
 import { useState } from 'react';
 
 const checkAddressValid = (address: string) => {
-  // 최소 길이 제한 (3글자)
-  if (address.length < 3) return '주소는 최소 3글자 이상, 최대 20글자 이하여야 합니다';
-
-  return '';
-};
-
-const checkPreventAddressValid = (address: string) => {
   // 최대 길이 제한 (20글자)
-  if (20 < address.length) return '주소는 최소 3글자 이상, 최대 20글자 이하여야 합니다.';
+  if (address.length < 3 || 20 < address.length)
+    return '주소는 최소 3글자 이상, 최대 20글자 이하여야 합니다.';
 
   // 공백 불가능
   if (address !== address.replace(/ /g, '')) return '주소에는 공백이 존재하면 안됩니다.';
@@ -26,21 +20,15 @@ const checkPreventAddressValid = (address: string) => {
 
 const useRegister = () => {
   const [address, setAddress] = useState('');
-  const [addressErrorMessage, setAddressErrorMessage] = useState('');
 
-  const addressMessage = checkAddressValid(address);
-  const isValidAddress = !(addressMessage || addressErrorMessage);
+  const addressErrorMessage = checkAddressValid(address);
+  const isValidAddress = !addressErrorMessage;
 
   const onChangeAddress = ({ value }: { value: string }) => {
-    const errorMessage = checkPreventAddressValid(value);
-
-    setAddressErrorMessage(errorMessage);
-    if (errorMessage) return;
-
     setAddress(value);
   };
 
-  return { address, addressMessage, addressErrorMessage, isValidAddress, onChangeAddress };
+  return { address, addressErrorMessage, isValidAddress, onChangeAddress };
 };
 
 export default useRegister;
