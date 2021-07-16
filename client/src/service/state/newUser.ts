@@ -1,4 +1,6 @@
 import { atom, selector } from 'recoil';
+import { apiClient } from '../../API';
+import { requestValidatePageName } from '../request/register';
 
 export const newUserState = atom({
   key: 'newUserState',
@@ -32,5 +34,22 @@ export const urlNameValidationQuery = selector({
     }
 
     return '';
+  },
+});
+
+export const urlNameDBValidationQuery = selector({
+  key: 'urlNameDBValidationQuery',
+  get: async ({ get }) => {
+    const { urlName } = get(newUserState);
+
+    // TODO : 검증 디바운싱 적용.
+    // cors 오류 해결전까지 주석처리
+    try {
+      // await requestValidatePageName(urlName);
+
+      return '';
+    } catch (error) {
+      return error.message;
+    }
   },
 });
