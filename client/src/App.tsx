@@ -39,7 +39,7 @@ const App = () => {
         <Route path="/donation/:creatorId/message" component={DonationMessagePage} />
         <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
-        <Route path="/creator/:creatorId" component={CreatorPage} />
+        <Route path="/creator/:creatorId" component={CreatorPage} exact />
         <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
 
         <Redirect from="*" to="/" />
