@@ -1,6 +1,7 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { requestRegister } from '../request/register';
+
 import { newUserState, nickNameValidationQuery, urlNameValidationQuery } from '../state/register';
+import { requestRegister } from '../request/register';
 
 const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);
@@ -28,7 +29,7 @@ const useRegister = () => {
     try {
       await requestRegister(user);
     } catch (error) {
-      alert(error.message ?? '회원가입에 실패했습니다.');
+      alert(error.message);
     }
   };
 

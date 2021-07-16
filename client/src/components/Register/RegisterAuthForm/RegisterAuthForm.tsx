@@ -1,5 +1,6 @@
 import { VFC } from 'react';
 
+import useRegisterAuth from '../../../service/hooks/useRegisterAuth';
 import Anchor from '../../@atom/Anchor/Anchor';
 import {
   RegisterAnchorContainer,
@@ -10,7 +11,6 @@ import {
   NaverButton,
 } from './RegisterAuthForm.styles';
 import { OAuth } from '../../../constants/constant';
-import useRegisterAuth from '../../../service/hooks/useRegisterAuth';
 
 const RegisterAuthForm: VFC = () => {
   const { openOAuthPage } = useRegisterAuth();

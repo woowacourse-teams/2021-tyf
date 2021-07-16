@@ -13,13 +13,13 @@ export const OAuth = {
   },
 } as const;
 
-export const register = {
-  address: {
-    minLength: 3,
-    maxLength: 20,
+export const REGISTER = {
+  ADDRESS: {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 20,
   },
-  nickName: {
-    minLength: 3,
-    maxLength: 20,
+  NICKNAME: {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 20,
   },
 } as const;

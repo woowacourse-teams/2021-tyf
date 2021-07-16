@@ -1,7 +1,7 @@
 import { VFC } from 'react';
 import { useHistory } from 'react-router-dom';
-import useRegister from '../../../service/hooks/useRegister';
 
+import useRegister from '../../../service/hooks/useRegister';
 import Button from '../../@atom/Button/Button';
 import InputWithMessage from '../../@molecule/InputWithMessage/InputWithMessage';
 import { NameInputContainer, RegisterNameTitle } from './RegisterNameForm.styles';
