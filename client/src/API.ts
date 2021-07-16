@@ -10,7 +10,7 @@ export const apiClient: AxiosInstance = axios.create({
 });
 
 apiClient.interceptors.response.use(
-  (response) => response.data,
+  (response) => response,
   (error) => error.response
 );
 
