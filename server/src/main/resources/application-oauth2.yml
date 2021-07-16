@@ -1,7 +1,7 @@
 google:
   type: google
   client-id: google-client-id
-  client_secret: google-client_secret
+  client_secret: google-client-secret
   signup_redirect_url: google-signup-redirect-url
   login_redirect_url: google-login-redirect-url
   access_token_api: https://oauth2.googleapis.com/token
@@ -10,6 +10,7 @@ google:
 kakao:
   type: kakao
   client_id: kakao-client-id
+  client_secret: kakao-client-secret
   signup_redirect_url: kakao-signup-redirect-url
   login_redirect_url: kakao-login-redirect-url
   access_token_api: https://kauth.kakao.com/oauth/token
