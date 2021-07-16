@@ -1,39 +1,47 @@
-import { VFC } from 'react';
+import { ChangeEvent, useEffect, VFC } from 'react';
 
 import Anchor from '../@atom/Anchor/Anchor';
-import GoogleLogo from '../../assets/icons/google.svg';
-import NaverLogo from '../../assets/icons/naver.svg';
-import KakaoLogo from '../../assets/icons/kakao.svg';
 import {
-  GoogleButton,
-  KakaoButton,
   KeepLoginCheckbox,
   KeepLoginLabel,
   LoginAnchorContainer,
   LoginButtonContainer,
   LoginOptionContainer,
   LoginTitle,
-  NaverButton,
 } from './LoginForm.styles';
+import GoogleBarButton from '../@molecule/GoogleBarButton/GoogleBarButton.styles';
+import NaverBarButton from '../@molecule/NaverBarButton/NaverBarButton.styles';
+import KakaoBarButton from '../@molecule/KakaoBarButton/KaKaoBarButton.styles';
+import { routeToOAuthPage } from '../../service/auth';
+import useLoginPersistenceType from '../../service/hooks/useLoginPersistenceType';
 
 const LoginForm: VFC = () => {
+  const { loginPersistenceType, setLoginPersistenceType } = useLoginPersistenceType();
+
+  const onChangeLoginPersistenceType = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.checked ? setLoginPersistenceType('LOCAL') : setLoginPersistenceType('SESSION');
+  };
+
   return (
     <>
       <LoginTitle>로그인</LoginTitle>
 
       <LoginButtonContainer>
-        <GoogleButton src={GoogleLogo} alt="google_logo">
+        <GoogleBarButton onClick={() => routeToOAuthPage('google', 'LOGIN')}>
           구글 로그인
-        </GoogleButton>
-        <NaverButton src={NaverLogo} alt="naver_logo">
+        </GoogleBarButton>
+        <NaverBarButton onClick={() => routeToOAuthPage('naver', 'LOGIN')}>
           네이버 로그인
-        </NaverButton>
-        <KakaoButton src={KakaoLogo} alt="kakao_logo">
+        </NaverBarButton>
+        <KakaoBarButton onClick={() => routeToOAuthPage('kakao', 'LOGIN')}>
           카카오 로그인
-        </KakaoButton>
+        </KakaoBarButton>
         <LoginOptionContainer>
           <KeepLoginLabel>
-            <KeepLoginCheckbox></KeepLoginCheckbox>
+            <KeepLoginCheckbox
+              checked={loginPersistenceType === 'LOCAL'}
+              onChange={onChangeLoginPersistenceType}
+            ></KeepLoginCheckbox>
             로그인 유지하기
           </KeepLoginLabel>
         </LoginOptionContainer>

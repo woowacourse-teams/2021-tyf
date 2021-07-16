@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Anchor from '../@atom/Anchor/Anchor';
 import Container from '../@atom/Container/Container';
 
 import Modal from '../@atom/Modal/Modal';
@@ -22,4 +23,10 @@ export const ProfileContainer = styled(Container)`
 export const URLCopyButton = styled(OutlineButton)`
   width: 7.75rem;
   height: 2rem;
+`;
+
+export const StyledAnchor = styled(Anchor)`
+  height: 4rem;
+  line-height: 4rem;
+  font-size: 1.25rem;
 `;

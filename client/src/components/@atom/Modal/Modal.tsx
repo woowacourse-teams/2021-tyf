@@ -1,14 +1,21 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { ModalInner, ModalOuter } from './Modal.styles';
 
-interface ModalType {
+export interface ModalType {
   children: React.ReactNode;
   className?: string;
+  onClose?: () => void;
 }
 
-const Modal: FC<ModalType> = ({ children, className }) => {
+const Modal: FC<ModalType> = ({ children, className, onClose }) => {
+  const onClickModalOuter = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return;
+
+    if (onClose) onClose();
+  };
+
   return (
-    <ModalOuter>
+    <ModalOuter onClick={onClickModalOuter}>
       <ModalInner className={className}>{children}</ModalInner>
     </ModalOuter>
   );
