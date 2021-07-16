@@ -4,6 +4,7 @@ import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import Anchor from '../@atom/Anchor/Anchor';
 import { StyledModal, ProfileContainer, URLCopyButton, StyledAnchor } from './Menu.styles';
 import useLogout from '../../service/hooks/useLogout';
+import { donationUrlShare } from '../../service/share';
 
 export interface MenuProps {
   onClose: () => void;
@@ -18,13 +19,17 @@ const Menu: VFC<MenuProps> = ({ onClose }) => {
     onClose();
   };
 
+  const shareURL = () => {
+    donationUrlShare(userInfo.name, userInfo.pageName);
+  };
+
   return (
     <StyledModal onClose={onClose}>
       <ProfileContainer>
         {userInfo ? (
           <>
             <span>{userInfo.name}</span>
-            <URLCopyButton>후원URL 복사</URLCopyButton>
+            <URLCopyButton onClick={shareURL}>후원URL 복사</URLCopyButton>
           </>
         ) : (
           <StyledAnchor to="/login" onClick={onClose}>
