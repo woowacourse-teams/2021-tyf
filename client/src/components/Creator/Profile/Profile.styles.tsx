@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import Container from '../../@atom/Container/Container';
 
-export const StyledProfileContainer = styled(Container)``;
+export const ProfileContainer = styled(Container)``;
 
 export const ProfileImg = styled.div`
   width: 8rem;

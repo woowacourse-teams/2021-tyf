@@ -22,7 +22,7 @@ const Menu: VFC<MenuProps> = ({ onClose }) => {
   const shareURL = () => {
     if (!userInfo) return;
 
-    donationUrlShare(userInfo.name, userInfo.pageName);
+    donationUrlShare(userInfo.nickname, userInfo.pageName);
   };
 
   return (
@@ -30,7 +30,7 @@ const Menu: VFC<MenuProps> = ({ onClose }) => {
       <ProfileContainer>
         {userInfo ? (
           <>
-            <span>{userInfo.name}</span>
+            <span>{userInfo.nickname}</span>
             <URLCopyButton onClick={shareURL}>후원URL 복사</URLCopyButton>
           </>
         ) : (
