@@ -1,5 +1,5 @@
 google:
-  type: google
+  type: GOOGLE
   client-id: ENC(2f/CyX/r+1t+8UrDHmopbPug/1b7ia3DWbHr0esB4NtpPXe6Ke73WfrEV7xak7uaYq85H32cMmB46cw4kfj0MRsSeF7g+qCcmALE5ecHKYleUrocB70x3g==)
   client_secret: ENC(1szDbueGfuGBSJlhGcp4wq/e3xgydLacSEAeLxW5Ski29/6Gwaig8A==)
   signup_redirect_url: ENC(yUhgBzBS3YCj09FQ0ZuLovXjZ68MLYrkjNPRVQKv6kd/sSSnWpub5ZpilLsuyHnG)
@@ -8,7 +8,7 @@ google:
   profile_api: https://www.googleapis.com/oauth2/v2/userinfo
 
 kakao:
-  type: kakao
+  type: KAKAO
   client_id: ENC(9Uu9p2fXwD9CHp/Z+PbhTzrIJtYVjV+fv3cBRRyo2H7kdPP4aLx7Y5J+RkH08wjG)
   client_secret: ENC(VDoGbTrDbutK2zJbrsFgYlmKotwK8VVJg87ds7U9QnKn2POgfwPXnDP0OrBOmKNZ)
   signup_redirect_url: ENC(yUhgBzBS3YCj09FQ0ZuLovXjZ68MLYrkjNPRVQKv6kd/sSSnWpub5ZpilLsuyHnG)
@@ -17,7 +17,7 @@ kakao:
   profile_api: https://kapi.kakao.com/v2/user/me
 
 naver:
-  type: naver
+  type: NAVER
   client_id: ENC(0+XWlkEBxLGZm6f1m/Y7eAlaMWKGhz5Um6TAbhgbZWg=)
   client_secret: ENC(Tk57HzBY6YMVUMGW/X9NmrToDv+GLgIl)
   signup_redirect_url: ENC(yUhgBzBS3YCj09FQ0ZuLovXjZ68MLYrkjNPRVQKv6kd/sSSnWpub5ZpilLsuyHnG)

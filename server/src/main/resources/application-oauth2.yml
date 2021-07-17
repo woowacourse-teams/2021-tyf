@@ -1,5 +1,5 @@
 google:
-  type: google
+  type: GOOGLE
   client-id: google-client-id
   client_secret: google-client-secret
   signup_redirect_url: google-signup-redirect-url
@@ -8,7 +8,7 @@ google:
   profile_api: https://www.googleapis.com/oauth2/v2/userinfo
 
 kakao:
-  type: kakao
+  type: KAKAO
   client_id: kakao-client-id
   client_secret: kakao-client-secret
   signup_redirect_url: kakao-signup-redirect-url
@@ -17,7 +17,7 @@ kakao:
   profile_api: https://kapi.kakao.com/v2/user/me
 
 naver:
-  type: naver
+  type: NAVER
   client_id: naver-client-id
   client_secret: naver-client-secret
   signup_redirect_url: naver-signup-redirect-url
