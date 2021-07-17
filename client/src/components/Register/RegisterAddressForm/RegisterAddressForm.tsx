@@ -24,6 +24,7 @@ const RegisterAddressForm: VFC = () => {
       <AddressInputContainer>
         <InputWithMessage
           name="urlName"
+          role="urlName"
           value={urlName}
           isSuccess={isValidAddress}
           successMessage="좋은 주소명이네요!"

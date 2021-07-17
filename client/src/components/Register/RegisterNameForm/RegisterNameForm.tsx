@@ -27,6 +27,7 @@ const RegisterNameForm: VFC = () => {
       <NameInputContainer>
         <InputWithMessage
           name="nickName"
+          role="nickName"
           value={nickName}
           isSuccess={isValidNickName}
           successMessage="좋은 닉네임이네요!"
