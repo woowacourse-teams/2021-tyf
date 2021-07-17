@@ -8,6 +8,7 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.dto.BannerRequest;
 import com.example.tyfserver.banner.dto.BannerResponse;
+import com.example.tyfserver.banner.exception.BannerRequestException;
 import com.example.tyfserver.banner.service.BannerService;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
@@ -83,7 +84,7 @@ class BannerControllerTest {
         mockMvc.perform(get("/banners/me")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-002"))
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
     }
 
@@ -98,7 +99,7 @@ class BannerControllerTest {
         mockMvc.perform(get("/banners/me")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-001"))
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -138,7 +139,7 @@ class BannerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -157,7 +158,7 @@ class BannerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("banner-001"))
+                .andExpect(jsonPath("errorCode").value(BannerRequestException.ERROR_CODE))
         ;
     }
 
@@ -173,7 +174,7 @@ class BannerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-001"))
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -189,7 +190,7 @@ class BannerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-002"))
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
     }
 }

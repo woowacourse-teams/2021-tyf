@@ -6,9 +6,7 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.DuplicatedNicknameException;
-import com.example.tyfserver.member.exception.DuplicatedPageNameException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +71,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-002"))
+                .andExpect(jsonPath("errorCode").value(PageNameValidationRequestException.ERROR_CODE))
         ;
     }
 
@@ -90,7 +88,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-003"))
+                .andExpect(jsonPath("errorCode").value(DuplicatedPageNameException.ERROR_CODE))
         ;
     }
 
@@ -123,7 +121,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-004"))
+                .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
         ;
     }
 
@@ -140,7 +138,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-005"))
+                .andExpect(jsonPath("errorCode").value(DuplicatedNicknameException.ERROR_CODE))
         ;
     }
 
@@ -171,7 +169,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/pagename")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -210,7 +208,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/me")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -224,7 +222,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/me")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-001"))
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -238,7 +236,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/me")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-002"))
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
     }
 
@@ -275,7 +273,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/me/point")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -289,7 +287,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/me/point")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-001"))
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -303,7 +301,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/me/point")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-002"))
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
     }
 

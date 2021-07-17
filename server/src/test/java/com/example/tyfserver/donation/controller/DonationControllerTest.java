@@ -7,7 +7,9 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
+import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
+import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +93,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("donation-001"))
+                .andExpect(jsonPath("errorCode").value(DonationRequestException.ERROR_CODE))
         ;
     }
 
@@ -123,7 +125,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("donation-003"))
+                .andExpect(jsonPath("errorCode").value(DonationNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -138,7 +140,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("donation-002"))
+                .andExpect(jsonPath("errorCode").value(DonationMessageRequestException.ERROR_CODE))
         ;
     }
 
@@ -182,7 +184,7 @@ class DonationControllerTest {
                 .param("size", "2")
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -198,7 +200,7 @@ class DonationControllerTest {
                 .param("size", "2")
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-001"))
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
         ;
     }
 
@@ -214,7 +216,7 @@ class DonationControllerTest {
                 .param("size", "2")
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("auth-002"))
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
     }
 
@@ -250,7 +252,7 @@ class DonationControllerTest {
         mockMvc.perform(get("/donations/public/pagename")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 }
