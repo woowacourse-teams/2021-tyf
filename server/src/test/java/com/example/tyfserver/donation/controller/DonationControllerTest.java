@@ -76,7 +76,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value("member-001"))
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
     }
 
