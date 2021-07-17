@@ -26,6 +26,7 @@ export interface Donation {
   name: string;
   message: string;
   amount: number;
+  createdAt: Date;
 }
 export interface Statistics {
   point: number;

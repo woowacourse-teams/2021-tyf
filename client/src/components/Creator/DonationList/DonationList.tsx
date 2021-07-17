@@ -31,13 +31,13 @@ const DonationList = ({ isAdmin }: Props) => {
     <DonationListContainer>
       <DonationListTitle>{nickname}님을 응원하는 사람들</DonationListTitle>
       <CommentsList>
-        {donationList.map(({ donationId, name, message, amount }) => (
+        {donationList.map(({ donationId, name, message, amount, createdAt }) => (
           <CommentsListItem key={donationId}>
             <ItemInfo>
               <span>
                 {name} <Divider>|</Divider> {amount.toLocaleString('en-us')}원
               </span>
-              <span>21.08.02</span>
+              <span>{String(createdAt).slice(0, 10)}</span>
             </ItemInfo>
             <ItemContent>{message}</ItemContent>
           </CommentsListItem>
