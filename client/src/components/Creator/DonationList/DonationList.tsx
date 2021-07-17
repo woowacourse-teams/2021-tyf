@@ -1,29 +1,31 @@
-import { FC, HTMLAttributes } from 'react';
 import { useParams } from 'react-router';
 
 import { ParamTypes } from '../../../App';
 import useCreator from '../../../service/hooks/useCreator';
 import useCreatorDonations from '../../../service/hooks/useCreatorDonations';
-import { Donation } from '../../../types';
 import {
-  CommentsContainer,
+  DonationListContainer,
   CommentsList,
   CommentsListItem,
-  CommentsTitle,
+  DonationListTitle,
   Divider,
   ItemContent,
   ItemInfo,
   ShowMoreButton,
-} from './Comments.styles';
+} from './DonationList.styles';
 
-const Comments: FC<HTMLAttributes<HTMLElement>> = () => {
+interface Props {
+  isAdmin: boolean;
+}
+
+const DonationList = ({ isAdmin }: Props) => {
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
   const { donationList } = useCreatorDonations(creatorId);
 
   return (
-    <CommentsContainer>
-      <CommentsTitle>{nickname}님을 응원하는 사람들</CommentsTitle>
+    <DonationListContainer>
+      <DonationListTitle>{nickname}님을 응원하는 사람들</DonationListTitle>
       <CommentsList>
         {donationList.map(({ donationId, name, message, amount }) => (
           <CommentsListItem key={donationId}>
@@ -37,9 +39,9 @@ const Comments: FC<HTMLAttributes<HTMLElement>> = () => {
           </CommentsListItem>
         ))}
       </CommentsList>
-      <ShowMoreButton>더보기</ShowMoreButton>
-    </CommentsContainer>
+      {isAdmin && <ShowMoreButton>더보기</ShowMoreButton>}
+    </DonationListContainer>
   );
 };
 
-export default Comments;
+export default DonationList;

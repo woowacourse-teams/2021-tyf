@@ -1,18 +1,15 @@
-import { FC, HTMLAttributes, Suspense, useEffect, useState } from 'react';
-
-import Comments from '../../components/Creator/Comments/Comments';
-import Profile from '../../components/Creator/Profile/Profile';
-import Button from '../../components/@atom/Button/Button';
-import { StyledTemplate, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
-
-import { useHistory, useParams } from 'react-router';
-
-import { ErrorBoundary } from 'react-error-boundary';
 import axios from 'axios';
+import { FC, HTMLAttributes, Suspense } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { ErrorBoundary } from 'react-error-boundary';
 
+import { ParamTypes } from '../../App';
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import useCreator from '../../service/hooks/useCreator';
-import { ParamTypes } from '../../App';
+import Profile from '../../components/Creator/Profile/Profile';
+import Button from '../../components/@atom/Button/Button';
+import DonationList from '../../components/Creator/DonationList/DonationList';
+import { StyledTemplate, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
 
 const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const history = useHistory();
@@ -23,7 +20,6 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
 
   return (
     <StyledTemplate>
-      {' '}
       <ErrorBoundary
         fallback={<p>잘못된 창작자 정보입니다</p>}
         onError={(error) => {
@@ -46,7 +42,7 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
           </Suspense>
         </ProfileContainer>
         <Suspense fallback={<p>후원기록을 불러오는 중입니다.</p>}>
-          <Comments />
+          <DonationList isAdmin={isAdmin} />
         </Suspense>
       </ErrorBoundary>
     </StyledTemplate>
