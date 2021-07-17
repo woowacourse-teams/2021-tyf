@@ -2,16 +2,15 @@ import { VFC } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Anchor from '../../@atom/Anchor/Anchor';
+import GoogleBarButton from '../../@molecule/GoogleBarButton/GoogleBarButton.styles';
+import NaverBarButton from '../../@molecule/NaverBarButton/NaverBarButton.styles';
+import KakaoBarButton from '../../@molecule/KakaoBarButton/KaKaoBarButton.styles';
+import { routeToOAuthPage } from '../../../service/auth';
 import {
   RegisterAnchorContainer,
   RegisterButtonContainer,
   RegisterTitle,
 } from './RegisterAuthForm.styles';
-import { OAUTH } from '../../../constants/oauth';
-import GoogleBarButton from '../../@molecule/GoogleBarButton/GoogleBarButton.styles';
-import NaverBarButton from '../../@molecule/NaverBarButton/NaverBarButton.styles';
-import KakaoBarButton from '../../@molecule/KakaoBarButton/KaKaoBarButton.styles';
-import { routeToOAuthPage } from '../../../service/auth';
 
 const RegisterAuthForm: VFC = () => {
   // NOTE: 테스트용 임시 코드
@@ -27,7 +26,7 @@ const RegisterAuthForm: VFC = () => {
         {/* <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
           네이버 회원가입
         </NaverBarButton> */}
-        <NaverBarButton onClick={() => history.push('/register/name')}>
+        <NaverBarButton onClick={() => history.push('/register/url')}>
           네이버 회원가입
         </NaverBarButton>
         <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO', 'REGISTER')}>

@@ -1,10 +1,19 @@
 import { VFC } from 'react';
-import Anchor from '../../@atom/Anchor/Anchor';
+import { useHistory } from 'react-router';
+import useRegister from '../../../service/hooks/useRegister';
+
 import Button from '../../@atom/Button/Button';
 import InputWithMessage from '../../@molecule/InputWithMessage/InputWithMessage';
 import { AddressInputContainer, RegisterAddressTitle } from './RegisterAddressForm.styles';
 
 const RegisterAddressForm: VFC = () => {
+  const history = useHistory();
+  const { urlName, addressErrorMessage, isValidAddress, onChangeRegister } = useRegister();
+
+  const moveRegisterNamePage = () => {
+    history.push('/register/name');
+  };
+
   return (
     <>
       <RegisterAddressTitle>
@@ -14,13 +23,17 @@ const RegisterAddressForm: VFC = () => {
       </RegisterAddressTitle>
       <AddressInputContainer>
         <InputWithMessage
-          isSuccess={false}
+          name="urlName"
+          role="urlName"
+          value={urlName}
+          isSuccess={isValidAddress}
           successMessage="좋은 주소명이네요!"
-          failureMessage="이미 존재하는 주소에요... 다른 주소로 입력해주세요"
+          failureMessage={addressErrorMessage}
+          onChange={(e) => onChangeRegister(e.target)}
         />
       </AddressInputContainer>
-      <Button disabled>
-        <Anchor to="/register/name">다음</Anchor>
+      <Button disabled={!!addressErrorMessage} onClick={moveRegisterNamePage}>
+        다음
       </Button>
     </>
   );

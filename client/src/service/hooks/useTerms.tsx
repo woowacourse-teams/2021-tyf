@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useRegister = () => {
+const useTerms = () => {
   const [termsChecked, setTermsChecked] = useState({
     termsOfService: false,
     personalInformationUsage: false,
@@ -23,4 +23,4 @@ const useRegister = () => {
   return { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked };
 };
 
-export default useRegister;
+export default useTerms;
