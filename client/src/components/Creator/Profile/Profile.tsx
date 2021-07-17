@@ -1,17 +1,22 @@
-import { FC, HTMLAttributes } from 'react';
+import { VFC } from 'react';
 
-import Anchor from '../../@atom/Anchor/Anchor';
 import DefaultUserProfile from '../../../assets/images/defualtUserProfile.png';
-import { NickName, ProfileImg, StyledProfileContainer } from './Profile.styles';
+import { NickName, ProfileImg, ProfileContainer } from './Profile.styles';
+import { useParams } from 'react-router-dom';
+import { ParamTypes } from '../../../App';
+import useCreator from '../../../service/hooks/useCreator';
 
-const Profile: FC<HTMLAttributes<HTMLElement>> = () => {
+const Profile: VFC = () => {
+  const { creatorId } = useParams<ParamTypes>();
+  const { nickname } = useCreator(creatorId);
+
   return (
-    <StyledProfileContainer>
-      <Anchor to="">
+    <ProfileContainer>
+      <a href={window.location.origin + `/creator/${creatorId}`}>
         <ProfileImg style={{ backgroundImage: `url(${DefaultUserProfile})` }}></ProfileImg>
-      </Anchor>
-      <NickName>파노</NickName>
-    </StyledProfileContainer>
+      </a>
+      <NickName>{nickname}</NickName>
+    </ProfileContainer>
   );
 };
 

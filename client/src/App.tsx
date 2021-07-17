@@ -16,10 +16,11 @@ import RegisterNamePage from './pages/Register/RegisterName/RegisterNamePage';
 import RegisterSuccessPage from './pages/Register/RegisterSuccess/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/RegisterTerms/RegisterTermsPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
-import { OAuthProvider } from './types';
+import { CreatorId, OAuthProvider } from './types';
 
 export interface ParamTypes {
-  oauthProvider?: OAuthProvider;
+  oauthProvider: OAuthProvider;
+  creatorId: CreatorId;
 }
 
 const App = () => {

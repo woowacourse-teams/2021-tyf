@@ -11,7 +11,7 @@ const StatisticsPage: FC<HTMLAttributes<HTMLElement>> = () => {
   return (
     <StyledTemplate>
       <InfoTitle>
-        {userInfo && userInfo.name}님이
+        {userInfo && userInfo.nickname}님이
         <br />총 후원 받은 금액은
       </InfoTitle>
       <MoneyInfo>

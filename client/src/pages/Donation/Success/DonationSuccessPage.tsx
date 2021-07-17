@@ -1,4 +1,7 @@
 import { VFC } from 'react';
+import { useParams } from 'react-router-dom';
+import { ParamTypes } from '../../../App';
+import useCreator from '../../../service/hooks/useCreator';
 
 import {
   CloseButton,
@@ -12,10 +15,13 @@ import {
 } from './DonationSuccessPage.styles';
 
 const DonationSuccessPage: VFC = () => {
+  const { creatorId } = useParams<ParamTypes>();
+  const { nickname } = useCreator(creatorId);
+
   return (
     <StyledTemplate>
       <SuccessMessageContainer>
-        <SubText>파노님에게</SubText>
+        <SubText>{nickname}님에게</SubText>
         <MainText>3,000원</MainText>
         <SubText>후원되었습니다.</SubText>
         <EmojiText>🎉</EmojiText>

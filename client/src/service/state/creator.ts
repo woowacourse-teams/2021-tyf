@@ -1,13 +1,14 @@
-import { selector } from 'recoil';
+import { selector, selectorFamily } from 'recoil';
 
-import { creatorListMock } from './../../mock/mockData';
-import { requestCreatorList } from './../request/creator';
-import { Creator } from './../../types';
+import { requestCreator, requestCreatorList } from './../request/creator';
+import { Creator, CreatorId } from './../../types';
 
 export const creatorListQuery = selector<Creator[]>({
   key: 'creatorListQuery',
-  get: () => {
-    //  return requestCreatorList();
-    return creatorListMock;
-  },
+  get: () => requestCreatorList(),
+});
+
+export const creatorQuery = selectorFamily<Creator, CreatorId>({
+  key: 'creatorQuery',
+  get: (creatorId) => () => requestCreator(creatorId),
 });
