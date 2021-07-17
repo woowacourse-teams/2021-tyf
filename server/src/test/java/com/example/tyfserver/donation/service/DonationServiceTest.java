@@ -1,135 +1,161 @@
 package com.example.tyfserver.donation.service;
 
-import com.example.tyfserver.donation.DonationTest;
+import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
+import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class DonationServiceTest {
 
-    @Autowired
+    @Mock
     private MemberRepository memberRepository;
 
-    @Autowired
+    @Mock
     private DonationRepository donationRepository;
 
-    @Autowired
+    @InjectMocks
     private DonationService donationService;
 
-    private Member member;
-
-    @BeforeEach
-    void setUp() {
-        member = MemberTest.testMember();
-        memberRepository.save(member);
-    }
-
-    @AfterEach
-    void tearDown() {
-        memberRepository.deleteAll();
-    }
-
-    @DisplayName("후원을 등록한다.")
     @Test
-    void createDonation() throws Exception {
+    @DisplayName("createDonation Test")
+    public void createDonationTest() {
         //given
-        DonationRequest donationRequest = DonationTest.testDonationRequest(member);
-
+        DonationRequest request = new DonationRequest("pageName", 1000L);
         //when
-        DonationResponse donationResponse = donationService.createDonation(donationRequest);
-
+        when(memberRepository.findByPageName(Mockito.anyString()))
+                .thenReturn(
+                        Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
+        when(donationRepository.save(Mockito.any(Donation.class)))
+                .thenReturn(new Donation(1L, 1000L, Message.defaultMessage()));
         //then
-        List<Donation> donations = donationRepository.findAll();
-        assertThat(donations).hasSize(1);
-        assertThat(donationResponse.getDonationId()).usingRecursiveComparison()
-                .isEqualTo(donations.get(0).getId());
+        DonationResponse response = donationService.createDonation(request);
+        assertThat(response).usingRecursiveComparison()
+                .isEqualTo(new DonationResponse(1L, Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, 1000L));
     }
 
-    @DisplayName("후원받은 포인트만큼 멤버의 포인트에 누적된다.")
     @Test
-    void accumulateMemberPoint() throws Exception {
+    @DisplayName("createDonation member not found Test")
+    public void createDonationNotFoundTest() {
         //given
-        DonationRequest donationRequest = DonationTest.testDonationRequest(member);
-
+        DonationRequest request = new DonationRequest("pageName", 1000L);
         //when
-        donationService.createDonation(donationRequest);
-
+        when(memberRepository.findByPageName(Mockito.anyString()))
+                .thenReturn(Optional.empty());
         //then
-        Member findMember = memberRepository.findById(this.member.getId()).get();
-        assertThat(findMember.getPoint().getPoint())
-                .isEqualTo(donationRequest.getDonationAmount());
+        assertThatThrownBy(() -> donationService.createDonation(request))
+                .isInstanceOf(MemberNotFoundException.class);
     }
 
-    @DisplayName("후원 메시지를 추가한다.")
     @Test
-    void addDonationMessage() throws Exception {
+    @DisplayName("addMessageToDonation Test")
+    public void addMessageToDonationTest() {
         //given
-        Donation donation = new Donation(1000L);
-        final Donation savedDonation = donationRepository.save(donation);
-        DonationMessageRequest donationMessageRequest = DonationTest.testMessageRequest();
-
+        Donation givenDonation = new Donation(1L, 100L, Message.defaultMessage());
+        DonationMessageRequest request = new DonationMessageRequest("changedName", "changedMessage", false);
         //when
-        donationService.addMessageToDonation(savedDonation.getId(), donationMessageRequest);
-
+        when(donationRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(
+                        givenDonation
+                ));
         //then
-        final Donation findDonation = donationRepository.findById(savedDonation.getId()).get();
-        assertThat(donationMessageRequest.getName()).isEqualTo(findDonation.getName());
-        assertThat(donationMessageRequest.getMessage()).isEqualTo(findDonation.getMessage());
+        donationService.addMessageToDonation(1L, request);
+        assertThat(givenDonation.getName()).isEqualTo("changedName");
+        assertThat(givenDonation.getMessage()).isEqualTo("changedMessage");
     }
 
-    @DisplayName("창작자의 후원메시지 목록을 조회한다. 비공개 메시지는 익명으로 처리된다.")
     @Test
-    void findPublicDonations() {
-        // given
-        DonationResponse donationResponse1 = 후원하기();
-        DonationResponse donationResponse2 = 후원하기();
-
-        후원메시지_보내기(donationResponse1, DonationTest.testMessageRequest());
-        후원메시지_보내기(donationResponse2, DonationTest.testSecretMessageRequest());
-
-        // when
-        List<DonationResponse> responses = donationService.findPublicDonations(member.getPageName());
-
-        // then
-        assertThat(responses).hasSize(2);
-
-        DonationResponse secretResponse = responses.get(0);
-        DonationResponse publicResponse = responses.get(1);
-
-        assertThat(secretResponse.getName()).isEqualTo(Message.SECRET_NAME);
-        assertThat(secretResponse.getMessage()).isEqualTo(Message.SECRET_MESSAGE);
-        assertThat(secretResponse.getAmount()).isEqualTo(DonationTest.DONATION_AMOUNT);
-
-        assertThat(publicResponse.getName()).isEqualTo(DonationTest.NAME);
-        assertThat(publicResponse.getMessage()).isEqualTo(DonationTest.MESSAGE);
-        assertThat(publicResponse.getAmount()).isEqualTo(DonationTest.DONATION_AMOUNT);
+    @DisplayName("addMessageToDonation donation not found Test")
+    public void addMessageToDonationNotFoundTest() {
+        //given
+        Donation givenDonation = new Donation(1L, 100L, Message.defaultMessage());
+        DonationMessageRequest request = new DonationMessageRequest("changedName", "changedMessage", false);
+        //when
+        when(donationRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.empty());
+        //then
+        assertThatThrownBy(() -> donationService.addMessageToDonation(1L, request))
+                .isInstanceOf(DonationNotFoundException.class);
     }
 
-    private DonationResponse 후원하기() {
-        DonationRequest request = DonationTest.testDonationRequest(member);
-        return donationService.createDonation(request);
+    @Test
+    @DisplayName("findMyDonation Test")
+    public void findMyDonationTest() {
+        //given
+        PageRequest reqeust = PageRequest.of(0, 1);
+        //when
+        when(memberRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
+        when(donationRepository.findDonationByMemberOrderByCreatedAtDesc(Mockito.any(Member.class), Mockito.any(Pageable.class)))
+                .thenReturn(Collections.singletonList(new Donation(1L, 1000L, Message.defaultMessage())));
+        //then
+        List<DonationResponse> response = donationService.findMyDonations(1L, reqeust);
+        assertThat(response.get(0).getName()).isEqualTo(Message.DEFAULT_NAME);
+        assertThat(response.get(0).getMessage()).isEqualTo(Message.DEFAULT_MESSAGE);
     }
 
-    private void 후원메시지_보내기(DonationResponse donationResponse1, DonationMessageRequest messageRequest) {
-        donationService.addMessageToDonation(donationResponse1.getDonationId(), messageRequest);
+    @Test
+    @DisplayName("findMyDonation member not found Test")
+    public void findMyDonationMemberNotFoundTest() {
+        //given
+        PageRequest reqeust = PageRequest.of(0, 1);
+        //when
+        when(memberRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.empty());
+        //then
+        assertThatThrownBy(() -> donationService.findMyDonations(1L, reqeust))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("findPublicDonation Test")
+    public void findPublicDonationTest() {
+        //given
+        //when
+        when(memberRepository.findByPageName(Mockito.anyString()))
+                .thenReturn(Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
+        when(donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(Mockito.any(Member.class)))
+                .thenReturn(
+                        Collections.singletonList(new Donation(1L, 1000L, new Message("name", "message", true))));
+        //then
+        List<DonationResponse> response = donationService.findPublicDonations("pagename");
+        assertThat(response.get(0).getName()).isEqualTo(Message.SECRET_NAME);
+        assertThat(response.get(0).getMessage()).isEqualTo(Message.SECRET_MESSAGE);
+    }
+
+    @Test
+    @DisplayName("findPublicDonation member not found Test")
+    public void findPublicDonationMemberNotFoundTest() {
+        //given
+        //when
+        when(memberRepository.findByPageName(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+        //then
+        assertThatThrownBy(() -> donationService.findPublicDonations("pagename"))
+                .isInstanceOf(MemberNotFoundException.class);
     }
 }

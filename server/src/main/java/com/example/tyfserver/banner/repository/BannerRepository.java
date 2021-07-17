@@ -1,5 +1,6 @@
-package com.example.tyfserver.banner.domain;
+package com.example.tyfserver.banner.repository;
 
+import com.example.tyfserver.banner.domain.Banner;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

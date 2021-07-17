@@ -23,6 +23,12 @@ public class Banner extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public Banner(Long id, String imageUrl, Member member) {
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.member = member;
+    }
+
     public Banner(Member member, String imageUrl) {
         this.member = member;
         this.imageUrl = imageUrl;

@@ -1,8 +1,7 @@
-package com.example.tyfserver.auth.domain;
+package com.example.tyfserver.auth.util;
 
 import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
-import com.example.tyfserver.auth.util.JwtTokenProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.DisplayName;
@@ -21,16 +20,16 @@ class JwtTokenProviderTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @DisplayName("이메일 값이 유효하지 않은 토큰 유효성 검증")
     @Test
+    @DisplayName("이메일 값이 유효하지 않은 토큰 유효성 검증")
     void testTokenWithNotValidEmailCase() {
         //when //then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken("invalidToken"))
                 .isExactlyInstanceOf(InvalidTokenException.class);
     }
 
-    @DisplayName("만료시간이 지난 토큰에 대한 유효성 검증")
     @Test
+    @DisplayName("만료시간이 지난 토큰에 대한 유효성 검증")
     void testTokenWithNotValidExpirationCase() {
         Date date = new Date(0);
 
@@ -45,8 +44,8 @@ class JwtTokenProviderTest {
                 .isExactlyInstanceOf(InvalidTokenException.class);
     }
 
-    @DisplayName("토큰에서 이메일 추출")
     @Test
+    @DisplayName("토큰에서 이메일 추출")
     void testFindEmailByToken() {
         //given
         long id = 1L;

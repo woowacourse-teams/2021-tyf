@@ -2,10 +2,9 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
-import com.example.tyfserver.member.MemberTest;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,19 +62,6 @@ class DonationRepositoryTest {
         donationRepository.save(donation5);
         donationRepository.save(donation6);
         donationRepository.save(donation7);
-    }
-
-    @DisplayName("후원을 등록한다.")
-    @Test
-    void createDonation() {
-        //given
-        final Donation donation = new Donation(1000L);
-
-        //when
-        final Donation savedDonation = donationRepository.save(donation);
-
-        //then
-        Assertions.assertNotNull(savedDonation.getId());
     }
 
     @Test

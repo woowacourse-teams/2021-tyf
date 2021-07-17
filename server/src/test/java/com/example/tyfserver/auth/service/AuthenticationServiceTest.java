@@ -1,31 +1,36 @@
 package com.example.tyfserver.auth.service;
 
+import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
 
-    @Autowired
+    @Mock
     private JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
+    @InjectMocks
     private AuthenticationService authenticationService;
 
     @Test
     @DisplayName("토큰을 이용해 LoginMember 생성")
     public void createLoginMemberByToken() {
-        String email = "abc@chocolate.com";
-        long id = 1L;
-        String token = jwtTokenProvider.createToken(id, email);
+        when(jwtTokenProvider.findIdAndEmailFromToken(Mockito.anyString()))
+                .thenReturn(new IdAndEmail(1L, "email"));
 
-        LoginMember actual = authenticationService.createLoginMemberByToken(token);
-        assertThat(actual.getEmail()).isEqualTo(email);
+        LoginMember loginMember = authenticationService.createLoginMemberByToken("token");
+        assertThat(loginMember.getId()).isEqualTo(1L);
+        assertThat(loginMember.getEmail()).isEqualTo("email");
     }
 }

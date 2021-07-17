@@ -2,77 +2,76 @@ package com.example.tyfserver.banner.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.banner.domain.Banner;
-import com.example.tyfserver.banner.domain.BannerRepository;
 import com.example.tyfserver.banner.dto.BannerResponse;
-import com.example.tyfserver.member.MemberTest;
-import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.banner.repository.BannerRepository;
+import com.example.tyfserver.member.domain.MemberTest;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class BannerServiceTest {
 
-    @Autowired
-    private BannerService bannerService;
-
-    @Autowired
+    @Mock
     private MemberRepository memberRepository;
 
-    @Autowired
+    @Mock
     private BannerRepository bannerRepository;
 
-    private Member member;
-    private LoginMember loginMember;
+    @InjectMocks
+    private BannerService bannerService;
 
-    @BeforeEach
-    void setUp() {
-        member = MemberTest.testMember();
-        memberRepository.save(member);
-        loginMember = new LoginMember(member.getId(), member.getEmail());
-    }
-
-    @AfterEach
-    void tearDown() {
-        bannerRepository.deleteAll();
-        memberRepository.deleteAll();
-    }
-
-    @DisplayName("배너를 생성한다")
     @Test
-    void testCreateBanner() {
-        // given
-        String imageUrl = "image.png";
+    @DisplayName("createBanner Test")
+    public void createBannerTest() {
+        //given & when
+        when(memberRepository.findById(Mockito.anyLong()))
+                .thenReturn(
+                        Optional.of(MemberTest.testMember()));
+        when(bannerRepository.save(Mockito.any(Banner.class)))
+                .thenReturn(new Banner(1L, "image.jpg", MemberTest.testMember()));
 
-        // when
-        Long bannerId = bannerService.createBanner(loginMember, imageUrl);
-
-        // then
-        Banner findBanner = bannerRepository.findById(bannerId).get();
-        assertThat(findBanner.getImageUrl()).isEqualTo(imageUrl);
+        //then
+        Long memberId = bannerService.createBanner(new LoginMember(1L, "email"), "image.jpg");
+        assertThat(memberId).isEqualTo(1L);
     }
 
-    @DisplayName("특정 멤버의 배너들을 조회한다")
     @Test
-    void testGetBanners() {
-        // given
-        String email = "member2";
-        String imageUrl = "image.png";
-        bannerRepository.save(new Banner(member, imageUrl));
+    @DisplayName("createBanner member not found Test")
+    public void createBannerNotFoundTest() {
+        //given & when
+        when(memberRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.empty());
 
-        // when
-        List<BannerResponse> banners = bannerService.getBanners(loginMember);
+        //then
+        assertThatThrownBy(() -> bannerService.createBanner(new LoginMember(1L, "email"), "image.jpg"))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
 
-        // then
-        assertThat(banners).hasSize(1);
-        assertThat(banners.get(0).getImageUrl()).isEqualTo(imageUrl);
+    @Test
+    @DisplayName("getBanners Test")
+    public void getBannersTest() {
+        //given & when
+        when(bannerRepository.findAllByMemberId(Mockito.anyLong()))
+                .thenReturn(Collections.singletonList(new Banner(1L, "image.jpg", MemberTest.testMember())));
+
+        //then
+        List<BannerResponse> response = bannerService.getBanners(new LoginMember(1L, "email"));
+        assertThat(response.get(0).getId()).isEqualTo(1L);
+        assertThat(response.get(0).getImageUrl()).isEqualTo("image.jpg");
     }
 }

@@ -2,7 +2,7 @@ package com.example.tyfserver;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
-import com.example.tyfserver.banner.domain.BannerRepository;
+import com.example.tyfserver.banner.repository.BannerRepository;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.repository.DonationRepository;

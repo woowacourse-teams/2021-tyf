@@ -1,7 +1,8 @@
-package com.example.tyfserver.banner.domain;
+package com.example.tyfserver.banner.repository;
 
-import com.example.tyfserver.member.MemberTest;
+import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,8 @@ class BannerRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @DisplayName("특정 멤버의 배너들을 조회한다")
     @Test
+    @DisplayName("특정 멤버의 배너들을 조회한다")
     void testFindAllByMemberId() {
         // given
         Member member = MemberTest.testMember();

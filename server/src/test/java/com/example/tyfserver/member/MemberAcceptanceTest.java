@@ -6,6 +6,7 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
