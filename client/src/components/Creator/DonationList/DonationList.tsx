@@ -20,11 +20,12 @@ interface Props {
 }
 
 const DonationList = ({ isAdmin }: Props) => {
-  const [donationListPageQuery, setDonationListPageQuery] = useState(1);
-
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
-  const { donationList } = useCreatorDonations({ isAdmin, creatorId, page: donationListPageQuery });
+  const { donationList, showNextDonationList } = useCreatorDonations({
+    isAdmin,
+    creatorId,
+  });
 
   return (
     <DonationListContainer>
@@ -42,7 +43,7 @@ const DonationList = ({ isAdmin }: Props) => {
           </CommentsListItem>
         ))}
       </CommentsList>
-      {isAdmin && <ShowMoreButton>더보기</ShowMoreButton>}
+      {isAdmin && <ShowMoreButton onClick={showNextDonationList}>더보기</ShowMoreButton>}
     </DonationListContainer>
   );
 };

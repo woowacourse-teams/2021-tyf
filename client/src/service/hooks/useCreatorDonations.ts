@@ -1,20 +1,47 @@
-import { useRecoilValue } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { CreatorId } from '../../types';
 import { DONATION_VIEW_SIZE } from '../../constants/donation';
-import { creatorPrivateDonationListQuery, creatorPublicDonationListQuery } from '../state/creator';
+import {
+  creatorPrivateDonationListQuery,
+  creatorPublicDonationListQuery,
+  donationListState,
+} from '../state/creator';
 
 interface Props {
   isAdmin: boolean;
   creatorId: CreatorId;
-  page: number;
 }
-const useCreatorDonations = ({ isAdmin, creatorId, page }: Props) => {
+
+const useCreatorDonations = ({ isAdmin, creatorId }: Props) => {
+  const [donationListPageQuery, setDonationListPageQuery] = useState(1);
+  const [privateDonationList, setPrivateDonationList] = useRecoilState(
+    donationListState(creatorId)
+  );
   const donationList = isAdmin
-    ? useRecoilValue(creatorPrivateDonationListQuery({ page, size: DONATION_VIEW_SIZE }))
+    ? privateDonationList
     : useRecoilValue(creatorPublicDonationListQuery(creatorId));
 
-  return { donationList };
+  const showNextDonationList = () => {
+    const newDonationList = JSON.parse(
+      JSON.stringify(
+        creatorPrivateDonationListQuery({
+          page: donationListPageQuery,
+          size: DONATION_VIEW_SIZE,
+        })
+      )
+    );
+
+    setPrivateDonationList(donationList.concat(newDonationList));
+    setDonationListPageQuery(donationListPageQuery + 1);
+  };
+
+  useEffect(() => {
+    showNextDonationList();
+  }, []);
+
+  return { donationList, showNextDonationList };
 };
 
 export default useCreatorDonations;

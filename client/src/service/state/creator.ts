@@ -1,13 +1,13 @@
-import { selector, selectorFamily } from 'recoil';
+import { atomFamily, selector, selectorFamily } from 'recoil';
 
+import { Creator, CreatorId, Donation } from './../../types';
+import { accessTokenState } from './login';
 import {
   requestCreator,
   requestCreatorList,
   requestCreatorPrivateDonationList,
   requestCreatorPublicDonationList,
 } from './../request/creator';
-import { Creator, CreatorId, Donation } from './../../types';
-import { accessTokenState } from './login';
 
 export const creatorListQuery = selector<Creator[]>({
   key: 'creatorListQuery',
@@ -22,6 +22,11 @@ export const creatorQuery = selectorFamily<Creator, CreatorId>({
 export const creatorPublicDonationListQuery = selectorFamily<Donation[], CreatorId>({
   key: 'creatorPublicDonationListQuery',
   get: (creatorId) => () => requestCreatorPublicDonationList(creatorId),
+});
+
+export const donationListState = atomFamily<Donation[], string>({
+  key: 'donationListState',
+  default: [],
 });
 
 export const creatorPrivateDonationListQuery = selectorFamily<
