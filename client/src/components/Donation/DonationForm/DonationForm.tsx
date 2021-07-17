@@ -1,4 +1,7 @@
-import Anchor from '../../@atom/Anchor/Anchor';
+import { FormEvent } from 'react';
+import useDonation from '../../../service/hooks/useDonation';
+import useDonationForm from '../../../service/hooks/useDonationForm';
+import { CreatorId } from '../../../types';
 import Button from '../../@atom/Button/Button';
 import SubTitle from '../../@atom/SubTitle/SubTitle';
 import {
@@ -9,21 +12,37 @@ import {
   StyledDonationForm,
 } from './DonationForm.styles';
 
-const DonationForm = () => {
+export interface DonationFormProps {
+  creatorId: CreatorId;
+}
+
+const DonationForm = ({ creatorId }: DonationFormProps) => {
+  const { donationAmount, addDonationAmount, setDonationAmount, isDonationAmountInValidRange } =
+    useDonationForm();
+  const { donate } = useDonation(creatorId);
+
+  const onDonate = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    donate(donationAmount);
+  };
+
   return (
-    <StyledDonationForm>
+    <StyledDonationForm onSubmit={onDonate}>
       <SubTitle>후원할 금액을 입력해주세요! 🎉</SubTitle>
       <InputLabel>
-        <MoneyInput placeholder="0" />
+        <MoneyInput
+          placeholder="0"
+          value={donationAmount}
+          onChange={({ target }) => setDonationAmount(target.valueAsNumber)}
+        />
       </InputLabel>
       <ButtonContainer>
-        <MoneyAddButton>+1,000원</MoneyAddButton>
-        <MoneyAddButton>+2,000원</MoneyAddButton>
-        <MoneyAddButton>+3,000원</MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(1000)}>+1,000원</MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(2000)}>+2,000원</MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(3000)}>+3,000원</MoneyAddButton>
       </ButtonContainer>
-      <Button>
-        <Anchor to="/donation/message">후원하기</Anchor>
-      </Button>
+      <Button disabled={!isDonationAmountInValidRange}>후원하기</Button>
     </StyledDonationForm>
   );
 };
