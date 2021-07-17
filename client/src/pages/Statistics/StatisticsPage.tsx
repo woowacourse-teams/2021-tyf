@@ -6,16 +6,16 @@ import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
 
 const StatisticsPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const { userInfo } = useLoginUserInfo();
-  const { point } = useStatistics();
+  const { totalAmount } = useStatistics();
 
   return (
     <StyledTemplate>
+      <InfoTitle>
+        {userInfo && userInfo.name}님이
+        <br />총 후원 받은 금액은
+      </InfoTitle>
       <MoneyInfo>
-        <InfoTitle>
-          {userInfo && userInfo.name}님이
-          <br />총 후원 받은 금액은
-        </InfoTitle>
-        {point.toLocaleString('en-us')}
+        <span role="total-amount">{(totalAmount ?? 0).toLocaleString('en-us')}</span>
         <span>원</span>
       </MoneyInfo>
     </StyledTemplate>

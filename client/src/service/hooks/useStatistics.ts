@@ -3,9 +3,9 @@ import { useRecoilValue } from 'recoil';
 import { userStatisticsQuery } from '../state/statistics';
 
 const useStatistics = () => {
-  const { point } = useRecoilValue(userStatisticsQuery);
+  const { point: totalAmount } = useRecoilValue(userStatisticsQuery);
 
-  return { point };
+  return { totalAmount };
 };
 
 export default useStatistics;

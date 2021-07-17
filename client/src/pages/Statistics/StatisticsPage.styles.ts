@@ -11,10 +11,9 @@ export const StyledTemplate = styled(Template)`
 `;
 
 export const InfoTitle = styled(SubTitle)`
-  position: absolute;
-  top: -12rem;
   width: 100%;
   text-align: left;
+  margin-bottom: 3rem;
 `;
 
 export const MoneyInfo = styled(Title)`
@@ -23,7 +22,7 @@ export const MoneyInfo = styled(Title)`
   font-size: 3rem;
   width: 100%;
 
-  span {
+  span:last-of-type {
     font-size: 1rem;
   }
 `;
