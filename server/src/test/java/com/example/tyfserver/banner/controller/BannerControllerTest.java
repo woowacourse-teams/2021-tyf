@@ -56,10 +56,7 @@ class BannerControllerTest {
                         new BannerResponse(new Banner(1L, "imageUrl1", MemberTest.testMember())),
                         new BannerResponse(new Banner(2L, "imageUrl2", MemberTest.testMember()))
                 ));
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/banners/me")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -111,10 +108,7 @@ class BannerControllerTest {
         //when
         when(bannerService.createBanner(Mockito.any(), Mockito.any()))
                 .thenReturn(1L);
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(post("/banners")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,10 +124,7 @@ class BannerControllerTest {
         BannerRequest request = new BannerRequest("imageUrl");
         //when
         doThrow(new MemberNotFoundException()).when(bannerService).createBanner(Mockito.any(), Mockito.any());
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(post("/banners")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -149,10 +140,7 @@ class BannerControllerTest {
         //given
         BannerRequest request = new BannerRequest(" ");
         //when
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(post("/banners")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -192,5 +180,12 @@ class BannerControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
+    }
+
+    private void validInterceptorAndArgumentResolverMocking() {
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(new LoginMember(1L, "email"));
     }
 }

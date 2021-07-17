@@ -9,7 +9,6 @@ import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,8 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -180,10 +179,7 @@ class MemberControllerTest {
         MemberDetailResponse response = new MemberDetailResponse("email", "nickname", "pagename");
         //when
         when(memberService.findMemberDetail(Mockito.anyLong())).thenReturn(response);
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -200,10 +196,7 @@ class MemberControllerTest {
         //given
         //when
         doThrow(new MemberNotFoundException()).when(memberService).findMemberDetail(Mockito.anyLong());
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -247,10 +240,7 @@ class MemberControllerTest {
         PointResponse response = new PointResponse(1000L);
         //when
         when(memberService.findMemberPoint(Mockito.anyLong())).thenReturn(response);
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me/point")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -265,16 +255,20 @@ class MemberControllerTest {
         //given
         //when
         doThrow(new MemberNotFoundException()).when(memberService).findMemberPoint(Mockito.anyLong());
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
+        validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me/point")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
         ;
+    }
+
+    private void validInterceptorAndArgumentResolverMocking() {
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(new LoginMember(1L, "email"));
     }
 
     @Test
