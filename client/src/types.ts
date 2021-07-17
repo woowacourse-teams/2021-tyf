@@ -1,4 +1,4 @@
-import { OAuth } from './constants/oauth';
+import { OAUTH } from './constants/oauth';
 
 export interface Creator {
   pageName: string;
@@ -15,6 +15,6 @@ export interface Register {
 
 export interface LoginUserInfo extends Creator {}
 
-export type OAuthProvider = keyof typeof OAuth;
+export type OAuthProvider = keyof typeof OAUTH;
 
 export type StorageType = 'LOCAL' | 'SESSION';

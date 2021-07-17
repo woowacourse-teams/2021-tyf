@@ -1,12 +1,16 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { newUserState, nickNameValidationQuery, urlNameValidationQuery } from '../state/register';
+import {
+  newUserState,
+  nickNameValidationSelector,
+  urlNameValidationSelector,
+} from '../state/register';
 import { requestRegister } from '../request/register';
 
 const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);
-  const addressErrorMessage = useRecoilValue(urlNameValidationQuery);
-  const nickNameErrorMessage = useRecoilValue(nickNameValidationQuery);
+  const addressErrorMessage = useRecoilValue(urlNameValidationSelector);
+  const nickNameErrorMessage = useRecoilValue(nickNameValidationSelector);
 
   // TODO: db로의 검증
   // const addressDBErrorMessage = useRecoilValueLoadable(urlNameDBValidationQuery);

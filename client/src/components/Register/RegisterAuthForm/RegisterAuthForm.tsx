@@ -20,7 +20,7 @@ const RegisterAuthForm: VFC = () => {
     <>
       <RegisterTitle>회원가입</RegisterTitle>
       <RegisterButtonContainer>
-        <GoogleBarButton onClick={() => routeToOAuthPage('google', 'REGISTER')}>
+        <GoogleBarButton onClick={() => routeToOAuthPage('GOOGLE', 'REGISTER')}>
           구글 회원가입
         </GoogleBarButton>
         {/* <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
@@ -29,7 +29,7 @@ const RegisterAuthForm: VFC = () => {
         <NaverBarButton onClick={() => history.push('/register/name')}>
           네이버 회원가입
         </NaverBarButton>
-        <KakaoBarButton onClick={() => routeToOAuthPage('kakao', 'REGISTER')}>
+        <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO', 'REGISTER')}>
           카카오 회원가입
         </KakaoBarButton>
       </RegisterButtonContainer>

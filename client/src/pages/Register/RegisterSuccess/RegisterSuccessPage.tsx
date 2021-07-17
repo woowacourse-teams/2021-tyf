@@ -22,7 +22,7 @@ const RegisterSuccessPage: FC<HTMLAttributes<HTMLElement>> = () => {
     return () => {
       onResetRegister();
     };
-  }, [history]);
+  }, []);
 
   return (
     <StyledTemplate>

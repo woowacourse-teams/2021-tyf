@@ -27,13 +27,13 @@ const LoginForm: VFC = () => {
       <LoginTitle>로그인</LoginTitle>
 
       <LoginButtonContainer>
-        <GoogleBarButton onClick={() => routeToOAuthPage('google', 'LOGIN')}>
+        <GoogleBarButton onClick={() => routeToOAuthPage('GOOGLE', 'LOGIN')}>
           구글 로그인
         </GoogleBarButton>
-        <NaverBarButton onClick={() => routeToOAuthPage('naver', 'LOGIN')}>
+        <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'LOGIN')}>
           네이버 로그인
         </NaverBarButton>
-        <KakaoBarButton onClick={() => routeToOAuthPage('kakao', 'LOGIN')}>
+        <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO', 'LOGIN')}>
           카카오 로그인
         </KakaoBarButton>
         <LoginOptionContainer>

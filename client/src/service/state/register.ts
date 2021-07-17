@@ -8,7 +8,7 @@ export const newUserState = atom<Register>({
   default: { email: '', nickName: '', oauthType: '', urlName: '' },
 });
 
-export const urlNameValidationQuery = selector({
+export const urlNameValidationSelector = selector({
   key: 'urlNameValidationQuery',
   get: ({ get }) => {
     const { urlName } = get(newUserState);
@@ -38,7 +38,7 @@ export const urlNameValidationQuery = selector({
   },
 });
 
-export const nickNameValidationQuery = selector({
+export const nickNameValidationSelector = selector({
   key: 'nickNameValidationQuery',
   get: ({ get }) => {
     const { nickName } = get(newUserState);
