@@ -1,12 +1,12 @@
 import { useHistory } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { CreatorId } from '../../types';
 import { requestDonation } from '../request/donation';
 import { donationState } from '../state/donation';
 
 const useDonation = (creatorId: CreatorId) => {
   const history = useHistory();
-  const setDonation = useSetRecoilState(donationState);
+  const [donation, setDonation] = useRecoilState(donationState);
 
   const donate = async (amount: number) => {
     try {
@@ -20,7 +20,7 @@ const useDonation = (creatorId: CreatorId) => {
     }
   };
 
-  return { donate };
+  return { donate, donation };
 };
 
 export default useDonation;
