@@ -1,5 +1,4 @@
 package com.example.tyfserver.auth.config;
-
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.auth.util.AuthorizationExtractor;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+        if ("OPTIONS".equals(request.getMethod())) {
+            return true;
+        }
+
 
         String token = AuthorizationExtractor.extract(request);
         authenticationService.validateToken(token);
