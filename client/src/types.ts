@@ -21,6 +21,12 @@ export interface LoginUserInfo extends Creator {}
 
 export type OAuthProvider = keyof typeof OAUTH;
 
+export interface Donation {
+  donationId: number;
+  name: string;
+  message: string;
+  amount: number;
+}
 export interface Statistics {
   point: number;
 }
