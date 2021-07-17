@@ -21,7 +21,8 @@
   "scripts": {
     "start": "webpack serve",
     "build": "webpack",
-    "test": "jest --clearCache && jest src --watch ",
+    "test": "jest src --watch ",
+    "test:clean": "jest --clearCache && jest src --watch ",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

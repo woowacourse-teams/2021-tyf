@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import GlobalStyle from '../src/Global.styles';
 import { theme } from '../src/theme';
+import { Suspense } from 'react';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -23,7 +24,9 @@ export const decorators = [
           <GlobalStyle />
           <BrowserRouter>
             <div style={{ height: '100vh' }}>
-              <Story />
+              <Suspense fallback={true}>
+                <Story />
+              </Suspense>
             </div>
           </BrowserRouter>
         </ThemeProvider>
