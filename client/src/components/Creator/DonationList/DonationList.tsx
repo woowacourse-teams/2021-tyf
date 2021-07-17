@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams } from 'react-router';
 
 import { ParamTypes } from '../../../App';
@@ -19,9 +20,11 @@ interface Props {
 }
 
 const DonationList = ({ isAdmin }: Props) => {
+  const [donationListPageQuery, setDonationListPageQuery] = useState(1);
+
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
-  const { donationList } = useCreatorDonations(creatorId);
+  const { donationList } = useCreatorDonations({ isAdmin, creatorId, page: donationListPageQuery });
 
   return (
     <DonationListContainer>

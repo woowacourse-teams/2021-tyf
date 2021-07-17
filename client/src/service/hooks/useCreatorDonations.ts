@@ -1,13 +1,20 @@
 import { useRecoilValue } from 'recoil';
 
-import { creatorPublicDonationListQuery } from '../state/creator';
+import { CreatorId } from '../../types';
+import { DONATION_VIEW_SIZE } from '../../constants/donation';
+import { creatorPrivateDonationListQuery, creatorPublicDonationListQuery } from '../state/creator';
 
-const useCreatorDonations = (creatorId: string) => {
-  // TODO: 사용자일때 후원목록 불러오기 구현
-  // isAdmin 받아서 조건부 렌더링
-  const creatorPublicDonationList = useRecoilValue(creatorPublicDonationListQuery(creatorId));
+interface Props {
+  isAdmin: boolean;
+  creatorId: CreatorId;
+  page: number;
+}
+const useCreatorDonations = ({ isAdmin, creatorId, page }: Props) => {
+  const donationList = isAdmin
+    ? useRecoilValue(creatorPrivateDonationListQuery({ page, size: DONATION_VIEW_SIZE }))
+    : useRecoilValue(creatorPublicDonationListQuery(creatorId));
 
-  return { donationList: creatorPublicDonationList };
+  return { donationList };
 };
 
 export default useCreatorDonations;
