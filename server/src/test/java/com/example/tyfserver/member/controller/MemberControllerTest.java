@@ -1,14 +1,33 @@
 package com.example.tyfserver.member.controller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
-import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.member.dto.CurationsResponse;
+import com.example.tyfserver.member.dto.MemberDetailResponse;
+import com.example.tyfserver.member.dto.MemberResponse;
+import com.example.tyfserver.member.dto.NicknameValidationRequest;
+import com.example.tyfserver.member.dto.PageNameValidationRequest;
+import com.example.tyfserver.member.dto.PointResponse;
+import com.example.tyfserver.member.exception.DuplicatedNicknameException;
+import com.example.tyfserver.member.exception.DuplicatedPageNameException;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.exception.NicknameValidationRequestException;
+import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,14 +36,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Arrays;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = MemberController.class)
 class MemberControllerTest {
@@ -40,6 +51,8 @@ class MemberControllerTest {
     private AuthenticationInterceptor authenticationInterceptor;
     @MockBean
     private MemberService memberService;
+    @MockBean
+    private AuthenticationService authenticationService;
 
     @Test
     @DisplayName("/members/validate/pageName - success")
