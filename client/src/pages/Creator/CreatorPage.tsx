@@ -23,19 +23,20 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
 
   return (
     <StyledTemplate>
-      <ProfileContainer>
-        <ErrorBoundary
-          fallback={<p>잘못된 창작자 정보입니다</p>}
-          onError={(error) => {
-            if (axios.isAxiosError(error)) {
-              alert(error.response?.data.message);
-            } else {
-              alert('잘못된 창작자 정보입니다!');
-            }
+      {' '}
+      <ErrorBoundary
+        fallback={<p>잘못된 창작자 정보입니다</p>}
+        onError={(error) => {
+          if (axios.isAxiosError(error)) {
+            alert(error.response?.data.message);
+          } else {
+            alert('잘못된 창작자 정보입니다!');
+          }
 
-            history.push('/');
-          }}
-        >
+          history.push('/');
+        }}
+      >
+        <ProfileContainer>
           <Suspense fallback={<p>사용자 정보를 불러오는 중입니다.</p>}>
             <Profile />
             <DescriptionContainer>
@@ -43,9 +44,11 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
             </DescriptionContainer>
             {isAdmin ? <Button>내 페이지 공유하기</Button> : <Button>후원하기</Button>}
           </Suspense>
-        </ErrorBoundary>
-      </ProfileContainer>
-      <Comments />
+        </ProfileContainer>
+        <Suspense fallback={<p>후원기록을 불러오는 중입니다.</p>}>
+          <Comments />
+        </Suspense>
+      </ErrorBoundary>
     </StyledTemplate>
   );
 };
