@@ -1,12 +1,12 @@
 package com.example.tyfserver.auth.config;
+
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.auth.util.AuthorizationExtractor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
 @RequiredArgsConstructor

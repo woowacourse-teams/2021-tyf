@@ -13,6 +13,7 @@ import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -50,7 +51,8 @@ class DonationControllerTest {
     public void createDonation() throws Exception {
         //given
         DonationRequest request = new DonationRequest("pagename", 1000L);
-        DonationResponse response = new DonationResponse(1L, "name", "message", 1000L);
+        DonationResponse response = new DonationResponse(1L, "name", "message", 1000L, LocalDateTime
+            .now());
         //when
         when(donationService.createDonation(Mockito.any(DonationRequest.class)))
                 .thenReturn(response);
@@ -151,8 +153,8 @@ class DonationControllerTest {
         //when
         when(donationService.findMyDonations(Mockito.any(), Mockito.any()))
                 .thenReturn(Arrays.asList(
-                        new DonationResponse(1L, "name1", "message1", 1000L),
-                        new DonationResponse(2L, "name2", "message2", 2000L)
+                        new DonationResponse(1L, "name1", "message1", 1000L, LocalDateTime.now()),
+                        new DonationResponse(2L, "name2", "message2", 2000L, LocalDateTime.now())
                 ));
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(false);
@@ -227,8 +229,8 @@ class DonationControllerTest {
         //when
         when(donationService.findPublicDonations(Mockito.anyString()))
                 .thenReturn(Arrays.asList(
-                        new DonationResponse(1L, "default", "defaultMessage1", 1000L),
-                        new DonationResponse(2L, "default2", "defaultMessage2", 2000L)
+                        new DonationResponse(1L, "default", "defaultMessage1", 1000L, LocalDateTime.now()),
+                        new DonationResponse(2L, "default2", "defaultMessage2", 2000L, LocalDateTime.now())
                 ));
         //then
         mockMvc.perform(get("/donations/public/pagename")
@@ -238,6 +240,7 @@ class DonationControllerTest {
                 .andExpect(jsonPath("$..name").exists())
                 .andExpect(jsonPath("$..message").exists())
                 .andExpect(jsonPath("$..amount").exists())
+                .andExpect(jsonPath("$..createdAt").exists())
                 .andExpect(jsonPath("$[1].amount").value(2000L))
         ;
     }
