@@ -15,7 +15,7 @@ interface Props {
 }
 
 const useCreatorDonations = ({ isAdmin, creatorId }: Props) => {
-  const [donationListPageQuery, setDonationListPageQuery] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [privateDonationList, setPrivateDonationList] = useRecoilState(
     donationListState(creatorId)
   );
@@ -27,14 +27,14 @@ const useCreatorDonations = ({ isAdmin, creatorId }: Props) => {
     const newDonationList = JSON.parse(
       JSON.stringify(
         creatorPrivateDonationListQuery({
-          page: donationListPageQuery,
+          page: currentPage,
           size: DONATION_VIEW_SIZE,
         })
       )
     );
 
     setPrivateDonationList(donationList.concat(newDonationList));
-    setDonationListPageQuery(donationListPageQuery + 1);
+    setCurrentPage(currentPage + 1);
   };
 
   useEffect(() => {
