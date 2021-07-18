@@ -1,6 +1,6 @@
 import { VFC } from 'react';
 
-import DefaultUserProfile from '../../../assets/images/defualtUserProfile.png';
+import defaultUserProfile from '../../../assets/images/defaultUserProfile.png';
 import { NickName, ProfileImg, ProfileContainer } from './Profile.styles';
 import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
@@ -13,7 +13,7 @@ const Profile: VFC = () => {
   return (
     <ProfileContainer>
       <a href={window.location.origin + `/creator/${creatorId}`}>
-        <ProfileImg style={{ backgroundImage: `url(${DefaultUserProfile})` }}></ProfileImg>
+        <ProfileImg style={{ backgroundImage: `url(${defaultUserProfile})` }}></ProfileImg>
       </a>
       <NickName>{nickname}</NickName>
     </ProfileContainer>
