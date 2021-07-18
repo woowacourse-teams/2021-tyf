@@ -24,6 +24,10 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (memberRepository.existsByNickname("로키")) {
+            return;
+        }
+
         Member roki = memberRepository
             .save(new Member("Rok93@naver.com", "로키", "rokiMountain", Oauth2Type.NAVER));
         Member soori = memberRepository
