@@ -4,11 +4,11 @@ import Container from '../../@atom/Container/Container';
 import Title from '../../@atom/SubTitle/SubTitle';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
 
-export const CommentsContainer = styled(Container)`
+export const DonationListContainer = styled(Container)`
   margin-bottom: 4rem;
 `;
 
-export const CommentsTitle = styled(Title)`
+export const DonationListTitle = styled(Title)`
   margin-bottom: 2.5rem;
 `;
 

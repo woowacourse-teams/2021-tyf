@@ -29,7 +29,9 @@ export interface Register {
 
 export interface LoginUserInfo extends Creator {}
 
+
 // STATISTICS
+
 export interface Statistics {
   point: number;
 }
