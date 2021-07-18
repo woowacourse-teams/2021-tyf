@@ -11,7 +11,7 @@ const Profile = () => {
   return (
     <ProfileContainer>
       <a href={window.location.origin + `/creator/${creatorId}`}>
-        <ProfileImg style={{ backgroundImage: `url(${defaultUserProfile})` }}></ProfileImg>
+        <ProfileImg src={defaultUserProfile} />
       </a>
       <NickName>{nickname}</NickName>
     </ProfileContainer>
