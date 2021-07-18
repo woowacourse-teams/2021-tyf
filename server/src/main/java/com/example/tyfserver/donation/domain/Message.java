@@ -11,9 +11,9 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Message {
 
-    public static final String DEFAULT_NAME = "익명";
+    public static final String DEFAULT_NAME = "익명인";
     public static final String DEFAULT_MESSAGE = "당신을 응원합니다.";
-    public static final String SECRET_NAME = "익명";
+    public static final String SECRET_NAME = "익명인";
     public static final String SECRET_MESSAGE = "비공개 메세지입니다.";
 
     private String name;
