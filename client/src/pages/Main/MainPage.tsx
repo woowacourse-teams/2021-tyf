@@ -1,11 +1,14 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useHistory } from 'react-router-dom';
 
 import SubTitle from '../../components/@atom/SubTitle/SubTitle';
 import CreatorList from '../../components/Main/CreatorList/CreatorList';
 import { HeroContent, MainTemplate, RouteButton } from './Main.styles';
 
 const MainPage = () => {
+  const history = useHistory();
+
   return (
     <MainTemplate>
       <section>
@@ -21,7 +24,7 @@ const MainPage = () => {
       </section>
       <section>
         <SubTitle>내 재능에 가치를 부여하고 싶다면?</SubTitle>
-        <RouteButton>가치 부여하기</RouteButton>
+        <RouteButton onClick={() => history.push('/register')}>가치 부여하기</RouteButton>
       </section>
     </MainTemplate>
   );

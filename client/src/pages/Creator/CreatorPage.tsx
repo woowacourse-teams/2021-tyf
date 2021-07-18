@@ -19,7 +19,7 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const isAdmin = userInfo?.pageName === pageName;
 
   const moveDonationPage = () => {
-    history.push(`/donation/${creatorId}`);
+    window.open(`/donation/${creatorId}`, '_blank', 'width=500,height=600');
   };
 
   const moveStatisticsPage = () => {

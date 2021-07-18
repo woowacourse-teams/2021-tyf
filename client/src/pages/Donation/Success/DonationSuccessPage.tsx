@@ -16,13 +16,18 @@ import {
 } from './DonationSuccessPage.styles';
 
 const DonationSuccessPage = () => {
-  const history = useHistory();
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
   const { donation } = useDonation(creatorId);
 
+  const openCreatorPage = () => {
+    window.open(`${window.location.origin}/creator/${creatorId}`, '_blank');
+    window.close();
+  };
+
   const closeWindow = () => {
-    // window.close();
+    window.close();
+
     (open('auto:blank', '_self') as Window).close();
   };
 
@@ -35,7 +40,7 @@ const DonationSuccessPage = () => {
         <EmojiText>🎉</EmojiText>
       </SuccessMessageContainer>
       <SuccessButtonContainer>
-        <CreatorRouteButton onClick={() => history.push(`/creator/${creatorId}`)}>
+        <CreatorRouteButton onClick={openCreatorPage}>
           🏠 창작자 페이지로 놀러가기
         </CreatorRouteButton>
         <CloseButton onClick={closeWindow}>창 닫기</CloseButton>
