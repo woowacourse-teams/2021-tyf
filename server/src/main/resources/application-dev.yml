@@ -13,7 +13,7 @@ spring:
       ddl-auto: create
 
   profiles:
-    include: oauth2-encrypted
+    include: oauth2-dev
 
   config:
     use-legacy-processing: true
