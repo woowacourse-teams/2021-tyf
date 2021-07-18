@@ -43,11 +43,7 @@ const App = () => {
         <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
         <Route path="/creator/:creatorId" component={CreatorPage} exact />
-        <ErrorBoundary fallback={<h1>데이터를 가져오는데 실패했습니다.</h1>}>
-          <Suspense fallback={true}>
-            <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
-          </Suspense>
-        </ErrorBoundary>
+        <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
 
         <Redirect from="*" to="/" />
       </Switch>

@@ -1,12 +1,15 @@
-import { VFC } from 'react';
+import { useParams } from 'react-router-dom';
+import { ParamTypes } from '../../../App';
 
 import MessageForm from '../../../components/Donation/MessageForm/DonationMessageForm';
 import { StyledTemplate } from './DonationMessagePage.styles';
 
-const DonationMessagePage: VFC = () => {
+const DonationMessagePage = () => {
+  const { creatorId } = useParams<ParamTypes>();
+
   return (
     <StyledTemplate>
-      <MessageForm />
+      <MessageForm creatorId={creatorId} />
     </StyledTemplate>
   );
 };

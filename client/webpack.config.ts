@@ -40,6 +40,7 @@ const config: WebpackConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve('public', 'index.html'),
+      base: '/',
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',

@@ -4,6 +4,7 @@ import Button from '../../../components/@atom/Button/Button';
 import Container from '../../../components/@atom/Container/Container';
 
 import Template from '../../../components/@atom/Template/Template';
+import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton';
 
 export const StyledTemplate = styled(Template)`
   display: flex;
@@ -42,6 +43,6 @@ export const CreatorRouteButton = styled(Button)`
   height: 3.5rem;
 `;
 
-export const CloseButton = styled(Anchor)`
+export const CloseButton = styled(OutlineButton)`
   margin: 2rem 0;
 `;
