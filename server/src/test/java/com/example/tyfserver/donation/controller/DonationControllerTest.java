@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -26,12 +27,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = DonationController.class)
+@AutoConfigureRestDocs
 class DonationControllerTest {
 
     @Autowired
@@ -65,6 +70,9 @@ class DonationControllerTest {
                 .andExpect(jsonPath("name").value("name"))
                 .andExpect(jsonPath("message").value("message"))
                 .andExpect(jsonPath("amount").value(1000L))
+                .andDo(document("createDonation",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -81,6 +89,9 @@ class DonationControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("createDonationMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -96,6 +107,9 @@ class DonationControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DonationRequestException.ERROR_CODE))
+                .andDo(document("createDonationRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -111,6 +125,9 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
+                .andDo(document("addDonationMessage",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -128,6 +145,9 @@ class DonationControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DonationNotFoundException.ERROR_CODE))
+                .andDo(document("addDonationMessageDonationNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -143,6 +163,9 @@ class DonationControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DonationMessageRequestException.ERROR_CODE))
+                .andDo(document("addDonationMessageRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -169,6 +192,9 @@ class DonationControllerTest {
                 .andExpect(jsonPath("$..message").exists())
                 .andExpect(jsonPath("$..amount").exists())
                 .andExpect(jsonPath("$[1].amount").value(2000L))
+                .andDo(document("totalDonations",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -187,6 +213,9 @@ class DonationControllerTest {
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("totalDonationsMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -203,6 +232,9 @@ class DonationControllerTest {
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("totalDonationsHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -219,6 +251,9 @@ class DonationControllerTest {
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("totalDonationsInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -242,6 +277,9 @@ class DonationControllerTest {
                 .andExpect(jsonPath("$..amount").exists())
                 .andExpect(jsonPath("$..createdAt").exists())
                 .andExpect(jsonPath("$[1].amount").value(2000L))
+                .andDo(document("publicDonations",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -256,6 +294,9 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("publicDonationsMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 }

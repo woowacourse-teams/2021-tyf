@@ -11,7 +11,7 @@ public enum Oauth2Type {
 
     public static Oauth2Type findOauth2Type(String type) {
         return Arrays.stream(Oauth2Type.values())
-                .filter(value -> value.name().equals(type))
+                .filter(value -> value.name().equals(type.toUpperCase()))
                 .findAny()
                 .orElseThrow(InvalidOauth2TypeException::new);
     }

@@ -6,8 +6,16 @@
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %msg %n</pattern>
         </layout>
-        <username>tyf-dev-log</username>
+        <username>Cake-Server-log</username>
+        <iconEmoji>:stuck_out_tongue_winking_eye:</iconEmoji>
         <colorCoding>true</colorCoding>
+    </appender>
+
+    <!-- Consol appender 설정 -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d %-5level %logger{35} - %msg%n</Pattern>
+        </encoder>
     </appender>
 
     <appender name="ASYNC_SLACK" class="ch.qos.logback.classic.AsyncAppender">
@@ -18,6 +26,7 @@
     </appender>
 
     <root level="INFO">
+        <appender-ref ref="Console" />
         <appender-ref ref="ASYNC_SLACK"/>
     </root>
 </configuration>
