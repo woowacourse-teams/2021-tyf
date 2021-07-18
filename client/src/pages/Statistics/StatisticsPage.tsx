@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import useStatistics from '../../service/hooks/useStatistics';
 import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
