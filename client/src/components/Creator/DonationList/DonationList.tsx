@@ -24,9 +24,10 @@ interface Props {
 const DonationList = ({ isAdmin }: Props) => {
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
-  const { donationList, showNextDonationList } = useCreatorDonations(isAdmin, creatorId);
+  const { donationList, showMoreDonationList } = useCreatorDonations(isAdmin, creatorId);
 
   const hasMoreList = isAdmin && donationList.length % DONATION_VIEW_SIZE === 0;
+
   return (
     <DonationListContainer>
       <DonationListTitle>{nickname}님을 응원하는 사람들</DonationListTitle>
@@ -45,11 +46,7 @@ const DonationList = ({ isAdmin }: Props) => {
               </CommentsListItem>
             ))}
           </CommentsList>
-          {hasMoreList && (
-            <ShowMoreButton type="button" onClick={showNextDonationList}>
-              더보기
-            </ShowMoreButton>
-          )}
+          {hasMoreList && <ShowMoreButton onClick={showMoreDonationList}>더보기</ShowMoreButton>}
         </>
       ) : (
         <EmptyCommentsList>아직 후원한 사람이 없습니다.</EmptyCommentsList>

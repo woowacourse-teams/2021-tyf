@@ -1,34 +1,43 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
 import { CreatorId, Donation } from '../../types';
 import { DONATION_VIEW_SIZE } from '../../constants/donation';
 import { creatorPrivateDonationListQuery, creatorPublicDonationListQuery } from '../state/creator';
+import {
+  requestCreatorPrivateDonationList,
+  requestCreatorPublicDonationList,
+} from '../request/creator';
+import useAccessToken from './useAccessToken';
 
 const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [privateDonationList, setPrivateDonationList] = useState<Donation[]>([]);
-  const newDonationList = useRecoilValue(
-    creatorPrivateDonationListQuery({
-      page: currentPage,
-      size: DONATION_VIEW_SIZE,
-    })
-  );
+  const [donationList, setDonationList] = useState<Donation[]>([]);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const { accessToken } = useAccessToken();
 
-  const showNextDonationList = () => {
-    setPrivateDonationList(privateDonationList.concat(newDonationList));
+  const initDonationList = async () => {
+    if (isAdmin) return showMoreDonationList();
 
-    setCurrentPage(currentPage + 1);
+    const newDonationList = await requestCreatorPublicDonationList(creatorId);
+
+    setDonationList(newDonationList);
   };
 
-  const donationList = isAdmin
-    ? privateDonationList
-    : useRecoilValue(creatorPublicDonationListQuery(creatorId));
+  const showMoreDonationList = async () => {
+    const nextDonationList = await requestCreatorPrivateDonationList(
+      accessToken,
+      currentPageIndex,
+      DONATION_VIEW_SIZE
+    );
+    setDonationList(() => donationList.concat(nextDonationList));
+    setCurrentPageIndex(currentPageIndex + 1);
+  };
 
   useEffect(() => {
-    showNextDonationList();
+    initDonationList();
   }, []);
-  return { donationList, showNextDonationList };
+
+  return { donationList, showMoreDonationList };
 };
 
 export default useCreatorDonations;
