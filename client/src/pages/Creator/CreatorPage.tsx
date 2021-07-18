@@ -18,6 +18,14 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const { pageName } = useCreator(creatorId);
   const isAdmin = userInfo?.pageName === pageName;
 
+  const moveDonationPage = () => {
+    history.push(`/donation/${creatorId}`);
+  };
+
+  const moveStatisticsPage = () => {
+    history.push(`/creator/${creatorId}/statistic`);
+  };
+
   return (
     <StyledTemplate>
       <ErrorBoundary
@@ -38,7 +46,11 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
             <DescriptionContainer>
               <p>제 페이지에 와주셔서 감사합니다!!</p>
             </DescriptionContainer>
-            {isAdmin ? <Button>내 페이지 공유하기</Button> : <Button>후원하기</Button>}
+            {isAdmin ? (
+              <Button onClick={moveStatisticsPage}>내 페이지 공유하기</Button>
+            ) : (
+              <Button onClick={moveDonationPage}>후원하기</Button>
+            )}
           </Suspense>
         </ProfileContainer>
         <Suspense fallback={<p>후원기록을 불러오는 중입니다.</p>}>
