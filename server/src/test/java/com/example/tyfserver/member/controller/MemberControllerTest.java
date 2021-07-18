@@ -14,12 +14,7 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
-import com.example.tyfserver.member.dto.CurationsResponse;
-import com.example.tyfserver.member.dto.MemberDetailResponse;
-import com.example.tyfserver.member.dto.MemberResponse;
-import com.example.tyfserver.member.dto.NicknameValidationRequest;
-import com.example.tyfserver.member.dto.PageNameValidationRequest;
-import com.example.tyfserver.member.dto.PointResponse;
+import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
@@ -35,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = MemberController.class)
@@ -331,6 +327,37 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$[0].nickname").value("nickname1"))
                 .andExpect(jsonPath("$[0].donationAmount").value(1000L))
                 .andExpect(jsonPath("$[0].pageName").value("pagename1"))
+        ;
+    }
+
+    @Test
+    @DisplayName("/members/validate/token - success")
+    public void validateToken() throws Exception {
+        //given
+        TokenValidationRequest request = new TokenValidationRequest("tokenValue");
+        //when
+        doNothing().when(authenticationService).validateToken(Mockito.anyString());
+        //then
+        mockMvc.perform(post("/members/validate/token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    @DisplayName("/members/validate/token - Invalid Token")
+    public void validateTokenInvalidTokenFailed() throws Exception {
+        //given
+        TokenValidationRequest request = new TokenValidationRequest("tokenValue");
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationService).validateToken(Mockito.anyString());
+        //then
+        mockMvc.perform(post("/members/validate/token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
         ;
     }
 }
