@@ -26,6 +26,7 @@ const useLoginEffect = (oauthProvider?: OAuthProvider) => {
         alert('회원가입 페이지로 이동합니다.');
         history.push('/register');
       }
+      console.log(error.response.data);
     }
   };
 

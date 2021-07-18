@@ -35,7 +35,7 @@ const DonationForm = ({ creatorId }: DonationFormProps) => {
         <MoneyInput
           placeholder="0"
           value={donationAmount}
-          onChange={({ target }) => setDonationAmount(target.valueAsNumber)}
+          onChange={({ target }) => setDonationAmount(target.value)}
         />
       </InputLabel>
       <ButtonContainer>
