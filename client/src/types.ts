@@ -1,5 +1,15 @@
 import { OAUTH } from './constants/oauth';
 
+// OAUTH
+
+export type OAuthProvider = keyof typeof OAUTH;
+
+// STORAGE
+
+export type StorageType = 'LOCAL' | 'SESSION';
+
+// CREATOR
+
 export type CreatorId = string;
 
 export interface Creator {
@@ -19,17 +29,22 @@ export interface Register {
 
 export interface LoginUserInfo extends Creator {}
 
-export type OAuthProvider = keyof typeof OAUTH;
 
+// STATISTICS
+
+export interface Statistics {
+  point: number;
+}
+
+// DONATION
+
+export type DonationId = number;
 export interface Donation {
-  donationId: number;
+  donationId: DonationId;
   name: string;
   message: string;
   amount: number;
   createdAt: Date;
 }
-export interface Statistics {
-  point: number;
-}
 
-export type StorageType = 'LOCAL' | 'SESSION';
+export type DonationMessage = Pick<Donation, 'name' | 'message'>;

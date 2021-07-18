@@ -1,4 +1,8 @@
-import Anchor from '../../@atom/Anchor/Anchor';
+import { FormEvent } from 'react';
+import { DONATION_AMOUNT } from '../../../constants/service';
+import useDonation from '../../../service/hooks/useDonation';
+import useDonationForm from '../../../service/hooks/useDonationForm';
+import { CreatorId } from '../../../types';
 import Button from '../../@atom/Button/Button';
 import SubTitle from '../../@atom/SubTitle/SubTitle';
 import {
@@ -9,21 +13,43 @@ import {
   StyledDonationForm,
 } from './DonationForm.styles';
 
-const DonationForm = () => {
+export interface DonationFormProps {
+  creatorId: CreatorId;
+}
+
+const DonationForm = ({ creatorId }: DonationFormProps) => {
+  const { donationAmount, addDonationAmount, setDonationAmount, isDonationAmountInValidRange } =
+    useDonationForm();
+  const { donate } = useDonation(creatorId);
+
+  const onDonate = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    donate(donationAmount);
+  };
+
   return (
-    <StyledDonationForm>
+    <StyledDonationForm onSubmit={onDonate}>
       <SubTitle>후원할 금액을 입력해주세요! 🎉</SubTitle>
       <InputLabel>
-        <MoneyInput placeholder="0" />
+        <MoneyInput
+          placeholder="0"
+          value={donationAmount}
+          onChange={({ target }) => setDonationAmount(target.valueAsNumber)}
+        />
       </InputLabel>
       <ButtonContainer>
-        <MoneyAddButton>+1,000원</MoneyAddButton>
-        <MoneyAddButton>+2,000원</MoneyAddButton>
-        <MoneyAddButton>+3,000원</MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(DONATION_AMOUNT[1000])}>
+          +{DONATION_AMOUNT[1000].toLocaleString('en-us')}원
+        </MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(DONATION_AMOUNT[2000])}>
+          +{DONATION_AMOUNT[2000].toLocaleString('en-us')}원
+        </MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(DONATION_AMOUNT[3000])}>
+          +{DONATION_AMOUNT[3000].toLocaleString('en-us')}원
+        </MoneyAddButton>
       </ButtonContainer>
-      <Button>
-        <Anchor to="/donation/message">후원하기</Anchor>
-      </Button>
+      <Button disabled={!isDonationAmountInValidRange}>후원하기</Button>
     </StyledDonationForm>
   );
 };

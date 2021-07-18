@@ -2,7 +2,7 @@ import { Creator, CreatorId, Donation } from '../../types';
 import { apiClient } from './../../API';
 
 export const requestCreatorList = (): Promise<Creator[]> => {
-  return apiClient.get('/curations').then((response) => response.data);
+  return apiClient.get('/members/curations').then((response) => response.data);
 };
 
 export const requestCreator = (creatorId: CreatorId): Promise<Creator> => {
