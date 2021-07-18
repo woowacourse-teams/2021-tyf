@@ -36,12 +36,17 @@ const useRegister = () => {
 
   const registerUser = async () => {
     try {
+      if (!(user.email && user.nickname && user.oauthType && user.pageName)) {
+        throw Error();
+      }
       const { token } = await requestRegister(user);
 
       storeAccessToken(token, 'SESSION');
+
+      history.push('/register/success');
     } catch (error) {
-      console.error(error.response.data.message);
-      history.push('/register');
+      console.error(error);
+      history.push('/');
     }
   };
 
