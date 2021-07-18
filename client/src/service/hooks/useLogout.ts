@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { STORAGE_KEY } from '../../constants/storage';
 import { accessTokenState } from '../state/login';
 
 const useLogout = () => {
@@ -8,6 +9,9 @@ const useLogout = () => {
 
   const logout = () => {
     setAccessToken('');
+    sessionStorage.removeItem(STORAGE_KEY.ACCESS_TOKEN);
+    localStorage.removeItem(STORAGE_KEY.ACCESS_TOKEN);
+
     history.push('/');
   };
 

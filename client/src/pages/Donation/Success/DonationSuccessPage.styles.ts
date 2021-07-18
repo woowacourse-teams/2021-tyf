@@ -13,6 +13,7 @@ export const StyledTemplate = styled(Template)`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  padding-top: 10rem;
 `;
 
 export const SuccessMessageContainer = styled(Container)`

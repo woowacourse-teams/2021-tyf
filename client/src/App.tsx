@@ -80,15 +80,14 @@ const App = () => {
         <ErrorBoundary fallback={<h1>데이터를 가져오는데 실패했습니다.</h1>}>
           <Suspense fallback={true}>
             <Route path="/creator/:creatorId" component={CreatorPage} exact />
+            <PrivateRoute
+              path="/creator/:creatorId/statistic"
+              component={StatisticsPage}
+              isAuthed={!!accessToken}
+              redirectTo="/login"
+            />
           </Suspense>
         </ErrorBoundary>
-
-        <PrivateRoute
-          path="/creator/:creatorId/statistic"
-          component={StatisticsPage}
-          isAuthed={!!accessToken}
-          redirectTo="/login"
-        />
 
         <Redirect from="*" to="/" />
       </Switch>

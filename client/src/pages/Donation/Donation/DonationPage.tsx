@@ -5,7 +5,7 @@ import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import Profile from '../../../components/Creator/Profile/Profile';
 import DonationForm from '../../../components/Donation/DonationForm/DonationForm';
 import { popupWindow } from '../../../service/popup';
-import { DonationPageTemplate } from './DonationPage.styles';
+import { DonationPageTemplate, DonationProfile } from './DonationPage.styles';
 
 const DonationPage = () => {
   const { creatorId } = useParams<ParamTypes>();
@@ -13,9 +13,9 @@ const DonationPage = () => {
   return (
     <DonationPageTemplate>
       <FixedLogo onClick={() => popupWindow('/')} />
-      <section>
+      <DonationProfile>
         <Profile />
-      </section>
+      </DonationProfile>
       <section>
         <DonationForm creatorId={creatorId} />
       </section>
