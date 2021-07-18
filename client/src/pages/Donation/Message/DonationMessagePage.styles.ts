@@ -8,5 +8,5 @@ export const StyledTemplate = styled(Template)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 6rem;
+  padding-top: 5rem;
 `;
