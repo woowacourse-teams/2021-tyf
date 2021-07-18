@@ -8,16 +8,14 @@ import { creatorPrivateDonationListQuery, creatorPublicDonationListQuery } from 
 const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [privateDonationList, setPrivateDonationList] = useState<Donation[]>([]);
+  const newDonationList = useRecoilValue(
+    creatorPrivateDonationListQuery({
+      page: currentPage,
+      size: DONATION_VIEW_SIZE,
+    })
+  );
 
   const showNextDonationList = () => {
-    const newDonationList = JSON.parse(
-      JSON.stringify(
-        creatorPrivateDonationListQuery({
-          page: currentPage,
-          size: DONATION_VIEW_SIZE,
-        })
-      )
-    );
     setPrivateDonationList(privateDonationList.concat(newDonationList));
     setCurrentPage(currentPage + 1);
   };

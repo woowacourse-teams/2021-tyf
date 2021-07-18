@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
-import useCreator from '../../service/hooks/useCreator';
+
 import Profile from '../../components/Creator/Profile/Profile';
 import Button from '../../components/@atom/Button/Button';
 import DonationList from '../../components/Creator/DonationList/DonationList';
@@ -16,8 +16,7 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const history = useHistory();
   const { creatorId } = useParams<ParamTypes>();
   const { userInfo } = useLoginUserInfo();
-  const { pageName } = useCreator(creatorId);
-  const isAdmin = userInfo?.pageName === pageName;
+  const isAdmin = userInfo?.pageName === creatorId;
 
   const moveDonationPage = () => {
     popupWindow(`/donation/${creatorId}`, 'width=460,height=900,resizable=0');
@@ -35,6 +34,7 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
           if (axios.isAxiosError(error)) {
             alert(error.response?.data.message);
           } else {
+            console.error(error);
             alert('잘못된 창작자 정보입니다!');
           }
 

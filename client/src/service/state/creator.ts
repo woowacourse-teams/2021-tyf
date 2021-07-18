@@ -33,6 +33,7 @@ export const creatorPrivateDonationListQuery = selectorFamily<
     ({ page = 1, size = 5 }) =>
     ({ get }) => {
       const accessToken = get(accessTokenState);
+      if (!accessToken) return [];
       return requestCreatorPrivateDonationList(accessToken, page, size);
     },
 });
