@@ -1,10 +1,10 @@
-# 2021-tyf
+# 2021-tyf 
 
-### Thank you for _ _ _
+### 🎁 Thank you for _ _ _
 
 - 누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 모듈 서비스
 
-### 커밋 메세지 컨벤션
+### 💻 커밋 메세지 컨벤션
 
 - 앵귤러 커밋 컨벤션을 따릅니다.
   - (#[이슈번호])  이슈 제목
@@ -32,21 +32,3 @@
 - feature/{feature-name}
 - 본인 fork 레포지토리에 위와 같이 브랜치를 만들어 작업한다.
 - 완료되면 upstream의 develop-server develop-client로 pr 요청
-
-
-
-### 백엔드 크루
-
-- 수리
-- 파즈
-- 조이
-- 로키
-
-
-
-### 기술 스택 추가
-
-- 젠킨스
-- springboot
-- jpa
-- mysql
