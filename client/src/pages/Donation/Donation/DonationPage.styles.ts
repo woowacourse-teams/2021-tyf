@@ -18,8 +18,13 @@ export const DonationPageTemplate = styled(Template)`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  padding-top: 6rem;
 
   position section:nth-of-type(1) {
     margin-bottom: 2rem;
   }
+`;
+
+export const DonationProfile = styled.section`
+  margin: 5rem 0;
 `;
