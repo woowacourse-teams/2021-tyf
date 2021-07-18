@@ -251,7 +251,7 @@ class DonationControllerTest {
                 .param("page", "1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
-                .andDo(document("getBanners",
+                .andDo(document("totalDonationsInvalidTokenFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
@@ -277,7 +277,7 @@ class DonationControllerTest {
                 .andExpect(jsonPath("$..amount").exists())
                 .andExpect(jsonPath("$..createdAt").exists())
                 .andExpect(jsonPath("$[1].amount").value(2000L))
-                .andDo(document("getBanners",
+                .andDo(document("publicDonations",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
@@ -294,7 +294,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
-                .andDo(document("getBanners",
+                .andDo(document("publicDonationsMemberNotFoundFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
