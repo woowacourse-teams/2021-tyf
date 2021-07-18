@@ -22,10 +22,7 @@ interface Props {
 const DonationList = ({ isAdmin }: Props) => {
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
-  const { donationList, showNextDonationList } = useCreatorDonations({
-    isAdmin,
-    creatorId,
-  });
+  const { donationList, showNextDonationList } = useCreatorDonations(isAdmin, creatorId);
 
   return (
     <DonationListContainer>

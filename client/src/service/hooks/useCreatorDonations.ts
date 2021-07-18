@@ -1,27 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
-import { CreatorId } from '../../types';
+import { CreatorId, Donation } from '../../types';
 import { DONATION_VIEW_SIZE } from '../../constants/donation';
-import {
-  creatorPrivateDonationListQuery,
-  creatorPublicDonationListQuery,
-  donationListState,
-} from '../state/creator';
+import { creatorPrivateDonationListQuery, creatorPublicDonationListQuery } from '../state/creator';
 
-interface Props {
-  isAdmin: boolean;
-  creatorId: CreatorId;
-}
-
-const useCreatorDonations = ({ isAdmin, creatorId }: Props) => {
+const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [privateDonationList, setPrivateDonationList] = useRecoilState(
-    donationListState(creatorId)
-  );
-  const donationList = isAdmin
-    ? privateDonationList
-    : useRecoilValue(creatorPublicDonationListQuery(creatorId));
+  const [privateDonationList, setPrivateDonationList] = useState<Donation[]>([]);
 
   const showNextDonationList = () => {
     const newDonationList = JSON.parse(
@@ -32,15 +18,13 @@ const useCreatorDonations = ({ isAdmin, creatorId }: Props) => {
         })
       )
     );
-
-    setPrivateDonationList(donationList.concat(newDonationList));
+    setPrivateDonationList(privateDonationList.concat(newDonationList));
     setCurrentPage(currentPage + 1);
   };
 
-  useEffect(() => {
-    showNextDonationList();
-  }, []);
-
+  const donationList = isAdmin
+    ? showNextDonationList()
+    : useRecoilValue(creatorPublicDonationListQuery(creatorId));
   return { donationList, showNextDonationList };
 };
 

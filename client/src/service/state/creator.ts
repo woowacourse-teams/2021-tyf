@@ -24,11 +24,6 @@ export const creatorPublicDonationListQuery = selectorFamily<Donation[], Creator
   get: (creatorId) => () => requestCreatorPublicDonationList(creatorId),
 });
 
-export const donationListState = atomFamily<Donation[], string>({
-  key: 'donationListState',
-  default: [],
-});
-
 export const creatorPrivateDonationListQuery = selectorFamily<
   Donation[],
   { page: number; size: number }
