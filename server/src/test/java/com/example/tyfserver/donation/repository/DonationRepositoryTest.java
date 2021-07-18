@@ -19,8 +19,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(JpaAuditingConfig.class)
 @DataJpaTest
+@Import(JpaAuditingConfig.class)
 class DonationRepositoryTest {
 
     @Autowired
