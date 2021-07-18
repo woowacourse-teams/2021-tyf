@@ -12,7 +12,7 @@ export const FixedLogo = styled(IconButton).attrs({
   src: LogoImg,
 })`
   width: 8.5rem;
-  position: fixed;
+  position: absolute;
   top: 1rem;
 `;
 

@@ -14,7 +14,7 @@ export const StyledMessageForm = styled.form`
 `;
 
 export const DonationMessageTitle = styled(Title)`
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   text-align: left;
 `;
 
