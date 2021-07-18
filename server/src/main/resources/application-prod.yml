@@ -11,7 +11,7 @@ spring:
         format_sql: true
 
   profiles:
-    include: oauth2-encrypted
+    include: oauth2-prod
 
   config:
     use-legacy-processing: true
