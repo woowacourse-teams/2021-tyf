@@ -12,10 +12,6 @@ const useDonationForm = () => {
     setDonationAmount((Number(donationAmount) + amount).toString());
   };
 
-  useEffect(() => {
-    console.log(donationAmount);
-  }, [donationAmount]);
-
   const isDonationAmountInValidRange = MIN_DONATION_AMOUNT <= Number(donationAmount);
 
   return {

@@ -33,12 +33,16 @@ const DonationSuccessPage = () => {
     (open('auto:blank', '_self') as Window).close();
   };
 
+  useEffect(() => {
+    if (!donation) closeWindow();
+  }, [donation]);
+
   return (
     <StyledTemplate>
       <FixedLogo onClick={() => popupWindow('/')} />
       <SuccessMessageContainer>
         <SubText>{nickname}님에게</SubText>
-        <MainText>{donation.amount.toLocaleString('en-us')}원</MainText>
+        <MainText>{donation!.amount.toLocaleString('en-us')}원</MainText>
         <SubText>후원되었습니다.</SubText>
         <EmojiText>🎉</EmojiText>
       </SuccessMessageContainer>
