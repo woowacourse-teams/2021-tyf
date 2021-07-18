@@ -12,9 +12,9 @@ const RegisterNameForm: VFC = () => {
     useRegister();
 
   const moveRegisterSuccessPage = async () => {
-    await registerUser();
+    const route = await registerUser();
 
-    history.push('/register/success');
+    history.push(route);
   };
 
   return (
