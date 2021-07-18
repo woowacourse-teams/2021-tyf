@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+
 import { CreatorId } from '../../types';
 import { requestDonation } from '../request/donation';
 import { donationState } from '../state/donation';
@@ -16,7 +17,7 @@ const useDonation = (creatorId: CreatorId) => {
 
       history.push(`/donation/${creatorId}/message`);
     } catch (error) {
-      alert('도네이션에 실패했습니다.');
+      alert('후원에 실패했습니다.');
     }
   };
 

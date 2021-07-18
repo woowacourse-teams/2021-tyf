@@ -1,4 +1,5 @@
 import { FormEvent } from 'react';
+import { MAX_MESSAGE_LENGTH } from '../../../constants/service';
 import useDonation from '../../../service/hooks/useDonation';
 import useDonationMessage from '../../../service/hooks/useDonationMessage';
 import useDonationMessageForm from '../../../service/hooks/useDonationMessageForm';
@@ -53,7 +54,9 @@ const DonationMessageForm = ({ creatorId }: DonationMessageFormProps) => {
           <Checkbox checked={isPrivate} onChange={({ target }) => setIsPrivate(target.checked)} />{' '}
           창작자에게만 보이기
         </CheckboxLabel>
-        <span>( {form.message.length} / 200 ) 자</span>
+        <span>
+          ( {form.message.length} / {MAX_MESSAGE_LENGTH} ) 자
+        </span>
       </TextareaControllerContainer>
       <SubmitButton>메세지 남기기</SubmitButton>
     </StyledMessageForm>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MAX_MESSAGE_LENGTH } from '../../constants/service';
 import { DonationMessage } from '../../types';
 
 const useDonationMessageForm = () => {
@@ -6,7 +7,7 @@ const useDonationMessageForm = () => {
   const [isPrivate, setIsPrivate] = useState(false);
 
   const setMessage = (message: string) => {
-    if (message.length > 200) return;
+    if (message.length > MAX_MESSAGE_LENGTH) return;
 
     setForm({ ...form, message });
   };

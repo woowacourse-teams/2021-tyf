@@ -1,4 +1,5 @@
 import { FormEvent } from 'react';
+import { DONATION_AMOUNT } from '../../../constants/service';
 import useDonation from '../../../service/hooks/useDonation';
 import useDonationForm from '../../../service/hooks/useDonationForm';
 import { CreatorId } from '../../../types';
@@ -38,9 +39,15 @@ const DonationForm = ({ creatorId }: DonationFormProps) => {
         />
       </InputLabel>
       <ButtonContainer>
-        <MoneyAddButton onClick={() => addDonationAmount(1000)}>+1,000원</MoneyAddButton>
-        <MoneyAddButton onClick={() => addDonationAmount(2000)}>+2,000원</MoneyAddButton>
-        <MoneyAddButton onClick={() => addDonationAmount(3000)}>+3,000원</MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(DONATION_AMOUNT[1000])}>
+          +{DONATION_AMOUNT[1000].toLocaleString('en-us')}원
+        </MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(DONATION_AMOUNT[2000])}>
+          +{DONATION_AMOUNT[2000].toLocaleString('en-us')}원
+        </MoneyAddButton>
+        <MoneyAddButton onClick={() => addDonationAmount(DONATION_AMOUNT[3000])}>
+          +{DONATION_AMOUNT[3000].toLocaleString('en-us')}원
+        </MoneyAddButton>
       </ButtonContainer>
       <Button disabled={!isDonationAmountInValidRange}>후원하기</Button>
     </StyledDonationForm>

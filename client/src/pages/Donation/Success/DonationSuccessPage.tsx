@@ -22,7 +22,7 @@ const DonationSuccessPage = () => {
   const { donation } = useDonation(creatorId);
 
   const closeWindow = () => {
-    window.close();
+    // window.close();
     (open('auto:blank', '_self') as Window).close();
   };
 
@@ -30,7 +30,7 @@ const DonationSuccessPage = () => {
     <StyledTemplate>
       <SuccessMessageContainer>
         <SubText>{nickname}님에게</SubText>
-        <MainText>{donation.amount}원</MainText>
+        <MainText>{donation.amount.toLocaleString('en-us')}원</MainText>
         <SubText>후원되었습니다.</SubText>
         <EmojiText>🎉</EmojiText>
       </SuccessMessageContainer>

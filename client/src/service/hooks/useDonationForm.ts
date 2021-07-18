@@ -1,6 +1,5 @@
 import { useState } from 'react';
-
-const MIN_DONATION_AMOUNT = 1000;
+import { MIN_DONATION_AMOUNT } from '../../constants/service';
 
 const useDonationForm = () => {
   const [donationAmount, setDonationAmount] = useState(0);
