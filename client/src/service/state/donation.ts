@@ -1,7 +1,15 @@
 import { atom } from 'recoil';
 import { Donation } from '../../types';
 
-export const donationState = atom<Donation | null>({
+export const INVALID_DONATION_ID = -1;
+
+export const donationState = atom<Donation>({
   key: 'donationState',
-  default: null,
+  default: {
+    donationId: INVALID_DONATION_ID,
+    name: '',
+    message: '',
+    amount: -1,
+    createdAt: new Date(),
+  },
 });

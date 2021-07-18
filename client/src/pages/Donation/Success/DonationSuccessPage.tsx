@@ -5,6 +5,7 @@ import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import useCreator from '../../../service/hooks/useCreator';
 import useDonation from '../../../service/hooks/useDonation';
 import { popupWindow } from '../../../service/popup';
+import { INVALID_DONATION_ID } from '../../../service/state/donation';
 
 import {
   CloseButton,
@@ -34,7 +35,9 @@ const DonationSuccessPage = () => {
   };
 
   useEffect(() => {
-    if (!donation) closeWindow();
+    if (donation.donationId !== INVALID_DONATION_ID) return;
+
+    closeWindow();
   }, [donation]);
 
   return (
