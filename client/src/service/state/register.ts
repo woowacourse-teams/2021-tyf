@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil';
 
 import { Register } from '../../types';
-import { REGISTER } from '../../constants/constant';
+import { REGISTER } from '../../constants/register';
 
 export const newUserState = atom<Register>({
   key: 'newUserState',
