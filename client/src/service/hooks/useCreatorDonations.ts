@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { CreatorId, Donation } from '../../types';
@@ -23,8 +23,12 @@ const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
   };
 
   const donationList = isAdmin
-    ? showNextDonationList()
+    ? privateDonationList
     : useRecoilValue(creatorPublicDonationListQuery(creatorId));
+
+  useEffect(() => {
+    showNextDonationList();
+  }, []);
   return { donationList, showNextDonationList };
 };
 

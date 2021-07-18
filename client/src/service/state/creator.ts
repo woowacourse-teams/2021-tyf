@@ -1,4 +1,4 @@
-import { atomFamily, selector, selectorFamily } from 'recoil';
+import { selector, selectorFamily } from 'recoil';
 
 import { Creator, CreatorId, Donation } from './../../types';
 import { accessTokenState } from './login';
