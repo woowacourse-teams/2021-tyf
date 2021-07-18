@@ -1,10 +1,9 @@
-import { FC, HTMLAttributes } from 'react';
-
+import { useEffect } from 'react';
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import useStatistics from '../../service/hooks/useStatistics';
 import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
 
-const StatisticsPage: FC<HTMLAttributes<HTMLElement>> = () => {
+const StatisticsPage = () => {
   const { userInfo } = useLoginUserInfo();
   const { totalAmount } = useStatistics();
 

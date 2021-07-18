@@ -24,6 +24,8 @@ const useLoginUserInfo = (): useLoginUserInfoReturnType => {
     return { userInfo: null, hasError: false };
   }
 
+  console.log(contents);
+
   return { userInfo: contents as LoginUserInfo, hasError: false };
 };
 
