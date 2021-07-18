@@ -13,6 +13,11 @@ spring:
   profiles:
     include: oauth2
 
+logging:
+  config: classpath:logback-spring.xml
+  slack:
+    webhook-uri: https://hooks.slack.com/services/token
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
