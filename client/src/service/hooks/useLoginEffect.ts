@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 
 import { AUTH_ERROR } from '../../constants/errorCode';
 import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
-import { OAuthProvider, StorageType } from '../../types';
+import { OAuthProvider } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';
 import { requestLogin } from '../request/auth';
 import { loginPersistenceTypeState } from '../state/login';
@@ -22,7 +22,7 @@ const useLoginEffect = (oauthProvider?: OAuthProvider) => {
       storeAccessToken(accessToken, loginPersistenceType);
       history.push('/');
     } catch (error) {
-      if (error.errorCode === AUTH_ERROR.NOT_USER) {
+      if (error.response.data.errorCode === AUTH_ERROR.NOT_USER) {
         alert('회원가입 페이지로 이동합니다.');
         history.push('/register/terms');
       }

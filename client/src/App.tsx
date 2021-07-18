@@ -32,8 +32,8 @@ const App = () => {
 
         <Route path="/login/:oauthProvider?" component={LoginPage} />
 
-        <Route path="/register" component={RegisterTermsPage} exact />
-        <Route path="/register/auth" component={RegisterAuthPage} />
+        <Route path="/register" component={RegisterAuthPage} exact />
+        <Route path="/register/terms" component={RegisterTermsPage} />
         <Route path="/register/url" component={RegisterAddressPage} />
         <Route path="/register/name" component={RegisterNamePage} />
         <Route path="/register/success" component={RegisterSuccessPage} />
@@ -49,7 +49,6 @@ const App = () => {
 
         <Route path="/creator/:creatorId" component={CreatorPage} exact />
         <Route path="/creator/:creatorId/statistic" component={StatisticsPage} />
-
 
         <Redirect from="*" to="/" />
       </Switch>

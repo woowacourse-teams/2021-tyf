@@ -26,7 +26,7 @@ const RegisterAuthForm: VFC = () => {
         {/* <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
           네이버 회원가입
         </NaverBarButton> */}
-        <NaverBarButton onClick={() => history.push('/register/url')}>
+        <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
           네이버 회원가입
         </NaverBarButton>
         <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO', 'REGISTER')}>

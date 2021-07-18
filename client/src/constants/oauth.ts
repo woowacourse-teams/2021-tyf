@@ -4,7 +4,7 @@ const origin = window.location.origin;
 
 export const OAUTH = {
   KAKAO: {
-    URL: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=ff77c9c32b464ffb0d98f3d04f7a7a48&redirect_uri=${origin}`,
+    URL: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=d187d243372db29c85e85eef81d4723a&redirect_uri=${origin}`,
   },
   NAVER: {
     URL: `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ZJkZDegYIcTIZu8NP5qI&state=STATE_STRING&redirect_uri=${origin}`,
@@ -15,7 +15,7 @@ export const OAUTH = {
 } as const;
 
 export const REDIRECT_PATH = {
-  REGISTER: '/register/url',
+  REGISTER: '/register/terms',
   LOGIN: '/login/',
 } as const;
 
