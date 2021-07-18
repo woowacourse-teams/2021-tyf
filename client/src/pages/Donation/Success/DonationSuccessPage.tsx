@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import useCreator from '../../../service/hooks/useCreator';
@@ -45,7 +45,7 @@ const DonationSuccessPage = () => {
       <FixedLogo onClick={() => popupWindow('/')} />
       <SuccessMessageContainer>
         <SubText>{nickname}님에게</SubText>
-        <MainText>{donation!.amount.toLocaleString('en-us')}원</MainText>
+        <MainText>{donation.amount.toLocaleString('en-us')}원</MainText>
         <SubText>후원되었습니다.</SubText>
         <EmojiText>🎉</EmojiText>
       </SuccessMessageContainer>

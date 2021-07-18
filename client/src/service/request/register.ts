@@ -20,6 +20,6 @@ export const requestValidateNickName = (nickName: string) => {
   });
 };
 
-export const requestRegister = (user: Register) => {
-  return apiClient.post('/oauth2/signup', user);
+export const requestRegister = (user: Register): Promise<{ token: string }> => {
+  return apiClient.post('/oauth2/signup', user).then((response) => response.data);
 };
