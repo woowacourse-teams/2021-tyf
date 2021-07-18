@@ -26,6 +26,7 @@ const DonationList = ({ isAdmin }: Props) => {
   const { nickname } = useCreator(creatorId);
   const { donationList, showNextDonationList } = useCreatorDonations(isAdmin, creatorId);
 
+  const hasMoreList = isAdmin && donationList.length % DONATION_VIEW_SIZE === 0;
   return (
     <DonationListContainer>
       <DonationListTitle>{nickname}님을 응원하는 사람들</DonationListTitle>
@@ -44,7 +45,7 @@ const DonationList = ({ isAdmin }: Props) => {
               </CommentsListItem>
             ))}
           </CommentsList>
-          {isAdmin && donationList.length % DONATION_VIEW_SIZE === 0 && (
+          {hasMoreList && (
             <ShowMoreButton type="button" onClick={showNextDonationList}>
               더보기
             </ShowMoreButton>
