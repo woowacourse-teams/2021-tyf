@@ -8,8 +8,9 @@ interface WebpackConfig extends webpack.Configuration {
   devServer?: webpackDevServer.Configuration;
 }
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const config: WebpackConfig = {
-  mode: 'development',
   entry: path.resolve('src', 'index.tsx'),
   resolve: { extensions: ['.ts', '.tsx', '.js', '.jsx'] },
   output: {
@@ -64,5 +65,7 @@ const config: WebpackConfig = {
     open: true,
   },
 };
+
+config.mode = isProduction ? 'production' : 'development';
 
 export default config;

@@ -1,6 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 
-const baseURL = 'https://thank-you-for-test.kro.kr/';
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://thank-you-for.kro.kr/'
+    : 'https://thank-you-for-test.kro.kr/';
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL,

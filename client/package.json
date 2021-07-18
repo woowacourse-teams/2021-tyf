@@ -20,7 +20,8 @@
   "private": false,
   "scripts": {
     "start": "webpack serve",
-    "build": "webpack",
+    "build:dev": "webpack --mode=development --node-env=development",
+    "build": "webpack --mode=production --node-env=production",
     "test": "jest src --watch ",
     "test:clean": "jest --clearCache && jest src --watch ",
     "storybook": "start-storybook -p 6006",
