@@ -30,10 +30,11 @@ export const creatorPrivateDonationListQuery = selectorFamily<
 >({
   key: 'creatorPrivateDonationListQuery',
   get:
-    ({ page = 1, size = 5 }) =>
+    ({ page, size }) =>
     ({ get }) => {
       const accessToken = get(accessTokenState);
       if (!accessToken) return [];
+
       return requestCreatorPrivateDonationList(accessToken, page, size);
     },
 });

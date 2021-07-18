@@ -6,7 +6,7 @@ import { DONATION_VIEW_SIZE } from '../../constants/donation';
 import { creatorPrivateDonationListQuery, creatorPublicDonationListQuery } from '../state/creator';
 
 const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [privateDonationList, setPrivateDonationList] = useState<Donation[]>([]);
   const newDonationList = useRecoilValue(
     creatorPrivateDonationListQuery({
@@ -14,9 +14,11 @@ const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
       size: DONATION_VIEW_SIZE,
     })
   );
+  console.log(newDonationList);
 
   const showNextDonationList = () => {
     setPrivateDonationList(privateDonationList.concat(newDonationList));
+
     setCurrentPage(currentPage + 1);
   };
 

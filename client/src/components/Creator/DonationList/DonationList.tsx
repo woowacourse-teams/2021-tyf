@@ -1,6 +1,7 @@
 import { useParams } from 'react-router';
 
 import { ParamTypes } from '../../../App';
+import { DONATION_VIEW_SIZE } from '../../../constants/donation';
 import useCreator from '../../../service/hooks/useCreator';
 import useCreatorDonations from '../../../service/hooks/useCreatorDonations';
 import {
@@ -43,7 +44,11 @@ const DonationList = ({ isAdmin }: Props) => {
               </CommentsListItem>
             ))}
           </CommentsList>
-          {isAdmin && <ShowMoreButton onClick={showNextDonationList}>더보기</ShowMoreButton>}
+          {isAdmin && donationList.length % DONATION_VIEW_SIZE === 0 && (
+            <ShowMoreButton type="button" onClick={showNextDonationList}>
+              더보기
+            </ShowMoreButton>
+          )}
         </>
       ) : (
         <EmptyCommentsList>아직 후원한 사람이 없습니다.</EmptyCommentsList>
