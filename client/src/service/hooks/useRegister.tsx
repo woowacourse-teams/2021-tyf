@@ -43,9 +43,10 @@ const useRegister = () => {
 
       storeAccessToken(token, 'SESSION');
 
-      return '/register/success';
+      history.push('/register/success');
     } catch (error) {
-      return '/';
+      console.error(error);
+      history.push('/');
     }
   };
 

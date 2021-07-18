@@ -7,14 +7,11 @@ import InputWithMessage from '../../@molecule/InputWithMessage/InputWithMessage'
 import { NameInputContainer, RegisterNameTitle } from './RegisterNameForm.styles';
 
 const RegisterNameForm: VFC = () => {
-  const history = useHistory();
   const { nickname, nickNameErrorMessage, isValidNickName, onChangeRegister, registerUser } =
     useRegister();
 
   const moveRegisterSuccessPage = async () => {
-    const route = await registerUser();
-
-    history.push(route);
+    await registerUser();
   };
 
   return (
