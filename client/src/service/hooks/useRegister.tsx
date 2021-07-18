@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
   newUserState,
@@ -7,12 +7,15 @@ import {
 } from '../state/register';
 import { requestRegister } from '../request/register';
 import { useHistory } from 'react-router-dom';
+import { accessTokenState } from '../state/login';
+import useAccessToken from './useAccessToken';
 
 const useRegister = () => {
   const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
   const addressErrorMessage = useRecoilValue(urlNameValidationSelector);
   const nickNameErrorMessage = useRecoilValue(nickNameValidationSelector);
+  const { storeAccessToken } = useAccessToken();
 
   // TODO: db로의 검증
   // const addressDBErrorMessage = useRecoilValueLoadable(urlNameDBValidationQuery);
@@ -33,7 +36,9 @@ const useRegister = () => {
 
   const registerUser = async () => {
     try {
-      await requestRegister(user);
+      const { token } = await requestRegister(user);
+
+      storeAccessToken(token, 'SESSION');
     } catch (error) {
       console.error(error.response.data.message);
       history.push('/register');
