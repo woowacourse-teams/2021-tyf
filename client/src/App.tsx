@@ -67,12 +67,7 @@ const App = () => {
           isAuthed={!accessToken}
           redirectTo="/"
         />
-        <PrivateRoute
-          path="/register/success"
-          component={RegisterSuccessPage}
-          isAuthed={!accessToken}
-          redirectTo="/"
-        />
+        <Route path="/register/success" component={RegisterSuccessPage} />
 
         <Route path="/donation/:creatorId" component={DonationPage} exact />
         <Route path="/donation/:creatorId/message" component={DonationMessagePage} />
