@@ -22,13 +22,12 @@ export interface Creator {
 
 export interface Register {
   email: string;
-  nickName: string;
+  nickname: string;
   oauthType: string;
-  urlName: CreatorId;
+  pageName: CreatorId;
 }
 
 export interface LoginUserInfo extends Creator {}
-
 
 // STATISTICS
 

@@ -6,8 +6,10 @@ import {
   urlNameValidationSelector,
 } from '../state/register';
 import { requestRegister } from '../request/register';
+import { useHistory } from 'react-router-dom';
 
 const useRegister = () => {
+  const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
   const addressErrorMessage = useRecoilValue(urlNameValidationSelector);
   const nickNameErrorMessage = useRecoilValue(nickNameValidationSelector);
@@ -16,7 +18,7 @@ const useRegister = () => {
   // const addressDBErrorMessage = useRecoilValueLoadable(urlNameDBValidationQuery);
   // const nickNameDBErrorMessage = useRecoilValueLoadable(nickNameDBValidationQuery);
 
-  const { urlName, nickName } = user;
+  const { pageName, nickname } = user;
 
   const isValidAddress = !addressErrorMessage;
   const isValidNickName = !nickNameErrorMessage;
@@ -26,22 +28,23 @@ const useRegister = () => {
   };
 
   const onResetRegister = () => {
-    setUser({ email: '', nickName: '', oauthType: '', urlName: '' });
+    setUser({ email: '', nickname: '', oauthType: '', pageName: '' });
   };
 
   const registerUser = async () => {
     try {
       await requestRegister(user);
     } catch (error) {
-      alert(error.message);
+      console.error(error.response.data.message);
+      history.push('/register');
     }
   };
 
   return {
-    urlName,
+    pageName,
     addressErrorMessage,
     isValidAddress,
-    nickName,
+    nickname,
     nickNameErrorMessage,
     isValidNickName,
     onChangeRegister,
