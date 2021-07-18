@@ -12,10 +12,7 @@ import {
   RegisterTitle,
 } from './RegisterAuthForm.styles';
 
-const RegisterAuthForm: VFC = () => {
-  // NOTE: 테스트용 임시 코드
-  const history = useHistory();
-
+const RegisterAuthForm = () => {
   return (
     <>
       <RegisterTitle>회원가입</RegisterTitle>
@@ -23,9 +20,6 @@ const RegisterAuthForm: VFC = () => {
         <GoogleBarButton onClick={() => routeToOAuthPage('GOOGLE', 'REGISTER')}>
           구글 회원가입
         </GoogleBarButton>
-        {/* <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
-          네이버 회원가입
-        </NaverBarButton> */}
         <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
           네이버 회원가입
         </NaverBarButton>

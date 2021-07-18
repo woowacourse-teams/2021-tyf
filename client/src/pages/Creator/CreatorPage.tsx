@@ -10,6 +10,7 @@ import Profile from '../../components/Creator/Profile/Profile';
 import Button from '../../components/@atom/Button/Button';
 import DonationList from '../../components/Creator/DonationList/DonationList';
 import { StyledTemplate, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
+import { popupWindow } from '../../service/popup';
 
 const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const history = useHistory();
@@ -19,7 +20,7 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const isAdmin = userInfo?.pageName === pageName;
 
   const moveDonationPage = () => {
-    window.open(`/donation/${creatorId}`, '_blank', 'width=500,height=600');
+    popupWindow(`/donation/${creatorId}`, 'width=460,height=900,resizable=0');
   };
 
   const moveStatisticsPage = () => {

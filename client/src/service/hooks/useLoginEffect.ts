@@ -24,7 +24,7 @@ const useLoginEffect = (oauthProvider?: OAuthProvider) => {
     } catch (error) {
       if (error.response.data.errorCode === AUTH_ERROR.NOT_USER) {
         alert('회원가입 페이지로 이동합니다.');
-        history.push('/register/terms');
+        history.push('/register');
       }
     }
   };

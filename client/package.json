@@ -16,7 +16,7 @@
       "url": "https://github.com/jho2301"
     }
   ],
-  "license": "GPL",
+  "license": "MIT",
   "private": false,
   "scripts": {
     "start": "webpack serve",

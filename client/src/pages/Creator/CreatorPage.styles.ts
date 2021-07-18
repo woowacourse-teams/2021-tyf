@@ -12,7 +12,8 @@ export const StyledTemplate = styled(Template)`
 `;
 
 export const ProfileContainer = styled(Container)`
-  margin-bottom: 4rem;
+  margin-top: 4rem;
+  margin-bottom: 10rem;
 `;
 
 export const DescriptionContainer = styled(Container)`

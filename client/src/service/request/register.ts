@@ -1,5 +1,12 @@
 import { apiClient } from '../../API';
 import { Register } from '../../types';
+import { OAuthProvider } from '../../types';
+
+export const requestOAuthRegister = (provider: OAuthProvider, authCode: string) => {
+  return apiClient
+    .get<string>(`/oauth2/signup/ready/${provider}?code=${authCode}`)
+    .then((response) => response.data);
+};
 
 export const requestValidatePageName = (urlName: string) => {
   return apiClient.post('/members/validate/pageName', {

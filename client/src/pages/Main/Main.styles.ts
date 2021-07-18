@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import MainImage from '../../assets/images/HeroContent.svg';
+import SubTitle from '../../components/@atom/SubTitle/SubTitle';
 import Template from '../../components/@atom/Template/Template';
 import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton';
 
@@ -31,4 +32,8 @@ export const RouteButton = styled(OutlineButton)`
   margin-top: 1.75rem;
   font-size: 0.875rem;
   font-weight: 600;
+`;
+
+export const StyledSubTitle = styled(SubTitle)`
+  margin-bottom: 3rem;
 `;

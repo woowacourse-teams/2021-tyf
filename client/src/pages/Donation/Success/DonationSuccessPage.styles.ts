@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import Anchor from '../../../components/@atom/Anchor/Anchor';
+
 import Button from '../../../components/@atom/Button/Button';
 import Container from '../../../components/@atom/Container/Container';
-
 import Template from '../../../components/@atom/Template/Template';
 import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton';
+import { popupStyle } from '../Donation/DonationPage.styles';
 
 export const StyledTemplate = styled(Template)`
+  ${popupStyle}
+
   display: flex;
   flex-direction: column;
   justify-content: space-around;

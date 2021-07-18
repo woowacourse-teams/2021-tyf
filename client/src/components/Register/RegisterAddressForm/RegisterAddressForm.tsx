@@ -1,13 +1,14 @@
-import { VFC } from 'react';
 import { useHistory } from 'react-router';
-import useRegister from '../../../service/hooks/useRegister';
 
+import useRegister from '../../../service/hooks/useRegister';
+import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 import Button from '../../@atom/Button/Button';
 import InputWithMessage from '../../@molecule/InputWithMessage/InputWithMessage';
 import { AddressInputContainer, RegisterAddressTitle } from './RegisterAddressForm.styles';
 
-const RegisterAddressForm: VFC = () => {
+const RegisterAddressForm = () => {
   const history = useHistory();
+  useRegisterEffect();
   const { urlName, addressErrorMessage, isValidAddress, onChangeRegister } = useRegister();
 
   const moveRegisterNamePage = () => {

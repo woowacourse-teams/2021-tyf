@@ -12,6 +12,7 @@ import {
   Divider,
   ItemContent,
   ItemInfo,
+  ItemDateInfo,
   ShowMoreButton,
 } from './DonationList.styles';
 
@@ -34,7 +35,7 @@ const DonationList = ({ isAdmin }: Props) => {
               <span>
                 {name} <Divider>|</Divider> {amount.toLocaleString('en-us')}원
               </span>
-              <span>{String(createdAt).slice(0, 10)}</span>
+              <ItemDateInfo>{String(createdAt).slice(0, 10)}</ItemDateInfo>
             </ItemInfo>
             <ItemContent>{message}</ItemContent>
           </CommentsListItem>

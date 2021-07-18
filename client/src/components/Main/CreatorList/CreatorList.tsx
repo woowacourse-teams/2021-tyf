@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import useCreatorList from '../../../service/hooks/useCreatorList';
 import { StyledAnchor } from '../../@atom/Anchor/Anchor.styles';
 import CreatorCard from '../CreatorCard/CreatorCard';

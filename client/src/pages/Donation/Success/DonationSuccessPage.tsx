@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
+import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import useCreator from '../../../service/hooks/useCreator';
 import useDonation from '../../../service/hooks/useDonation';
+import { popupWindow } from '../../../service/popup';
 
 import {
   CloseButton,
@@ -21,7 +23,7 @@ const DonationSuccessPage = () => {
   const { donation } = useDonation(creatorId);
 
   const openCreatorPage = () => {
-    window.open(`${window.location.origin}/creator/${creatorId}`, '_blank');
+    popupWindow(`${window.location.origin}/creator/${creatorId}`);
     window.close();
   };
 
@@ -33,6 +35,7 @@ const DonationSuccessPage = () => {
 
   return (
     <StyledTemplate>
+      <FixedLogo onClick={() => popupWindow('/')} />
       <SuccessMessageContainer>
         <SubText>{nickname}님에게</SubText>
         <MainText>{donation.amount.toLocaleString('en-us')}원</MainText>

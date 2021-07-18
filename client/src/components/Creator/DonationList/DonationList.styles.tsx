@@ -9,7 +9,7 @@ export const DonationListContainer = styled(Container)`
 `;
 
 export const DonationListTitle = styled(Title)`
-  margin-bottom: 2.5rem;
+  margin-bottom: 4rem;
 `;
 
 export const CommentsList = styled.ul`
@@ -25,19 +25,27 @@ export const ItemInfo = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-weight: 700;
+  font-size: 0.875rem;
   margin-bottom: 1.5rem;
 `;
 
 export const ItemContent = styled.div`
   display: flex;
   justify-content: center;
+  padding: 0.625rem 0;
   margin-bottom: 0.5rem;
 `;
 
 export const Divider = styled.span`
   padding: 0 0.5rem;
   color: ${({ theme }) => theme.color.border};
+`;
+
+export const ItemDateInfo = styled.span`
+  font-size: 0.75rem;
+  font-weight: 400;
 `;
 
 // TODO: 아래 버튼을 일반화해도 좋을듯

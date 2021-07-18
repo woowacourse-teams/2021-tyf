@@ -9,34 +9,35 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     padding: 0;
     margin:0;
+    user-select: none;
   }
-  
+
   a {
     text-decoration: none;
-    
+
     &:active, &:hover {
       color: inherit;
-      
+
     }
   }
-  
-  
-  
+
+
+
   :root {
     font-size: 16px;
     color: ${({ theme }) => theme.color.main};
     font-family: 'Noto Sans KR', sans-serif;
-    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
 
     ::-webkit-scrollbar {
       display: none;
     };
   }
-  
+
   button {
     font-family: 'Noto Sans KR', sans-serif;
   }
-  
+
   `;
 
 export default GlobalStyle;

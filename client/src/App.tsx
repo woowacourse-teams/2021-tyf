@@ -32,9 +32,9 @@ const App = () => {
 
         <Route path="/login/:oauthProvider?" component={LoginPage} />
 
-        <Route path="/register" component={RegisterAuthPage} exact />
-        <Route path="/register/terms" component={RegisterTermsPage} />
-        <Route path="/register/url" component={RegisterAddressPage} />
+        <Route path="/register" component={RegisterTermsPage} exact />
+        <Route path="/register/auth" component={RegisterAuthPage} />
+        <Route path="/register/url/:oauthProvider?" component={RegisterAddressPage} />
         <Route path="/register/name" component={RegisterNamePage} />
         <Route path="/register/success" component={RegisterSuccessPage} />
 
