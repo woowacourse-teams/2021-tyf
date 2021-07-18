@@ -12,10 +12,10 @@ import {
 
 const RegisterSuccessPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const history = useHistory();
-  const { urlName, onResetRegister } = useRegister();
+  const { pageName, onResetRegister } = useRegister();
 
   const moveCreatorPage = () => {
-    history.push(`/creator/${urlName}`);
+    history.push(`/creator/${pageName}`);
   };
 
   useEffect(() => {

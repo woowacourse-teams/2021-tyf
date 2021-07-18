@@ -5,26 +5,28 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
-import useCreator from '../../service/hooks/useCreator';
+
 import Profile from '../../components/Creator/Profile/Profile';
 import Button from '../../components/@atom/Button/Button';
 import DonationList from '../../components/Creator/DonationList/DonationList';
 import { StyledTemplate, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
 import { popupWindow } from '../../service/popup';
+import { donationUrlShare } from '../../service/share';
 
 const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
   const history = useHistory();
   const { creatorId } = useParams<ParamTypes>();
   const { userInfo } = useLoginUserInfo();
-  const { pageName } = useCreator(creatorId);
-  const isAdmin = userInfo?.pageName === pageName;
+  const isAdmin = userInfo?.pageName === creatorId;
 
   const moveDonationPage = () => {
     popupWindow(`/donation/${creatorId}`, 'width=460,height=900,resizable=0');
   };
 
-  const moveStatisticsPage = () => {
-    history.push(`/creator/${creatorId}/statistic`);
+  const shareUrl = () => {
+    if (!userInfo) return;
+
+    donationUrlShare(userInfo.nickname, userInfo.pageName);
   };
 
   return (
@@ -35,6 +37,7 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
           if (axios.isAxiosError(error)) {
             alert(error.response?.data.message);
           } else {
+            console.error(error);
             alert('잘못된 창작자 정보입니다!');
           }
 
@@ -48,13 +51,13 @@ const CreatorPage: FC<HTMLAttributes<HTMLElement>> = () => {
               <p>제 페이지에 와주셔서 감사합니다!!</p>
             </DescriptionContainer>
             {isAdmin ? (
-              <Button onClick={moveStatisticsPage}>내 페이지 공유하기</Button>
+              <Button onClick={shareUrl}>내 페이지 공유하기</Button>
             ) : (
               <Button onClick={moveDonationPage}>후원하기</Button>
             )}
           </Suspense>
         </ProfileContainer>
-        <Suspense fallback={<p>후원기록을 불러오는 중입니다.</p>}>
+        <Suspense fallback={true}>
           <DonationList isAdmin={isAdmin} />
         </Suspense>
       </ErrorBoundary>

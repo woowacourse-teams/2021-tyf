@@ -23,7 +23,7 @@ const DonationSuccessPage = () => {
   const { donation } = useDonation(creatorId);
 
   const openCreatorPage = () => {
-    popupWindow(`${window.location.origin}/creator/${creatorId}`);
+    popupWindow(`/creator/${creatorId}`);
     window.close();
   };
 

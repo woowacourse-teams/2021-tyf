@@ -14,9 +14,11 @@ export const requestCreatorPrivateDonationList = (
   page: number,
   size: number
 ): Promise<Donation[]> => {
-  return apiClient.get(`/donations/me?page=${page}&size=${size}`, {
-    headers: { Authorization: `bearer ${accessToken}` },
-  });
+  return apiClient
+    .get(`/donations/me?page=${page}&size=${size}`, {
+      headers: { Authorization: `bearer ${accessToken}` },
+    })
+    .then((response) => response.data);
 };
 
 export const requestCreatorPublicDonationList = (creatorId: CreatorId): Promise<Donation[]> => {

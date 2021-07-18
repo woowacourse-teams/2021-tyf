@@ -6,16 +6,19 @@ import { OAuthProvider } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';
 import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
 import { requestOAuthRegister } from '../request/register';
+import { useRecoilState } from 'recoil';
+import { newUserState } from '../state/register';
 
 const useRegisterEffect = () => {
   const history = useHistory();
+  const [user, setUser] = useRecoilState(newUserState);
   const { oauthProvider } = useParams<ParamTypes>();
-
-  console.log('useEffect');
 
   const register = async (oauthProvider: OAuthProvider, authCode: string) => {
     try {
-      await requestOAuthRegister(oauthProvider, authCode);
+      const { email, oauthType } = await requestOAuthRegister(oauthProvider, authCode);
+
+      setUser({ ...user, email, oauthType });
     } catch (error) {
       console.error(error.response.data.message);
       history.push('/register');
@@ -32,7 +35,6 @@ const useRegisterEffect = () => {
   useEffect(() => {
     const authCode = getQueryVariable(AUTH_CODE);
     const hasError = !!getQueryVariable(OAUTH_ERROR);
-    console.log(authCode, hasError, oauthProvider);
     if (hasError) return handleRedirectionError();
 
     if (!oauthProvider || !authCode) return;

@@ -9,7 +9,7 @@ import { AddressInputContainer, RegisterAddressTitle } from './RegisterAddressFo
 const RegisterAddressForm = () => {
   const history = useHistory();
   useRegisterEffect();
-  const { urlName, addressErrorMessage, isValidAddress, onChangeRegister } = useRegister();
+  const { pageName, addressErrorMessage, isValidAddress, onChangeRegister } = useRegister();
 
   const moveRegisterNamePage = () => {
     history.push('/register/name');
@@ -24,9 +24,9 @@ const RegisterAddressForm = () => {
       </RegisterAddressTitle>
       <AddressInputContainer>
         <InputWithMessage
-          name="urlName"
+          name="pageName"
           role="urlName"
-          value={urlName}
+          value={pageName}
           isSuccess={isValidAddress}
           successMessage="좋은 주소명이네요!"
           failureMessage={addressErrorMessage}

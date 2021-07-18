@@ -16,6 +16,13 @@ export const CommentsList = styled.ul`
   width: 100%;
 `;
 
+export const EmptyCommentsList = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const CommentsListItem = styled.li`
   padding: 1rem 0.5rem;
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
