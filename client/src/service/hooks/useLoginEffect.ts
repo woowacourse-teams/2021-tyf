@@ -17,15 +17,16 @@ const useLoginEffect = (oauthProvider?: OAuthProvider) => {
 
   const login = async (oauthProvider: OAuthProvider, authCode: string) => {
     try {
-      const accessToken = await requestLogin(oauthProvider, authCode);
+      const { token } = await requestLogin(oauthProvider, authCode);
 
-      storeAccessToken(accessToken, loginPersistenceType);
+      storeAccessToken(token, loginPersistenceType);
       history.push('/');
     } catch (error) {
       if (error.response.data.errorCode === AUTH_ERROR.NOT_USER) {
         alert('회원가입 페이지로 이동합니다.');
         history.push('/register');
       }
+      console.log(error.response.data);
     }
   };
 

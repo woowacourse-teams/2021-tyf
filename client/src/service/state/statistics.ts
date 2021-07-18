@@ -7,6 +7,8 @@ export const userStatisticsQuery = selector({
   get: ({ get }) => {
     const accessToken = get(accessTokenState);
 
+    console.log(accessToken);
+
     return requestUserStatistics(accessToken);
   },
 });

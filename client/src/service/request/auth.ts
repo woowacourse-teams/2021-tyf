@@ -3,7 +3,7 @@ import { LoginUserInfo, OAuthProvider } from '../../types';
 
 export const requestLogin = (provider: OAuthProvider, authCode: string) => {
   return apiClient
-    .get<string>(`/oauth2/login/${provider}?code=${authCode}`)
+    .get<{ token: string }>(`/oauth2/login/${provider}?code=${authCode}`)
     .then((response) => response.data);
 };
 
