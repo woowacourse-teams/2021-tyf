@@ -42,6 +42,7 @@ const config: WebpackConfig = {
     new HtmlWebpackPlugin({
       template: path.resolve('public', 'index.html'),
       base: '/',
+      favicon: path.resolve('public', 'favicon.ico'),
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
