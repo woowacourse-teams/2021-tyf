@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+
+  profiles:
+    include: oauth2-dev
+
+  config:
+    use-legacy-processing: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+jwt:
+  secreteKey: ENC(mmZ1HEay3J/Z6OVymvsmOHxMMHNIjIBVKLA2J30uSz4=)
+  expire-length: ENC(T0QT610v/hcrlQa6+DM/2Q==)
