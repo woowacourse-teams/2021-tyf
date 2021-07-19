@@ -30,8 +30,10 @@ const Menu: VFC<MenuProps> = ({ onClose }) => {
       <ProfileContainer>
         {userInfo ? (
           <>
-            <span>{userInfo.nickname}</span>
-            <URLCopyButton onClick={shareURL}>후원URL 복사</URLCopyButton>
+            <StyledAnchor to={`/creator/${userInfo?.pageName}`} onClick={onClose}>
+              {userInfo.nickname}
+            </StyledAnchor>
+            <URLCopyButton onClick={shareURL}>후원 URL 복사</URLCopyButton>
           </>
         ) : (
           <StyledAnchor to="/login" onClick={onClose}>

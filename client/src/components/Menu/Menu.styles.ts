@@ -11,22 +11,27 @@ export const StyledModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   padding: 0 1.5rem;
+  border-radius: 1rem 1rem 0 0;
 `;
 
 export const ProfileContainer = styled(Container)`
   flex-direction: row;
-  padding: 1.5rem 0.75rem;
+  padding: 0.375rem 0.25rem;
+  padding-top: 0.75rem;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
 `;
 
 export const URLCopyButton = styled(OutlineButton)`
-  width: 7.75rem;
-  height: 2rem;
+  width: 5.75rem;
+  height: 1.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
 `;
 
 export const StyledAnchor = styled(Anchor)`
   height: 4rem;
   line-height: 4rem;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+  padding-left: 0.5rem;
 `;
