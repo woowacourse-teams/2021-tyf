@@ -40,8 +40,8 @@ export const ItemInfo = styled.div`
 
 export const ItemContent = styled.div`
   display: flex;
-  justify-content: center;
-  padding: 0.625rem 0;
+  justify-content: flex-start;
+  padding: 0.625rem;
   margin-bottom: 0.5rem;
 `;
 

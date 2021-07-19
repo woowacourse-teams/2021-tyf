@@ -17,8 +17,8 @@ export const StyledModal = styled(Modal)`
 export const ProfileContainer = styled(Container)`
   flex-direction: row;
   padding: 0.375rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0;
+  padding-top: 0.625rem;
+  padding-bottom: 0.375rem;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
 `;
