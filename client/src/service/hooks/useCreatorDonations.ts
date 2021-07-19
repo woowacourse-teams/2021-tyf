@@ -13,6 +13,7 @@ import useAccessToken from './useAccessToken';
 const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
   const [donationList, setDonationList] = useState<Donation[]>([]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [hasMoreList, setHasMoreList] = useState(true);
   const { accessToken } = useAccessToken();
 
   const initDonationList = async () => {
@@ -21,6 +22,7 @@ const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
     const newDonationList = await requestCreatorPublicDonationList(creatorId);
 
     setDonationList(newDonationList);
+    setHasMoreList(false);
   };
 
   const showMoreDonationList = async () => {
@@ -29,6 +31,11 @@ const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
       currentPageIndex,
       DONATION_VIEW_SIZE
     );
+
+    if (nextDonationList.length < DONATION_VIEW_SIZE) {
+      setHasMoreList(false);
+    }
+
     setDonationList(() => donationList.concat(nextDonationList));
     setCurrentPageIndex(currentPageIndex + 1);
   };
@@ -37,7 +44,7 @@ const useCreatorDonations = (isAdmin: boolean, creatorId: CreatorId) => {
     initDonationList();
   }, []);
 
-  return { donationList, showMoreDonationList };
+  return { donationList, showMoreDonationList, hasMoreList };
 };
 
 export default useCreatorDonations;
