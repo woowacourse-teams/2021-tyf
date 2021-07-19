@@ -1,0 +1,201 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+== Members (회원)
+=== 페이지 유효성 검사 - 성공
+==== Request
+include::{snippets}/validatePageName/http-request.adoc[]
+==== Response
+include::{snippets}/validatePageName/http-response.adoc[]
+=== 페이지 유효성 검사 - 유효하지 않은 Request
+==== Response
+include::{snippets}/validatePageNameRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/validatePageNameRequestFailed/http-response.adoc[]
+=== 페이지 유효성 검사 - 중복된 pageName
+==== Response
+include::{snippets}/validatePageNameDuplicatedFailed/http-request.adoc[]
+==== Response
+include::{snippets}/validatePageNameDuplicatedFailed/http-response.adoc[]
+=== 닉네임 유효성 검사 - 성공
+==== Request
+include::{snippets}/validateNickname/http-request.adoc[]
+==== Response
+include::{snippets}/validateNickname/http-response.adoc[]
+=== 닉네임 유효성 검사 - 유효하지 않은 Request
+==== Response
+include::{snippets}/validateNickname/http-request.adoc[]
+==== Response
+include::{snippets}/validateNickname/http-response.adoc[]
+=== 닉네임 유효성 검사 - 중복된 nickname
+==== Response
+include::{snippets}/validateNicknameDuplicatedFailed/http-request.adoc[]
+==== Response
+include::{snippets}/validateNicknameDuplicatedFailed/http-response.adoc[]
+=== 창작자 정보 요청 - 성공
+==== Request
+include::{snippets}/memberInfo/http-request.adoc[]
+==== Response
+include::{snippets}/memberInfo/http-response.adoc[]
+=== 창작자 정보 요청 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/memberInfoMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberInfoMemberNotFoundFailed/http-response.adoc[]
+=== 창작자 회원 정보 조회 - 성공
+==== Request
+include::{snippets}/memberDetail/http-request.adoc[]
+==== Response
+include::{snippets}/memberDetail/http-response.adoc[]
+=== 창작자 회원 정보 조회 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/memberDetailMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberDetailMemberNotFoundFailed/http-response.adoc[]
+=== 창작자 회원 정보 조회 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/memberDetailHeaderNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberDetailHeaderNotFoundFailed/http-response.adoc[]
+=== 창작자 회원 정보 조회 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/memberDetailInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberDetailInvalidTokenFailed/http-response.adoc[]
+=== 창작자 소유 포인트 조회 - 성공
+==== Request
+include::{snippets}/memberPoint/http-request.adoc[]
+==== Response
+include::{snippets}/memberPoint/http-response.adoc[]
+=== 창작자 소유 포인트 조회 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/memberPointMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberPointMemberNotFoundFailed/http-response.adoc[]
+=== 창작자 소유 포인트 조회 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/memberPointHeaderNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberPointHeaderNotFoundFailed/http-response.adoc[]
+=== 창작자 소유 포인트 조회 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/memberPointInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/memberPointInvalidTokenFailed/http-response.adoc[]
+=== 창작자 큐레이션 리스트 - 성공
+==== Request
+include::{snippets}/curations/http-request.adoc[]
+==== Response
+include::{snippets}/curations/http-response.adoc[]
+=== 액세스 토큰 유효성 검사 - 성공
+==== Request
+include::{snippets}/validateToken/http-request.adoc[]
+==== Response
+include::{snippets}/validateToken/http-response.adoc[]
+=== 액세스 토큰 유효성 검사 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/validateTokenInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/validateTokenInvalidTokenFailed/http-response.adoc[]
+== Banners (배너)
+=== 배너 이미지 목록 조회 - 성공
+==== Request
+include::{snippets}/getBanners/http-request.adoc[]
+==== Response
+include::{snippets}/getBanners/http-response.adoc[]
+=== 배너 이미지 목록 조회 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/getBannersHeaderNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/getBannersHeaderNotFoundFailed/http-response.adoc[]
+=== 배너 이미지 목록 조회 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/getBannersInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/getBannersInvalidTokenFailed/http-response.adoc[]
+=== 배너 이미지 생성 - 성공
+==== Request
+include::{snippets}/createBanners/http-request.adoc[]
+==== Response
+include::{snippets}/createBanners/http-response.adoc[]
+=== 배너 이미지 생성 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/createBannersMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createBannersMemberNotFoundFailed/http-response.adoc[]
+=== 배너 이미지 생성 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/createBannersHeaderNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createBannersHeaderNotFoundFailed/http-response.adoc[]
+=== 배너 이미지 생성 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/createBannersInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createBannersInvalidTokenFailed/http-response.adoc[]
+== Donations (후원)
+=== 후원 요청 - 성공
+==== Request
+include::{snippets}/createDonation/http-request.adoc[]
+==== Response
+include::{snippets}/createDonation/http-response.adoc[]
+=== 후원 요청 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/createDonationMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createDonationMemberNotFoundFailed/http-response.adoc[]
+=== 후원 요청 - 유효하지 않은 Request
+==== Request
+include::{snippets}/createDonationRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createDonationRequestFailed/http-response.adoc[]
+=== 후원 메세지 전송 - 성공
+==== Request
+include::{snippets}/addDonationMessage/http-request.adoc[]
+==== Response
+include::{snippets}/addDonationMessage/http-response.adoc[]
+=== 후원 메세지 전송 - 후원을 찾을 수 없음
+==== Request
+include::{snippets}/addDonationMessageDonationNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/addDonationMessageDonationNotFoundFailed/http-response.adoc[]
+=== 후원 메세지 전송 - 유효하지 않은 Request
+==== Request
+include::{snippets}/addDonationMessageRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/addDonationMessageRequestFailed/http-response.adoc[]
+=== 전체 후원 리스트 - 성공
+==== Request
+include::{snippets}/totalDonations/http-request.adoc[]
+==== Response
+include::{snippets}/totalDonations/http-response.adoc[]
+=== 전체 후원 리스트 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/totalDonationsMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/totalDonationsMemberNotFoundFailed/http-response.adoc[]
+=== 전체 후원 리스트 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/totalDonationsHeaderNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/totalDonationsHeaderNotFoundFailed/http-response.adoc[]
+=== 전체 후원 리스트 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/totalDonationsInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/totalDonationsInvalidTokenFailed/http-response.adoc[]
+=== 공개 후원 리스트 - 성공
+==== Request
+include::{snippets}/publicDonations/http-request.adoc[]
+==== Response
+include::{snippets}/publicDonations/http-response.adoc[]
+=== 공개 후원 리스트 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/publicDonationsMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
