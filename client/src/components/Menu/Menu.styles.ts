@@ -11,13 +11,14 @@ export const StyledModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   padding: 0 1.5rem;
-  border-radius: 1rem 1rem 0 0;
+  border-radius: 0.625rem 0.625rem 0 0;
 `;
 
 export const ProfileContainer = styled(Container)`
   flex-direction: row;
-  padding: 0.375rem 0.25rem;
+  padding: 0.375rem;
   padding-top: 0.75rem;
+  padding-bottom: 0;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
 `;
