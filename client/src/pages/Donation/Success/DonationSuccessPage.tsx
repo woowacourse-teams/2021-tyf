@@ -28,8 +28,6 @@ const DonationSuccessPage = () => {
     window.close();
   };
 
-  // TODO: 직접 url접근시 window.close 먹통됨 -> 창이 안닫힘
-
   const closeWindow = () => {
     window.close();
   };

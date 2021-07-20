@@ -69,37 +69,37 @@ export const nickNameValidationSelector = selector<string>({
   },
 });
 
-// DB 를 통한 유효성 검증
-export const urlNameDBValidationQuery = selector<string>({
-  key: 'urlNameDBValidationQuery',
-  get: async ({ get }) => {
-    const { pageName } = get(newUserState);
+// // DB 를 통한 유효성 검증
+// export const urlNameDBValidationQuery = selector<string>({
+//   key: 'urlNameDBValidationQuery',
+//   get: async ({ get }) => {
+//     // const { pageName } = get(newUserState);
 
-    // TODO : 검증 디바운싱 적용.
-    // cors 오류 해결전까지 주석처리
-    try {
-      // await requestValidatePageName(urlName);
+//     // TODO : 검증 디바운싱 적용.
+//     // cors 오류 해결전까지 주석처리
+//     try {
+//       // await requestValidatePageName(urlName);
 
-      return '';
-    } catch (error) {
-      return error.message;
-    }
-  },
-});
+//       return '';
+//     } catch (error) {
+//       return error.message;
+//     }
+//   },
+// });
 
-export const nickNameDBValidationQuery = selector<string>({
-  key: 'nickNameDBValidationQuery',
-  get: async ({ get }) => {
-    const { nickname } = get(newUserState);
+// export const nickNameDBValidationQuery = selector<string>({
+//   key: 'nickNameDBValidationQuery',
+//   get: async ({ get }) => {
+//     // const { nickname } = get(newUserState);
 
-    // TODO : 검증 디바운싱 적용.
-    // cors 오류 해결전까지 주석처리
-    try {
-      // await requestValidatePageName(urlName);
+//     // TODO : 검증 디바운싱 적용.
+//     // cors 오류 해결전까지 주석처리
+//     try {
+//       // await requestValidatePageName(urlName);
 
-      return '';
-    } catch (error) {
-      return error.message;
-    }
-  },
-});
+//       return '';
+//     } catch (error) {
+//       return error.message;
+//     }
+//   },
+// });

@@ -17,7 +17,6 @@ const RegisterTermsForm = () => {
   const { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked } = useTerms();
 
   const routeToRegisterAuthPage = () => {
-    // TODO: route명들 다 상수화하기
     history.push('/register/auth');
   };
 

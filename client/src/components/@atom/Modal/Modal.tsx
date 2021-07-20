@@ -1,4 +1,5 @@
 import { HTMLAttributes, MouseEvent } from 'react';
+import useScrollLock from '../../../utils/useScrollLock';
 
 import { ModalInner, ModalOuter } from './Modal.styles';
 
@@ -12,6 +13,8 @@ const Modal = ({ children, className, onClose }: ModalProps) => {
 
     if (onClose) onClose();
   };
+
+  useScrollLock();
 
   return (
     <ModalOuter onClick={onClickModalOuter}>

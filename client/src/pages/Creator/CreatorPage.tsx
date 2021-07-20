@@ -12,6 +12,8 @@ import DonationMessageList from '../../components/Donation/MessageList/DonationM
 import { StyledTemplate, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
 import { popupWindow } from '../../service/popup';
 import { donationUrlShare } from '../../service/share';
+import { DONATION_POPUP } from '../../constants/popup';
+import Spinner from '../../components/Spinner/Spinner';
 
 const CreatorPage = () => {
   const history = useHistory();
@@ -20,8 +22,10 @@ const CreatorPage = () => {
   const isAdmin = userInfo?.pageName === creatorId;
 
   const popupDonationPage = () => {
-    // TODO: 상수화
-    popupWindow(`/donation/${creatorId}`, 'width=460,height=900,resizable=0');
+    popupWindow(
+      `/donation/${creatorId}`,
+      `width=${DONATION_POPUP.WIDTH},height=${DONATION_POPUP.HEIGHT}`
+    );
   };
 
   const shareUrl = () => {
@@ -53,7 +57,7 @@ const CreatorPage = () => {
             )}
           </Suspense>
         </ProfileContainer>
-        <Suspense fallback={true}>
+        <Suspense fallback={<Spinner />}>
           <DonationMessageList isAdmin={isAdmin} />
         </Suspense>
       </ErrorBoundary>
