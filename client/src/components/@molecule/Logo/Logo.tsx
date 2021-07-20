@@ -4,6 +4,7 @@ import LogoImg from '../../../assets/images/logo.svg';
 
 const Logo = styled(IconButton).attrs({
   src: LogoImg,
+  alt: 'logo',
 })`
   width: 8.5rem;
 `;

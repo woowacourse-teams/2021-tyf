@@ -1,7 +1,4 @@
-import { VFC } from 'react';
-
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
-import Anchor from '../@atom/Anchor/Anchor';
 import { StyledModal, ProfileContainer, URLCopyButton, StyledAnchor } from './Menu.styles';
 import useLogout from '../../service/hooks/useLogout';
 import { donationUrlShare } from '../../service/share';
@@ -10,7 +7,7 @@ export interface MenuProps {
   onClose: () => void;
 }
 
-const Menu: VFC<MenuProps> = ({ onClose }) => {
+const Menu = ({ onClose }: MenuProps) => {
   const { userInfo } = useLoginUserInfo();
   const { logout } = useLogout();
 

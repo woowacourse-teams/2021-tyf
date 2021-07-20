@@ -1,6 +1,7 @@
-import defaultUserProfile from '../../../assets/images/defaultUserProfile.png';
+import { Link, useParams } from 'react-router-dom';
+
+import defaultUserProfile from '../../../assets/images/default-user-profile.png';
 import { NickName, ProfileImg, ProfileContainer } from './Profile.styles';
-import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import useCreator from '../../../service/hooks/useCreator';
 
@@ -10,9 +11,9 @@ const Profile = () => {
 
   return (
     <ProfileContainer>
-      <a href={window.location.origin + `/creator/${creatorId}`}>
+      <Link to={`/creator/${creatorId}`}>
         <ProfileImg src={defaultUserProfile} />
-      </a>
+      </Link>
       <NickName>{nickname}</NickName>
     </ProfileContainer>
   );

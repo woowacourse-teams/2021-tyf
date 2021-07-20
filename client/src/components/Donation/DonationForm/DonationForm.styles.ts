@@ -20,7 +20,7 @@ export const InputLabel = styled.label`
   }
 `;
 
-export const MoneyInput = styled(Input).attrs({ type: 'number' })`
+export const MoneyInput = styled(Input)`
   font-size: 1.25rem;
   padding: 0 2rem;
   margin-top: 4.5rem;

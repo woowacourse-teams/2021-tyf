@@ -2,10 +2,11 @@ import { apiClient } from '../../API';
 import { Register } from '../../types';
 import { OAuthProvider } from '../../types';
 
-export const requestOAuthRegister = (provider: OAuthProvider, authCode: string) => {
-  return apiClient
-    .get<{ email: string; oauthType: string }>(`/oauth2/signup/ready/${provider}?code=${authCode}`)
-    .then((response) => response.data);
+export const requestOAuthRegister = (
+  provider: OAuthProvider,
+  authCode: string
+): Promise<Register> => {
+  return apiClient.get(`/oauth2/signup/ready/${provider}?code=${authCode}`);
 };
 
 export const requestValidatePageName = (urlName: string) => {
@@ -21,5 +22,5 @@ export const requestValidateNickName = (nickName: string) => {
 };
 
 export const requestRegister = (user: Register): Promise<{ token: string }> => {
-  return apiClient.post('/oauth2/signup', user).then((response) => response.data);
+  return apiClient.post('/oauth2/signup', user);
 };

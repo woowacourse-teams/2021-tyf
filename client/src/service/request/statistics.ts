@@ -1,12 +1,6 @@
-import { apiClient } from '../../API';
+import { apiClient, authorizationHeader } from '../../API';
 import { Statistics } from '../../types';
 
-export const requestUserStatistics = (accessToken: string) => {
-  return apiClient
-    .get<Statistics>('/members/me/point', {
-      headers: {
-        Authorization: `bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data);
+export const requestUserStatistics = (accessToken: string): Promise<Statistics> => {
+  return apiClient.get('/members/me/point', authorizationHeader(accessToken));
 };

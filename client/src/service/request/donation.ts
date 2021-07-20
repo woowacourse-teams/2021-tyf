@@ -1,10 +1,11 @@
 import { apiClient } from '../../API';
 import { CreatorId, Donation, DonationId } from '../../types';
 
-export const requestDonation = (creatorId: CreatorId, donationAmount: number) => {
-  return apiClient
-    .post<Donation>('/donations', { pageName: creatorId, donationAmount })
-    .then((response) => response.data);
+export const requestDonation = (
+  creatorId: CreatorId,
+  donationAmount: number
+): Promise<Donation> => {
+  return apiClient.post('/donations', { pageName: creatorId, donationAmount });
 };
 
 export const requestSendDonationMessage = (

@@ -1,4 +1,4 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { STORAGE_KEY } from '../../constants/storage';
 import { StorageType } from '../../types';
 import { setLocalStorageItem, setSessionStorageItem } from '../../utils/storage';

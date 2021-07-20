@@ -12,9 +12,8 @@ export const apiClient: AxiosInstance = axios.create({
   },
 });
 
-// apiClient.interceptors.response.use(
-//   (response) => response,
-//   (error) => error.response
-// );
+apiClient.interceptors.response.use((response) => response.data);
 
-// export const createAuthorizationHeader = () => {};
+export const authorizationHeader = (accessToken: string) => ({
+  headers: { Authorization: `bearer ${accessToken}` },
+});

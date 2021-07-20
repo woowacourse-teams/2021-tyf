@@ -20,11 +20,8 @@ export interface Creator {
   email: string;
 }
 
-export interface Register {
-  email: string;
-  nickname: string;
+export interface Register extends Pick<Creator, 'pageName' | 'nickname' | 'email'> {
   oauthType: string;
-  pageName: CreatorId;
 }
 
 export interface LoginUserInfo extends Creator {}

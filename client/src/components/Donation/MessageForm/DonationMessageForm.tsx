@@ -1,10 +1,9 @@
 import { FormEvent } from 'react';
-import { MAX_MESSAGE_LENGTH } from '../../../constants/service';
-import useDonation from '../../../service/hooks/useDonation';
+
+import { MAX_MESSAGE_LENGTH } from '../../../constants/donation';
 import useDonationMessage from '../../../service/hooks/useDonationMessage';
 import useDonationMessageForm from '../../../service/hooks/useDonationMessageForm';
 import { CreatorId } from '../../../types';
-import Anchor from '../../@atom/Anchor/Anchor';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Textarea from '../../@atom/Textarea/Textarea';
 import {
@@ -40,9 +39,7 @@ const DonationMessageForm = ({ creatorId }: DonationMessageFormProps) => {
       <NickNameInput
         placeholder="닉네임 입력하기"
         value={form.name}
-        onChange={({ target }) => {
-          setName(target.value);
-        }}
+        onChange={({ target }) => setName(target.value)}
       />
       <Textarea
         placeholder="응원메세지 작성하기"
@@ -51,7 +48,7 @@ const DonationMessageForm = ({ creatorId }: DonationMessageFormProps) => {
       />
       <TextareaControllerContainer>
         <CheckboxLabel>
-          <Checkbox checked={isPrivate} onChange={({ target }) => setIsPrivate(target.checked)} />{' '}
+          <Checkbox checked={isPrivate} onChange={({ target }) => setIsPrivate(target.checked)} />
           창작자에게만 보이기
         </CheckboxLabel>
         <span>

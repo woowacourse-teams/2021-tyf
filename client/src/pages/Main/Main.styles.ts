@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import MainImage from '../../assets/images/HeroContent.svg';
+import MainImage from '../../assets/images/hero-content.svg';
 import SubTitle from '../../components/@atom/SubTitle/SubTitle';
 import Template from '../../components/@atom/Template/Template';
 import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton';

@@ -7,7 +7,7 @@ beforeEach(() => {
   myRender(<StatisticsPage />);
 });
 
-describe('statistics Page', () => {
+describe('StatisticsPage', () => {
   test('창작자의 후원 총 금액을 나타낸다.', async () => {
     const $totalAmount = await screen.findByRole('total-amount', { hidden: true });
 

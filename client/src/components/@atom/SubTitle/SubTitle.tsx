@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 import { StyledSubTitle } from './SubTitle.styles';
 
-export type SubTitleProps = HTMLAttributes<HTMLHeadingElement>;
+export interface SubTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
 
-const SubTitle: FC<SubTitleProps> = ({ children, ...props }) => {
+const SubTitle = ({ children, ...props }: SubTitleProps) => {
   return <StyledSubTitle {...props}>{children}</StyledSubTitle>;
 };
 

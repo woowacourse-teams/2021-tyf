@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { AUTH_ERROR } from '../../constants/errorCode';
+import { AUTH_ERROR } from '../../constants/error';
 import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
 import { OAuthProvider } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';

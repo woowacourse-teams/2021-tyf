@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const ModalOuter = styled.div`
   width: 100vw;
   height: 100vh;
-  z-index: ${Z_INDEX.FORGROUND};
+  z-index: ${Z_INDEX.FOREGROUND};
   position: fixed;
   top: 0;
   left: 0;

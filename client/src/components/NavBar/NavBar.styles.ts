@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MIN_WIDTH } from './../../constants/style';
 import Container from '../@atom/Container/Container';
 import IconButton from '../@atom/IconButton/IconButton';
-import hamburgerImg from '../../assets/icons/hamburger-btn.svg';
+import hamburgerImg from '../../assets/icons/hamburger.svg';
 import logoImg from '../../assets/images/logo.svg';
 import Anchor from '../@atom/Anchor/Anchor';
 

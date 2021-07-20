@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { ParamTypes } from '../../App';
@@ -6,7 +7,6 @@ import { OAuthProvider } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';
 import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
 import { requestOAuthRegister } from '../request/register';
-import { useRecoilState } from 'recoil';
 import { newUserState } from '../state/register';
 
 const useRegisterEffect = () => {

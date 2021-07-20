@@ -1,10 +1,10 @@
-import { HTMLAttributes, FC } from 'react';
+import { HTMLAttributes } from 'react';
 
 import { StyledContainer } from './Container.styles';
 
 export type ContainerProps = HTMLAttributes<HTMLElement>;
 
-const Container: FC<ContainerProps> = ({ children, ...props }) => {
+const Container = ({ children, ...props }: ContainerProps) => {
   return <StyledContainer {...props}>{children}</StyledContainer>;
 };
 

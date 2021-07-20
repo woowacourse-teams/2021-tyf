@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { statisticsMock, userInfoMock } from './mockData';
 
 export const handlers = [

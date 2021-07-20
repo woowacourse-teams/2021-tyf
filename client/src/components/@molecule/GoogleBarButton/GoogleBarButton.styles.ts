@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import GoogleLogo from '../../../assets/icons/google.svg';
 import PALETTE from '../../../constants/palette';
-import OutlineBarButtonWithIcon from '../OutlineBarButtonWithIcon/OutlineBarButtonWithIcon';
+import IconOutlineBarButton from '../IconOutlineBarButton/IconOutlineBarButton';
 
-const GoogleBarButton = styled(OutlineBarButtonWithIcon).attrs({
+const GoogleBarButton = styled(IconOutlineBarButton).attrs({
   src: GoogleLogo,
   alt: 'google_logo',
 })`

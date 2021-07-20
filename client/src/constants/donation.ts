@@ -1,1 +1,5 @@
-export const DONATION_VIEW_SIZE = 5;
+export const DONATION_MESSAGE_AMOUNT_PER_PAGE = 5;
+
+export const MIN_DONATION_AMOUNT = 1000;
+
+export const MAX_MESSAGE_LENGTH = 200;

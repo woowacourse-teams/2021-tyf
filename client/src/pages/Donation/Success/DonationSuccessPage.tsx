@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { ParamTypes } from '../../../App';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import useCreator from '../../../service/hooks/useCreator';
 import useDonation from '../../../service/hooks/useDonation';
 import { popupWindow } from '../../../service/popup';
 import { INVALID_DONATION_ID } from '../../../service/state/donation';
-
 import {
   CloseButton,
   CreatorRouteButton,
@@ -28,10 +28,10 @@ const DonationSuccessPage = () => {
     window.close();
   };
 
+  // TODO: 직접 url접근시 window.close 먹통됨 -> 창이 안닫힘
+
   const closeWindow = () => {
     window.close();
-
-    (open('auto:blank', '_self') as Window).close();
   };
 
   useEffect(() => {

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-import BarButtonWithIcon from '../BarButtonWithIcon/BarButtonWithIcon';
+import IconBarButton from '../IconBarButton/IconBarButton';
 import PALETTE from '../../../constants/palette';
 import NaverLogo from '../../../assets/icons/naver.svg';
 
-const NaverBarButton = styled(BarButtonWithIcon).attrs({
+const NaverBarButton = styled(IconBarButton).attrs({
   src: NaverLogo,
-  alt: 'naver_logo',
+  alt: 'naver logo',
 })`
   background-color: #03c75a;
   color: ${PALETTE.WHITE_400};

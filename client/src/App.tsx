@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -12,11 +10,11 @@ import DonationMessagePage from './pages/Donation/Message/DonationMessagePage';
 import DonationSuccessPage from './pages/Donation/Success/DonationSuccessPage';
 import LoginPage from './pages/Login/LoginPage';
 import MainPage from './pages/Main/MainPage';
-import RegisterAddressPage from './pages/Register/RegisterAddress/RegisterAddressPage';
-import RegisterAuthPage from './pages/Register/RegisterAuth/RegisterAuthPage';
-import RegisterNamePage from './pages/Register/RegisterName/RegisterNamePage';
-import RegisterSuccessPage from './pages/Register/RegisterSuccess/RegisterSuccessPage';
-import RegisterTermsPage from './pages/Register/RegisterTerms/RegisterTermsPage';
+import RegisterAddressPage from './pages/Register/Address/RegisterAddressPage';
+import RegisterAuthPage from './pages/Register/Auth/RegisterAuthPage';
+import RegisterNamePage from './pages/Register/Name/RegisterNamePage';
+import RegisterSuccessPage from './pages/Register/Success/RegisterSuccessPage';
+import RegisterTermsPage from './pages/Register/Terms/RegisterTermsPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
 import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';

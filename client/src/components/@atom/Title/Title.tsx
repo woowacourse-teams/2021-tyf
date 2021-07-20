@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 import { StyledTitle } from './Title.styles';
 
-export type TitleProps = HTMLAttributes<HTMLHeadingElement>;
+export interface TitleProps extends HTMLAttributes<HTMLHeadingElement> {}
 
-const Title: FC<TitleProps> = ({ children, ...props }) => {
+const Title = ({ children, ...props }: TitleProps) => {
   return <StyledTitle {...props}>{children}</StyledTitle>;
 };
 

@@ -1,13 +1,12 @@
-import { FC, MouseEvent } from 'react';
+import { HTMLAttributes, MouseEvent } from 'react';
+
 import { ModalInner, ModalOuter } from './Modal.styles';
 
-export interface ModalType {
-  children: React.ReactNode;
-  className?: string;
+export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   onClose?: () => void;
 }
 
-const Modal: FC<ModalType> = ({ children, className, onClose }) => {
+const Modal = ({ children, className, onClose }: ModalProps) => {
   const onClickModalOuter = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) return;
 

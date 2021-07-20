@@ -1,10 +1,10 @@
-import { InputHTMLAttributes, VFC } from 'react';
+import { InputHTMLAttributes } from 'react';
 
 import { StyledCheckbox } from './Checkbox.styles';
 
 export type CheckboxProps = InputHTMLAttributes<HTMLInputElement>;
 
-const Checkbox: VFC<CheckboxProps> = (props) => {
+const Checkbox = (props: CheckboxProps) => {
   return <StyledCheckbox type="checkbox" {...props} />;
 };
 

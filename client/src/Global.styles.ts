@@ -12,12 +12,16 @@ const GlobalStyle = createGlobalStyle`
     user-select: none;
   }
 
+  input, textarea {
+    user-select: auto;
+  }
+
+
   a {
     text-decoration: none;
 
     &:active, &:hover {
       color: inherit;
-
     }
   }
 

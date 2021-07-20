@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, VFC } from 'react';
+import { ChangeEvent } from 'react';
 
 import Anchor from '../@atom/Anchor/Anchor';
 import {
@@ -15,11 +15,13 @@ import KakaoBarButton from '../@molecule/KakaoBarButton/KaKaoBarButton.styles';
 import { routeToOAuthPage } from '../../service/auth';
 import useLoginPersistenceType from '../../service/hooks/useLoginPersistenceType';
 
-const LoginForm: VFC = () => {
+const LoginForm = () => {
   const { loginPersistenceType, setLoginPersistenceType } = useLoginPersistenceType();
 
-  const onChangeLoginPersistenceType = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.checked ? setLoginPersistenceType('LOCAL') : setLoginPersistenceType('SESSION');
+  const onChangeLoginPersistenceType = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const storageType = target.checked ? 'LOCAL' : 'SESSION';
+
+    setLoginPersistenceType(storageType);
   };
 
   return (

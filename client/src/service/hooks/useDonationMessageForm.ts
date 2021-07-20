@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { MAX_MESSAGE_LENGTH } from '../../constants/service';
+
+import { MAX_MESSAGE_LENGTH } from '../../constants/donation';
 import { DonationMessage } from '../../types';
 
 const useDonationMessageForm = () => {

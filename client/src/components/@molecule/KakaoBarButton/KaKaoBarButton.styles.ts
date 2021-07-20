@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 import KakaoLogo from '../../../assets/icons/kakao.svg';
-import BarButtonWithIcon from '../../../components/@molecule/BarButtonWithIcon/BarButtonWithIcon';
+import IconBarButton from '../IconBarButton/IconBarButton';
 import PALETTE from '../../../constants/palette';
 
-const KakaoBarButton = styled(BarButtonWithIcon).attrs({
+const KakaoBarButton = styled(IconBarButton).attrs({
   src: KakaoLogo,
-  alt: 'kakao_logo',
+  alt: 'kakao logo',
 })`
   background-color: ${PALETTE.YELLOW_400};
   color: ${PALETTE.BLACK_400};

@@ -1,10 +1,10 @@
-import { TextareaHTMLAttributes, VFC } from 'react';
+import { TextareaHTMLAttributes } from 'react';
 
 import { StyledTextarea } from './Textarea.styles';
 
-export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
-const Textarea: VFC<TextareaProps> = (props) => {
+const Textarea = (props: TextareaProps) => {
   return <StyledTextarea {...props} />;
 };
 

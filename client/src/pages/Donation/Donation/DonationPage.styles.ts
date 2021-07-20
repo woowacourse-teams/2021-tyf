@@ -20,11 +20,7 @@ export const DonationPageTemplate = styled(Template)`
   align-items: center;
   padding-top: 5rem;
 
-  position section:nth-of-type(1) {
-    margin-bottom: 2rem;
+  section:nth-of-type(1) {
+    margin-bottom: 3rem;
   }
-`;
-
-export const DonationProfile = styled.section`
-  margin-bottom: 3rem;
 `;

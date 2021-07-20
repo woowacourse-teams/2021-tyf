@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil';
 import { requestLoginUserInfo } from '../request/auth';
 import { getLocalStorageItem, getSessionStorageItem } from '../../utils/storage';
 import { STORAGE_KEY } from '../../constants/storage';
-import { StorageType } from '../../types';
+import { Creator, StorageType } from '../../types';
 
 const getDefaultAccessToken = () => {
   const local = getLocalStorageItem(STORAGE_KEY.ACCESS_TOKEN);
@@ -29,7 +29,7 @@ export const loginUserInfoQuery = selector({
   get: ({ get }) => {
     const accessToken = get(accessTokenState);
 
-    if (!accessToken) return;
+    if (!accessToken) return null;
 
     return requestLoginUserInfo(accessToken);
   },
