@@ -1,9 +1,6 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(W/isqx5Cr9Vm4dD9Zajcf4Y2bEX+ANXeIlWgw9w3Dlxs4YoJgvKcA/YkalFEgvRs0qbmrPTioTsuR/3dmYhAdG9C7qybJh+Uv9u6r96g47J6V4oLeKfjQJNlN5Nvo2miFWwUNcAs2cYvcM4dvvPnOlE9F2l12ybL)
-    username: ENC(r7m9NI4lDslcOs5jIz3z8P5L0ymR11i7)
-    password: ENC(E5UbFYXqDJ0I9l3/xFQerw==)
 
   jpa:
     properties:
@@ -11,7 +8,7 @@ spring:
         format_sql: true
 
   profiles:
-    include: oauth2-prod
+    include: prod-secret
 
   config:
     use-legacy-processing: true
@@ -22,7 +19,3 @@ logging:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
-
-jwt:
-  secreteKey: ENC(mmZ1HEay3J/Z6OVymvsmOHxMMHNIjIBVKLA2J30uSz4=)
-  expire-length: ENC(T0QT610v/hcrlQa6+DM/2Q==)

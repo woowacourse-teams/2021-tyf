@@ -13,7 +13,7 @@ spring:
       ddl-auto: update
 
   profiles:
-    include: oauth2-dev
+    include: dev-secret
 
   config:
     use-legacy-processing: true
@@ -24,7 +24,3 @@ logging:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
-
-jwt:
-  secreteKey: ENC(mmZ1HEay3J/Z6OVymvsmOHxMMHNIjIBVKLA2J30uSz4=)
-  expire-length: ENC(T0QT610v/hcrlQa6+DM/2Q==)
