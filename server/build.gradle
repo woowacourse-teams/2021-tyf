@@ -45,6 +45,9 @@ dependencies {
     //rest docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws',
+            version : '2.2.1.RELEASE'
 }
 
 test {

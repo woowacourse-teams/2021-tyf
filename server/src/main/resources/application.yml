@@ -11,7 +11,7 @@ spring:
         format_sql: true
         
   profiles:
-    include: oauth2
+    include: oauth2, aws
 
 logging:
   config: classpath:logback-spring.xml
