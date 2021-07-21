@@ -20,7 +20,7 @@ const RegisterNameForm = () => {
       </RegisterNameTitle>
       <NameInputContainer>
         <ValidationInput
-          role="nickName"
+          role="nickname"
           value={nickname}
           onChange={({ target }) => setNickname(target.value)}
           isSuccess={isValidNickName}

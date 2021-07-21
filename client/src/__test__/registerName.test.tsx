@@ -8,7 +8,7 @@ describe('RegisterNamePage', () => {
   });
 
   test('유효한 주소명을 입력해야 다음 버튼이 활성화 된다', () => {
-    const urlNameInput = screen.getByRole('urlName');
+    const urlNameInput = screen.getByRole('url-name');
     const nextButton = screen.getByRole('button', { name: '다음' });
 
     // 최초에 버튼이 비활성화 되어있다

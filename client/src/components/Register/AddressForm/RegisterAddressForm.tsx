@@ -25,7 +25,7 @@ const RegisterAddressForm = () => {
       </RegisterAddressTitle>
       <AddressInputContainer>
         <ValidationInput
-          role="urlName"
+          role="url-name"
           value={pageName}
           onChange={({ target }) => setPageName(target.value)}
           isSuccess={isValidAddress}
