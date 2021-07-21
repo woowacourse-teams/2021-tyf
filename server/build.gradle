@@ -67,3 +67,10 @@ task copyDocument(type: Copy) {
 build {
     dependsOn copyDocument
 }
+
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'securityKey/application-oauth2-dev.yml'
+    into 'src/main/resources'
+}
