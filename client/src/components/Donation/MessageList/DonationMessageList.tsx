@@ -35,7 +35,7 @@ const DonationMessageList = ({ isAdmin }: Props) => {
         <>
           <CommentsList>
             {donationList.map(({ donationId, name, message, amount, createdAt }) => (
-              <CommentsListItem key={donationId}>
+              <CommentsListItem key={donationId} role="donation-message">
                 <ItemInfo>
                   <span>
                     {name} <Divider>|</Divider> {amount.toLocaleString('en-us')}원

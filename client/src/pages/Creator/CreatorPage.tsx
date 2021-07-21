@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Suspense } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';

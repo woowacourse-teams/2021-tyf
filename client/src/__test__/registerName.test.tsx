@@ -19,7 +19,7 @@ describe('RegisterNamePage', () => {
     screen.getByText("주소는 영어 소문자, 숫자, '-', '_' 만 가능합니다.");
     expect(nextButton).toBeDisabled();
 
-    // // 올바른 주소 형식을 입력하면 성공메세지가 보여지고 버튼이 활성화 되어있다
+    // 올바른 주소 형식을 입력하면 성공메세지가 보여지고 버튼이 활성화 되어있다
     fireEvent.change(urlNameInput, { target: { value: 'valid_url' } });
     screen.getByText('좋은 주소명이네요!');
     expect(nextButton).not.toBeDisabled();
