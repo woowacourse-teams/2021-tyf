@@ -3,8 +3,16 @@ import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Container from '../../@atom/Container/Container';
 import Title from '../../@atom/Title/Title';
 
+export const StyledRegisterTermsForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
 export const TermsContainer = styled(Container)`
-  margin-bottom: 4rem;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: flex-start;
 `;
 

@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-import { StyledSpinner } from '../src/components/Spinner/Spinner.styles';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -17,7 +16,6 @@ const GlobalStyle = createGlobalStyle`
     user-select: auto;
   }
 
-
   a {
     text-decoration: none;
 
@@ -25,7 +23,6 @@ const GlobalStyle = createGlobalStyle`
       color: inherit;
     }
   }
-
 
 
   :root {
