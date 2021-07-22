@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Container from '../../components/@atom/Container/Container';
 import Template from '../../components/@atom/Template/Template';
+import { DEVICE } from '../../constants/device';
 
 import PALETTE from '../../constants/palette';
 
@@ -30,4 +31,8 @@ export const DescriptionContainer = styled(Container)`
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
   padding: 1rem;
   color: ${PALETTE.GRAY_500};
+
+  @media ${DEVICE.DESKTOP} {
+    padding: 1rem 3rem;
+  }
 `;
