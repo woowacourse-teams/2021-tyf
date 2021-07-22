@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,8 +62,9 @@ public class MemberService {
     }
 
     public ProfileResponse upload(MultipartFile multipartFile, LoginMember loginMember) {
-        //loginMember의 url보고 삭제 여부 ? s3Uploader.delete 관련?
-        String uploadedUrl = s3Connector.upload(multipartFile, loginMember.getId());
-        return new ProfileResponse(uploadedUrl);
+        memberRepository.findProfileImageById(loginMember.getId())
+                .ifPresent(s3Connector::delete);
+
+        return new ProfileResponse(s3Connector.upload(multipartFile, loginMember.getId()));
     }
 }

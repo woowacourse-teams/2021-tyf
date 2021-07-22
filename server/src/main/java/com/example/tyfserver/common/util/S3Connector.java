@@ -31,6 +31,12 @@ public class S3Connector {
         return CloudFrontUrlGenerator.generateUrl(fileName);
     }
 
+    public void delete(String fileName) {
+        if (awsS3Client.doesObjectExist(bucket, fileName)) {
+            awsS3Client.deleteObject(bucket, fileName);
+        }
+        throw new RuntimeException("파일을 삭제할 수 없습니다.");
+    }
 
     private File convertToFile(MultipartFile multipartFile) {
         File convertedFile = new File(multipartFile.getOriginalFilename());
