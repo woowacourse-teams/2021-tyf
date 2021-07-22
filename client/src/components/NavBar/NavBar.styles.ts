@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-import { MIN_WIDTH } from './../../constants/style';
 import Container from '../@atom/Container/Container';
 import IconButton from '../@atom/IconButton/IconButton';
 import hamburgerImg from '../../assets/icons/hamburger.svg';
 import logoImg from '../../assets/images/logo.svg';
 import Anchor from '../@atom/Anchor/Anchor';
+import { SIZE } from '../../constants/device';
 
 export const StyledNavBar = styled(Container)`
   height: 3.5rem;
@@ -13,7 +13,7 @@ export const StyledNavBar = styled(Container)`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 1rem;
-  min-width: ${MIN_WIDTH};
+  min-width: ${SIZE.MOBILE_MIN};
   position: relative;
 `;
 
