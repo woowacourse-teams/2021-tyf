@@ -61,10 +61,13 @@ public class MemberService {
         return memberRepository.findCurations();
     }
 
-    public ProfileResponse upload(MultipartFile multipartFile, LoginMember loginMember) {
+    public ProfileResponse uploadProfile(MultipartFile multipartFile, LoginMember loginMember) {
+        deleteProfile(loginMember);
+        return new ProfileResponse(s3Connector.upload(multipartFile, loginMember.getId()));
+    }
+
+    public void deleteProfile(LoginMember loginMember) {
         memberRepository.findProfileImageById(loginMember.getId())
                 .ifPresent(s3Connector::delete);
-
-        return new ProfileResponse(s3Connector.upload(multipartFile, loginMember.getId()));
     }
 }
