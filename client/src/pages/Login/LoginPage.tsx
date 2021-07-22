@@ -12,7 +12,9 @@ const LoginPage = () => {
 
   return (
     <StyledTemplate>
-      <LoginForm />
+      <section>
+        <LoginForm />
+      </section>
     </StyledTemplate>
   );
 };
