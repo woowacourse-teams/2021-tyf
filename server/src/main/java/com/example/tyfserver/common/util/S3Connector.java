@@ -3,6 +3,7 @@ package com.example.tyfserver.common.util;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.Base64;
+import com.example.tyfserver.common.exception.S3FileNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class S3Connector {
         if (awsS3Client.doesObjectExist(bucket, fileName)) {
             awsS3Client.deleteObject(bucket, fileName);
         }
-        throw new RuntimeException("파일을 삭제할 수 없습니다.");
+        throw new S3FileNotFoundException();
     }
 
     private File convertToFile(MultipartFile multipartFile) {
