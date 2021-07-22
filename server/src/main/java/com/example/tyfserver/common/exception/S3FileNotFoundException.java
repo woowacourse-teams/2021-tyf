@@ -8,4 +8,8 @@ public class S3FileNotFoundException extends BaseException{
     public S3FileNotFoundException() {
         super(ERROR_CODE, MESSAGE);
     }
+
+    public S3FileNotFoundException(String fileName) {
+        super(ERROR_CODE, MESSAGE + " fileName : " + fileName);
+    }
 }

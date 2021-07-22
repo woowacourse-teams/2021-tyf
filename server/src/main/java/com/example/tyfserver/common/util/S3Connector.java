@@ -36,7 +36,7 @@ public class S3Connector {
         if (awsS3Client.doesObjectExist(bucket, fileName + "/png")) {
             awsS3Client.deleteObject(bucket, fileName + "/png");
         }
-        throw new S3FileNotFoundException();
+        throw new S3FileNotFoundException(fileName);
     }
 
     private File convertToFile(MultipartFile multipartFile) {
