@@ -7,5 +7,4 @@ import java.util.Optional;
 
 public interface MemberQueryRepository {
     List<CurationsResponse> findCurations();
-    Optional<String> findProfileImageById(Long id);
 }

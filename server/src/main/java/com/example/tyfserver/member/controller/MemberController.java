@@ -73,12 +73,12 @@ public class MemberController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<ProfileResponse> profiles(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
+    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.uploadProfile(multipartFile, loginMember));
     }
 
     @DeleteMapping("/profile")
-    public ResponseEntity<Void> deleteProfiles(LoginMember loginMember) {
+    public ResponseEntity<Void> deleteProfile(LoginMember loginMember) {
         memberService.deleteProfile(loginMember);
         return ResponseEntity.ok().build();
     }

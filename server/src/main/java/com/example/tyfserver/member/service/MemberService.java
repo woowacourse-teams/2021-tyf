@@ -62,12 +62,24 @@ public class MemberService {
     }
 
     public ProfileResponse uploadProfile(MultipartFile multipartFile, LoginMember loginMember) {
-        deleteProfile(loginMember);
-        return new ProfileResponse(s3Connector.upload(multipartFile, loginMember.getId()));
+        Member findMember = findMember(loginMember.getId());
+        deleteProfile(findMember);
+        String uploadedFile = s3Connector.upload(multipartFile, loginMember.getId());
+        findMember.uploadProfileImage(uploadedFile);
+        return new ProfileResponse(uploadedFile);
     }
 
     public void deleteProfile(LoginMember loginMember) {
-        memberRepository.findProfileImageById(loginMember.getId())
-                .ifPresent(s3Connector::delete);
+        Member findMember = findMember(loginMember.getId());
+        deleteProfile(findMember);
+    }
+
+    private void deleteProfile(Member member) {
+        if (member.getProfileImage() == null) {
+            return;
+        }
+
+        s3Connector.delete(member.getProfileImage());
+        member.deleteProfile();
     }
 }
