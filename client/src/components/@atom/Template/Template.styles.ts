@@ -13,7 +13,6 @@ export const InnerTemplate = styled.section`
   width: 100%;
   max-width: ${SIZE.MOBILE_MAX};
   min-height: calc(100vh - 3.5rem);
-  min-height: calc(${window.innerHeight}px - 3.5rem);
   margin: 0 auto;
 
   @media ${DEVICE.DESKTOP} {
