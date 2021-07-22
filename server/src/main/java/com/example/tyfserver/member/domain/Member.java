@@ -69,4 +69,8 @@ public class Member extends BaseTimeEntity {
     public boolean isSameOauthType(String type) {
         return this.oauth2Type.name().equals(type);
     }
+
+    public void uploadProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }

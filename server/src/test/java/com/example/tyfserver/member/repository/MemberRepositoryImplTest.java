@@ -32,10 +32,13 @@ class MemberRepositoryImplTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    private Member testMember1;
+    private Member testMember2;
+
     @BeforeEach
     void setUp() {
-        memberRepository.save(MemberTest.testMember());
-        memberRepository.save(MemberTest.testMember2());
+        testMember1 = memberRepository.save(MemberTest.testMember());
+        testMember2 = memberRepository.save(MemberTest.testMember2());
     }
 
     @ParameterizedTest
@@ -136,5 +139,18 @@ class MemberRepositoryImplTest {
         assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick5", 5000L, "page5"));
         assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick2", 2000L, "page2"));
         assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick1", 1000L, "page1"));
+    }
+
+    @Test
+    @DisplayName("findProfileImageById test")
+    public void findProfileImageByIdTest() {
+        Optional<String> findProfileImage = memberRepository.findProfileImageById(testMember1.getId());
+        assertThat(findProfileImage.isPresent()).isFalse();
+
+        testMember1.uploadProfileImage("image");
+        em.flush();
+        em.clear();
+        Optional<String> findProfileImage2 = memberRepository.findProfileImageById(testMember1.getId());
+        assertThat(findProfileImage2.isPresent()).isTrue();
     }
 }
