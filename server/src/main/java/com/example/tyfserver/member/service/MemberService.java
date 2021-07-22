@@ -1,5 +1,7 @@
 package com.example.tyfserver.member.service;
 
+import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
@@ -9,6 +11,7 @@ import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final S3Connector s3Connector;
 
     public void validatePageName(PageNameValidationRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
@@ -54,5 +58,11 @@ public class MemberService {
 
     public List<CurationsResponse> findCurations() {
         return memberRepository.findCurations();
+    }
+
+    public ProfileResponse upload(MultipartFile multipartFile, LoginMember loginMember) {
+        //loginMember의 url보고 삭제 여부 ? s3Uploader.delete 관련? 
+        String uploadedUrl = s3Connector.upload(multipartFile);
+        return new ProfileResponse(uploadedUrl);
     }
 }

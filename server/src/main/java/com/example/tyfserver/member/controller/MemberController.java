@@ -7,9 +7,11 @@ import com.example.tyfserver.member.exception.NicknameValidationRequestException
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -67,5 +69,10 @@ public class MemberController {
     @GetMapping("/curations")
     public ResponseEntity<List<CurationsResponse>> curations() {
         return ResponseEntity.ok(memberService.findCurations());
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity<ProfileResponse> profiles(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.upload(multipartFile, loginMember));
     }
 }
