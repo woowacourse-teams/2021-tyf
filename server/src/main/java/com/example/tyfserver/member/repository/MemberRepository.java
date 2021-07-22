@@ -3,6 +3,8 @@ package com.example.tyfserver.member.repository;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 

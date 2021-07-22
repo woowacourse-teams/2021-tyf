@@ -5,6 +5,6 @@ cloud:
     stack:
       auto: false
 cloudfront:
-  url: https://de56jrhz7aye2.cloudfront.net
+  url: https://de56jrhz7aye2.cloudfront.net/
 s3:
   bucket: 2021-tyf-s3

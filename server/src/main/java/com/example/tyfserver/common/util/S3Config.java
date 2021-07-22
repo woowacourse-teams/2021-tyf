@@ -1,4 +1,4 @@
-package com.example.tyfserver;
+package com.example.tyfserver.common.util;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
