@@ -35,6 +35,7 @@ public class S3Connector {
     public void delete(String fileName) {
         if (awsS3Client.doesObjectExist(bucket, fileName)) {
             awsS3Client.deleteObject(bucket, fileName);
+            return;
         }
         throw new S3FileNotFoundException(fileName);
     }
