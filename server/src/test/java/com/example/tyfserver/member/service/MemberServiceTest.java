@@ -29,10 +29,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
+
+    @Mock
+    private CloudFrontUrlGenerator cloudFrontUrlGenerator;
 
     @Mock
     private MemberRepository memberRepository;
@@ -166,26 +170,6 @@ class MemberServiceTest {
         assertThat(response.getNickname()).isEqualTo("nickname");
         assertThat(response.getDonationAmount()).isEqualTo(100L);
         assertThat(response.getPageName()).isEqualTo("pageName");
-    }
-
-    @Test
-    @DisplayName("success uploadProfile")
-    void uploadProfileTest() {
-        //given
-        String url = "https://de56jrhz7aye2.cloudfront.net/file";
-        //when
-        when(s3Connector.upload(null, 1L))
-                .thenReturn(url);
-
-        when(memberRepository.findById(anyLong()))
-                .thenReturn(Optional.of(MemberTest.testMember()));
-
-        //then
-        ProfileResponse profileResponse =
-                memberService.uploadProfile(null, new LoginMember(1L, "email"));
-        assertThat(profileResponse)
-                .usingRecursiveComparison()
-                .isEqualTo(new ProfileResponse(url));
     }
 
     @Test
