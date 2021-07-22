@@ -27,6 +27,8 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true)
     private String nickname;
 
+    private String profileImage;
+
     @Embedded
     private Point point;
 

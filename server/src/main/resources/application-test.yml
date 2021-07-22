@@ -13,7 +13,7 @@ spring:
       ddl-auto: create
 
   profiles:
-    include: oauth2
+    include: oauth2, aws
 
   config:
     use-legacy-processing: true

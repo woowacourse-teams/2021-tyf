@@ -61,8 +61,8 @@ public class MemberService {
     }
 
     public ProfileResponse upload(MultipartFile multipartFile, LoginMember loginMember) {
-        //loginMember의 url보고 삭제 여부 ? s3Uploader.delete 관련? 
-        String uploadedUrl = s3Connector.upload(multipartFile);
+        //loginMember의 url보고 삭제 여부 ? s3Uploader.delete 관련?
+        String uploadedUrl = s3Connector.upload(multipartFile, loginMember.getId());
         return new ProfileResponse(uploadedUrl);
     }
 }

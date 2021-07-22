@@ -2,6 +2,7 @@ package com.example.tyfserver.member.controller;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;

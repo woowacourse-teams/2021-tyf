@@ -21,16 +21,14 @@ public class S3Connector {
     @Value("${s3.bucket}")
     private String bucket;
 
-    @Value(("${cloudfront.url}"))
-    private String cloudfrontUrl;
-
-    public String upload(MultipartFile multipartFile) {
-        System.out.println("bucket : " + bucket);
+    public String upload(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = System.currentTimeMillis() + Base64.encodeAsString(multipartFile.getName().getBytes()) + multipartFile.getContentType();
+        String fileName = System.currentTimeMillis() + "_" +
+                Base64.encodeAsString(memberId.byteValue()) + multipartFile.getContentType();
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
-        return cloudfrontUrl + "/" + fileName;
+
+        return CloudFrontUrlGenerator.generateUrl(fileName);
     }
 
 
