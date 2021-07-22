@@ -14,6 +14,6 @@ public class CloudFrontUrlGenerator {
     }
 
     public static String generateUrl(String fileName) {
-        return cloudfrontUrl + "/" + fileName;
+        return cloudfrontUrl + fileName;
     }
 }
