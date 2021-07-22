@@ -1,24 +1,32 @@
 package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.common.util.CloudFrontUrlGenerator;
+import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +34,9 @@ class MemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private S3Connector s3Connector;
 
     @InjectMocks
     private MemberService memberService;
@@ -153,5 +164,35 @@ class MemberServiceTest {
         assertThat(response.getNickname()).isEqualTo("nickname");
         assertThat(response.getDonationAmount()).isEqualTo(100L);
         assertThat(response.getPageName()).isEqualTo("pageName");
+    }
+
+    @Test
+    @DisplayName("success uploadProfile")
+    void uploadProfileTest() {
+        //given
+        String url = "https://de56jrhz7aye2.cloudfront.net/file";
+        //when
+        when(s3Connector.upload(null, 1L))
+                .thenReturn(url);
+        //then
+        final ProfileResponse profileResponse =
+                memberService.uploadProfile(null, new LoginMember(1L, "email"));
+        assertThat(profileResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(new ProfileResponse(url));
+    }
+
+    @Test
+    @DisplayName("deleteProfile throw exception test")
+    public void deleteProfileTest() {
+        //when
+        when(memberRepository.findProfileImageById(Mockito.anyLong()))
+                .thenReturn(
+                        Optional.of("profileImage")
+                );
+        doThrow(new RuntimeException()).when(s3Connector).delete(Mockito.anyString());
+        //then
+        assertThatThrownBy(() -> memberService.deleteProfile(new LoginMember(1L, "email")))
+                .isInstanceOf(RuntimeException.class);
     }
 }

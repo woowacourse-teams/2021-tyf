@@ -43,7 +43,7 @@ public class S3Connector {
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(multipartFile.getBytes());
         } catch (IOException e) {
-            throw new IllegalStateException("파일 변환 실패!");
+            throw new IllegalStateException("파일 변환에 실패하였습니다!");
         }
         return convertedFile;
     }
