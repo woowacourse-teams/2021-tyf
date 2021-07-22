@@ -6,6 +6,7 @@ import Container from '../../@atom/Container/Container';
 import {
   Divider,
   RegisterTermsTitle,
+  StyledRegisterTermsForm,
   TermCheckbox,
   TermLabel,
   TermLink,
@@ -21,7 +22,7 @@ const RegisterTermsForm = () => {
   };
 
   return (
-    <>
+    <StyledRegisterTermsForm>
       <RegisterTermsTitle>
         서비스
         <br /> 약관에
@@ -61,7 +62,7 @@ const RegisterTermsForm = () => {
           계속하기
         </Button>
       </Container>
-    </>
+    </StyledRegisterTermsForm>
   );
 };
 

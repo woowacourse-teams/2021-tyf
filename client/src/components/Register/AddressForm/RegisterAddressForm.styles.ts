@@ -3,8 +3,11 @@ import Container from '../../@atom/Container/Container';
 import Title from '../../@atom/Title/Title';
 import PALETTE from '../../../constants/palette';
 
-export const RegisterAddressContainer = styled(Container)`
-  min-height: 100vh;
+export const StyledRegisterAddressForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 export const RegisterAddressTitle = styled(Title)`

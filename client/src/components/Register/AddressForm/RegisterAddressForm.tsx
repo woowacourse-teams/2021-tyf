@@ -1,23 +1,30 @@
+import { FormEvent } from 'react';
 import { useHistory } from 'react-router';
 
 import useRegister from '../../../service/hooks/useRegister';
 import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
-import { AddressInputContainer, RegisterAddressTitle } from './RegisterAddressForm.styles';
+import {
+  StyledRegisterAddressForm,
+  AddressInputContainer,
+  RegisterAddressTitle,
+} from './RegisterAddressForm.styles';
 
 const RegisterAddressForm = () => {
   const history = useHistory();
   const { pageName, addressErrorMessage, isValidAddress, setPageName } = useRegister();
 
-  const routeToRegisterNamePage = () => {
+  const routeToRegisterNamePage = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     history.push('/register/name');
   };
 
   useRegisterEffect();
 
   return (
-    <>
+    <StyledRegisterAddressForm onSubmit={routeToRegisterNamePage}>
       <RegisterAddressTitle>
         자신만의
         <br /> 주소를
@@ -25,7 +32,7 @@ const RegisterAddressForm = () => {
       </RegisterAddressTitle>
       <AddressInputContainer>
         <ValidationInput
-          role="urlName"
+          role="url-name"
           value={pageName}
           onChange={({ target }) => setPageName(target.value)}
           isSuccess={isValidAddress}
@@ -33,10 +40,8 @@ const RegisterAddressForm = () => {
           failureMessage={addressErrorMessage}
         />
       </AddressInputContainer>
-      <Button disabled={!!addressErrorMessage} onClick={routeToRegisterNamePage}>
-        다음
-      </Button>
-    </>
+      <Button disabled={!!addressErrorMessage}>다음</Button>
+    </StyledRegisterAddressForm>
   );
 };
 
