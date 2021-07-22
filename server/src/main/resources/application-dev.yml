@@ -5,6 +5,11 @@ spring:
     username: sa
     password:
 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   jpa:
     properties:
       hibernate:
