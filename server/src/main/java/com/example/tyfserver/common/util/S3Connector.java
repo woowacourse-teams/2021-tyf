@@ -29,12 +29,12 @@ public class S3Connector {
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
-        return CloudFrontUrlGenerator.generateUrl(fileName);
+        return fileName;
     }
 
     public void delete(String fileName) {
-        if (awsS3Client.doesObjectExist(bucket, fileName + "/png")) {
-            awsS3Client.deleteObject(bucket, fileName + "/png");
+        if (awsS3Client.doesObjectExist(bucket, fileName)) {
+            awsS3Client.deleteObject(bucket, fileName);
         }
         throw new S3FileNotFoundException(fileName);
     }
