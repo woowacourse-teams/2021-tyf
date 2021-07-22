@@ -2,6 +2,7 @@ package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.common.exception.S3FileNotFoundException;
 import com.example.tyfserver.common.util.CloudFrontUrlGenerator;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.member.domain.Member;
@@ -26,8 +27,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -174,8 +176,12 @@ class MemberServiceTest {
         //when
         when(s3Connector.upload(null, 1L))
                 .thenReturn(url);
+
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.of(MemberTest.testMember()));
+
         //then
-        final ProfileResponse profileResponse =
+        ProfileResponse profileResponse =
                 memberService.uploadProfile(null, new LoginMember(1L, "email"));
         assertThat(profileResponse)
                 .usingRecursiveComparison()
@@ -184,15 +190,14 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("deleteProfile throw exception test")
-    public void deleteProfileTest() {
+    public void deleteProfileTestFileNotFoundException() {
         //when
-        when(memberRepository.findProfileImageById(Mockito.anyLong()))
-                .thenReturn(
-                        Optional.of("profileImage")
-                );
-        doThrow(new RuntimeException()).when(s3Connector).delete(Mockito.anyString());
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.of(MemberTest.testMemberWithProfileImage()));
+
+        doThrow(new S3FileNotFoundException()).when(s3Connector).delete(Mockito.anyString());
         //then
         assertThatThrownBy(() -> memberService.deleteProfile(new LoginMember(1L, "email")))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(S3FileNotFoundException.class);
     }
 }

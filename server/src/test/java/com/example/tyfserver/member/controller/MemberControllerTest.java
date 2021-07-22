@@ -29,6 +29,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -416,7 +417,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("/members/profile - success")
+    @DisplayName("POST - /members/profile - success")
     public void profile() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
@@ -440,7 +441,29 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("/members/profile - authorization header not found")
+    @DisplayName("POST - /members/profile - member not found failed")
+    public void profileMemberNotFoundFailed() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        String url = "https://de56jrhz7aye2.cloudfront.net/file";
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new MemberNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
+        //then
+        mockMvc.perform(multipart("/members/profile")
+                .file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("profileMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /members/profile - authorization header not found")
     public void profileHeaderNotFoundFailed() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
@@ -459,8 +482,8 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("/members/profile - invalid token")
-    public void profilesInvalidTokenFailed() throws Exception {
+    @DisplayName("POST - /members/profile - invalid token")
+    public void profileInvalidTokenFailed() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
@@ -473,6 +496,72 @@ class MemberControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("profileInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("DELETE -  /members/profile - success")
+    public void deleteProfile() throws Exception {
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doNothing().when(memberService).deleteProfile(Mockito.any());
+
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isOk())
+                .andDo(document("deleteProfileHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+
+    @Test
+    @DisplayName("DELETE -  /members/profile - authorization header not found")
+    public void deleteProfileHeaderNotFoundFailed() throws Exception {
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("deleteProfileHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+
+    @Test
+    @DisplayName("DELETE - /members/profile - invalid token")
+    public void deleteProfileInvalidTokenFailed() throws Exception {
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("deleteProfileInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("DELETE - /members/profile - member not found")
+    public void deleteProfileMemberNotFoundFailed() throws Exception {
+        //given
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new MemberNotFoundException()).when(memberService).deleteProfile(Mockito.any());
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("deleteProfileMemberNotFoundFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

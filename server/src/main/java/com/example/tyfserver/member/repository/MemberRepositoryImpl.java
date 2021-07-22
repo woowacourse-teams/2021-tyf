@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberQueryRepository{
@@ -26,17 +25,5 @@ public class MemberRepositoryImpl implements MemberQueryRepository{
                 .setFirstResult(0)
                 .setMaxResults(5)
                 .getResultList();
-    }
-
-    @Override
-    public Optional<String> findProfileImageById(Long id) {
-        return Optional.ofNullable(em.createQuery(
-                "select m.profileImage " +
-                        "from Member m " +
-                        "where m.id = :id",
-                String.class
-        )
-                .setParameter("id", id)
-                .getSingleResult());
     }
 }

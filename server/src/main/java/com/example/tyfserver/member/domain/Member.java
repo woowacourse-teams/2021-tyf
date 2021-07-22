@@ -50,6 +50,16 @@ public class Member extends BaseTimeEntity {
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
         this.point = new Point(0L);
+        this.profileImage = null;
+    }
+
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
+        this.email = email;
+        this.nickname = nickname;
+        this.pageName = pageName;
+        this.oauth2Type = oauth2Type;
+        this.point = new Point(0L);
+        this.profileImage = profileImage;
     }
 
     public void addDonation(final Donation donation) {
@@ -72,5 +82,9 @@ public class Member extends BaseTimeEntity {
 
     public void uploadProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void deleteProfile() {
+        this.profileImage = null;
     }
 }

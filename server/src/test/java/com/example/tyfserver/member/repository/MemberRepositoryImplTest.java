@@ -140,17 +140,4 @@ class MemberRepositoryImplTest {
         assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick2", 2000L, "page2"));
         assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick1", 1000L, "page1"));
     }
-
-    @Test
-    @DisplayName("findProfileImageById test")
-    public void findProfileImageByIdTest() {
-        Optional<String> findProfileImage = memberRepository.findProfileImageById(testMember1.getId());
-        assertThat(findProfileImage.isPresent()).isFalse();
-
-        testMember1.uploadProfileImage("image");
-        em.flush();
-        em.clear();
-        Optional<String> findProfileImage2 = memberRepository.findProfileImageById(testMember1.getId());
-        assertThat(findProfileImage2.isPresent()).isTrue();
-    }
 }

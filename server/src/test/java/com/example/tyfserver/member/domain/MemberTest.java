@@ -18,6 +18,10 @@ public class MemberTest {
         return new Member("tyf2@gmail.com", "nickname2", "pageName2", Oauth2Type.NAVER);
     }
 
+    public static Member testMemberWithProfileImage() {
+        return new Member("tyf@gmail.com", "nickname", "pageName", Oauth2Type.NAVER, "https://test.com/test");
+    }
+
     @Test
     @DisplayName("addDonation 메서드 테스트")
     public void addDonationTest() {
