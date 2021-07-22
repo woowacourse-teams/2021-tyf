@@ -1,4 +1,4 @@
-package com.example.tyfserver;
+package com.example.tyfserver.common.util;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -13,7 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Component
-public class S3Uploader implements Uploader {
+public class S3Uploader {
     private final AmazonS3 amazonS3Client;
 
     @Value("${s3.bucket}")
@@ -26,7 +26,6 @@ public class S3Uploader implements Uploader {
         this.amazonS3Client = amazonS3Client;
     }
 
-    @Override
     public String upload(MultipartFile multipartFile) throws IOException {
         System.out.println("bucket : " + bucket);
         File file = convertToFile(multipartFile);
