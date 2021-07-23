@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { MIN_WIDTH, MAX_WIDTH } from './../../../constants/style';
+import { DEVICE, SIZE } from '../../../constants/device';
 
 export const StyledTemplate = styled.main`
   width: 100vw;
@@ -9,10 +9,13 @@ export const StyledTemplate = styled.main`
 export const InnerTemplate = styled.section`
   padding: 3rem 1rem;
 
-  min-width: ${MIN_WIDTH};
+  min-width: ${SIZE.MOBILE_MIN};
   width: 100%;
-  max-width: ${MAX_WIDTH};
+  max-width: ${SIZE.MOBILE_MAX};
   min-height: calc(100vh - 3.5rem);
-  min-height: calc(${window.innerHeight}px - 3.5rem);
   margin: 0 auto;
+
+  @media ${DEVICE.DESKTOP} {
+    max-width: ${SIZE.DESKTOP_MAX};
+  }
 `;

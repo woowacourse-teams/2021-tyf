@@ -55,7 +55,6 @@ export const ItemDateInfo = styled.span`
   font-weight: 400;
 `;
 
-// TODO: 아래 버튼을 일반화해도 좋을듯
 export const ShowMoreButton = styled(OutlineButton)`
   width: 7.75rem;
   height: 2.25rem;

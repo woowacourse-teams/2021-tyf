@@ -16,7 +16,6 @@ const GlobalStyle = createGlobalStyle`
     user-select: auto;
   }
 
-
   a {
     text-decoration: none;
 
@@ -26,21 +25,25 @@ const GlobalStyle = createGlobalStyle`
   }
 
 
-
   :root {
     font-size: 16px;
     color: ${({ theme }) => theme.color.main};
     font-family: 'Noto Sans KR', sans-serif;
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+   
 
     ::-webkit-scrollbar {
       display: none;
     };
   }
 
+
+
   button {
     font-family: 'Noto Sans KR', sans-serif;
   }
+
+  
 
   `;
 

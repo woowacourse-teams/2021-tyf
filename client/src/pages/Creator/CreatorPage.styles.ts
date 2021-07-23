@@ -9,11 +9,19 @@ export const StyledTemplate = styled(Template)`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-`;
 
-export const ProfileContainer = styled(Container)`
-  margin-top: 4rem;
-  margin-bottom: 10rem;
+  section {
+    width: 100%;
+  }
+
+  section:nth-of-type(1) {
+    margin-top: 4rem;
+    margin-bottom: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const DescriptionContainer = styled(Container)`

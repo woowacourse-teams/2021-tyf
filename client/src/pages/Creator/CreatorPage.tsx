@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Suspense } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -9,9 +8,11 @@ import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import Profile from '../../components/Creator/Profile/Profile';
 import Button from '../../components/@atom/Button/Button';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
-import { StyledTemplate, ProfileContainer, DescriptionContainer } from './CreatorPage.styles';
+import { StyledTemplate, DescriptionContainer } from './CreatorPage.styles';
 import { popupWindow } from '../../service/popup';
 import { donationUrlShare } from '../../service/share';
+import { DONATION_POPUP } from '../../constants/popup';
+import Spinner from '../../components/Spinner/Spinner';
 
 const CreatorPage = () => {
   const history = useHistory();
@@ -20,8 +21,10 @@ const CreatorPage = () => {
   const isAdmin = userInfo?.pageName === creatorId;
 
   const popupDonationPage = () => {
-    // TODO: 상수화
-    popupWindow(`/donation/${creatorId}`, 'width=460,height=900,resizable=0');
+    popupWindow(
+      `/donation/${creatorId}`,
+      `width=${DONATION_POPUP.WIDTH},height=${DONATION_POPUP.HEIGHT}`
+    );
   };
 
   const shareUrl = () => {
@@ -40,8 +43,8 @@ const CreatorPage = () => {
           history.push('/');
         }}
       >
-        <ProfileContainer>
-          <Suspense fallback={<p>사용자 정보를 불러오는 중입니다.</p>}>
+        <Suspense fallback={<p>사용자 정보를 불러오는 중입니다.</p>}>
+          <section>
             <Profile />
             <DescriptionContainer>
               <p>제 페이지에 와주셔서 감사합니다!!</p>
@@ -51,10 +54,13 @@ const CreatorPage = () => {
             ) : (
               <Button onClick={popupDonationPage}>후원하기</Button>
             )}
-          </Suspense>
-        </ProfileContainer>
-        <Suspense fallback={true}>
-          <DonationMessageList isAdmin={isAdmin} />
+          </section>
+        </Suspense>
+
+        <Suspense fallback={<Spinner />}>
+          <section>
+            <DonationMessageList isAdmin={isAdmin} />
+          </section>
         </Suspense>
       </ErrorBoundary>
     </StyledTemplate>

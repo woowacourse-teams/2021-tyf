@@ -1,13 +1,13 @@
 import styled from 'styled-components';
+import { SIZE } from '../../constants/device';
 
 import PALETTE from '../../constants/palette';
-import { MIN_WIDTH } from '../../constants/style';
 
 export const StyledFooter = styled.footer`
   background-color: ${PALETTE.GRAY_100};
   padding: 1rem;
   font-size: 0.75rem;
-  min-width: ${MIN_WIDTH};
+  min-width: ${SIZE.MOBILE_MIN};
 
   p:nth-of-type(1) {
     margin-bottom: 1rem;

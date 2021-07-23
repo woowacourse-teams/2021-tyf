@@ -1,5 +1,6 @@
-import { Z_INDEX, MIN_WIDTH } from './../../../constants/style';
+import { Z_INDEX } from './../../../constants/style';
 import styled from 'styled-components';
+import { SIZE } from '../../../constants/device';
 
 export const ModalOuter = styled.div`
   width: 100vw;
@@ -16,5 +17,5 @@ export const ModalOuter = styled.div`
 
 export const ModalInner = styled.div`
   background-color: ${({ theme }) => theme.color.sub};
-  min-width: ${MIN_WIDTH};
+  min-width: ${SIZE.MOBILE_MIN};
 `;

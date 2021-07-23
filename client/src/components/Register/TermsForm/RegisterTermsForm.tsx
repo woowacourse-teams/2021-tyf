@@ -6,6 +6,7 @@ import Container from '../../@atom/Container/Container';
 import {
   Divider,
   RegisterTermsTitle,
+  StyledRegisterTermsForm,
   TermCheckbox,
   TermLabel,
   TermLink,
@@ -17,12 +18,11 @@ const RegisterTermsForm = () => {
   const { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked } = useTerms();
 
   const routeToRegisterAuthPage = () => {
-    // TODO: route명들 다 상수화하기
     history.push('/register/auth');
   };
 
   return (
-    <>
+    <StyledRegisterTermsForm>
       <RegisterTermsTitle>
         서비스
         <br /> 약관에
@@ -62,7 +62,7 @@ const RegisterTermsForm = () => {
           계속하기
         </Button>
       </Container>
-    </>
+    </StyledRegisterTermsForm>
   );
 };
 
