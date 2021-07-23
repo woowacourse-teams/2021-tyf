@@ -14,12 +14,11 @@ const NavBar = () => {
   return (
     <>
       <StyledNavBar>
-        <HamburgerButton onClick={() => toggleModal()} />
         <StyledLogo onClick={() => history.push('/')} />
         {userInfo ? (
           <Anchor to={`/creator/${userInfo.pageName}`}>{userInfo.nickname}</Anchor>
         ) : (
-          <LoginButton to="/login">로그인</LoginButton>
+          <></> // <b to="/login">로그인</LoginButton>
         )}
       </StyledNavBar>
       {isOpen && <Menu onClose={closeModal} />}
