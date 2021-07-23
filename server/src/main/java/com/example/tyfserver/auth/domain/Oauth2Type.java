@@ -1,6 +1,7 @@
 package com.example.tyfserver.auth.domain;
 
 import com.example.tyfserver.auth.exception.InvalidOauth2TypeException;
+
 import java.util.Arrays;
 
 public enum Oauth2Type {

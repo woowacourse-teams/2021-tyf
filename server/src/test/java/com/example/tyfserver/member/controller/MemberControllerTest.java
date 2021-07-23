@@ -534,7 +534,7 @@ class MemberControllerTest {
         //then
         mockMvc.perform(delete("/members/profile"))
                 .andExpect(status().isOk())
-                .andDo(document("deleteProfileHeaderNotFoundFailed",
+                .andDo(document("deleteProfile",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
