@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom';
+import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 
 import useTerms from '../../../service/hooks/useTerms';
 import Button from '../../@atom/Button/Button';
@@ -17,9 +18,11 @@ const RegisterTermsForm = () => {
   const history = useHistory();
   const { termsChecked, isAllTermsChecked, toggleTermChecked, toggleAllTermsChecked } = useTerms();
 
-  const routeToRegisterAuthPage = () => {
-    history.push('/register/auth');
+  const routeToRegisterPageNamePage = () => {
+    history.push('/register/url');
   };
+
+  useRegisterEffect();
 
   return (
     <StyledRegisterTermsForm>
@@ -58,7 +61,7 @@ const RegisterTermsForm = () => {
         </TermLabel>
       </TermsContainer>
       <Container>
-        <Button disabled={!isAllTermsChecked} onClick={routeToRegisterAuthPage}>
+        <Button disabled={!isAllTermsChecked} onClick={routeToRegisterPageNamePage}>
           계속하기
         </Button>
       </Container>

@@ -21,8 +21,6 @@ const RegisterAddressForm = () => {
     history.push('/register/name');
   };
 
-  useRegisterEffect();
-
   return (
     <StyledRegisterAddressForm onSubmit={routeToRegisterNamePage}>
       <RegisterAddressTitle>

@@ -15,7 +15,7 @@ export const OAUTH = {
 } as const;
 
 export const REDIRECT_PATH = {
-  REGISTER: '/register/url/',
+  REGISTER: '/register/terms/',
   LOGIN: '/login/',
 } as const;
 
