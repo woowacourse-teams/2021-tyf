@@ -20,7 +20,7 @@ export const AddressInputContainer = styled(Container)`
   margin-bottom: 4rem;
 
   &::before {
-    content: 'https://thankyoufor.com/';
+    content: 'https://thankyoufor.com/creator/';
     position: absolute;
     top: 20%;
     left: 0.5rem;
@@ -28,6 +28,6 @@ export const AddressInputContainer = styled(Container)`
   }
 
   input {
-    padding-left: 12.5rem;
+    padding-left: 16rem;
   }
 `;

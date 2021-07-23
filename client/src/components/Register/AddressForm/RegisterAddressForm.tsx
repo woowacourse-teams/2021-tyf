@@ -24,8 +24,8 @@ const RegisterAddressForm = () => {
   return (
     <StyledRegisterAddressForm onSubmit={routeToRegisterNamePage}>
       <RegisterAddressTitle>
-        자신만의
-        <br /> 주소를
+        도네이션
+        <br /> 받을 주소를
         <br /> 적어주세요.
       </RegisterAddressTitle>
       <AddressInputContainer>
