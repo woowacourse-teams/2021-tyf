@@ -38,7 +38,7 @@ const RegisterNameForm = () => {
           placeholder="닉네임 입력하기"
         />
       </NameInputContainer>
-      <Button disabled={!!nicknameErrorMessage}>회원가입 완료</Button>
+      <Button disabled={!isValidNickName}>회원가입 완료</Button>
     </StyledRegisterNameForm>
   );
 };

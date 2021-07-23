@@ -37,7 +37,7 @@ const RegisterAddressForm = () => {
           failureMessage={addressErrorMessage}
         />
       </AddressInputContainer>
-      <Button disabled={!!addressErrorMessage}>다음</Button>
+      <Button disabled={!isValidAddress}>다음</Button>
     </StyledRegisterAddressForm>
   );
 };
