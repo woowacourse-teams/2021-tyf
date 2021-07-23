@@ -39,14 +39,10 @@ export const StyledTemplate = styled(Template)`
         }
       }
 
-      & > p {
-      }
       & > div {
         grid-column: 2 / 4;
         grid-row: 2;
         margin: 0;
-      }
-      & > button {
       }
     }
   }
