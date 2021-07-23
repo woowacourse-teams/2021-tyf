@@ -48,7 +48,7 @@ public class DonationService {
 
         List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(findMember, pageable);
 
-        return convertDonationsToResponses(donations);
+        return privateDonationResponses(donations);
     }
 
     public List<DonationResponse> findPublicDonations(String pageName) {
@@ -56,20 +56,19 @@ public class DonationService {
                 .orElseThrow(MemberNotFoundException::new);
 
         List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(findMember);
-        hideSecretDonation(donations);
 
-        return convertDonationsToResponses(donations);
+        return publicDonationResponses(donations);
     }
 
-    private void hideSecretDonation(List<Donation> donations) {
-        for (Donation donation : donations) {
-            donation.hideNameAndMessageWhenSecret();
-        }
-    }
-
-    private List<DonationResponse> convertDonationsToResponses(List<Donation> donations) {
+    private List<DonationResponse> privateDonationResponses(List<Donation> donations) {
         return donations.stream()
                 .map(DonationResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<DonationResponse> publicDonationResponses(List<Donation> donations) {
+        return donations.stream()
+                .map(DonationResponse::forPublic)
                 .collect(Collectors.toList());
     }
 }
