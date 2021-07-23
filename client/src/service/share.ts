@@ -7,5 +7,7 @@ export const donationUrlShare = (creatorName: string, pageName: string) => {
     return window.navigator.share({ title, text, url });
   }
 
+  alert('도네이션 URL이 복사되었습니다.');
+
   return navigator.clipboard.writeText(url);
 };
