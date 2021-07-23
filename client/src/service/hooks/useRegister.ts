@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
 import {
   newUserState,
@@ -8,12 +8,17 @@ import {
 import { requestRegister } from '../request/register';
 import { useHistory } from 'react-router-dom';
 import useAccessToken from './useAccessToken';
+import { useEffect, useState } from 'react';
 
 const useRegister = () => {
   const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
-  const addressErrorMessage = useRecoilValue(urlNameValidationSelector);
+  const addressErrorLoadable = useRecoilValueLoadable(urlNameValidationSelector);
   const nickNameErrorMessage = useRecoilValue(nickNameValidationSelector);
+
+  const [addressErrorMessage, setAddressErrorMessage] = useState('');
+  const [isValidAddress, setIsValidAddress] = useState(false);
+
   const { storeAccessToken } = useAccessToken();
 
   // TODO: db로의 검증
@@ -22,7 +27,24 @@ const useRegister = () => {
 
   const { pageName, nickname } = user;
 
-  const isValidAddress = !addressErrorMessage;
+  useEffect(() => {
+    if (addressErrorLoadable.state === 'loading') {
+      setIsValidAddress(false);
+      setAddressErrorMessage('유효한 주소명인지 검증중입니다...');
+    }
+
+    if (addressErrorLoadable.state === 'hasError') {
+      setIsValidAddress(false);
+
+      setAddressErrorMessage(addressErrorLoadable.contents.response.data.message);
+    }
+
+    if (addressErrorLoadable.state === 'hasValue') {
+      setIsValidAddress(!addressErrorLoadable.contents);
+      setAddressErrorMessage(addressErrorLoadable.contents);
+    }
+  }, [addressErrorLoadable.state]);
+
   const isValidNickName = !nickNameErrorMessage;
 
   const setNickname = (value: string) => {

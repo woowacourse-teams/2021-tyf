@@ -2,6 +2,7 @@ import { atom, selector } from 'recoil';
 
 import { Register } from '../../types';
 import { REGISTER } from '../../constants/register';
+import { requestValidatePageName } from '../request/register';
 
 export const newUserState = atom<Register>({
   key: 'newUserState',
@@ -10,7 +11,7 @@ export const newUserState = atom<Register>({
 
 export const urlNameValidationSelector = selector<string>({
   key: 'urlNameValidationQuery',
-  get: ({ get }) => {
+  get: async ({ get }) => {
     const { pageName } = get(newUserState);
 
     if (pageName.length < REGISTER.ADDRESS.MIN_LENGTH) {
@@ -33,6 +34,9 @@ export const urlNameValidationSelector = selector<string>({
     if (!regExp.test(pageName)) {
       return "주소는 영어 소문자, 숫자, '-', '_' 만 가능합니다.";
     }
+
+    // TODO : 검증 디바운싱 적용.
+    await requestValidatePageName(pageName);
 
     return '';
   },
