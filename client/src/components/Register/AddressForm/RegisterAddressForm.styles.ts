@@ -28,6 +28,6 @@ export const AddressInputContainer = styled(Container)`
   }
 
   input {
-    padding-left: 16rem;
+    padding-left: 16.25rem;
   }
 `;
