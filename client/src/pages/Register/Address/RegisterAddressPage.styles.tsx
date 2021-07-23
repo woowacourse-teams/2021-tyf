@@ -4,5 +4,5 @@ import { SIZE } from '../../../constants/device';
 
 export const StyledTemplate = styled(Template)`
   display: flex;
-  max-width: ${SIZE.MOBILE_MAX};
+  max-width: ${SIZE.MOBILE_MAX}px;
 `;

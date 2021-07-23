@@ -11,6 +11,6 @@ export const StyledTemplate = styled(Template)`
   section {
     height: 100%;
     width: 100%;
-    max-width: ${SIZE.MOBILE_MAX};
+    max-width: ${SIZE.MOBILE_MAX}px;
   }
 `;

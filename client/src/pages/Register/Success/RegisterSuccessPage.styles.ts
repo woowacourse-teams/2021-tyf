@@ -11,7 +11,7 @@ export const StyledTemplate = styled(Template)`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  max-width: ${SIZE.MOBILE_MAX};
+  max-width: ${SIZE.MOBILE_MAX}px;
 `;
 
 export const RegisterSuccessTitle = styled(Title)`

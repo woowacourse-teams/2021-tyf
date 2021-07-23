@@ -9,7 +9,7 @@ export const StyledTemplate = styled(Template)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: ${SIZE.MOBILE_MAX};
+  max-width: ${SIZE.MOBILE_MAX}px;
 `;
 
 export const InfoTitle = styled(SubTitle)`
