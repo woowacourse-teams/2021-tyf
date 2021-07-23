@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/react';
-import Menu, { MenuProps } from './Menu';
+import DesktopMenu, { DesktopMenuProps } from './DesktopMenu';
 
 export default {
-  title: 'components/menu',
+  title: 'components/menu/desktop',
   args: {
     onClose: () => {
       return;
@@ -10,6 +10,6 @@ export default {
   },
 } as Meta;
 
-const Template: Story<MenuProps> = (args) => <Menu {...args} />;
+const Template: Story<DesktopMenuProps> = (args) => <DesktopMenu {...args} />;
 
 export const Default = Template.bind({});

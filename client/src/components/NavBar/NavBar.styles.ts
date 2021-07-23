@@ -2,26 +2,23 @@ import styled from 'styled-components';
 
 import Container from '../@atom/Container/Container';
 import IconButton from '../@atom/IconButton/IconButton';
-import hamburgerImg from '../../assets/icons/hamburger.svg';
 import logoImg from '../../assets/images/logo.svg';
 import Anchor from '../@atom/Anchor/Anchor';
-import { SIZE } from '../../constants/device';
+import { DEVICE, SIZE } from '../../constants/device';
+import TextButton from '../@atom/TextButton/TextButton.styles';
 
 export const StyledNavBar = styled(Container)`
   height: 3.5rem;
-  border-bottom: 1px solid ${({ theme }) => theme.color.border};
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 1rem;
-  min-width: ${SIZE.MOBILE_MIN};
+  min-width: ${SIZE.MOBILE_MIN}px;
   position: relative;
-`;
 
-export const HamburgerButton = styled(IconButton).attrs({
-  src: hamburgerImg,
-})`
-  width: 1.5rem;
-  height: 1.5rem;
+  @media ${DEVICE.DESKTOP} {
+    height: 5rem;
+    padding: 0 3rem;
+  }
 `;
 
 export const StyledLogo = styled(IconButton).attrs({
@@ -31,9 +28,23 @@ export const StyledLogo = styled(IconButton).attrs({
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+
+  @media ${DEVICE.DESKTOP} {
+    width: 10rem;
+  }
 `;
 
 export const LoginButton = styled(Anchor)`
   font-size: 0.875rem;
   font-weight: 400;
+
+  @media ${DEVICE.DESKTOP} {
+    font-size: 1rem;
+  }
+`;
+
+export const StyledTextButton = styled(TextButton)`
+  @media ${DEVICE.DESKTOP} {
+    font-size: 1.125rem;
+  }
 `;
