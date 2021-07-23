@@ -6,6 +6,7 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.common.exception.S3FileNotFoundException;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
@@ -441,6 +442,28 @@ class MemberControllerTest {
     }
 
     @Test
+    @DisplayName("POST -  /members/profile - S3 File Not Found")
+    public void profileS3FileNotFoundFailed() throws Exception {
+        //given
+        //given
+        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new S3FileNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(multipart("/members/profile")
+                .file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
+                .andDo(document("profileS3FileNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
     @DisplayName("POST - /members/profile - member not found failed")
     public void profileMemberNotFoundFailed() throws Exception {
         //given
@@ -512,6 +535,23 @@ class MemberControllerTest {
         mockMvc.perform(delete("/members/profile"))
                 .andExpect(status().isOk())
                 .andDo(document("deleteProfileHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("DELETE -  /members/profile - S3 File Not Found")
+    public void deleteProfileS3FileNotFoundFailed() throws Exception {
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new S3FileNotFoundException()).when(memberService).deleteProfile(Mockito.any());
+
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
+                .andDo(document("deleteProfileS3FileNotFoundFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
