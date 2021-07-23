@@ -31,9 +31,4 @@ public class Message {
     public static Message defaultMessage() {
         return new Message(Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, false);
     }
-
-    public void hideNameAndMessage() {
-        name = SECRET_NAME;
-        message = SECRET_MESSAGE;
-    }
 }

@@ -25,16 +25,4 @@ public class DonationTest {
     public static DonationRequest testDonationRequest(Member member) {
         return new DonationRequest(member.getPageName(), DONATION_AMOUNT);
     }
-
-    @Test
-    @DisplayName("hideDonation 테스트")
-    public void hideNameAndMessageWhenSecret() {
-        //given
-        Donation donation = new Donation(1000L, new Message("name", "message", true));
-        //when
-        donation.hideNameAndMessageWhenSecret();
-        //then
-        assertThat(donation.getName()).isEqualTo(Message.SECRET_NAME);
-        assertThat(donation.getMessage()).isEqualTo(Message.SECRET_MESSAGE);
-    }
 }
