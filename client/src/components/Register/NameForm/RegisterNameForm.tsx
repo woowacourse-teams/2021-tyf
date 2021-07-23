@@ -1,5 +1,7 @@
 import { FormEvent } from 'react';
+
 import useRegister from '../../../service/hooks/useRegister';
+import useRegisterNickname from '../../../service/hooks/useRegisterNickname';
 import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
@@ -9,8 +11,8 @@ import {
 } from './RegisterNameForm.styles';
 
 const RegisterNameForm = () => {
-  const { nickname, nicknameErrorMessage, isValidNickName, setNickname, registerUser } =
-    useRegister();
+  const { nickname, nicknameErrorMessage, isValidNickName, setNickname } = useRegisterNickname();
+  const { registerUser } = useRegister();
 
   const onRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

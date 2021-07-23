@@ -1,8 +1,7 @@
 import { FormEvent } from 'react';
 import { useHistory } from 'react-router';
 
-import useRegister from '../../../service/hooks/useRegister';
-import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
+import useRegisterPageName from '../../../service/hooks/useRegisterPageName';
 import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
@@ -13,7 +12,7 @@ import {
 
 const RegisterAddressForm = () => {
   const history = useHistory();
-  const { pageName, addressErrorMessage, isValidAddress, setPageName } = useRegister();
+  const { pageName, addressErrorMessage, isValidAddress, setPageName } = useRegisterPageName();
 
   const routeToRegisterNamePage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
