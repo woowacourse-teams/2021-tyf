@@ -1,5 +1,6 @@
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import useStatistics from '../../service/hooks/useStatistics';
+import { toCommaSeparatedString } from '../../utils/format';
 import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
 
 const StatisticsPage = () => {
@@ -13,7 +14,7 @@ const StatisticsPage = () => {
         <br />총 후원 받은 금액은
       </InfoTitle>
       <MoneyInfo>
-        <span role="total-amount">{(totalAmount ?? 0).toLocaleString('en-us')}</span>
+        <span role="total-amount">{toCommaSeparatedString(totalAmount ?? 0)}</span>
         <span>원</span>
       </MoneyInfo>
     </StyledTemplate>
