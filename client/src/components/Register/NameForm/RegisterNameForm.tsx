@@ -9,7 +9,7 @@ import {
 } from './RegisterNameForm.styles';
 
 const RegisterNameForm = () => {
-  const { nickname, nickNameErrorMessage, isValidNickName, setNickname, registerUser } =
+  const { nickname, nicknameErrorMessage, isValidNickName, setNickname, registerUser } =
     useRegister();
 
   const onRegister = async (event: FormEvent<HTMLFormElement>) => {
@@ -32,11 +32,11 @@ const RegisterNameForm = () => {
           onChange={({ target }) => setNickname(target.value)}
           isSuccess={isValidNickName}
           successMessage="좋은 닉네임이네요!"
-          failureMessage={nickNameErrorMessage}
+          failureMessage={nicknameErrorMessage}
           placeholder="닉네임 입력하기"
         />
       </NameInputContainer>
-      <Button disabled={!!nickNameErrorMessage}>회원가입 완료</Button>
+      <Button disabled={!!nicknameErrorMessage}>회원가입 완료</Button>
     </StyledRegisterNameForm>
   );
 };

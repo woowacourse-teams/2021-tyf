@@ -14,16 +14,14 @@ const useRegister = () => {
   const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
   const addressErrorLoadable = useRecoilValueLoadable(urlNameValidationSelector);
-  const nickNameErrorMessage = useRecoilValue(nickNameValidationSelector);
+  const nickNameErrorLoadable = useRecoilValueLoadable(nickNameValidationSelector);
 
   const [addressErrorMessage, setAddressErrorMessage] = useState('');
+  const [nicknameErrorMessage, setNicknameErrorMessage] = useState('');
   const [isValidAddress, setIsValidAddress] = useState(false);
+  const [isValidNickName, setIsValidNickname] = useState(false);
 
   const { storeAccessToken } = useAccessToken();
-
-  // TODO: db로의 검증
-  // const addressDBErrorMessage = useRecoilValueLoadable(urlNameDBValidationQuery);
-  // const nickNameDBErrorMessage = useRecoilValueLoadable(nickNameDBValidationQuery);
 
   const { pageName, nickname } = user;
 
@@ -35,7 +33,6 @@ const useRegister = () => {
 
     if (addressErrorLoadable.state === 'hasError') {
       setIsValidAddress(false);
-
       setAddressErrorMessage(addressErrorLoadable.contents.response.data.message);
     }
 
@@ -45,7 +42,22 @@ const useRegister = () => {
     }
   }, [addressErrorLoadable.state]);
 
-  const isValidNickName = !nickNameErrorMessage;
+  useEffect(() => {
+    if (nickNameErrorLoadable.state === 'loading') {
+      setIsValidNickname(false);
+      setNicknameErrorMessage('유효한 닉네임인지 검증중입니다...');
+    }
+
+    if (nickNameErrorLoadable.state === 'hasError') {
+      setIsValidNickname(false);
+      setNicknameErrorMessage(nickNameErrorLoadable.contents.response.data.message);
+    }
+
+    if (nickNameErrorLoadable.state === 'hasValue') {
+      setIsValidNickname(!nickNameErrorLoadable.contents);
+      setNicknameErrorMessage(nickNameErrorLoadable.contents);
+    }
+  }, [nickNameErrorLoadable.state]);
 
   const setNickname = (value: string) => {
     setUser({ ...user, nickname: value });
@@ -79,7 +91,7 @@ const useRegister = () => {
     addressErrorMessage,
     isValidAddress,
     nickname,
-    nickNameErrorMessage,
+    nicknameErrorMessage,
     isValidNickName,
     setNickname,
     setPageName,

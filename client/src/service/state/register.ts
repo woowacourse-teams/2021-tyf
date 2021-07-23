@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil';
 
 import { Register } from '../../types';
 import { REGISTER } from '../../constants/register';
-import { requestValidatePageName } from '../request/register';
+import { requestValidateNickName, requestValidatePageName } from '../request/register';
 
 export const newUserState = atom<Register>({
   key: 'newUserState',
@@ -44,7 +44,7 @@ export const urlNameValidationSelector = selector<string>({
 
 export const nickNameValidationSelector = selector<string>({
   key: 'nickNameValidationQuery',
-  get: ({ get }) => {
+  get: async ({ get }) => {
     const { nickname } = get(newUserState);
 
     if (nickname.length < REGISTER.NICKNAME.MIN_LENGTH) {
@@ -69,41 +69,8 @@ export const nickNameValidationSelector = selector<string>({
       return '닉네임은 한글, 영어, 한자, 일본어, 숫자만 가능합니다.';
     }
 
+    await requestValidateNickName(nickname);
+
     return '';
   },
 });
-
-// // DB 를 통한 유효성 검증
-// export const urlNameDBValidationQuery = selector<string>({
-//   key: 'urlNameDBValidationQuery',
-//   get: async ({ get }) => {
-//     // const { pageName } = get(newUserState);
-
-//     // TODO : 검증 디바운싱 적용.
-//     // cors 오류 해결전까지 주석처리
-//     try {
-//       // await requestValidatePageName(urlName);
-
-//       return '';
-//     } catch (error) {
-//       return error.message;
-//     }
-//   },
-// });
-
-// export const nickNameDBValidationQuery = selector<string>({
-//   key: 'nickNameDBValidationQuery',
-//   get: async ({ get }) => {
-//     // const { nickname } = get(newUserState);
-
-//     // TODO : 검증 디바운싱 적용.
-//     // cors 오류 해결전까지 주석처리
-//     try {
-//       // await requestValidatePageName(urlName);
-
-//       return '';
-//     } catch (error) {
-//       return error.message;
-//     }
-//   },
-// });
