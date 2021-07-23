@@ -22,6 +22,33 @@ export const StyledTemplate = styled(Template)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    @media ${DEVICE.DESKTOP} {
+      display: grid;
+      grid-template-columns: auto minmax(5rem, 2fr) minmax(13.125rem, 1fr);
+      column-gap: 2rem;
+      row-gap: 1rem;
+      align-items: center;
+
+      & > a {
+        grid-column: 1;
+        grid-row: 1 / 3;
+
+        img {
+          margin: 0;
+        }
+      }
+
+      & > p {
+      }
+      & > div {
+        grid-column: 2 / 4;
+        grid-row: 2;
+        margin: 0;
+      }
+      & > button {
+      }
+    }
   }
 `;
 
