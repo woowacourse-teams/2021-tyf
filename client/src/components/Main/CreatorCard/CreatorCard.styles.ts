@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DEVICE } from '../../../constants/device';
 
 import PALETTE from '../../../constants/palette';
 
@@ -9,6 +10,11 @@ export const StyledCreatorCard = styled.article`
   border-radius: 5px;
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+
+  @media ${DEVICE.DESKTOP_LARGE} {
+    width: 16.25rem;
+    height: 17.5rem;
+  }
 `;
 
 export const ProfileImg = styled.img`

@@ -1,22 +1,15 @@
+import { SIZE } from '../../../constants/device';
 import useCreatorList from '../../../service/hooks/useCreatorList';
+import { useWindowResize } from '../../../utils/useWindowResize';
 import Anchor from '../../@atom/Anchor/Anchor';
 import CreatorCard from '../CreatorCard/CreatorCard';
-import { List } from './CreatorList.styles';
+import DesktopCreatorList from './Desktop/DesktopCreatorList';
+import MobileCreatorList from './Mobile/MobileCreatorList';
 
 const CreatorList = () => {
-  const { creatorList } = useCreatorList();
+  const { windowWidth } = useWindowResize();
 
-  return (
-    <List>
-      {creatorList.map((creator, index) => (
-        <li key={index}>
-          <Anchor to={'/creator/' + creator.pageName}>
-            <CreatorCard creator={creator} />
-          </Anchor>
-        </li>
-      ))}
-    </List>
-  );
+  return windowWidth > SIZE.DESKTOP_LARGE ? <DesktopCreatorList /> : <MobileCreatorList />;
 };
 
 export default CreatorList;
