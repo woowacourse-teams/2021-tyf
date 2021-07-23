@@ -23,7 +23,7 @@ const useRegister = () => {
       }
       const { token } = await requestRegister(user);
 
-      storeAccessToken(token, 'SESSION');
+      storeAccessToken(token);
 
       history.push('/register/success');
     } catch (error) {

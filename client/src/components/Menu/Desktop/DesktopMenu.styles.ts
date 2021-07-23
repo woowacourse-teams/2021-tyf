@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import PALETTE from '../../../constants/palette';
-import Button from '../../@atom/Button/Button';
 
 export const StyledDesktopMenu = styled.div`
   position: fixed;
@@ -8,12 +7,13 @@ export const StyledDesktopMenu = styled.div`
   right: 0;
   width: 100px;
   height: 100vh;
+  background-color: ${PALETTE.WHITE_400};
 `;
 
 export const MenuButton = styled.button`
+  background-color: transparent;
   width: 100%;
   height: 80px;
-  background-color: ${PALETTE.WHITE_400};
   padding: 2rem 0;
   margin: 1rem 0;
   border: none;

@@ -19,9 +19,15 @@ export const accessTokenState = atom<string>({
   default: getDefaultAccessToken(),
 });
 
+const getDefaultLoginPersistenceType = (): StorageType => {
+  const isLoginPersist = getLocalStorageItem(STORAGE_KEY.IS_LOGIN_PERSIST);
+
+  return isLoginPersist ? 'LOCAL' : 'SESSION';
+};
+
 export const loginPersistenceTypeState = atom<StorageType>({
   key: 'loginPersistenceState',
-  default: 'SESSION',
+  default: getDefaultLoginPersistenceType(),
 });
 
 export const loginUserInfoQuery = selector({

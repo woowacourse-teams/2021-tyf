@@ -13,13 +13,12 @@ import useAccessToken from './useAccessToken';
 const useLoginEffect = (oauthProvider?: OAuthProvider) => {
   const history = useHistory();
   const { storeAccessToken } = useAccessToken();
-  const loginPersistenceType = useRecoilValue(loginPersistenceTypeState);
 
   const login = async (oauthProvider: OAuthProvider, authCode: string) => {
     try {
       const { token } = await requestLogin(oauthProvider, authCode);
 
-      storeAccessToken(token, loginPersistenceType);
+      storeAccessToken(token);
       history.push('/');
     } catch (error) {
       if (error.response.data.errorCode === AUTH_ERROR.NOT_USER) {
