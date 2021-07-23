@@ -7,6 +7,7 @@ import useCreator from '../../../service/hooks/useCreator';
 import useDonation from '../../../service/hooks/useDonation';
 import { popupWindow } from '../../../service/popup';
 import { INVALID_DONATION_ID } from '../../../service/state/donation';
+import { toCommaSeparatedString } from '../../../utils/format';
 import {
   CloseButton,
   CreatorRouteButton,
@@ -43,7 +44,7 @@ const DonationSuccessPage = () => {
       <FixedLogo onClick={() => popupWindow('/')} />
       <SuccessMessageContainer>
         <SubText>{nickname}님에게</SubText>
-        <MainText>{donation.amount.toLocaleString('en-us')}원</MainText>
+        <MainText>{toCommaSeparatedString(donation.amount)}원</MainText>
         <SubText>후원되었습니다.</SubText>
         <EmojiText>🎉</EmojiText>
       </SuccessMessageContainer>

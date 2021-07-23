@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { ParamTypes } from '../../../App';
 import useCreator from '../../../service/hooks/useCreator';
 import useDonationMessageList from '../../../service/hooks/useDonationMessageList';
+import { toCommaSeparatedString } from '../../../utils/format';
 import {
   DonationListContainer,
   CommentsList,
@@ -38,7 +39,7 @@ const DonationMessageList = ({ isAdmin }: Props) => {
               <CommentsListItem key={donationId} role="donation-message">
                 <ItemInfo>
                   <span>
-                    {name} <Divider>|</Divider> {amount.toLocaleString('en-us')}원
+                    {name} <Divider>|</Divider> {toCommaSeparatedString(amount)}원
                   </span>
                   <ItemDateInfo>{String(createdAt).slice(0, 10)}</ItemDateInfo>
                 </ItemInfo>

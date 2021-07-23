@@ -7,7 +7,7 @@ export const StyledFooter = styled.footer`
   background-color: ${PALETTE.GRAY_100};
   padding: 1rem;
   font-size: 0.75rem;
-  min-width: ${SIZE.MOBILE_MIN};
+  min-width: ${SIZE.MOBILE_MIN}px;
 
   p:nth-of-type(1) {
     margin-bottom: 1rem;

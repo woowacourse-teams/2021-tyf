@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin:0;
     user-select: none;
+    color: ${({ theme }) => theme.color.main}
   }
 
   input, textarea {
@@ -30,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.color.main};
     font-family: 'Noto Sans KR', sans-serif;
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
-   
+
 
     ::-webkit-scrollbar {
       display: none;
@@ -43,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Noto Sans KR', sans-serif;
   }
 
-  
+
 
   `;
 

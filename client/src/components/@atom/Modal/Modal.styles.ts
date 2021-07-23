@@ -17,5 +17,5 @@ export const ModalOuter = styled.div`
 
 export const ModalInner = styled.div`
   background-color: ${({ theme }) => theme.color.sub};
-  min-width: ${SIZE.MOBILE_MIN};
+  min-width: ${SIZE.MOBILE_MIN}px;
 `;
