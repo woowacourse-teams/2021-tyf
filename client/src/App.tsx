@@ -42,19 +42,19 @@ const App = () => {
 
         <PrivateRoute
           path="/register"
-          component={RegisterTermsPage}
+          component={RegisterAuthPage}
           isAuthed={!accessToken}
           redirectTo="/"
           exact
         />
         <PrivateRoute
-          path="/register/auth"
-          component={RegisterAuthPage}
+          path="/register/terms/:oauthProvider?"
+          component={RegisterTermsPage}
           isAuthed={!accessToken}
           redirectTo="/"
         />
         <PrivateRoute
-          path="/register/url/:oauthProvider?"
+          path="/register/url"
           component={RegisterAddressPage}
           isAuthed={!accessToken}
           redirectTo="/"

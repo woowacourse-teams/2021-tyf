@@ -1,10 +1,6 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-import {
-  newUserState,
-  nickNameValidationSelector,
-  urlNameValidationSelector,
-} from '../state/register';
+import { newUserState } from '../state/register';
 import { requestRegister } from '../request/register';
 import { useHistory } from 'react-router-dom';
 import useAccessToken from './useAccessToken';
@@ -12,26 +8,9 @@ import useAccessToken from './useAccessToken';
 const useRegister = () => {
   const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
-  const addressErrorMessage = useRecoilValue(urlNameValidationSelector);
-  const nickNameErrorMessage = useRecoilValue(nickNameValidationSelector);
+
   const { storeAccessToken } = useAccessToken();
-
-  // TODO: db로의 검증
-  // const addressDBErrorMessage = useRecoilValueLoadable(urlNameDBValidationQuery);
-  // const nickNameDBErrorMessage = useRecoilValueLoadable(nickNameDBValidationQuery);
-
-  const { pageName, nickname } = user;
-
-  const isValidAddress = !addressErrorMessage;
-  const isValidNickName = !nickNameErrorMessage;
-
-  const setNickname = (value: string) => {
-    setUser({ ...user, nickname: value });
-  };
-
-  const setPageName = (value: string) => {
-    setUser({ ...user, pageName: value });
-  };
+  const { pageName } = user;
 
   const resetRegister = () => {
     setUser({ email: '', nickname: '', oauthType: '', pageName: '' });
@@ -54,13 +33,6 @@ const useRegister = () => {
 
   return {
     pageName,
-    addressErrorMessage,
-    isValidAddress,
-    nickname,
-    nickNameErrorMessage,
-    isValidNickName,
-    setNickname,
-    setPageName,
     resetRegister,
     registerUser,
   };

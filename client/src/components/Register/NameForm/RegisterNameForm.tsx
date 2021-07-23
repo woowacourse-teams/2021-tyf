@@ -1,5 +1,7 @@
 import { FormEvent } from 'react';
+
 import useRegister from '../../../service/hooks/useRegister';
+import useRegisterNickname from '../../../service/hooks/useRegisterNickname';
 import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
@@ -9,8 +11,8 @@ import {
 } from './RegisterNameForm.styles';
 
 const RegisterNameForm = () => {
-  const { nickname, nickNameErrorMessage, isValidNickName, setNickname, registerUser } =
-    useRegister();
+  const { nickname, nicknameErrorMessage, isValidNickName, setNickname } = useRegisterNickname();
+  const { registerUser } = useRegister();
 
   const onRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,11 +34,11 @@ const RegisterNameForm = () => {
           onChange={({ target }) => setNickname(target.value)}
           isSuccess={isValidNickName}
           successMessage="좋은 닉네임이네요!"
-          failureMessage={nickNameErrorMessage}
+          failureMessage={nicknameErrorMessage}
           placeholder="닉네임 입력하기"
         />
       </NameInputContainer>
-      <Button disabled={!!nickNameErrorMessage}>회원가입 완료</Button>
+      <Button disabled={!isValidNickName}>회원가입 완료</Button>
     </StyledRegisterNameForm>
   );
 };

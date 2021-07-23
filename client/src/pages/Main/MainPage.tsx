@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import CreatorList from '../../components/Main/CreatorList/CreatorList';
 import Spinner from '../../components/Spinner/Spinner';
+import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 import { DEVICE } from '../../constants/device';
 import {
   HeroContent,
@@ -17,6 +18,7 @@ import Logo from '../../components/@molecule/Logo/Logo';
 
 const MainPage = () => {
   const history = useHistory();
+  const { userInfo } = useLoginUserInfo();
 
   return (
     <MainTemplate>
@@ -48,7 +50,9 @@ const MainPage = () => {
       </section>
       <section>
         <StyledSubTitle>내 재능에 가치를 부여하고 싶다면?</StyledSubTitle>
-        <RouteButton onClick={() => history.push('/register')}>가치 부여하기</RouteButton>
+        {!userInfo && (
+          <RouteButton onClick={() => history.push('/register')}>가치 부여하기</RouteButton>
+        )}
       </section>
     </MainTemplate>
   );

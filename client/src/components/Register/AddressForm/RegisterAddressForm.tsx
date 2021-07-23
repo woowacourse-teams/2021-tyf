@@ -1,8 +1,7 @@
 import { FormEvent } from 'react';
 import { useHistory } from 'react-router';
 
-import useRegister from '../../../service/hooks/useRegister';
-import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
+import useRegisterPageName from '../../../service/hooks/useRegisterPageName';
 import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
@@ -13,7 +12,7 @@ import {
 
 const RegisterAddressForm = () => {
   const history = useHistory();
-  const { pageName, addressErrorMessage, isValidAddress, setPageName } = useRegister();
+  const { pageName, addressErrorMessage, isValidAddress, setPageName } = useRegisterPageName();
 
   const routeToRegisterNamePage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,13 +20,11 @@ const RegisterAddressForm = () => {
     history.push('/register/name');
   };
 
-  useRegisterEffect();
-
   return (
     <StyledRegisterAddressForm onSubmit={routeToRegisterNamePage}>
       <RegisterAddressTitle>
-        자신만의
-        <br /> 주소를
+        도네이션
+        <br /> 받을 주소를
         <br /> 적어주세요.
       </RegisterAddressTitle>
       <AddressInputContainer>
@@ -40,7 +37,7 @@ const RegisterAddressForm = () => {
           failureMessage={addressErrorMessage}
         />
       </AddressInputContainer>
-      <Button disabled={!!addressErrorMessage}>다음</Button>
+      <Button disabled={!isValidAddress}>다음</Button>
     </StyledRegisterAddressForm>
   );
 };
