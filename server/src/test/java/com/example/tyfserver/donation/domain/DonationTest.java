@@ -3,10 +3,6 @@ package com.example.tyfserver.donation.domain;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.member.domain.Member;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DonationTest {
 

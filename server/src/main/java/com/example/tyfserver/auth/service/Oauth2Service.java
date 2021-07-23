@@ -13,8 +13,6 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.SignUpReadyResponse;
 import com.example.tyfserver.member.dto.SignUpRequest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -24,6 +22,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
