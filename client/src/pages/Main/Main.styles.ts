@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-import MainImage from '../../assets/images/hero-content.svg';
 import SubTitle from '../../components/@atom/SubTitle/SubTitle';
 import Template from '../../components/@atom/Template/Template';
 import Logo from '../../components/@molecule/Logo/Logo';
@@ -12,15 +11,37 @@ export const MainTemplate = styled(Template)`
 
   section {
     margin-bottom: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  @media ${DEVICE.DESKTOP_LARGE} {
+    section:nth-of-type(1) {
+      margin-top: 3rem;
+    }
+
+    section {
+      margin-bottom: 12rem;
+    }
   }
 `;
 
-export const HeroContent = styled.img.attrs({
-  src: MainImage,
+export const HeroContent = styled.picture.attrs({
   draggable: false,
 })`
   width: 100%;
   padding-left: 5%;
+
+  img {
+    width: 100%;
+  }
+
+  @media ${DEVICE.DESKTOP} {
+    width: 90%;
+    padding-left: 0;
+  }
 `;
 
 export const RouteButton = styled(OutlineButton)`
@@ -37,10 +58,15 @@ export const StyledSubTitle = styled(SubTitle)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.75rem;
 
   ${Logo} {
     width: 14rem;
+  }
+
+  @media ${DEVICE.DESKTOP_LARGE} {
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -56,7 +82,7 @@ export const DescriptionContainer = styled.div`
 
   @media ${DEVICE.DESKTOP_LARGE} {
     ${Logo} {
-      width: 23.875rem;
+      width: 17rem;
     }
 
     br {

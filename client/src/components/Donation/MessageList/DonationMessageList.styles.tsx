@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 import Container from '../../@atom/Container/Container';
-import Title from '../../@atom/SubTitle/SubTitle';
+import SubTitle from '../../@atom/SubTitle/SubTitle';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
 
 export const DonationListContainer = styled(Container)`
   margin-bottom: 4rem;
 `;
 
-export const DonationListTitle = styled(Title)`
+export const DonationListTitle = styled(SubTitle)`
+  font-size: 1.5rem;
   margin-bottom: 4rem;
 `;
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../../components/@atom/Button/Button';
 import Container from '../../components/@atom/Container/Container';
 import Template from '../../components/@atom/Template/Template';
 import { DEVICE } from '../../constants/device';
@@ -25,7 +26,7 @@ export const StyledTemplate = styled(Template)`
 
     @media ${DEVICE.DESKTOP} {
       display: grid;
-      grid-template-columns: auto minmax(5rem, 2fr) minmax(13.125rem, 1fr);
+      grid-template-columns: auto minmax(5rem, 2fr) minmax(11rem, 0.5fr);
       column-gap: 2rem;
       row-gap: 1rem;
       align-items: center;
@@ -48,12 +49,20 @@ export const StyledTemplate = styled(Template)`
   }
 `;
 
+export const StyledButton = styled(Button)`
+  height: 2rem;
+  width: 9rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+`;
+
 export const DescriptionContainer = styled(Container)`
   margin: 3rem 0 5rem 0;
   border-top: 1px solid ${({ theme }) => theme.color.border};
   border-bottom: 1px solid ${({ theme }) => theme.color.border};
   padding: 1rem;
   color: ${PALETTE.GRAY_500};
+  min-height: 6rem;
 
   @media ${DEVICE.DESKTOP} {
     padding: 1rem 3rem;

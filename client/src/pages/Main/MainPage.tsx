@@ -15,6 +15,7 @@ import {
 } from './Main.styles';
 import HeroContentDesktop from '../../assets/images/hero-content-desktop.svg';
 import Logo from '../../components/@molecule/Logo/Logo';
+import MainImage from '../../assets/images/hero-content.svg';
 
 const MainPage = () => {
   const history = useHistory();
@@ -23,10 +24,10 @@ const MainPage = () => {
   return (
     <MainTemplate>
       <section>
-        <picture>
+        <HeroContent>
           <source media={DEVICE.DESKTOP} srcSet={HeroContentDesktop} />
-          <HeroContent />
-        </picture>
+          <img src={MainImage} />
+        </HeroContent>
       </section>
       <section>
         <DescriptionContainer>
@@ -48,12 +49,12 @@ const MainPage = () => {
           </Suspense>
         </ErrorBoundary>
       </section>
-      <section>
-        <StyledSubTitle>내 재능에 가치를 부여하고 싶다면?</StyledSubTitle>
-        {!userInfo && (
+      {!userInfo && (
+        <section>
+          <StyledSubTitle>내 재능에 가치를 부여하고 싶다면?</StyledSubTitle>
           <RouteButton onClick={() => history.push('/register')}>가치 부여하기</RouteButton>
-        )}
-      </section>
+        </section>
+      )}
     </MainTemplate>
   );
 };

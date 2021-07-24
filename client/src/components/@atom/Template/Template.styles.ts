@@ -16,6 +16,6 @@ export const InnerTemplate = styled.section`
   margin: 0 auto;
 
   @media ${DEVICE.DESKTOP} {
-    max-width: ${SIZE.DESKTOP_MAX}px;
+    max-width: ${SIZE.DESKTOP_LARGE}px;
   }
 `;

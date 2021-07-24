@@ -15,7 +15,7 @@ export const MenuButton = styled.button`
   width: 100%;
   height: 80px;
   padding: 2rem 0;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   border: none;
   display: flex;
   flex-direction: column;
@@ -37,7 +37,7 @@ export const MenuButton = styled.button`
 `;
 
 export const MenuIcon = styled.img`
-  width: 2.25rem;
-  height: 2.25rem;
-  margin-bottom: 0.25rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-bottom: 0.5rem;
 `;

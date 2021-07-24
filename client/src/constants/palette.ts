@@ -12,6 +12,7 @@ enum PALETTE {
   YELLOW_400 = '#fee500',
   GREEN_700 = '#50d36c',
   GREEN_900 = '#03c75a',
+  BROWN_400 = '#3C1E1E',
 }
 
 export default PALETTE;

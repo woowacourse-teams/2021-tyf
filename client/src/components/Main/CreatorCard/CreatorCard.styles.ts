@@ -12,8 +12,8 @@ export const StyledCreatorCard = styled.article`
   overflow: hidden;
 
   @media ${DEVICE.DESKTOP_LARGE} {
-    width: 16.25rem;
-    height: 17.5rem;
+    width: 13rem;
+    height: 15.5rem;
   }
 `;
 

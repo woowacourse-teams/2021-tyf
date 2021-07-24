@@ -24,6 +24,7 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
   };
 
   const routeTo = (path: string) => {
+    console.log(path);
     history.push(path);
     onClose();
   };
@@ -34,7 +35,7 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
         <MenuIcon src={Home} />
         <span>홈</span>
       </MenuButton>
-      <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}}`)}>
+      <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}`)}>
         <MenuIcon src={User} />
         <span>마이페이지</span>
       </MenuButton>

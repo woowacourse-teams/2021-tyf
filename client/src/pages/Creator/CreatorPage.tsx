@@ -6,9 +6,8 @@ import { ParamTypes } from '../../App';
 import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
 
 import Profile from '../../components/Creator/Profile/Profile';
-import Button from '../../components/@atom/Button/Button';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
-import { StyledTemplate, DescriptionContainer } from './CreatorPage.styles';
+import { StyledTemplate, DescriptionContainer, StyledButton } from './CreatorPage.styles';
 import { popupWindow } from '../../service/popup';
 import { donationUrlShare } from '../../service/share';
 import { DONATION_POPUP } from '../../constants/popup';
@@ -50,9 +49,9 @@ const CreatorPage = () => {
               <p>제 페이지에 와주셔서 감사합니다!!</p>
             </DescriptionContainer>
             {isAdmin ? (
-              <Button onClick={shareUrl}>내 페이지 공유하기</Button>
+              <StyledButton onClick={shareUrl}>내 페이지 공유하기</StyledButton>
             ) : (
-              <Button onClick={popupDonationPage}>후원하기</Button>
+              <StyledButton onClick={popupDonationPage}>후원하기</StyledButton>
             )}
           </section>
         </Suspense>

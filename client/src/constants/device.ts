@@ -1,7 +1,7 @@
 export const SIZE = {
   MOBILE_MIN: 320,
   MOBILE_MAX: 424,
-  DESKTOP_LARGE: 960,
+  DESKTOP_LARGE: 800,
   DESKTOP_MAX: 1024, // NOTE: 데스크탑 컨텐츠 max width
 };
 

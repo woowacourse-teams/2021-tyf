@@ -9,7 +9,7 @@ const KakaoBarButton = styled(IconBarButton).attrs({
   alt: 'kakao logo',
 })`
   background-color: ${PALETTE.YELLOW_400};
-  color: ${PALETTE.BLACK_400};
+  color: ${PALETTE.BROWN_400};
   margin-bottom: 1rem;
 
   &:hover,
