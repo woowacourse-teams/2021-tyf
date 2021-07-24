@@ -11,8 +11,14 @@ const StyledInput = styled.input`
   padding: 0 1rem;
   font-size: 1rem;
 
+  transition: all 0.2s ease-in;
+
   &::placeholder {
     color: ${({ theme }) => theme.color.placeholder};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${({ theme }) => theme.primary.base};
   }
 `;
 
