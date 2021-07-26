@@ -1,10 +1,6 @@
 import styled from 'styled-components';
-import Button from '../../components/@atom/Button/Button';
-import Container from '../../components/@atom/Container/Container';
-import Template from '../../components/@atom/Template/Template';
-import { DEVICE } from '../../constants/device';
 
-import PALETTE from '../../constants/palette';
+import Template from '../../components/@atom/Template/Template';
 
 export const StyledTemplate = styled(Template)`
   display: flex;
@@ -14,57 +10,5 @@ export const StyledTemplate = styled(Template)`
 
   section {
     width: 100%;
-  }
-
-  section:nth-of-type(1) {
-    margin-top: 4rem;
-    margin-bottom: 10rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    @media ${DEVICE.DESKTOP} {
-      display: grid;
-      grid-template-columns: auto minmax(5rem, 2fr) minmax(11rem, 0.5fr);
-      column-gap: 2rem;
-      row-gap: 1rem;
-      align-items: center;
-
-      & > a {
-        grid-column: 1;
-        grid-row: 1 / 3;
-
-        img {
-          margin: 0;
-        }
-      }
-
-      & > div {
-        grid-column: 2 / 4;
-        grid-row: 2;
-        margin: 0;
-      }
-    }
-  }
-`;
-
-export const StyledButton = styled(Button)`
-  height: 2rem;
-  width: 9rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-`;
-
-export const DescriptionContainer = styled(Container)`
-  margin: 3rem 0 5rem 0;
-  border-top: 1px solid ${({ theme }) => theme.color.border};
-  border-bottom: 1px solid ${({ theme }) => theme.color.border};
-  padding: 1rem;
-  color: ${PALETTE.GRAY_500};
-  min-height: 6rem;
-
-  @media ${DEVICE.DESKTOP} {
-    padding: 1rem 3rem;
   }
 `;

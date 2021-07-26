@@ -23,9 +23,9 @@ const RegisterNameForm = () => {
   return (
     <StyledRegisterNameForm onSubmit={onRegister}>
       <RegisterNameTitle>
-        당신의
-        <br /> 닉네임은
-        <br /> 무엇인가요?
+        <span>당신의 </span>
+        <span>닉네임은 </span>
+        <span>무엇인가요?</span>
       </RegisterNameTitle>
       <NameInputContainer>
         <ValidationInput
