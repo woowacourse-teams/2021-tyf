@@ -2,12 +2,12 @@ import { FormEvent } from 'react';
 import { useHistory } from 'react-router';
 
 import useRegisterPageName from '../../../service/hooks/useRegisterPageName';
-import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
   StyledRegisterAddressForm,
   AddressInputContainer,
   RegisterAddressTitle,
+  StyledButton,
 } from './RegisterAddressForm.styles';
 
 const RegisterAddressForm = () => {
@@ -23,9 +23,9 @@ const RegisterAddressForm = () => {
   return (
     <StyledRegisterAddressForm onSubmit={routeToRegisterNamePage}>
       <RegisterAddressTitle>
-        도네이션
-        <br /> 받을 주소를
-        <br /> 적어주세요.
+        <span>도네이션 </span>
+        <span>받을 주소를 </span>
+        <span>적어주세요 </span>
       </RegisterAddressTitle>
       <AddressInputContainer>
         <ValidationInput
@@ -37,7 +37,7 @@ const RegisterAddressForm = () => {
           failureMessage={addressErrorMessage}
         />
       </AddressInputContainer>
-      <Button disabled={!isValidAddress}>다음</Button>
+      <StyledButton disabled={!isValidAddress}>다음</StyledButton>
     </StyledRegisterAddressForm>
   );
 };

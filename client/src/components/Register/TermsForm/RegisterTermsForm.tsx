@@ -3,7 +3,6 @@ import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 
 import useTerms from '../../../service/hooks/useTerms';
 import Button from '../../@atom/Button/Button';
-import Container from '../../@atom/Container/Container';
 import {
   Divider,
   RegisterTermsTitle,
@@ -11,6 +10,7 @@ import {
   TermCheckbox,
   TermLabel,
   TermLink,
+  TermsButtonContainer,
   TermsContainer,
 } from './RegisterTermsForm.styles';
 
@@ -27,9 +27,9 @@ const RegisterTermsForm = () => {
   return (
     <StyledRegisterTermsForm>
       <RegisterTermsTitle>
-        서비스
-        <br /> 약관에
-        <br /> 동의해 주세요.
+        <span>서비스 </span>
+        <span>약관에 </span>
+        <span>동의해 주세요</span>
       </RegisterTermsTitle>
       <TermsContainer>
         <TermLabel>
@@ -60,11 +60,11 @@ const RegisterTermsForm = () => {
           에 동의 (필수)
         </TermLabel>
       </TermsContainer>
-      <Container>
+      <TermsButtonContainer>
         <Button disabled={!isAllTermsChecked} onClick={routeToRegisterPageNamePage}>
           계속하기
         </Button>
-      </Container>
+      </TermsButtonContainer>
     </StyledRegisterTermsForm>
   );
 };
