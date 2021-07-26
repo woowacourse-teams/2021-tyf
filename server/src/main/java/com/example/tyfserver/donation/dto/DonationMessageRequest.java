@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class DonationMessageRequest {
 
     @NotBlank
-    @Length(min = 3, max = 20)
+    @Length(max = 20)
     private String name;
     @NotBlank
     @Length(min = 1, max = 200)

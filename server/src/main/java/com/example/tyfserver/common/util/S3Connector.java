@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -24,8 +25,7 @@ public class S3Connector {
 
     public String upload(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = System.currentTimeMillis() + "_" +
-                Base64.encodeAsString(memberId.byteValue()) + multipartFile.getContentType();
+        String fileName = memberId + "/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 

@@ -13,8 +13,8 @@ import javax.validation.constraints.Pattern;
 public class NicknameValidationRequest {
 
     @NotBlank
-    @Length(min = 3, max = 20)
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$") //todo: 정규표현식 수정 필요
+    @Length(min = 2, max = 20)
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]+$")
     private String nickname;
 
     public NicknameValidationRequest(String nickname) {
