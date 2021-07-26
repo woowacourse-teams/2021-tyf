@@ -8,6 +8,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.CurationsResponse;
 import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ class MemberRepositoryImplTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     private Member testMember1;
     private Member testMember2;
@@ -102,13 +106,40 @@ class MemberRepositoryImplTest {
         Member member5 = new Member("email5", "nick5", "page5", Oauth2Type.GOOGLE);
         Member member6 = new Member("email6", "nick6", "page6", Oauth2Type.GOOGLE);
 
-        Donation donation1 = new Donation(new Payment(1000L, "test@test.com", "test"), Message.defaultMessage());
-        Donation donation2 = new Donation(new Payment(2000L, "test@test.com", "test"), Message.defaultMessage());
-        Donation donation3 = new Donation(new Payment(3000L, "test@test.com", "test"), Message.defaultMessage());
-        Donation donation4 = new Donation(new Payment(4000L, "test@test.com", "test"), Message.defaultMessage());
-        Donation donation5 = new Donation(new Payment(5000L, "test@test.com", "test"), Message.defaultMessage());
-        Donation donation6 = new Donation(new Payment(6000L, "test@test.com", "test"), Message.defaultMessage());
-        Donation donation7 = new Donation(new Payment(7000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation1 = new Donation(
+                paymentRepository.save(new Payment(1000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation2 = new Donation(
+                paymentRepository.save(new Payment(2000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation3 = new Donation(
+                paymentRepository.save(new Payment(3000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation4 = new Donation(
+                paymentRepository.save(new Payment(4000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation5 = new Donation(
+                paymentRepository.save(new Payment(5000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation6 = new Donation(
+                paymentRepository.save(new Payment(6000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation7 = new Donation(
+                paymentRepository.save(new Payment(7000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
 
         //member1 1000 member2 2000, member3 7000, member4 0, member5 5000, member6 13000
         member1.addDonation(donation1);

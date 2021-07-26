@@ -15,11 +15,11 @@ public class MemberRepositoryImpl implements MemberQueryRepository{
     public List<CurationsResponse> findCurations() {
         return em.createQuery(
                 "select new com.example.tyfserver.member.dto.CurationsResponse(" +
-                        "           d.member.nickname, sum(d.amount), d.member.pageName) " +
+                        "           d.member.nickname, sum(d.payment.amount), d.member.pageName) " +
                         "from Donation d " +
                         "join d.member " +
                         "group by d.member " +
-                        "order by sum(d.amount) desc ",
+                        "order by sum(d.payment.amount) desc ",
                 CurationsResponse.class
         )
                 .setFirstResult(0)
