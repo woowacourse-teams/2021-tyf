@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 public class PaymentRequest {
 
     private String impUid;
-    private String merchantUid;
+    private Long merchantUid;
 
-    public PaymentRequest(String impUid, String merchantUid) {
+    public PaymentRequest(String impUid, Long merchantUid) {
         this.impUid = impUid;
         this.merchantUid = merchantUid;
     }

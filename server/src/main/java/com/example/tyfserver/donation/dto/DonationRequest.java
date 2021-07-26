@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
@@ -12,12 +13,12 @@ import javax.validation.constraints.Positive;
 public class DonationRequest {
 
     @NotBlank
-    private String pageName;
-    @Positive
-    private Long donationAmount;
+    private String impUid;
+    @NotNull
+    private Long merchantUid;
 
-    public DonationRequest(String pageName, Long donationAmount) {
-        this.pageName = pageName;
-        this.donationAmount = donationAmount;
+    public DonationRequest(String impUid, Long merchantUid) {
+        this.impUid = impUid;
+        this.merchantUid = merchantUid;
     }
 }

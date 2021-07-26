@@ -5,7 +5,7 @@ import com.example.tyfserver.payment.dto.PaymentResponse;
 import com.example.tyfserver.payment.dto.PaymentSaveRequest;
 import com.example.tyfserver.payment.dto.PaymentSaveResponse;
 import com.example.tyfserver.payment.exception.PaymentRequestException;
-import com.example.tyfserver.payment.service.PaymentsService;
+import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,21 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentsService paymentsService;
+    private final PaymentService paymentService;
 
     @PostMapping
     public ResponseEntity<PaymentSaveResponse> payment(@RequestBody PaymentSaveRequest paymentSaveRequest) {
-        // todo: merchantUid 는 무조건 전달해줘야한다!
-        PaymentSaveResponse response = paymentsService.createPayment(paymentSaveRequest);
+        PaymentSaveResponse response = paymentService.createPayment(paymentSaveRequest);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/complete")
+   /* @PostMapping("/complete")
     public ResponseEntity<PaymentResponse> paymentComplete(@RequestBody PaymentRequest paymentRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new PaymentRequestException();
         }
 
-        return ResponseEntity.ok(paymentsService.completePayment(paymentRequest));
-    }
+        return ResponseEntity.ok(paymentService.completePayment(paymentRequest));
+    }*/
 }

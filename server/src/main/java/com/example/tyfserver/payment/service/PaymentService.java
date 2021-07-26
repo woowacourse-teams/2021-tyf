@@ -1,10 +1,13 @@
 package com.example.tyfserver.payment.service;
 
 import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.donation.dto.DonationRequest;
+import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.PaymentRequest;
 import com.example.tyfserver.payment.dto.PaymentResponse;
 import com.example.tyfserver.payment.dto.PaymentSaveRequest;
@@ -20,10 +23,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PaymentsService {
+public class PaymentService {
 
     private static final String IAMPORT_API_URL = "https://api.iamport.kr";
 
@@ -43,14 +48,14 @@ public class PaymentsService {
             .orElseThrow(MemberNotFoundException::new);
 
         Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(),
-            creator.getId());
+            creator.getPageName());
         paymentRepository.save(payment);
 
         return new PaymentSaveResponse(payment);
         // todo: PaymentSaveResponse에 어떤 필드값들이 있으면 좋을까? (일단은 정말 필요한 값인 merchantUid만 추가!)
     }
 
-    public PaymentResponse completePayment(PaymentRequest paymentRequest) {
+    public Payment completePayment(PaymentRequest paymentRequest) {
         // 아임포트 서버에서 API 엑세스 토큰을 발급 - REST API키, REST API Secret 필요
         String accessToken = getAccessToken();
 
@@ -61,13 +66,37 @@ public class PaymentsService {
             paymentInfoRequest(accessToken)
         );
 
-        // todo 결제 위변조 여부 검증
-        // 위에서 얻은 결제정보와 A단계에서 서버에 저장한 주문정보를 비교 검증
+        JSONObject iamportPayment = new JSONObject(paymentData).getJSONObject("response");
+        Payment payment = paymentRepository.findById(paymentRequest.getMerchantUid()).orElseThrow(() -> {
+            throw new RuntimeException();
+        });
 
-        // todo 결제 정보 DB에 저장
+        validatePaymentInfo(iamportPayment, payment);
+        payment.complete(iamportPayment.getString("imp_uid"));
+        return payment;
+    }
 
-        // todo 결제 성공 응답
-        return new PaymentResponse();
+
+    private void validatePaymentInfo(JSONObject paymentData, Payment payment) {
+        if (!"paid".equals(paymentData.getString("status"))) {
+            payment.updateStatus(paymentData.getString("status"));
+            throw new RuntimeException();
+        }
+
+        if (!paymentData.getString("merchant_uid").equals(payment.getId().toString())) {
+            payment.updateStatus(PaymentStatus.INVALID);
+            throw new RuntimeException();
+        }
+
+        if (!payment.getAmount().equals(paymentData.getLong("amount"))) {
+            payment.updateStatus(PaymentStatus.INVALID);
+            throw new RuntimeException();
+        }
+
+        if (!payment.getPageName().equals(paymentData.getString("name"))) {
+            payment.updateStatus(PaymentStatus.INVALID);
+            throw new RuntimeException();
+        }
     }
 
     private String getAccessToken() {

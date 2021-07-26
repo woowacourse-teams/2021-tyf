@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -25,24 +26,35 @@ public class Payment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long amount;
 
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private Long creatorId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private Donation donation;
+    private String pageName;
 
     @Enumerated(value = EnumType.STRING)
-    private PaymentStatus status = PaymentStatus.READY;
+    private PaymentStatus status = PaymentStatus.PENDING;
 
-    public Payment(Long amount, String email, Long creatorId) {
+    private String impUid;
+
+    public Payment(Long amount, String email, String pageName) {
         this.amount = amount;
         this.email = email;
-        this.creatorId = creatorId;
+        this.pageName = pageName;
     }
 
+    public void complete(String impUid) {
+        this.impUid = impUid;
+        this.status = PaymentStatus.PAID;
+    }
+
+    public void updateStatus(String status) {
+        updateStatus(PaymentStatus.valueOf(status.toUpperCase()));
+    }
+
+    public void updateStatus(PaymentStatus paymentStatus) {
+        this.status = paymentStatus;
+    }
 }
