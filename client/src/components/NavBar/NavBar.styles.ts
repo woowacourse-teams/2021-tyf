@@ -13,7 +13,8 @@ export const StyledNavBar = styled(Container)`
   justify-content: flex-end;
   padding: 0 1rem;
   min-width: ${SIZE.MOBILE_MIN}px;
-  position: fixed;
+  /* position: fixed;
+  width: 100vw; */
   background-color: white;
 
   @media ${DEVICE.DESKTOP} {

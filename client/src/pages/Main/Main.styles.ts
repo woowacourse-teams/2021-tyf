@@ -11,10 +11,6 @@ export const MainTemplate = styled(Template)`
 
   section {
     margin-bottom: 9rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
   }
 
   @media ${DEVICE.DESKTOP_LARGE} {
@@ -24,6 +20,10 @@ export const MainTemplate = styled(Template)`
 
     section {
       margin-bottom: 12rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
   }
 `;
@@ -32,9 +32,9 @@ export const HeroContent = styled.picture.attrs({
   draggable: false,
 })`
   width: 100%;
-  padding-left: 5%;
 
   img {
+    padding-left: 5%;
     width: 100%;
   }
 
