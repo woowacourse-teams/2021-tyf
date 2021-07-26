@@ -7,6 +7,7 @@ import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.CurationsResponse;
+import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -101,13 +102,13 @@ class MemberRepositoryImplTest {
         Member member5 = new Member("email5", "nick5", "page5", Oauth2Type.GOOGLE);
         Member member6 = new Member("email6", "nick6", "page6", Oauth2Type.GOOGLE);
 
-        Donation donation1 = new Donation(1000L, Message.defaultMessage());
-        Donation donation2 = new Donation(2000L, Message.defaultMessage());
-        Donation donation3 = new Donation(3000L, Message.defaultMessage());
-        Donation donation4 = new Donation(4000L, Message.defaultMessage());
-        Donation donation5 = new Donation(5000L, Message.defaultMessage());
-        Donation donation6 = new Donation(6000L, Message.defaultMessage());
-        Donation donation7 = new Donation(7000L, Message.defaultMessage());
+        Donation donation1 = new Donation(new Payment(1000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation2 = new Donation(new Payment(2000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation3 = new Donation(new Payment(3000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation4 = new Donation(new Payment(4000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation5 = new Donation(new Payment(5000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation6 = new Donation(new Payment(6000L, "test@test.com", "test"), Message.defaultMessage());
+        Donation donation7 = new Donation(new Payment(7000L, "test@test.com", "test"), Message.defaultMessage());
 
         //member1 1000 member2 2000, member3 7000, member4 0, member5 5000, member6 13000
         member1.addDonation(donation1);

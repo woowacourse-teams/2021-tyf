@@ -12,6 +12,9 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import java.time.LocalDateTime;
+
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.dto.PaymentRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,13 +49,13 @@ class DonationServiceTest {
     @DisplayName("createDonation Test")
     public void createDonationTest() {
         //given
-        DonationRequest request = new DonationRequest("pageName", 1000L);
+        PaymentRequest request = new PaymentRequest("impUid", 1L);
         //when
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(
                         Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
         when(donationRepository.save(Mockito.any(Donation.class)))
-                .thenReturn(new Donation(1L, 1000L, Message.defaultMessage()));
+                .thenReturn(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage()));
         //then
         DonationResponse response = donationService.createDonation(request);
         assertThat(response).usingRecursiveComparison()
@@ -64,7 +67,7 @@ class DonationServiceTest {
     @DisplayName("createDonation member not found Test")
     public void createDonationNotFoundTest() {
         //given
-        DonationRequest request = new DonationRequest("pageName", 1000L);
+        PaymentRequest request = new PaymentRequest("impUid", 1L);
         //when
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
@@ -77,7 +80,7 @@ class DonationServiceTest {
     @DisplayName("addMessageToDonation Test")
     public void addMessageToDonationTest() {
         //given
-        Donation givenDonation = new Donation(1L, 100L, Message.defaultMessage());
+        Donation givenDonation = new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage());
         DonationMessageRequest request = new DonationMessageRequest("changedName", "changedMessage", false);
         //when
         when(donationRepository.findById(Mockito.anyLong()))
@@ -94,7 +97,7 @@ class DonationServiceTest {
     @DisplayName("addMessageToDonation donation not found Test")
     public void addMessageToDonationNotFoundTest() {
         //given
-        Donation givenDonation = new Donation(1L, 100L, Message.defaultMessage());
+        Donation givenDonation = new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage());
         DonationMessageRequest request = new DonationMessageRequest("changedName", "changedMessage", false);
         //when
         when(donationRepository.findById(Mockito.anyLong()))
@@ -113,7 +116,7 @@ class DonationServiceTest {
         when(memberRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
         when(donationRepository.findDonationByMemberOrderByCreatedAtDesc(Mockito.any(Member.class), Mockito.any(Pageable.class)))
-                .thenReturn(Collections.singletonList(new Donation(1L, 1000L, Message.defaultMessage())));
+                .thenReturn(Collections.singletonList(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage())));
         //then
         List<DonationResponse> response = donationService.findMyDonations(1L, reqeust);
         assertThat(response.get(0).getName()).isEqualTo(Message.DEFAULT_NAME);
@@ -142,7 +145,7 @@ class DonationServiceTest {
                 .thenReturn(Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
         when(donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(Mockito.any(Member.class)))
                 .thenReturn(
-                        Collections.singletonList(new Donation(1L, 1000L, new Message("name", "message", true))));
+                        Collections.singletonList(new Donation(1L, new Payment(1000L, "test@test.com", "test"), new Message("name", "message", true))));
         //then
         List<DonationResponse> response = donationService.findPublicDonations("pagename");
         assertThat(response.get(0).getName()).isEqualTo(Message.SECRET_NAME);

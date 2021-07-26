@@ -12,6 +12,7 @@ import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.payment.dto.PaymentRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -59,7 +60,7 @@ class DonationControllerTest {
         DonationResponse response = new DonationResponse(1L, "name", "message", 1000L, LocalDateTime
             .now());
         //when
-        when(donationService.createDonation(Mockito.any(DonationRequest.class)))
+        when(donationService.createDonation(Mockito.any(PaymentRequest.class)))
                 .thenReturn(response);
         //then
         mockMvc.perform(post("/donations")
@@ -82,7 +83,7 @@ class DonationControllerTest {
         //given
         DonationRequest request = new DonationRequest("pagename", 1000L);
         //when
-        doThrow(new MemberNotFoundException()).when(donationService).createDonation(Mockito.any(DonationRequest.class));
+        doThrow(new MemberNotFoundException()).when(donationService).createDonation(Mockito.any(PaymentRequest.class));
         //then
         mockMvc.perform(post("/donations")
                 .contentType(MediaType.APPLICATION_JSON)

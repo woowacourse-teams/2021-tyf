@@ -3,6 +3,7 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class MemberTest {
     public void addDonationTest() {
         //given
         Member member = testMember();
-        Donation donation = new Donation(1000L, new Message("name", "message", false));
+        Donation donation = new Donation(new Payment(1000L, "test@test.com", "test"), new Message("name", "message", false));
         //when
         member.addDonation(donation);
         //then

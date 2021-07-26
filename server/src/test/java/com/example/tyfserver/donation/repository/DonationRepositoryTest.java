@@ -6,6 +6,7 @@ import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
+import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,13 +44,13 @@ class DonationRepositoryTest {
         member = MemberTest.testMember();
         memberRepository.save(member);
         //when
-        donation1 = new Donation(1000L, new Message("name1", "message1", false));
-        donation2 = new Donation(2000L, new Message("name2", "message2", false));
-        donation3 = new Donation(3000L, new Message("name3", "message3", false));
-        donation4 = new Donation(4000L, new Message("name4", "message4", false));
-        donation5 = new Donation(5000L, new Message("name5", "message5", true));
-        donation6 = new Donation(6000L, new Message("name6", "message6", false));
-        donation7 = new Donation(7000L, new Message("name1", "message7", false));
+        donation1 = new Donation(new Payment(1000L, "test@test.com", "test"), new Message("name1", "message1", false));
+        donation2 = new Donation(new Payment(2000L, "test@test.com", "test"), new Message("name2", "message2", false));
+        donation3 = new Donation(new Payment(3000L, "test@test.com", "test"), new Message("name3", "message3", false));
+        donation4 = new Donation(new Payment(4000L, "test@test.com", "test"), new Message("name4", "message4", false));
+        donation5 = new Donation(new Payment(5000L, "test@test.com", "test"), new Message("name5", "message5", true));
+        donation6 = new Donation(new Payment(6000L, "test@test.com", "test"), new Message("name6", "message6", false));
+        donation7 = new Donation(new Payment(7000L, "test@test.com", "test"), new Message("name1", "message7", false));
 
         donation1.to(member);
         donation2.to(member);

@@ -8,6 +8,7 @@ import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
+import com.example.tyfserver.payment.domain.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -47,39 +48,39 @@ public class DataLoader implements CommandLineRunner {
         bannerRepository.save(new Banner(bePoz, "bePoz-image.png"));
         bannerRepository.save(new Banner(hwano, "hwano-image.png"));
 
-        Donation donation1 = new Donation(100_000L);
+        Donation donation1 = generateDonationDummy(100_000L);
         donation1.addMessage(new Message("포비", "이 친구 코드 잘 짜네", true));
         donation1.to(roki);
 
-        Donation donation2 = new Donation(100_000_000L);
+        Donation donation2 = generateDonationDummy(100_000_000L);
         donation2.addMessage(new Message("제이슨", "이 정도는 제 연봉의 1/5 밖에 안된다구요!", true));
         donation2.to(bePoz);
 
-        Donation donation3 = new Donation(9_999L);
+        Donation donation3 = generateDonationDummy(9_999L);
         donation3.addMessage(new Message("구구", "9999999999", true));
         donation3.to(joy);
 
-        Donation donation4 = new Donation(9_999L);
+        Donation donation4 = generateDonationDummy(9_999L);
         donation4.addMessage(new Message("구구", "99999999", true));
         donation4.to(joy);
 
-        Donation donation5 = new Donation(9_999L);
+        Donation donation5 = generateDonationDummy(9_999L);
         donation5.addMessage(new Message("구구", "999999", true));
         donation5.to(joy);
 
-        Donation donation6 = new Donation(10_000L);
+        Donation donation6 = generateDonationDummy(10_000L);
         donation6.addMessage(new Message("포코", "당근의 세계에선.... 그 누구도 평등하죠", true));
         donation6.to(hwano);
 
-        Donation donation7 = new Donation(50_000L);
+        Donation donation7 = generateDonationDummy(50_000L);
         donation7.addMessage(new Message("공원", "갈.대.공.원", true));
         donation7.to(inch);
 
-        Donation donation8 = new Donation(10_000L);
+        Donation donation8 = generateDonationDummy(10_000L);
         donation8.addMessage(new Message("브라운", "조기수료 시켜드릴게요~!", true));
         donation8.to(soori);
 
-        Donation donation9 = new Donation(10_000L);
+        Donation donation9 = generateDonationDummy(10_000L);
         donation8.addMessage(Message.defaultMessage());
         donation8.to(soori);
 
@@ -92,5 +93,9 @@ public class DataLoader implements CommandLineRunner {
         donationRepository.save(donation7);
         donationRepository.save(donation8);
         donationRepository.save(donation9);
+    }
+    
+    private Donation generateDonationDummy(Long amount) {
+        return new Donation(new Payment(amount, "test@test.com", "test"));
     }
 }
