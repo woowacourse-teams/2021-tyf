@@ -78,6 +78,9 @@ class DonationServiceTest {
         //given
         PaymentRequest request = new PaymentRequest("impUid", 1L);
         //when
+        when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
+                .thenReturn(new Payment(1L, 1000L, "test@test.com", "test"));
+
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
         //then
