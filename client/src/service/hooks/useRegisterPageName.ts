@@ -1,8 +1,11 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { requestValidatePageName } from '../request/register';
 
 import { newUserState, urlNameValidationSelector } from '../state/register';
 
+let dbValidationTimer: NodeJS.Timer;
 const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);
   const addressErrorLoadable = useRecoilValueLoadable(urlNameValidationSelector);
@@ -13,6 +16,7 @@ const useRegister = () => {
 
   useEffect(() => {
     if (addressErrorLoadable.state === 'loading') {
+      clearTimeout(dbValidationTimer);
       setIsValidAddress(false);
       setAddressErrorMessage('유효한 주소명인지 검증중입니다...');
     }
@@ -23,8 +27,22 @@ const useRegister = () => {
     }
 
     if (addressErrorLoadable.state === 'hasValue') {
-      setIsValidAddress(!addressErrorLoadable.contents);
+      setIsValidAddress(false);
       setAddressErrorMessage(addressErrorLoadable.contents);
+
+      if (addressErrorLoadable.contents) return;
+
+      dbValidationTimer = setTimeout(async () => {
+        try {
+          await requestValidatePageName(pageName);
+
+          setIsValidAddress(true);
+          setAddressErrorMessage(addressErrorLoadable.contents);
+        } catch (error) {
+          setIsValidAddress(false);
+          setAddressErrorMessage(error.response.data.message);
+        }
+      }, 1000);
     }
   }, [addressErrorLoadable.state]);
 

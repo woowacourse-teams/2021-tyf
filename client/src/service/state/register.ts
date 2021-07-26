@@ -2,7 +2,6 @@ import { atom, selector } from 'recoil';
 
 import { Register } from '../../types';
 import { REGISTER } from '../../constants/register';
-import { requestValidateNickName, requestValidatePageName } from '../request/register';
 
 export const newUserState = atom<Register>({
   key: 'newUserState',
@@ -35,9 +34,6 @@ export const urlNameValidationSelector = selector<string>({
       return "주소는 영어 소문자, 숫자, '-', '_' 만 가능합니다.";
     }
 
-    // TODO : 검증 디바운싱 적용.
-    await requestValidatePageName(pageName);
-
     return '';
   },
 });
@@ -68,8 +64,6 @@ export const nickNameValidationSelector = selector<string>({
     if (!regExp.test(nickname)) {
       return '닉네임은 한글, 영어, 한자, 일본어, 숫자만 가능합니다.';
     }
-
-    await requestValidateNickName(nickname);
 
     return '';
   },
