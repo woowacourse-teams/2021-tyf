@@ -9,4 +9,11 @@ public enum PaymentStatus {
     PaymentStatus(String info) {
         this.information = info;
     }
+
+    public static boolean isPaid(PaymentStatus paymentStatus) {
+        if (paymentStatus.equals(PAID)) {
+            return true;
+        }
+        return false;
+    }
 }

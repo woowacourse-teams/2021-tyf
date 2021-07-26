@@ -21,4 +21,8 @@ public class ApiSender {
     public static String send(String url, HttpMethod method, HttpEntity entity) {
         return REST_TEMPLATE.exchange(url, method, entity, String.class).getBody();
     }
+
+    public static <T> T send(String url, HttpMethod method, HttpEntity entity, Class<T> returnType) {
+        return REST_TEMPLATE.exchange(url, method, entity, returnType).getBody();
+    }
 }

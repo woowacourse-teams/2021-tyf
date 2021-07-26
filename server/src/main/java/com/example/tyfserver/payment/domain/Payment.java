@@ -1,21 +1,11 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
-import com.example.tyfserver.donation.domain.Donation;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Locale;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -39,22 +29,46 @@ public class Payment extends BaseTimeEntity {
 
     private String impUid;
 
-    public Payment(Long amount, String email, String pageName) {
+    public Payment(Long id, Long amount, String email, String pageName) {
+        this.id = id;
         this.amount = amount;
         this.email = email;
         this.pageName = pageName;
     }
 
-    public void complete(String impUid) {
-        this.impUid = impUid;
-        this.status = PaymentStatus.PAID;
+    public Payment(Long amount, String email, String pageName) {
+        this(null, amount, email, pageName);
     }
 
-    public void updateStatus(String status) {
-        updateStatus(PaymentStatus.valueOf(status.toUpperCase()));
+    public void complete(PaymentInfo paymentInfo) {
+        validatePaymentComplete(paymentInfo);
+        this.impUid = paymentInfo.getServiceId();
+        this.status = PaymentStatus.PAID;
     }
 
     public void updateStatus(PaymentStatus paymentStatus) {
         this.status = paymentStatus;
+    }
+
+    private void validatePaymentComplete(PaymentInfo paymentInfo) {
+        if (!PaymentStatus.isPaid(paymentInfo.getStatus())) {
+            updateStatus(paymentInfo.getStatus());
+            throw new RuntimeException();
+        }
+
+        if (!id.equals(paymentInfo.getId())) {
+            updateStatus(PaymentStatus.INVALID);
+            throw new RuntimeException();
+        }
+
+        if (!amount.equals(paymentInfo.getAmount())) {
+            updateStatus(PaymentStatus.INVALID);
+            throw new RuntimeException();
+        }
+
+        if (!pageName.equals(paymentInfo.getPageName())) {
+            updateStatus(PaymentStatus.INVALID);
+            throw new RuntimeException();
+        }
     }
 }
