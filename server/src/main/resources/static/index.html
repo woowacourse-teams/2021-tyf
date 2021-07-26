@@ -19,8 +19,8 @@
     // 가맹점 서버에 Payment 생성 요청
     const amount = 1000;
     const email = "gildong@gmail.com";
-    const creatorNickname = "파노";
-    const merchantUid = await createMerchantUid(amount, email, creatorNickname);
+    const pageName = "fanorama";
+    const merchantUid = await createMerchantUid(amount, email, pageName);
 
     // IMP.request_pay(param, callback) 호출
     let result;
@@ -28,7 +28,7 @@
       pg: "kakaopay",
       pay_method: "card",
       merchant_uid: merchantUid,
-      name: creatorNickname,
+      name: pageName,
       amount: amount,
       buyer_email: email,
       buyer_name: "홍길동",
@@ -75,7 +75,7 @@
     });
   }
 
-  async function createMerchantUid(amount, email, creatorNickname) {
+  async function createMerchantUid(amount, email, pageName) {
     let merchantUid;
     await jQuery.ajax({
       url: "http://localhost:8080/payments", // 가맹점 서버
@@ -84,7 +84,7 @@
       data: JSON.stringify({
         amount: amount,
         email: email,
-        creatorNickname: creatorNickname,
+        pageName: pageName,
       }),
       contentType: "application/json",
       dataType: "json"

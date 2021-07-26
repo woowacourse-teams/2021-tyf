@@ -12,11 +12,11 @@ public class PaymentSaveRequest {
 
     private String email;
 
-    private String creatorNickname;
+    private String pageName;
 
-    public PaymentSaveRequest(Long amount, String email, String creatorNickname) {
+    public PaymentSaveRequest(Long amount, String email, String pageName) {
         this.amount = amount;
         this.email = email;
-        this.creatorNickname = creatorNickname;
+        this.pageName = pageName;
     }
 }

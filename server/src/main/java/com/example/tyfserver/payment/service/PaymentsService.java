@@ -10,8 +10,6 @@ import com.example.tyfserver.payment.dto.PaymentResponse;
 import com.example.tyfserver.payment.dto.PaymentSaveRequest;
 import com.example.tyfserver.payment.dto.PaymentSaveResponse;
 import com.example.tyfserver.payment.repository.PaymentRepository;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +19,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +39,7 @@ public class PaymentsService {
 
     public PaymentSaveResponse createPayment(PaymentSaveRequest saveRequest) {
         Member creator = memberRepository
-            .findByNickname(saveRequest.getCreatorNickname()) //todo: creator를 식별하는 값은 뭘 받아와야할까?
+            .findByPageName(saveRequest.getPageName())
             .orElseThrow(MemberNotFoundException::new);
 
         Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(),
