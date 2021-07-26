@@ -38,6 +38,7 @@ export const RegisterTermsTitle = styled(Title)`
 
   @media ${DEVICE.DESKTOP_LARGE} {
     text-align: center;
+    max-width: 100%;
 
     span {
       display: inline;

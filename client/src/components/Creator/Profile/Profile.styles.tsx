@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-import Container from '../../@atom/Container/Container';
-
-
-
 export const ProfileImg = styled.img`
   width: 8rem;
   height: 8rem;
@@ -16,4 +12,5 @@ export const ProfileImg = styled.img`
 export const NickName = styled.p`
   font-size: 1.25rem;
   font-weight: 700;
+  text-align: center;
 `;
