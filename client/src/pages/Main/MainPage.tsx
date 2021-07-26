@@ -3,8 +3,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { useHistory } from 'react-router-dom';
 
 import CreatorList from '../../components/Main/CreatorList/CreatorList';
-import Spinner from '../../components/Spinner/Spinner';
-import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
+import Spinner from '../../components/Setting/Spinner/Spinner';
+import useUserInfo from '../../service/hooks/useUserInfo';
 import { DEVICE } from '../../constants/device';
 import {
   HeroContent,
@@ -19,7 +19,7 @@ import MainImage from '../../assets/images/hero-content.svg';
 
 const MainPage = () => {
   const history = useHistory();
-  const { userInfo } = useLoginUserInfo();
+  const { userInfo } = useUserInfo();
 
   return (
     <MainTemplate>

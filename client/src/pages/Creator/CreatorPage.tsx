@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
-import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
+import useUserInfo from '../../service/hooks/useUserInfo';
 
 import Profile from '../../components/Creator/Profile/Profile';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
@@ -11,12 +11,12 @@ import { StyledTemplate, DescriptionContainer, StyledButton } from './CreatorPag
 import { popupWindow } from '../../service/popup';
 import { donationUrlShare } from '../../service/share';
 import { DONATION_POPUP } from '../../constants/popup';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Setting/Spinner/Spinner';
 
 const CreatorPage = () => {
   const history = useHistory();
   const { creatorId } = useParams<ParamTypes>();
-  const { userInfo } = useLoginUserInfo();
+  const { userInfo } = useUserInfo();
   const isAdmin = userInfo?.pageName === creatorId;
 
   const popupDonationPage = () => {

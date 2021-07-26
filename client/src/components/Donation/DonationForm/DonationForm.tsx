@@ -5,7 +5,7 @@ import useDonationForm from '../../../service/hooks/useDonationForm';
 import { CreatorId } from '../../../types';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Button from '../../@atom/Button/Button';
-import SubTitle from '../../@atom/SubTitle/SubTitle';
+import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import {
   ButtonContainer,
   InputLabel,

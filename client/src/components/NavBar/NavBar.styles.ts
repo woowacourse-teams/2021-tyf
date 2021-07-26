@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Container from '../@atom/Container/Container';
 import IconButton from '../@atom/IconButton/IconButton';
@@ -6,20 +6,33 @@ import logoImg from '../../assets/images/logo.svg';
 import Anchor from '../@atom/Anchor/Anchor';
 import { DEVICE, SIZE } from '../../constants/device';
 import TextButton from '../@atom/TextButton/TextButton.styles';
+import { Z_INDEX } from '../../constants/style';
 
-export const StyledNavBar = styled(Container)`
+const NavBarHeightStyle = css`
   height: 3.5rem;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding: 0 1rem;
-  min-width: ${SIZE.MOBILE_MIN}px;
-  position: fixed;
-  background-color: white;
+  z-index: ${Z_INDEX.FOREGROUND};
 
   @media ${DEVICE.DESKTOP} {
     height: 4rem;
+  }
+`;
+
+export const StyledNavBar = styled(Container)`
+  ${NavBarHeightStyle}
+  position: fixed;
+  background-color: white;
+  padding: 0 1rem;
+  flex-direction: row;
+  justify-content: flex-end;
+  min-width: ${SIZE.MOBILE_MIN}px;
+
+  @media ${DEVICE.DESKTOP} {
     padding: 0 2rem;
   }
+`;
+
+export const NavBarArea = styled.div`
+  ${NavBarHeightStyle}
 `;
 
 export const StyledLogo = styled(IconButton).attrs({

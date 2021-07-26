@@ -6,7 +6,7 @@ import User from '../../../assets/icons/user.svg';
 import Setting from '../../../assets/icons/setting.svg';
 import Logout from '../../../assets/icons/logout.svg';
 import { useHistory } from 'react-router-dom';
-import useLoginUserInfo from '../../../service/hooks/useLoginUserInfo';
+import useUserInfo from '../../../service/hooks/useUserInfo';
 import useLogout from '../../../service/hooks/useLogout';
 
 export interface DesktopMenuProps {
@@ -15,7 +15,7 @@ export interface DesktopMenuProps {
 
 const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
   const history = useHistory();
-  const { userInfo } = useLoginUserInfo();
+  const { userInfo } = useUserInfo();
   const { logout } = useLogout();
 
   const onLogout = () => {
@@ -43,7 +43,7 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
         <MenuIcon src={Graph} />
         <span>통계</span>
       </MenuButton>
-      <MenuButton onClick={() => routeTo('/')}>
+      <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}/setting`)}>
         <MenuIcon src={Setting} />
         <span>설정</span>
       </MenuButton>

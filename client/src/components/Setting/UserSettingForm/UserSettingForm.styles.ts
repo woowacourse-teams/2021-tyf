@@ -1,0 +1,62 @@
+import styled from 'styled-components';
+
+import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
+import Camera from '../../../assets/icons/camera.svg';
+
+export const StyledUserSettingForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ProfileImgInputLabel = styled.label`
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  margin: 2.75rem 0;
+
+  ::after {
+    content: url(${Camera});
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover::after {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+`;
+
+export const ProfileImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const StyledSubTitle = styled(SubTitle)`
+  margin-bottom: 2rem;
+  text-align: left;
+`;
+
+export const NickNameInputContainer = styled.div`
+  width: 100%;
+  margin-bottom: 4.875rem;
+`;
+
+export const IntroductionTextareaContainer = styled.div`
+  width: 100%;
+  margin-bottom: 7.5rem;
+`;

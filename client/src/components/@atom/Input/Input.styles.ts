@@ -18,7 +18,7 @@ const StyledInput = styled.input`
   }
 
   &:focus {
-    border-bottom: 1px solid ${({ theme }) => theme.primary.base};
+    border-bottom: 1px solid ${({ theme }) => theme.primary.brightened};
   }
 `;
 

@@ -8,7 +8,7 @@ import { theme } from './theme';
 import { RecoilRoot } from 'recoil';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import Spinner from './components/Spinner/Spinner';
+import Spinner from './components/Setting/Spinner/Spinner';
 
 // TODO: APP감싸는 에러바운더리 화면 마크업 작업 필요
 

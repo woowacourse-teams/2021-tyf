@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil';
 import { requestUserInfo } from '../request/user';
 import { getLocalStorageItem, getSessionStorageItem } from '../../utils/storage';
 import { STORAGE_KEY } from '../../constants/storage';
-import { StorageType } from '../../types';
+import { Creator, StorageType } from '../../types';
 
 const getDefaultAccessToken = () => {
   const local = getLocalStorageItem(STORAGE_KEY.ACCESS_TOKEN);

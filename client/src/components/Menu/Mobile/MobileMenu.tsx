@@ -1,4 +1,4 @@
-import useLoginUserInfo from '../../../service/hooks/useLoginUserInfo';
+import useUserInfo from '../../../service/hooks/useUserInfo';
 import useLogout from '../../../service/hooks/useLogout';
 import { donationUrlShare } from '../../../service/share';
 import { ProfileContainer, StyledModal, StyledAnchor, URLCopyButton } from './MobileMenu.styles';
@@ -8,7 +8,7 @@ export interface MobileMenuProps {
 }
 
 const MobileMenu = ({ onClose }: MobileMenuProps) => {
-  const { userInfo } = useLoginUserInfo();
+  const { userInfo } = useUserInfo();
   const { logout } = useLogout();
 
   const shareURL = () => {
@@ -35,6 +35,9 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
       </StyledAnchor>
       <StyledAnchor to={`/creator/${userInfo?.pageName}/statistic`} onClick={onClose}>
         후원 통계
+      </StyledAnchor>
+      <StyledAnchor to={`/creator/${userInfo?.pageName}/setting`} onClick={onClose}>
+        설정
       </StyledAnchor>
       <StyledAnchor to="/" onClick={onLogout}>
         로그아웃

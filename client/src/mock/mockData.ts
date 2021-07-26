@@ -1,42 +1,42 @@
 import whiteBackground from '../assets/images/dummy/profile-img.jpg';
-import { Creator, Donation, LoginUserInfo, Statistics } from '../types';
+import { Creator, Donation, UserInfo, Statistics } from '../types';
 
 export const creatorListMock: Creator[] = [
   {
     nickname: 'asdf',
-    profileImgSrc: whiteBackground,
-    introduce: '빈칸아님',
+    profileImg: whiteBackground,
+    bio: '빈칸아님',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
   {
     nickname: 'asdf',
-    profileImgSrc: whiteBackground,
-    introduce: '',
+    profileImg: whiteBackground,
+    bio: '',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
   {
     nickname: 'asdf',
-    profileImgSrc: whiteBackground,
-    introduce: '안녕하세요~',
+    profileImg: whiteBackground,
+    bio: '안녕하세요~',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
   {
     nickname: 'asdf',
-    profileImgSrc: whiteBackground,
-    introduce: '',
+    profileImg: whiteBackground,
+    bio: '',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
 ];
 
-export const userInfoMock: LoginUserInfo = {
+export const userInfoMock: UserInfo = {
   nickname: 'inch',
-  introduce: 'hi',
+  bio: 'hi',
   pageName: 'inchpage',
-  profileImgSrc: 'asdf',
+  profileImg: 'asdf',
   email: 'jho2301@gmail.com',
 };
 

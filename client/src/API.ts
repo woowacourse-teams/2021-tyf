@@ -17,3 +17,10 @@ apiClient.interceptors.response.use((response) => response.data);
 export const authorizationHeader = (accessToken: string) => ({
   headers: { Authorization: `bearer ${accessToken}` },
 });
+
+export const multipartAuthorizationHeader = (accessToken: string) => ({
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `bearer ${accessToken}`,
+  },
+});

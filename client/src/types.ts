@@ -15,8 +15,8 @@ export type CreatorId = string;
 export interface Creator {
   pageName: CreatorId;
   nickname: string;
-  profileImgSrc: string;
-  introduce: string;
+  profileImg: string;
+  bio: string;
   email: string;
 }
 
@@ -24,7 +24,7 @@ export interface Register extends Pick<Creator, 'pageName' | 'nickname' | 'email
   oauthType: string;
 }
 
-export interface LoginUserInfo extends Creator {}
+export interface UserInfo extends Creator {}
 
 // STATISTICS
 

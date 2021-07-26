@@ -15,6 +15,7 @@ import RegisterAuthPage from './pages/Register/Auth/RegisterAuthPage';
 import RegisterNamePage from './pages/Register/Name/RegisterNamePage';
 import RegisterSuccessPage from './pages/Register/Success/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/Terms/RegisterTermsPage';
+import SettingPage from './pages/Setting/SettingPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
 import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';
@@ -75,6 +76,13 @@ const App = () => {
         <PrivateRoute
           path="/creator/:creatorId/statistic"
           component={StatisticsPage}
+          isAuthed={!!accessToken}
+          redirectTo="/login"
+        />
+
+        <PrivateRoute
+          path="/creator/:creatorId/setting"
+          component={SettingPage}
           isAuthed={!!accessToken}
           redirectTo="/login"
         />
