@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.service.PaymentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +43,9 @@ class DonationServiceTest {
     @Mock
     private DonationRepository donationRepository;
 
+    @Mock
+    private PaymentService paymentService;
+
     @InjectMocks
     private DonationService donationService;
 
@@ -56,6 +60,11 @@ class DonationServiceTest {
                         Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
         when(donationRepository.save(Mockito.any(Donation.class)))
                 .thenReturn(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage()));
+
+
+        when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
+                .thenReturn(new Payment(1L, 1000L, "test@test.com", "test"));
+
         //then
         DonationResponse response = donationService.createDonation(request);
         assertThat(response).usingRecursiveComparison()

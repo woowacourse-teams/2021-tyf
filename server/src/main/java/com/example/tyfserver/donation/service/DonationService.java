@@ -35,10 +35,10 @@ public class DonationService {
         Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        donationRepository.save(donation);
-        member.addDonation(donation);
+        Donation savedDonation = donationRepository.save(donation);
+        member.addDonation(savedDonation);
 
-        return new DonationResponse(donation);
+        return new DonationResponse(savedDonation);
     }
 
     public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
