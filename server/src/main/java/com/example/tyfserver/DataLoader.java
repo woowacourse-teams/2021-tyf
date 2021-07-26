@@ -9,6 +9,7 @@ import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +23,7 @@ public class DataLoader implements CommandLineRunner {
     private final MemberRepository memberRepository;
     private final BannerRepository bannerRepository;
     private final DonationRepository donationRepository;
+    private final PaymentRepository paymentRepository;
 
     @Override
     public void run(String... args) {
@@ -96,6 +98,6 @@ public class DataLoader implements CommandLineRunner {
     }
     
     private Donation generateDonationDummy(Long amount) {
-        return new Donation(new Payment(amount, "test@test.com", "test"));
+        return new Donation(paymentRepository.save(new Payment(amount, "test@test.com", "test")));
     }
 }
