@@ -100,7 +100,7 @@ class DonationControllerTest {
     @DisplayName("/donations - 유효하지 않은 request")
     public void createDonationRequestFailed() throws Exception {
         //given
-        DonationRequest request = new DonationRequest(" ", 1000L);
+        PaymentRequest request = new PaymentRequest("  ", 1L);
         //when
         //then
         mockMvc.perform(post("/donations")
