@@ -12,17 +12,24 @@ import {
 } from './URLShareModal.styles';
 import DummyButton from '../../assets/images/dummy/button.png';
 import { UserInfo } from '../../types';
-import { MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
+import URLShareSelectModal from '../URLShareSelectModal/URLShareSelectModal';
 
 export interface URLShareModalProps {
   userInfo: UserInfo;
   onClose: () => void;
 }
 
+enum ContentType {
+  'CHOICE',
+  'BANNER',
+}
+
 // TODO: 색상버튼 값 바꿔야 됨
 // TODO: 색상 변경 버튼 클릭 시, 소스코드 및 이미지도 변경되어야함
 
 const URLShareModal = ({ userInfo, onClose }: URLShareModalProps) => {
+  const [content, setContent] = useState<keyof typeof ContentType>('CHOICE');
   const sourceCode = `<a href="${window.location.origin}/creator/${userInfo.pageName}" target="_blank"><img height="36" style="border:0px;height:36px;" src="${DummyButton}" border="0" alt="thank you for button" /></a>`;
 
   const copySourceCode = () => {
@@ -38,25 +45,39 @@ const URLShareModal = ({ userInfo, onClose }: URLShareModalProps) => {
     alert(color);
   };
 
+  const openBannerShareModal = () => {
+    setContent('BANNER');
+  };
+
   return (
-    <StyledModal>
-      <DisplayButtonContainer>
-        <DisplayButton src={DummyButton} alt="" />
-        <PaletteContainer>
-          <ColorSelectButton color="red" onClick={() => changeButtonColor('red')} />
-          <ColorSelectButton color="blue" onClick={() => changeButtonColor('blue')} />
-          <ColorSelectButton color="purple" onClick={() => changeButtonColor('purple')} />
-          <ColorSelectButton color="green" onClick={() => changeButtonColor('green')} />
-          <ColorSelectButton color="yellow" onClick={() => changeButtonColor('yellow')} />
-        </PaletteContainer>
-      </DisplayButtonContainer>
-      <SourceCodeContainer>
-        <StyledSubTitle>복사 붙여넣기 코드</StyledSubTitle>
-        <Textarea value={sourceCode} readOnly onClick={selectAll} />
-      </SourceCodeContainer>
-      <Button onClick={copySourceCode}>소스코드 복사하기</Button>
-      <CloseButton onClick={onClose}>창 닫기</CloseButton>
-    </StyledModal>
+    <>
+      {content === 'CHOICE' ? (
+        <URLShareSelectModal
+          userInfo={userInfo}
+          onClose={onClose}
+          openBannerShareModal={openBannerShareModal}
+        />
+      ) : (
+        <StyledModal onClose={onClose}>
+          <DisplayButtonContainer>
+            <DisplayButton src={DummyButton} alt="" />
+            <PaletteContainer>
+              <ColorSelectButton color="red" onClick={() => changeButtonColor('red')} />
+              <ColorSelectButton color="blue" onClick={() => changeButtonColor('blue')} />
+              <ColorSelectButton color="purple" onClick={() => changeButtonColor('purple')} />
+              <ColorSelectButton color="green" onClick={() => changeButtonColor('green')} />
+              <ColorSelectButton color="yellow" onClick={() => changeButtonColor('yellow')} />
+            </PaletteContainer>
+          </DisplayButtonContainer>
+          <SourceCodeContainer>
+            <StyledSubTitle>복사 붙여넣기 코드</StyledSubTitle>
+            <Textarea value={sourceCode} readOnly onClick={selectAll} />
+          </SourceCodeContainer>
+          <Button onClick={copySourceCode}>소스코드 복사하기</Button>
+          <CloseButton onClick={onClose}>창 닫기</CloseButton>
+        </StyledModal>
+      )}
+    </>
   );
 };
 
