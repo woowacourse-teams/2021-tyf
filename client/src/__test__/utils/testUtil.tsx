@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Setting/Spinner/Spinner';
 
 import { theme } from '../../theme';
 

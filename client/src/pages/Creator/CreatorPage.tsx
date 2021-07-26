@@ -3,6 +3,8 @@ import { useHistory, useParams } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
+import useUserInfo from '../../service/hooks/useUserInfo';
+import Profile from '../../components/Creator/Profile/Profile';
 import Spinner from '../../components/Spinner/Spinner';
 import DesktopCreatorInfo from '../../components/Creator/CreatorInfo/Desktop/DesktopCreatorInfo';
 import MobileCreatorInfo from '../../components/Creator/CreatorInfo/Mobile/MobileCreatorInfo';
@@ -14,14 +16,15 @@ import { donationUrlShare } from '../../service/share';
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';
 import { DONATION_POPUP } from '../../constants/popup';
+import Spinner from '../../components/Setting/Spinner/Spinner';
 import { SIZE } from '../../constants/device';
 import defaultUserProfile from '../../assets/images/default-user-profile.png';
 
 const CreatorPage = () => {
   const history = useHistory();
   const { creatorId } = useParams<ParamTypes>();
+  const { userInfo } = useUserInfo();
   const { nickname } = useCreator(creatorId);
-  const { userInfo } = useLoginUserInfo();
   const { windowWidth } = useWindowResize();
   const isAdmin = userInfo?.pageName === creatorId;
 

@@ -6,6 +6,7 @@ enum PALETTE {
   GRAY_400 = '#979797',
   GRAY_500 = '#757575',
   BLACK_400 = '#333333',
+  CORAL_300 = '#fcb3b3',
   CORAL_400 = '#F3706E',
   CORAL_700 = '#E26666',
   CORAL_900 = '#d15353',

@@ -1,14 +1,14 @@
 import { useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 
-import { LoginUserInfo } from '../../types';
+import { UserInfo } from '../../types';
 import { accessTokenState, loginUserInfoQuery } from '../state/login';
 
-interface useLoginUserInfoReturnType {
-  userInfo: LoginUserInfo | null;
+interface useUserInfoReturnType {
+  userInfo: UserInfo | null;
   hasError: boolean;
 }
 
-const useLoginUserInfo = (): useLoginUserInfoReturnType => {
+const useUserInfo = (): useUserInfoReturnType => {
   const { contents, state } = useRecoilValueLoadable(loginUserInfoQuery);
   const setAccessToken = useSetRecoilState(accessTokenState);
 
@@ -24,7 +24,7 @@ const useLoginUserInfo = (): useLoginUserInfoReturnType => {
     return { userInfo: null, hasError: false };
   }
 
-  return { userInfo: contents as LoginUserInfo, hasError: false };
+  return { userInfo: contents as UserInfo, hasError: false };
 };
 
-export default useLoginUserInfo;
+export default useUserInfo;

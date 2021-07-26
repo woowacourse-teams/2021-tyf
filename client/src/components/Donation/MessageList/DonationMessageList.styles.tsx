@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import Container from '../../@atom/Container/Container';
-import SubTitle from '../../@atom/SubTitle/SubTitle';
+import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
 
 export const DonationListContainer = styled(Container)`

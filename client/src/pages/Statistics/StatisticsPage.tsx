@@ -1,10 +1,10 @@
-import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
+import useUserInfo from '../../service/hooks/useUserInfo';
 import useStatistics from '../../service/hooks/useStatistics';
 import { toCommaSeparatedString } from '../../utils/format';
 import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
 
 const StatisticsPage = () => {
-  const { userInfo } = useLoginUserInfo();
+  const { userInfo } = useUserInfo();
   const { totalAmount } = useStatistics();
 
   return (

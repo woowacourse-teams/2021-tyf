@@ -1,14 +1,20 @@
 import { useHistory } from 'react-router-dom';
 
-import useLoginUserInfo from '../../service/hooks/useLoginUserInfo';
+import useUserInfo from '../../service/hooks/useUserInfo';
 import useModal from '../../utils/useModal';
 import Menu from '../Menu/Menu';
-import { StyledNavBar, StyledLogo, LoginButton, StyledTextButton } from './NavBar.styles';
+import {
+  StyledNavBar,
+  StyledLogo,
+  LoginButton,
+  StyledTextButton,
+  NavBarArea,
+} from './NavBar.styles';
 
 const NavBar = () => {
   const history = useHistory();
   const { isOpen, toggleModal, closeModal } = useModal();
-  const { userInfo } = useLoginUserInfo();
+  const { userInfo } = useUserInfo();
 
   return (
     <>
@@ -20,6 +26,7 @@ const NavBar = () => {
           <LoginButton to="/login">로그인</LoginButton>
         )}
       </StyledNavBar>
+      <NavBarArea />
       {isOpen && <Menu onClose={closeModal} />}
     </>
   );
