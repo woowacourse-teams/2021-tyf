@@ -2,8 +2,9 @@ package com.example.tyfserver.member.repository;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.member.domain.Member;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberQueryRepository {
 

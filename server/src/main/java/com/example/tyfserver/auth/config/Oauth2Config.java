@@ -4,10 +4,11 @@ import com.example.tyfserver.auth.domain.GoogleOauth2;
 import com.example.tyfserver.auth.domain.KakaoOauth2;
 import com.example.tyfserver.auth.domain.NaverOauth2;
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @RequiredArgsConstructor

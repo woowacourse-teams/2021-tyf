@@ -1,12 +1,12 @@
 package com.example.tyfserver.donation.dto;
 
 import com.example.tyfserver.donation.domain.Donation;
-import java.time.LocalDateTime;
-
 import com.example.tyfserver.donation.domain.Message;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +23,7 @@ public class DonationResponse {
     }
 
     public DonationResponse(Long donationId, String name, String message, Long amount,
-        LocalDateTime createdAt) {
+                            LocalDateTime createdAt) {
         this.donationId = donationId;
         this.name = name;
         this.message = message;

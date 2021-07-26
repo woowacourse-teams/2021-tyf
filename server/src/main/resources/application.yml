@@ -9,7 +9,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        
+
   profiles:
     include: oauth2, aws
 

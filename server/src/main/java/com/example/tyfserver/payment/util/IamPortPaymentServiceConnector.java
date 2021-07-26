@@ -1,4 +1,4 @@
-package com.example.tyfserver.payment.service;
+package com.example.tyfserver.payment.util;
 
 import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.payment.domain.PaymentInfo;

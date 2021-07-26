@@ -6,7 +6,9 @@ import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
-import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.dto.PaymentSaveRequest;
+import com.example.tyfserver.payment.dto.PaymentSaveResponse;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,11 @@ public class PaymentService {
 
     public PaymentSaveResponse createPayment(PaymentSaveRequest saveRequest) {
         Member creator = memberRepository
-            .findByPageName(saveRequest.getPageName())
-            .orElseThrow(MemberNotFoundException::new);
+                .findByPageName(saveRequest.getPageName())
+                .orElseThrow(MemberNotFoundException::new);
 
         Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(),
-            creator.getPageName());
+                creator.getPageName());
         paymentRepository.save(payment);
 
         return new PaymentSaveResponse(payment);

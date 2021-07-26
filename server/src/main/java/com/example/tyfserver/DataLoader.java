@@ -32,17 +32,17 @@ public class DataLoader implements CommandLineRunner {
         }
 
         Member roki = memberRepository
-            .save(new Member("Rok93@naver.com", "로키", "rokiMountain", Oauth2Type.NAVER));
+                .save(new Member("Rok93@naver.com", "로키", "rokiMountain", Oauth2Type.NAVER));
         Member soori = memberRepository
-            .save(new Member("DWL5@kakao.com", "수리", "soorisooriMahaSoori", Oauth2Type.KAKAO));
+                .save(new Member("DWL5@kakao.com", "수리", "soorisooriMahaSoori", Oauth2Type.KAKAO));
         Member bePoz = memberRepository
-            .save(new Member("Be-poz@google.com", "파즈", "allIsBePozzible", Oauth2Type.GOOGLE));
+                .save(new Member("Be-poz@google.com", "파즈", "allIsBePozzible", Oauth2Type.GOOGLE));
         Member joy = memberRepository
-            .save(new Member("Joykim@naver.com", "조이", "enjoyLife", Oauth2Type.NAVER));
+                .save(new Member("Joykim@naver.com", "조이", "enjoyLife", Oauth2Type.NAVER));
         Member hwano = memberRepository
-            .save(new Member("jho2301@kakao.com", "파노", "hwanorama", Oauth2Type.KAKAO));
+                .save(new Member("jho2301@kakao.com", "파노", "hwanorama", Oauth2Type.KAKAO));
         Member inch = memberRepository
-            .save(new Member("hchayan@google.com", "인치", "1inch", Oauth2Type.GOOGLE));
+                .save(new Member("hchayan@google.com", "인치", "1inch", Oauth2Type.GOOGLE));
 
         bannerRepository.save(new Banner(roki, "roki-image.png"));
         bannerRepository.save(new Banner(soori, "soori-image.png"));
@@ -96,7 +96,7 @@ public class DataLoader implements CommandLineRunner {
         donationRepository.save(donation8);
         donationRepository.save(donation9);
     }
-    
+
     private Donation generateDonationDummy(Long amount) {
         return new Donation(paymentRepository.save(new Payment(amount, "test@test.com", "test")));
     }

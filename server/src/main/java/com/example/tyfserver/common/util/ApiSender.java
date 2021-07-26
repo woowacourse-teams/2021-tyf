@@ -1,10 +1,11 @@
 package com.example.tyfserver.common.util;
 
-import java.nio.charset.Charset;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.Charset;
 
 public class ApiSender {
 
@@ -12,7 +13,7 @@ public class ApiSender {
 
     static { // todo: 한글대신 유니코드 나오는 현상
         REST_TEMPLATE.getMessageConverters()
-            .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
     }
 
     private ApiSender() {

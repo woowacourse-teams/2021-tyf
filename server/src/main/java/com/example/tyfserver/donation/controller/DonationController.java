@@ -2,7 +2,6 @@ package com.example.tyfserver.donation.controller;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
