@@ -21,7 +21,6 @@
         const email = "gildong@gmail.com";
         const pageName = "hwanorama";
         const merchantUid = await createMerchantUid(amount, email, pageName);
-
         // IMP.request_pay(param, callback) 호출
         let result;
         await IMP.request_pay({ // param
@@ -39,7 +38,7 @@
             if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                 console.log(`rsp: ${rsp}`);
                 await jQuery.ajax({
-                    url: "http://localhost:8080/payments/complete", // 가맹점 서버
+                    url: "http://localhost:8080/donations", // 가맹점 서버
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     data: JSON.stringify({
@@ -50,6 +49,7 @@
                 }).done(await function (data) {
                     // 가맹점 서버 결제 API 성공시 로직'
                     alert("결제 끝!");
+                    console.log(data);
                     result = {
                         "impUid": data.impUid,
                         "merchantUid": data.merchantUid
@@ -96,9 +96,7 @@
         }).fail(function (data) {
             console.log(`실패: ${data}`);
         });
-
         return merchantUid;
     }
-
 </script>
 </html>
