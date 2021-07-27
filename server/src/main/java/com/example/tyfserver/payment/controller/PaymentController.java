@@ -22,13 +22,4 @@ public class PaymentController {
         PaymentSaveResponse response = paymentService.createPayment(paymentSaveRequest);
         return ResponseEntity.ok(response);
     }
-
-   /* @PostMapping("/complete")
-    public ResponseEntity<PaymentResponse> paymentComplete(@RequestBody PaymentRequest paymentRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new PaymentRequestException();
-        }
-
-        return ResponseEntity.ok(paymentService.completePayment(paymentRequest));
-    }*/
 }
