@@ -5,7 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class ApiSender {
 
@@ -13,17 +13,17 @@ public class ApiSender {
 
     static { // todo: 한글대신 유니코드 나오는 현상
         REST_TEMPLATE.getMessageConverters()
-                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+                .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
 
     private ApiSender() {
     }
 
-    public static String send(String url, HttpMethod method, HttpEntity entity) {
-        return REST_TEMPLATE.exchange(url, method, entity, String.class).getBody();
+    public static <T> String send(String url, HttpMethod method, HttpEntity<T> entity) {
+        return send(url, method, entity, String.class);
     }
 
-    public static <T> T send(String url, HttpMethod method, HttpEntity entity, Class<T> returnType) {
+    public static <T, U> T send(String url, HttpMethod method, HttpEntity<U> entity, Class<T> returnType) {
         return REST_TEMPLATE.exchange(url, method, entity, returnType).getBody();
     }
 }

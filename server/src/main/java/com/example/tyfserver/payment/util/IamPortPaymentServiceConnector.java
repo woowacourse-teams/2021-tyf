@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
-    private static final String IAMPORT_API_URL = "https://api.iamport.kr/";
+    private static final String IAMPORT_API_URL = "https://api.iamport.kr";
 
     @Value("${iamport.rest_api_key}")
     private String impKey;
@@ -27,15 +27,19 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     @Override
     public PaymentInfo requestPaymentInfo(PaymentRequest paymentRequest) {
         IamPortPaymentInfo.Response response = request(paymentRequest).getResponse();
-        return new PaymentInfo(Long.parseLong(response.getMerchant_uid()),
+        return new PaymentInfo(
+                Long.parseLong(response.getMerchant_uid()),
                 PaymentStatus.valueOf(response.getStatus().toUpperCase()),
-                Long.parseLong(response.getAmount()), response.getName(), response.getImp_uid());
+                Long.parseLong(response.getAmount()),
+                response.getName(),
+                response.getImp_uid());
     }
 
     private IamPortPaymentInfo request(PaymentRequest paymentRequest) {
         String accessToken = getAccessToken();
+
         return ApiSender.send(
-                IAMPORT_API_URL + "payments/" + paymentRequest.getImpUid(),
+                IAMPORT_API_URL + "/payments/" + paymentRequest.getImpUid(),
                 HttpMethod.POST,
                 paymentInfoRequest(accessToken),
                 IamPortPaymentInfo.class
@@ -44,31 +48,35 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private String getAccessToken() {
         String body = ApiSender.send(
-                IAMPORT_API_URL + "users/getToken",
+                IAMPORT_API_URL + "/users/getToken",
                 HttpMethod.POST,
                 accessTokenRequest()
         );
         return extractAccessToken(body);
     }
 
-    private String extractAccessToken(String accessTokenBody) {
-        JSONObject response = new JSONObject(accessTokenBody).getJSONObject("response");
-        return response.getString("access_token");
-    }
-
     private HttpEntity<String> accessTokenRequest() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imp_key", impKey);
         jsonObject.put("imp_secret", impSecret);
-        return new HttpEntity(jsonObject.toString(), headers);
+
+        return new HttpEntity<>(jsonObject.toString(), headers);
+    }
+
+    private String extractAccessToken(String accessTokenBody) {
+        return new JSONObject(accessTokenBody)
+                .getJSONObject("response")
+                .getString("access_token");
     }
 
     private HttpEntity<Void> paymentInfoRequest(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", accessToken);
+        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+
         return new HttpEntity<>(headers);
     }
 }
