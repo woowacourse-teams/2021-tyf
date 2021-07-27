@@ -62,8 +62,8 @@ class DonationServiceTest {
                 .thenReturn(
                         Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
 
-/*        when(donationRepository.save(Mockito.any(Donation.class)))
-                .thenReturn(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage()));*/
+        when(donationRepository.save(Mockito.any(Donation.class)))
+                .thenReturn(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage()));
 
         when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
                 .thenReturn(new Payment(1L, 1000L, "test@test.com", "test"));
@@ -72,7 +72,7 @@ class DonationServiceTest {
         DonationResponse response = donationService.createDonation(request);
         assertThat(response).usingRecursiveComparison()
             .ignoringFields("createdAt")
-            .isEqualTo(new DonationResponse(null, Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, 1000L, LocalDateTime.now()));
+            .isEqualTo(new DonationResponse(1L, Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, 1000L, LocalDateTime.now()));
     }
 
     @Test
