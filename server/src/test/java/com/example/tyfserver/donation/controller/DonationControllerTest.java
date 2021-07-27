@@ -155,7 +155,7 @@ class DonationControllerTest {
     @DisplayName("/donations/{donationId}/messages - 유효하지 않은 request")
     public void addDonationMessageRequestFailed() throws Exception {
         //given
-        DonationMessageRequest request = new DonationMessageRequest("a", "message", true);
+        DonationMessageRequest request = new DonationMessageRequest("", "message", true);
         //when
         //then
         mockMvc.perform(post("/donations/1/messages")
