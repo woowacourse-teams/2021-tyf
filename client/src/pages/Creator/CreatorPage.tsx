@@ -8,7 +8,6 @@ import DesktopCreatorInfo from '../../components/Creator/CreatorInfo/Desktop/Des
 import MobileCreatorInfo from '../../components/Creator/CreatorInfo/Mobile/MobileCreatorInfo';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
 import useCreator from '../../service/hooks/useCreator';
-import { popupWindow } from '../../service/popup';
 import { donationUrlShare } from '../../service/share';
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';
@@ -16,6 +15,7 @@ import { DONATION_POPUP } from '../../constants/popup';
 import Spinner from '../../components/Setting/Spinner/Spinner';
 import { SIZE } from '../../constants/device';
 import defaultUserProfile from '../../assets/images/default-user-profile.png';
+import { popupWindow } from '../../service/popup';
 
 const CreatorPage = () => {
   const history = useHistory();
@@ -26,10 +26,10 @@ const CreatorPage = () => {
   const isAdmin = userInfo?.pageName === creatorId;
 
   const popupDonationPage = () => {
-    popupWindow(
-      `/donation/${creatorId}`,
-      `width=${DONATION_POPUP.WIDTH},height=${DONATION_POPUP.HEIGHT}`
-    );
+    popupWindow(`/donation/${creatorId}`, {
+      width: DONATION_POPUP.WIDTH,
+      height: DONATION_POPUP.HEIGHT,
+    });
   };
 
   const shareUrl = () => {
