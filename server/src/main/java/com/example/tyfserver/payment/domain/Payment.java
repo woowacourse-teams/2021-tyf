@@ -45,7 +45,7 @@ public class Payment extends BaseTimeEntity {
 
     public void complete(PaymentInfo paymentInfo) {
         validatePaymentComplete(paymentInfo);
-        this.impUid = paymentInfo.getServiceId();
+        this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
     }
 
@@ -59,7 +59,7 @@ public class Payment extends BaseTimeEntity {
             throw new PaymentRequestException(ERROR_CODE_NOT_PAID);
         }
 
-        if (!id.equals(paymentInfo.getId())) {
+        if (!id.equals(paymentInfo.getMerchantId())) {
             updateStatus(PaymentStatus.INVALID);
             throw new PaymentRequestException(ERROR_CODE_INVALID_MERCHANT_ID);
         }
