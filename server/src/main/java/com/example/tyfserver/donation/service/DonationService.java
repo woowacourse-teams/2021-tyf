@@ -2,13 +2,15 @@ package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,14 @@ public class DonationService {
 
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
+    private final PaymentService paymentService;
 
-    public DonationResponse createDonation(final DonationRequest donationRequest) {
-        Member member = memberRepository.findByPageName(donationRequest.getPageName())
+    public DonationResponse createDonation(PaymentRequest paymentRequest) {
+        Payment payment = paymentService.completePayment(paymentRequest);
+        Donation donation = new Donation(payment);
+        Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
-        Donation donation = new Donation(donationRequest.getDonationAmount());
+
         Donation savedDonation = donationRepository.save(donation);
         member.addDonation(savedDonation);
 

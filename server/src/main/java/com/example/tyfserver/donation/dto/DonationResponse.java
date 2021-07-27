@@ -23,7 +23,7 @@ public class DonationResponse {
     }
 
     public DonationResponse(Long donationId, String name, String message, Long amount,
-        LocalDateTime createdAt) {
+                            LocalDateTime createdAt) {
         this.donationId = donationId;
         this.name = name;
         this.message = message;

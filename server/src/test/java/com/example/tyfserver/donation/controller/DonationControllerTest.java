@@ -12,6 +12,7 @@ import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.payment.dto.PaymentRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,7 @@ class DonationControllerTest {
         DonationResponse response = new DonationResponse(1L, "name", "message", 1000L, LocalDateTime
             .now());
         //when
-        when(donationService.createDonation(Mockito.any(DonationRequest.class)))
+        when(donationService.createDonation(Mockito.any(PaymentRequest.class)))
                 .thenReturn(response);
         //then
         mockMvc.perform(post("/donations")
@@ -81,7 +82,7 @@ class DonationControllerTest {
         //given
         DonationRequest request = new DonationRequest("pagename", 1000L);
         //when
-        doThrow(new MemberNotFoundException()).when(donationService).createDonation(Mockito.any(DonationRequest.class));
+        doThrow(new MemberNotFoundException()).when(donationService).createDonation(Mockito.any(PaymentRequest.class));
         //then
         mockMvc.perform(post("/donations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +99,7 @@ class DonationControllerTest {
     @DisplayName("/donations - 유효하지 않은 request")
     public void createDonationRequestFailed() throws Exception {
         //given
-        DonationRequest request = new DonationRequest(" ", 1000L);
+        PaymentRequest request = new PaymentRequest("  ", 1L);
         //when
         //then
         mockMvc.perform(post("/donations")
@@ -145,6 +146,24 @@ class DonationControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DonationNotFoundException.ERROR_CODE))
                 .andDo(document("addDonationMessageDonationNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/donations/{donationId}/messages - 유효하지 않은 request")
+    public void addDonationMessageRequestFailed() throws Exception {
+        //given
+        DonationMessageRequest request = new DonationMessageRequest("", "message", true);
+        //when
+        //then
+        mockMvc.perform(post("/donations/1/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(DonationMessageRequestException.ERROR_CODE))
+                .andDo(document("addDonationMessageRequestFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

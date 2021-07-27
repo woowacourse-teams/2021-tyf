@@ -9,7 +9,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        
+
   profiles:
     include: oauth2, aws
 
@@ -25,3 +25,7 @@ logging.level:
 jwt:
   secreteKey: ABCDEFG
   expire-length: 600000
+
+iamport:
+  rest_api_key: apiKey
+  rest_api_secret: apiSecret

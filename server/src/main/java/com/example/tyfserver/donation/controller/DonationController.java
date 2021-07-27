@@ -2,11 +2,11 @@ package com.example.tyfserver.donation.controller;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
+import com.example.tyfserver.payment.dto.PaymentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,11 +25,11 @@ public class DonationController {
     private final DonationService donationService;
 
     @PostMapping
-    public ResponseEntity<DonationResponse> createDonation(@Valid @RequestBody DonationRequest donationRequest, BindingResult result) {
+    public ResponseEntity<DonationResponse> createDonation(@Valid @RequestBody PaymentRequest paymentRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new DonationRequestException();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(donationRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(paymentRequest));
     }
 
     @PostMapping("{donationId}/messages")
