@@ -1,11 +1,14 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.payment.exception.PaymentRequestException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import static com.example.tyfserver.payment.exception.PaymentRequestException.*;
 
 @Entity
 @Getter
@@ -53,22 +56,22 @@ public class Payment extends BaseTimeEntity {
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
         if (!PaymentStatus.isPaid(paymentInfo.getStatus())) {
             updateStatus(paymentInfo.getStatus());
-            throw new RuntimeException();
+            throw new PaymentRequestException(ERROR_CODE_NOT_PAID);
         }
 
         if (!id.equals(paymentInfo.getId())) {
             updateStatus(PaymentStatus.INVALID);
-            throw new RuntimeException();
+            throw new PaymentRequestException(ERROR_CODE_INVALID_MERCHANT_ID);
         }
 
         if (!amount.equals(paymentInfo.getAmount())) {
             updateStatus(PaymentStatus.INVALID);
-            throw new RuntimeException();
+            throw new PaymentRequestException(ERROR_CODE_INVALID_AMOUNT);
         }
 
         if (!pageName.equals(paymentInfo.getPageName())) {
             updateStatus(PaymentStatus.INVALID);
-            throw new RuntimeException();
+            throw new PaymentRequestException(ERROR_INVALID_CREATOR);
         }
     }
 }
