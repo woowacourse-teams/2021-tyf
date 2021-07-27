@@ -1,9 +1,11 @@
 import { Meta, Story } from '@storybook/react';
 import { userInfoMock } from '../../../mock/mockData';
-import URLShareModal, { URLShareModalProps } from './URLShareModal';
+import URLBannerShareModal, {
+  URLBannerShareModalProps,
+} from '../URLBannerShareModal/URLBannerShareModal';
 
 export default {
-  title: 'components/URLShareModal',
+  title: 'components/URLBannerShareModal',
   args: {
     onClose: () => {
       return;
@@ -11,7 +13,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<URLShareModalProps> = (args) => <URLShareModal {...args} />;
+const Template: Story<URLBannerShareModalProps> = (args) => <URLBannerShareModal {...args} />;
 
 export const Default = Template.bind({});
 
