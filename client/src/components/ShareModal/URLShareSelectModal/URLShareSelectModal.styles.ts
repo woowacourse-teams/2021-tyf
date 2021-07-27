@@ -32,3 +32,14 @@ export const Name = styled.span`
   position: absolute;
   bottom: 0.75rem;
 `;
+
+export const Icon = styled.img`
+  width: 3rem;
+  height: 3rem;
+  fill: #333333;
+`;
+
+export const ImgIcon = styled.img`
+  height: 2rem;
+  object-fit: cover;
+`;
