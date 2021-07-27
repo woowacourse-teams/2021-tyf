@@ -12,14 +12,7 @@ public class IamPortPaymentInfo {
     public IamPortPaymentInfo(Response response) {
         this.response = response;
     }
-
-    @Override
-    public String toString() {
-        return "IamPortPaymentInfo{" +
-                "response=" + response +
-                '}';
-    }
-
+    
     @NoArgsConstructor
     @Getter
     public class Response {
