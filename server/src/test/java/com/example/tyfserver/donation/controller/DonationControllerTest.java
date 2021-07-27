@@ -151,24 +151,6 @@ class DonationControllerTest {
     }
 
     @Test
-    @DisplayName("/donations/{donationId}/messages - 유효하지 않은 request")
-    public void addDonationMessageRequestFailed() throws Exception {
-        //given
-        DonationMessageRequest request = new DonationMessageRequest("a", "message", true);
-        //when
-        //then
-        mockMvc.perform(post("/donations/1/messages")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(DonationMessageRequestException.ERROR_CODE))
-                .andDo(document("addDonationMessageRequestFailed",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
-
-    @Test
     @DisplayName("/donations/me - success")
     public void totalDonations() throws Exception {
         //given
