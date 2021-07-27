@@ -1,5 +1,5 @@
-import { donationUrlShare } from '../../service/share';
-import { UserInfo } from '../../types';
+import { donationUrlShare } from '../../../service/share';
+import { UserInfo } from '../../../types';
 import { Name, StyledContainerButton, StyledModal } from './URLShareSelectModal.styles';
 
 export interface URLShareSelectModalProps {

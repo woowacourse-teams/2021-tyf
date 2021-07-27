@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import PALETTE from '../../constants/palette';
-import { Z_INDEX } from '../../constants/style';
-import Container from '../@atom/Container/Container';
+import PALETTE from '../../../constants/palette';
+import { Z_INDEX } from '../../../constants/style';
+import Container from '../../@atom/Container/Container';
 
-import Modal from '../@atom/Modal/Modal';
-import SubTitle from '../@atom/SubTitle/SubTitle.styles';
-import TextButton from '../@atom/TextButton/TextButton.styles';
+import Modal from '../../@atom/Modal/Modal';
+import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
+import TextButton from '../../@atom/TextButton/TextButton.styles';
 
 export const StyledModal = styled(Modal)`
   width: 37.5rem;

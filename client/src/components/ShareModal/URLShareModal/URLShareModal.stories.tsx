@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import { userInfoMock } from '../../mock/mockData';
+import { userInfoMock } from '../../../mock/mockData';
 import URLShareModal, { URLShareModalProps } from './URLShareModal';
 
 export default {

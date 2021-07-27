@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import PALETTE from '../../constants/palette';
-import Container from '../@atom/Container/Container';
+import PALETTE from '../../../constants/palette';
+import Container from '../../@atom/Container/Container';
 
-import Modal from '../@atom/Modal/Modal';
+import Modal from '../../@atom/Modal/Modal';
 
 export const StyledModal = styled(Modal)`
   width: 29rem;

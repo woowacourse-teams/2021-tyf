@@ -1,9 +1,9 @@
 import { MouseEvent } from 'react';
 
-import { UserInfo } from '../../types';
-import DummyButton from '../../assets/images/dummy/button.png';
-import Button from '../@atom/Button/Button';
-import Textarea from '../@atom/Textarea/Textarea';
+import { UserInfo } from '../../../types';
+import DummyButton from '../../../assets/images/dummy/button.png';
+import Button from '../../@atom/Button/Button';
+import Textarea from '../../@atom/Textarea/Textarea';
 import {
   CloseButton,
   ColorSelectButton,

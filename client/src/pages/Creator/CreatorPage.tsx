@@ -16,7 +16,7 @@ import Spinner from '../../components/Setting/Spinner/Spinner';
 import { SIZE } from '../../constants/device';
 import defaultUserProfile from '../../assets/images/default-user-profile.png';
 import { popupWindow } from '../../service/popup';
-import URLShareModal from '../../components/URLShareModal/URLShareModal';
+import URLShareModal from '../../components/ShareModal/URLShareModal/URLShareModal';
 import useModal from '../../utils/useModal';
 
 const CreatorPage = () => {
