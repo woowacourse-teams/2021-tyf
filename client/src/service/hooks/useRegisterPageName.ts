@@ -7,7 +7,6 @@ import { requestValidatePageName } from '../request/register';
 import { newUserState } from '../state/register';
 
 const pageNameValidation = async (pageName: string) => {
-  console.log(pageName);
   if (pageName.length < REGISTER.ADDRESS.MIN_LENGTH) {
     return `주소는 최소 ${REGISTER.ADDRESS.MIN_LENGTH}글자 이상이여합니다.`;
   }

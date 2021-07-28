@@ -44,3 +44,11 @@ export interface Donation {
 }
 
 export type DonationMessage = Pick<Donation, 'name' | 'message'>;
+
+// PAYMENT
+
+export interface Payment {
+  amount: number;
+  email: string;
+  pageName: string;
+}

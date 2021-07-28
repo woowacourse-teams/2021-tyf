@@ -24,7 +24,6 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
   };
 
   const routeTo = (path: string) => {
-    console.log(path);
     history.push(path);
     onClose();
   };
