@@ -1,50 +1,69 @@
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { useRecoilState } from 'recoil';
+
+import { REGISTER } from '../../constants/register';
+import { debounceGenerator } from '../../utils/debounce';
 import { requestValidatePageName } from '../request/register';
+import { newUserState } from '../state/register';
 
-import { newUserState, urlNameValidationSelector } from '../state/register';
+const pageNameValidation = async (pageName: string) => {
+  console.log(pageName);
+  if (pageName.length < REGISTER.ADDRESS.MIN_LENGTH) {
+    return `주소는 최소 ${REGISTER.ADDRESS.MIN_LENGTH}글자 이상이여합니다.`;
+  }
 
-let dbValidationTimer: NodeJS.Timer;
+  if (REGISTER.ADDRESS.MAX_LENGTH < pageName.length) {
+    return `주소는 최대 ${REGISTER.ADDRESS.MAX_LENGTH}글자 이하여야 합니다`;
+  }
+
+  if (pageName !== pageName.replace(/ /g, '')) {
+    return '주소에는 공백이 존재하면 안됩니다.';
+  }
+
+  if (pageName !== pageName.toLowerCase()) {
+    return '주소명은 소문자만 가능합니다.';
+  }
+
+  const regExp = /^[a-z0-9_\\-]*$/;
+  if (!regExp.test(pageName)) {
+    return "주소는 영어 소문자, 숫자, '-', '_' 만 가능합니다.";
+  }
+
+  try {
+    await requestValidatePageName(pageName);
+
+    return '';
+  } catch (error) {
+    return error.response.data.message;
+  }
+};
+
+const debounce = debounceGenerator(300);
+
 const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);
-  const addressErrorLoadable = useRecoilValueLoadable(urlNameValidationSelector);
   const [addressErrorMessage, setAddressErrorMessage] = useState('');
   const [isValidAddress, setIsValidAddress] = useState(false);
 
   const { pageName } = user;
 
+  const validate = async () => {
+    const addressError = await pageNameValidation(pageName);
+
+    if (addressError) {
+      setIsValidAddress(false);
+      setAddressErrorMessage(addressError);
+    } else {
+      setIsValidAddress(true);
+      setAddressErrorMessage('');
+    }
+  };
+
   useEffect(() => {
-    if (addressErrorLoadable.state === 'loading') {
-      clearTimeout(dbValidationTimer);
-      setIsValidAddress(false);
-      setAddressErrorMessage('유효한 주소명인지 검증중입니다...');
-    }
+    setIsValidAddress(false);
 
-    if (addressErrorLoadable.state === 'hasError') {
-      setIsValidAddress(false);
-      setAddressErrorMessage(addressErrorLoadable.contents.response.data.message);
-    }
-
-    if (addressErrorLoadable.state === 'hasValue') {
-      setIsValidAddress(false);
-      setAddressErrorMessage(addressErrorLoadable.contents);
-
-      if (addressErrorLoadable.contents) return;
-
-      dbValidationTimer = setTimeout(async () => {
-        try {
-          await requestValidatePageName(pageName);
-
-          setIsValidAddress(true);
-          setAddressErrorMessage(addressErrorLoadable.contents);
-        } catch (error) {
-          setIsValidAddress(false);
-          setAddressErrorMessage(error.response.data.message);
-        }
-      }, 1000);
-    }
-  }, [addressErrorLoadable.state]);
+    debounce(validate);
+  }, [pageName]);
 
   const setPageName = (value: string) => {
     setUser({ ...user, pageName: value });
