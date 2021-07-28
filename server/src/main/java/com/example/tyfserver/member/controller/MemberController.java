@@ -98,4 +98,17 @@ public class MemberController {
         memberService.updateBio(loginMember, memberBioUpdateRequest.getBio());
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/me/nick-name")
+    public ResponseEntity<Void> updateNickName(LoginMember loginMember,
+                                               @Valid @RequestBody MemberNickNameUpdateRequest memberNickNameUpdateRequest,
+                                               BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NicknameValidationRequestException();
+        }
+
+        memberService.updateNickName(loginMember, memberNickNameUpdateRequest.getNickName());
+        return ResponseEntity.ok().build();
+    }
+
 }

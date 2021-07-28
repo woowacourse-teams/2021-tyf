@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -632,7 +633,7 @@ class MemberControllerTest {
     @ParameterizedTest
     @NullSource
     @EmptySource
-    @DisplayName("PUT - /members/me/bio - success")
+    @DisplayName("PUT - /members/me/bio - invalid bio")
     void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest(invalidBioValue);
@@ -651,6 +652,53 @@ class MemberControllerTest {
         ;
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "로키", "로키1", "로1키", "1로키"
+    })
+    @DisplayName("PUT - /me/nick-name - success")
+    void updateNickName(String validNickName) throws Exception {
+        //given
+        MemberNickNameUpdateRequest request = new MemberNickNameUpdateRequest(validNickName);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/nick-name")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(document("updateNickName",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @EmptySource
+    @ValueSource(strings = {
+            "로", "_로키", "로키_", "_로키_", "-로키", "로키-"
+    })
+    @DisplayName("PUT - /me/nick-name - invalid nickName")
+    void updateNickNameInvalidNickNameValueRequestFailed(String invalidNickName) throws Exception {
+        //given
+        MemberNickNameUpdateRequest request = new MemberNickNameUpdateRequest(invalidNickName);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/nick-name")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("updateNickNameInvalidNickNameValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
 
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);

@@ -74,6 +74,11 @@ public class MemberService {
         member.updateBio(bio);
     }
 
+    public void updateNickName(LoginMember loginMember, String nickName) {
+        Member member = findMember(loginMember.getId());
+        member.updateNickName(nickName);
+    }
+
     private Member findMember(Long id) {
         return memberRepository.findById(id)
             .orElseThrow(MemberNotFoundException::new);
