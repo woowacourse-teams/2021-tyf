@@ -17,8 +17,6 @@ const useDonation = (creatorId: CreatorId) => {
     const { merchantUid } = await requestPayment({ amount, email: '', pageName });
     const { IMP } = window;
 
-    console.log(merchantUid, pageName, nickname, amount);
-
     IMP.init('imp61348931'); // TODO: 가맹점 식별번호 입력
 
     // TODO : 후원자 정보 입력 form 페이지 추가하기
@@ -36,7 +34,6 @@ const useDonation = (creatorId: CreatorId) => {
         buyer_postcode: '01181',
       },
       async (response: IamportResponse) => {
-        console.log(response);
         if (response.success) {
           try {
             const donationResult = await requestPaymentComplete(response);

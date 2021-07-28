@@ -1,6 +1,5 @@
 import { useRecoilState } from 'recoil';
 import { STORAGE_KEY } from '../../constants/storage';
-import { StorageType } from '../../types';
 import {
   getLocalStorageItem,
   setLocalStorageItem,
@@ -11,8 +10,16 @@ import { accessTokenState } from '../state/login';
 const useAccessToken = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
+  const clearAccessToken = () => {
+    localStorage.removeItem(STORAGE_KEY.ACCESS_TOKEN);
+    sessionStorage.removeItem(STORAGE_KEY.ACCESS_TOKEN);
+    setAccessToken('');
+  };
+
   const storeAccessToken = (accessToken: string) => {
     const isLoginPersist = getLocalStorageItem(STORAGE_KEY.IS_LOGIN_PERSIST);
+
+    clearAccessToken();
 
     isLoginPersist
       ? setLocalStorageItem(STORAGE_KEY.ACCESS_TOKEN, accessToken)
@@ -21,7 +28,7 @@ const useAccessToken = () => {
     setAccessToken(accessToken);
   };
 
-  return { accessToken, storeAccessToken };
+  return { accessToken, storeAccessToken, clearAccessToken };
 };
 
 export default useAccessToken;
