@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { requestIdState } from '../state/request';
 
-import { userStatisticsQuery } from '../state/statistics';
-import useAccessToken from './useAccessToken';
+import { userStatisticsQuery, userStatisticsQueryKey } from '../state/statistics';
 
 const useStatistics = () => {
-  const { accessToken } = useAccessToken();
   const { point: totalAmount } = useRecoilValue(userStatisticsQuery);
-  const [requestId, setRequestId] = useRecoilState(requestIdState(accessToken));
+  const [requestId, setRequestId] = useRecoilState(requestIdState(userStatisticsQueryKey));
 
   useEffect(() => {
     setRequestId(requestId + 1);

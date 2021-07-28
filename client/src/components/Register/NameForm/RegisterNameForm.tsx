@@ -2,12 +2,12 @@ import { FormEvent } from 'react';
 
 import useRegister from '../../../service/hooks/useRegister';
 import useRegisterNickname from '../../../service/hooks/useRegisterNickname';
-import Button from '../../@atom/Button/Button';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
   StyledRegisterNameForm,
   NameInputContainer,
   RegisterNameTitle,
+  StyledButton,
 } from './RegisterNameForm.styles';
 
 const RegisterNameForm = () => {
@@ -38,7 +38,7 @@ const RegisterNameForm = () => {
           placeholder="닉네임 입력하기"
         />
       </NameInputContainer>
-      <Button disabled={!isValidNickName}>회원가입 완료</Button>
+      <StyledButton disabled={!isValidNickName}>회원가입 완료</StyledButton>
     </StyledRegisterNameForm>
   );
 };
