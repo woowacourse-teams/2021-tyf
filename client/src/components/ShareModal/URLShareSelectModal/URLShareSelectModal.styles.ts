@@ -39,7 +39,4 @@ export const Icon = styled.img`
   fill: #333333;
 `;
 
-export const ImgIcon = styled.img`
-  height: 2rem;
-  object-fit: cover;
-`;
+export const ImgIcon = styled.img``;

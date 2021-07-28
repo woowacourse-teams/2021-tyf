@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import { UserInfo } from '../../../types';
 import DummyButton from '../../../assets/images/dummy/button.png';
@@ -14,6 +14,7 @@ import {
   StyledModal,
   StyledSubTitle,
 } from './URLBannerShareModal.styles';
+import useURLBanner from '../../../service/hooks/useURLBanner';
 
 export interface URLBannerShareModalProps {
   userInfo: UserInfo;
@@ -21,33 +22,23 @@ export interface URLBannerShareModalProps {
 }
 
 const URLBannerShareModal = ({ onClose, userInfo }: URLBannerShareModalProps) => {
-  const sourceCode = `<a href="${window.location.origin}/creator/${userInfo.pageName}" target="_blank"><img height="36" style="border:0px;height:36px;" src="${DummyButton}" border="0" alt="thank you for button" /></a>`;
-
-  const copySourceCode = () => {
-    navigator.clipboard.writeText(sourceCode);
-    alert('소스코드가 복사되었습니다.');
-  };
+  const { sourceCode, bannerURL, changeButtonColor, copySourceCode } = useURLBanner(userInfo);
 
   const selectAll = ({ currentTarget }: MouseEvent<HTMLTextAreaElement>) => {
     currentTarget.select();
   };
 
-  // TODO: 색상버튼 값 바꿔야 됨
-  // TODO: 색상 변경 버튼 클릭 시, 소스코드 및 이미지도 변경되어야함
-  const changeButtonColor = (color: string) => {
-    alert(color);
-  };
-
   return (
     <StyledModal onClose={onClose}>
       <DisplayButtonContainer>
-        <DisplayButton src={DummyButton} alt="" />
+        <DisplayButton src={bannerURL} alt="" />
         <PaletteContainer>
-          <ColorSelectButton color="red" onClick={() => changeButtonColor('red')} />
-          <ColorSelectButton color="blue" onClick={() => changeButtonColor('blue')} />
-          <ColorSelectButton color="purple" onClick={() => changeButtonColor('purple')} />
-          <ColorSelectButton color="green" onClick={() => changeButtonColor('green')} />
-          <ColorSelectButton color="yellow" onClick={() => changeButtonColor('yellow')} />
+          <ColorSelectButton color="#444444" onClick={() => changeButtonColor('black')} />
+          <ColorSelectButton color="#F3706E" onClick={() => changeButtonColor('red')} />
+          <ColorSelectButton color="#FFDD00" onClick={() => changeButtonColor('yellow')} />
+          <ColorSelectButton color="#79D6B5" onClick={() => changeButtonColor('green')} />
+          <ColorSelectButton color="#6D8BFF" onClick={() => changeButtonColor('blue')} />
+          <ColorSelectButton color="#8C7AE6" onClick={() => changeButtonColor('purple')} />
         </PaletteContainer>
       </DisplayButtonContainer>
       <SourceCodeContainer>

@@ -1,7 +1,6 @@
 import { donationUrlShare } from '../../../service/share';
 import { UserInfo } from '../../../types';
 import LinkIcon from '../../../assets/icons/link.svg';
-import DummyButton from '../../../assets/images/dummy/button.png';
 import {
   Icon,
   ImgIcon,
@@ -9,6 +8,7 @@ import {
   StyledContainerButton,
   StyledModal,
 } from './URLShareSelectModal.styles';
+import useURLBanner from '../../../service/hooks/useURLBanner';
 
 export interface URLShareSelectModalProps {
   userInfo: UserInfo;
@@ -21,6 +21,8 @@ const URLShareSelectModal = ({
   onClose,
   openBannerShareModal,
 }: URLShareSelectModalProps) => {
+  const { bannerURL } = useURLBanner(userInfo);
+
   const shareUrl = () => {
     if (!userInfo) return;
 
@@ -34,7 +36,7 @@ const URLShareSelectModal = ({
         <Name>URL 복사하기</Name>
       </StyledContainerButton>
       <StyledContainerButton onClick={openBannerShareModal}>
-        <ImgIcon src={DummyButton} alt="버튼 공유하기" />
+        <ImgIcon src={bannerURL} alt="버튼 공유하기" />
         <Name>버튼 공유하기</Name>
       </StyledContainerButton>
     </StyledModal>

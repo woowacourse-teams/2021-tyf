@@ -17,7 +17,7 @@ const Modal = ({ children, className, onClose }: ModalProps) => {
   useScrollLock();
 
   return (
-    <ModalOuter onClick={onClickModalOuter}>
+    <ModalOuter onMouseDown={onClickModalOuter}>
       <ModalInner className={className}>{children}</ModalInner>
     </ModalOuter>
   );
