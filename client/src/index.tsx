@@ -19,7 +19,18 @@ ReactDOM.render(
         <GlobalStyle />
         <BrowserRouter>
           <ErrorBoundary
-            fallback={<h1>서비스에 오류가 발생했습니다. 잠시 후 다시 시도해주세요</h1>}
+            fallback={
+              <div>
+                <h1>서비스에 오류가 발생했습니다. 잠시 후 다시 시도해주세요</h1>
+                <button
+                  onClick={() => {
+                    window.location.href = window.location.origin;
+                  }}
+                >
+                  새로고침
+                </button>
+              </div>
+            }
           >
             <Suspense fallback={<Spinner />}>
               <App />

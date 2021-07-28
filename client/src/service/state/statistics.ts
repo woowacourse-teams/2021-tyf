@@ -11,7 +11,7 @@ export const userStatisticsQuery = selector<Statistics>({
   get: ({ get }) => {
     const accessToken = get(accessTokenState);
 
-    get(requestIdState(accessToken));
+    get(requestIdState(userStatisticsQueryKey));
 
     return requestUserStatistics(accessToken);
   },
