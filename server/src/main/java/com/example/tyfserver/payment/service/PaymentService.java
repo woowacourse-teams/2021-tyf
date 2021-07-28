@@ -29,10 +29,9 @@ public class PaymentService {
 
         Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(),
                 creator.getPageName());
-        paymentRepository.save(payment);
+        Payment savedPayment = paymentRepository.save(payment);
 
-        return new PaymentSaveResponse(payment);
-        // todo: PaymentSaveResponse에 어떤 필드값들이 있으면 좋을까? (일단은 정말 필요한 값인 merchantUid만 추가!)
+        return new PaymentSaveResponse(savedPayment);
     }
 
     public Payment completePayment(PaymentRequest paymentRequest) {
