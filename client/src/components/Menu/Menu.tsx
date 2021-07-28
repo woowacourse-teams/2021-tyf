@@ -10,7 +10,7 @@ export interface MenuProps {
 const Menu = ({ onClose }: MenuProps) => {
   const { windowWidth } = useWindowResize();
 
-  return windowWidth > SIZE.MOBILE_MAX ? (
+  return windowWidth > SIZE.DESKTOP_LARGE ? (
     <DesktopMenu onClose={onClose} />
   ) : (
     <MobileMenu onClose={onClose} />
