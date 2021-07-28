@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TyfServerApplication {
 
     public static void main(String[] args) {
-        System.out.println("changed webhook trigger");
+        System.out.println("jenkins test");
         SpringApplication.run(TyfServerApplication.class, args);
     }
 
