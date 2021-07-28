@@ -3,7 +3,7 @@ import PALETTE from '../../../constants/palette';
 
 export const StyledDesktopMenu = styled.div`
   position: fixed;
-  top: 80px;
+  top: 4rem;
   right: 0;
   width: 100px;
   height: 100vh;
