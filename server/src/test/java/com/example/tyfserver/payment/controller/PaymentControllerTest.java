@@ -56,7 +56,7 @@ public class PaymentControllerTest {
         when(paymentService.createPayment(any(PaymentSaveRequest.class))).thenReturn(
                 paymentSaveResponse
         );
-        
+
         //then
         mockMvc.perform(post("/payments")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -249,3 +249,19 @@ include::{snippets}/publicDonations/http-response.adoc[]
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
+== Payment (결제)
+=== 결제 요청 - 성공
+==== Request
+include::{snippets}/createPayment/http-request.adoc[]
+==== Response
+include::{snippets}/createPayment/http-response.adoc[]
+=== 결제 요청 - 실패 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/createPaymentMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentMemberNotFoundFailed/http-response.adoc[]
+=== 결제 요청 - 실패 - 유효하지 않은 Request
+==== Request
+include::{snippets}/createPaymentRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentRequestFailed/http-response.adoc[]
