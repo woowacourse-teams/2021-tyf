@@ -611,7 +611,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("PUT - /members/me/bio - success")
-    void updateBio() throws Exception { // todo: 작성하기!
+    void updateBio() throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest("안녕하세요! 로키입니다.");
 
@@ -633,7 +633,7 @@ class MemberControllerTest {
     @NullSource
     @EmptySource
     @DisplayName("PUT - /members/me/bio - success")
-    void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception { // todo: 작성하기!
+    void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest(invalidBioValue);
 
