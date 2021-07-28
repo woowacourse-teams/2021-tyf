@@ -1,12 +1,13 @@
 import styled, { css } from 'styled-components';
 
 import Template from '../../../components/@atom/Template/Template';
+import { Z_INDEX } from '../../../constants/style';
 
 export const popupStyle = css`
   position: absolute;
   width: 100vw;
   max-width: 100%;
-  z-index: 99999;
+  z-index: ${Z_INDEX.FOREGROUND};
   background: white;
   top: 0;
 `;
