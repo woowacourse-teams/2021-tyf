@@ -52,11 +52,6 @@ public class MemberService {
         return new PointResponse(member.getPoint());
     }
 
-    private Member findMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
     public List<CurationsResponse> findCurations() {
         return memberRepository.findCurations();
     }
@@ -72,6 +67,16 @@ public class MemberService {
     public void deleteProfile(LoginMember loginMember) {
         Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
+    }
+
+    public void updateBio(LoginMember loginMember, String bio) {
+        Member member = findMember(loginMember.getId());
+        member.updateBio(bio);
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     private void deleteProfile(Member member) {

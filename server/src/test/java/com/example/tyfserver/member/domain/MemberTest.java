@@ -1,13 +1,13 @@
 package com.example.tyfserver.member.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberTest {
 
@@ -33,5 +33,19 @@ public class MemberTest {
         member.addDonation(donation);
         //then
         assertThat(member.getPoint()).isEqualTo(1000L);
+    }
+
+    @Test
+    @DisplayName("updateBio 메서드 테스트")
+    public void updateBioTest() {
+        //given
+        Member member = testMember();
+        String bio = "안녕하세요! 로키입니다.";
+
+        //when
+        member.updateBio(bio);
+
+        //then
+        assertThat(member.getBio()).isEqualTo(bio);
     }
 }

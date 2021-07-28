@@ -14,6 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -30,8 +33,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -606,6 +608,49 @@ class MemberControllerTest {
                         preprocessResponse(prettyPrint())))
         ;
     }
+
+    @Test
+    @DisplayName("PUT - /members/me/bio - success")
+    void updateBio() throws Exception { // todo: 작성하기!
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest("안녕하세요! 로키입니다.");
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(document("updateBio",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @EmptySource
+    @DisplayName("PUT - /members/me/bio - success")
+    void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception { // todo: 작성하기!
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest(invalidBioValue);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("updateBioInvalidBioValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
 
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);

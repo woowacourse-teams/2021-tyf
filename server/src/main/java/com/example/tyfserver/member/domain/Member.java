@@ -17,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
+    private static final String DEFAULT_BIO = "제 페이지에 와주셔서 감사합니다!";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +28,9 @@ public class Member extends BaseTimeEntity {
 
     @Column(unique = true)
     private String nickname;
+
+    @Lob
+    private String bio = DEFAULT_BIO;
 
     private String profileImage;
 
@@ -53,7 +58,8 @@ public class Member extends BaseTimeEntity {
         this.profileImage = null;
     }
 
-    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type,
+                  String profileImage) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
@@ -70,6 +76,10 @@ public class Member extends BaseTimeEntity {
 
     private void addPoint(final long donationAmount) {
         this.point.add(donationAmount);
+    }
+
+    public void updateBio(String bio) {
+        this.bio = bio;
     }
 
     public long getPoint() {

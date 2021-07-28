@@ -181,4 +181,21 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.deleteProfile(new LoginMember(1L, "email")))
                 .isInstanceOf(S3FileNotFoundException.class);
     }
+
+    @Test
+    @DisplayName("updateBio test")
+    void updateBioTest() {
+        //given
+        LoginMember loginMember = new LoginMember(1L, "test@email.com");
+        String expectedBio = "안녕하세요! 로키입니다.";
+        Member givenMember = new Member("test@email.com", "로키", "roki", Oauth2Type.NAVER);
+        when(memberRepository.findById(loginMember.getId()))
+                .thenReturn(Optional.of(givenMember));
+
+        //when
+        memberService.updateBio(loginMember, expectedBio);
+
+        //then
+        assertThat(givenMember.getBio()).isEqualTo(expectedBio);
+    }
 }

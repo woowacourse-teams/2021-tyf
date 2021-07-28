@@ -3,6 +3,7 @@ package com.example.tyfserver.member.controller;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.dto.*;
+import com.example.tyfserver.member.exception.BioValidationRequestException;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
@@ -26,8 +27,9 @@ public class MemberController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/validate/pageName")
-    public ResponseEntity<Void> validatePageName(@Valid @RequestBody PageNameValidationRequest request,
-                                                 BindingResult result) {
+    public ResponseEntity<Void> validatePageName(
+            @Valid @RequestBody PageNameValidationRequest request,
+            BindingResult result) {
         if (result.hasErrors()) {
             throw new PageNameValidationRequestException();
         }
@@ -36,8 +38,9 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request,
-                                                 BindingResult result) {
+    public ResponseEntity<Void> validateNickname(
+            @Valid @RequestBody NicknameValidationRequest request,
+            BindingResult result) {
         if (result.hasErrors()) {
             throw new NicknameValidationRequestException();
         }
@@ -72,13 +75,27 @@ public class MemberController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.uploadProfile(multipartFile, loginMember));
+    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile,
+                                                   LoginMember loginMember) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(memberService.uploadProfile(multipartFile, loginMember));
     }
 
     @DeleteMapping("/profile")
     public ResponseEntity<Void> deleteProfile(LoginMember loginMember) {
         memberService.deleteProfile(loginMember);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/me/bio")
+    public ResponseEntity<Void> updateBio(LoginMember loginMember,
+                                          @Valid @RequestBody MemberBioUpdateRequest memberBioUpdateRequest,
+                                          BindingResult result) {
+        if (result.hasErrors()) {
+            throw new BioValidationRequestException();
+        }
+
+        memberService.updateBio(loginMember, memberBioUpdateRequest.getBio());
         return ResponseEntity.ok().build();
     }
 }
