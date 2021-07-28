@@ -18,6 +18,7 @@ import defaultUserProfile from '../../assets/images/default-user-profile.png';
 import { popupWindow } from '../../service/popup';
 import URLShareModal from '../../components/ShareModal/URLShareModal/URLShareModal';
 import useModal from '../../utils/useModal';
+import { donationUrlShare } from '../../service/share';
 
 const CreatorPage = () => {
   const history = useHistory();
@@ -33,6 +34,10 @@ const CreatorPage = () => {
       width: DONATION_POPUP.WIDTH,
       height: DONATION_POPUP.HEIGHT,
     });
+  };
+
+  const onMobileShare = () => {
+    donationUrlShare(nickname, creatorId);
   };
 
   const openShareURLModal = () => {
@@ -62,7 +67,7 @@ const CreatorPage = () => {
           ) : (
             <MobileCreatorInfo
               isAdmin={isAdmin}
-              shareUrl={openShareURLModal}
+              shareUrl={onMobileShare}
               popupDonationPage={popupDonationPage}
             />
           )}
