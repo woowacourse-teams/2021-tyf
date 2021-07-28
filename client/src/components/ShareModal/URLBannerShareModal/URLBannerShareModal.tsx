@@ -1,28 +1,26 @@
-import Button from '../@atom/Button/Button';
-import Textarea from '../@atom/Textarea/Textarea';
-import {
-  DisplayButtonContainer,
-  StyledModal,
-  DisplayButton,
-  SourceCodeContainer,
-  StyledSubTitle,
-  CloseButton,
-  PaletteContainer,
-  ColorSelectButton,
-} from './URLShareModal.styles';
-import DummyButton from '../../assets/images/dummy/button.png';
-import { UserInfo } from '../../types';
 import { MouseEvent } from 'react';
 
-export interface URLShareModalProps {
+import { UserInfo } from '../../../types';
+import DummyButton from '../../../assets/images/dummy/button.png';
+import Button from '../../@atom/Button/Button';
+import Textarea from '../../@atom/Textarea/Textarea';
+import {
+  CloseButton,
+  ColorSelectButton,
+  DisplayButton,
+  DisplayButtonContainer,
+  PaletteContainer,
+  SourceCodeContainer,
+  StyledModal,
+  StyledSubTitle,
+} from './URLBannerShareModal.styles';
+
+export interface URLBannerShareModalProps {
   userInfo: UserInfo;
   onClose: () => void;
 }
 
-// TODO: 색상버튼 값 바꿔야 됨
-// TODO: 색상 변경 버튼 클릭 시, 소스코드 및 이미지도 변경되어야함
-
-const URLShareModal = ({ userInfo, onClose }: URLShareModalProps) => {
+const URLBannerShareModal = ({ onClose, userInfo }: URLBannerShareModalProps) => {
   const sourceCode = `<a href="${window.location.origin}/creator/${userInfo.pageName}" target="_blank"><img height="36" style="border:0px;height:36px;" src="${DummyButton}" border="0" alt="thank you for button" /></a>`;
 
   const copySourceCode = () => {
@@ -34,12 +32,14 @@ const URLShareModal = ({ userInfo, onClose }: URLShareModalProps) => {
     currentTarget.select();
   };
 
+  // TODO: 색상버튼 값 바꿔야 됨
+  // TODO: 색상 변경 버튼 클릭 시, 소스코드 및 이미지도 변경되어야함
   const changeButtonColor = (color: string) => {
     alert(color);
   };
 
   return (
-    <StyledModal>
+    <StyledModal onClose={onClose}>
       <DisplayButtonContainer>
         <DisplayButton src={DummyButton} alt="" />
         <PaletteContainer>
@@ -60,4 +60,4 @@ const URLShareModal = ({ userInfo, onClose }: URLShareModalProps) => {
   );
 };
 
-export default URLShareModal;
+export default URLBannerShareModal;
