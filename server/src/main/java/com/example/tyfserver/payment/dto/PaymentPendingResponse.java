@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentSaveResponse {
+public class PaymentPendingResponse {
 
     private Long merchantUid;
 
-    public PaymentSaveResponse(Payment payment) {
+    public PaymentPendingResponse(Payment payment) {
         merchantUid = payment.getId();
     }
 }
