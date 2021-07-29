@@ -5,7 +5,6 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.IamPortPaymentInfo;
-import com.example.tyfserver.payment.dto.PaymentRequest;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,25 +24,58 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     private String impSecret;
 
     @Override
-    public PaymentInfo requestPaymentInfo(PaymentRequest paymentRequest) {
-        IamPortPaymentInfo.Response response = request(paymentRequest).getResponse();
-        return new PaymentInfo(
-                Long.parseLong(response.getMerchant_uid()),
-                PaymentStatus.valueOf(response.getStatus().toUpperCase()),
-                Long.parseLong(response.getAmount()),
-                response.getName(),
-                response.getImp_uid());
+    public PaymentInfo requestPaymentInfo(Long merchantUid) {
+        String accessToken = getAccessToken();
+        IamPortPaymentInfo.Response response = requestPaymentInfo(merchantUid, accessToken)
+                .getResponse();
+
+        return convertToPaymentInfo(response);
     }
 
-    private IamPortPaymentInfo request(PaymentRequest paymentRequest) {
-        String accessToken = getAccessToken();
-
+    private IamPortPaymentInfo requestPaymentInfo(Long merchantUid, String accessToken) {
         return ApiSender.send(
-                IAMPORT_API_URL + "/payments/" + paymentRequest.getImpUid(),
+                IAMPORT_API_URL + "/payments/find/" + merchantUid,
                 HttpMethod.POST,
                 paymentInfoRequest(accessToken),
                 IamPortPaymentInfo.class
         );
+    }
+
+    private HttpEntity<Void> paymentInfoRequest(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+
+        return new HttpEntity<>(headers);
+    }
+
+    @Override
+    public PaymentInfo requestPaymentCancel(Long merchantUid) {
+        String accessToken = getAccessToken();
+        IamPortPaymentInfo.Response response = requestPaymentCancel(merchantUid, accessToken)
+                .getResponse();
+
+        return convertToPaymentInfo(response);
+    }
+
+    private IamPortPaymentInfo requestPaymentCancel(Long merchantUid, String accessToken) {
+        return ApiSender.send(
+                IAMPORT_API_URL + "/payments/cancel",
+                HttpMethod.POST,
+                paymentCancelRequest(accessToken, merchantUid),
+                IamPortPaymentInfo.class
+        );
+    }
+
+    private HttpEntity<String> paymentCancelRequest(String accessToken, Long merchantUid) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("merchant_uid", merchantUid);
+
+        return new HttpEntity<>(jsonObject.toString(), headers);
     }
 
     private String getAccessToken() {
@@ -53,6 +85,15 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
                 accessTokenRequest()
         );
         return extractAccessToken(body);
+    }
+
+    private PaymentInfo convertToPaymentInfo(IamPortPaymentInfo.Response response) {
+        return new PaymentInfo(
+                Long.parseLong(response.getMerchant_uid()),
+                PaymentStatus.valueOf(response.getStatus().toUpperCase()),
+                Long.parseLong(response.getAmount()),
+                response.getName(),
+                response.getImp_uid());
     }
 
     private HttpEntity<String> accessTokenRequest() {
@@ -70,13 +111,5 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         return new JSONObject(accessTokenBody)
                 .getJSONObject("response")
                 .getString("access_token");
-    }
-
-    private HttpEntity<Void> paymentInfoRequest(String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
-
-        return new HttpEntity<>(headers);
     }
 }

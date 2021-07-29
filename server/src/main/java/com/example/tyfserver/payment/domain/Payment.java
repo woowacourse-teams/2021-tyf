@@ -1,7 +1,7 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
-import com.example.tyfserver.payment.exception.PaymentCancelRequestException;
+import com.example.tyfserver.payment.exception.PaymentCancelException;
 import com.example.tyfserver.payment.exception.PaymentRequestException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -72,7 +72,7 @@ public class Payment extends BaseTimeEntity {
     private void validatePaymentCancel(PaymentInfo paymentInfo) {
         if (!PaymentStatus.isCancelled(paymentInfo.getStatus())) {
             updateStatus(paymentInfo.getStatus());
-            throw new PaymentCancelRequestException();
+            throw new PaymentCancelException();
         }
 
         validatePaymentInfo(paymentInfo);
