@@ -27,9 +27,7 @@ public class PaymentService {
                 .orElseThrow(MemberNotFoundException::new);
 
         Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(), creator.getPageName());
-        paymentRepository.save(payment);
-
-        return new PaymentPendingResponse(payment);
+        return new PaymentPendingResponse(paymentRepository.save(payment));
         // todo: PaymentSaveResponse에 어떤 필드값들이 있으면 좋을까? (일단은 정말 필요한 값인 merchantUid만 추가!)
     }
 

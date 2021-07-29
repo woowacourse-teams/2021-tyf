@@ -14,14 +14,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.Arrays;
 
@@ -30,8 +38,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,8 +71,8 @@ class MemberControllerTest {
         doNothing().when(memberService).validatePageName(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/pageName")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("validatePageName",
@@ -84,8 +91,8 @@ class MemberControllerTest {
         doNothing().when(memberService).validatePageName(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/pageName")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PageNameValidationRequestException.ERROR_CODE))
                 .andDo(print())
@@ -105,8 +112,8 @@ class MemberControllerTest {
         doThrow(new DuplicatedPageNameException()).when(memberService).validatePageName(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/pageName")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DuplicatedPageNameException.ERROR_CODE))
                 .andDo(document("validatePageNameDuplicatedFailed",
@@ -119,14 +126,14 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - success")
     public void validateNickname() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("nickname");
+        NicknameRequest request = new NicknameRequest("nickname");
 
         //when
         doNothing().when(memberService).validateNickname(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/nickname")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("validateNickname",
                         preprocessRequest(prettyPrint()),
@@ -138,14 +145,14 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - 유효하지 않은 request")
     public void validateNicknameRequestFailed() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("!@#INVALID");
+        NicknameRequest request = new NicknameRequest("!@#INVALID");
 
         //when
         doNothing().when(memberService).validateNickname(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/nickname")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
                 .andDo(document("validateNicknameRequestFailed",
@@ -158,14 +165,14 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - 중복된 nickname")
     public void validateNicknameDuplicatedFailed() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("nickname");
+        NicknameRequest request = new NicknameRequest("nickname");
 
         //when
         doThrow(new DuplicatedNicknameException()).when(memberService).validateNickname(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/nickname")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DuplicatedNicknameException.ERROR_CODE))
                 .andDo(document("validateNicknameDuplicatedFailed",
@@ -183,7 +190,7 @@ class MemberControllerTest {
         when(memberService.findMember(Mockito.anyString())).thenReturn(response);
         //then
         mockMvc.perform(get("/members/pagename")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("email").value("email"))
                 .andExpect(jsonPath("nickname").value("nickname"))
@@ -202,7 +209,7 @@ class MemberControllerTest {
         doThrow(new MemberNotFoundException()).when(memberService).findMember(Mockito.anyString());
         //then
         mockMvc.perform(get("/members/pagename")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("memberInfoMemberNotFoundFailed",
@@ -221,7 +228,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("email").value("email"))
                 .andExpect(jsonPath("nickname").value("nickname"))
@@ -241,7 +248,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("memberDetailMemberNotFoundFailed",
@@ -258,7 +265,7 @@ class MemberControllerTest {
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("memberDetailHeaderNotFoundFailed",
@@ -275,7 +282,7 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("memberDetailInvalidTokenFailed",
@@ -294,7 +301,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me/point")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("point").value(1000L))
                 .andDo(document("memberPoint",
@@ -312,7 +319,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me/point")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("memberPointMemberNotFoundFailed",
@@ -329,7 +336,7 @@ class MemberControllerTest {
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me/point")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("memberPointHeaderNotFoundFailed",
@@ -346,7 +353,7 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me/point")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("memberPointInvalidTokenFailed",
@@ -366,7 +373,7 @@ class MemberControllerTest {
         );
         //then
         mockMvc.perform(get("/members/curations")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..nickname").exists())
                 .andExpect(jsonPath("$..donationAmount").exists())
@@ -389,8 +396,8 @@ class MemberControllerTest {
         doNothing().when(authenticationService).validateToken(Mockito.anyString());
         //then
         mockMvc.perform(post("/members/validate/token")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("validateToken",
                         preprocessRequest(prettyPrint()),
@@ -407,8 +414,8 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationService).validateToken(Mockito.anyString());
         //then
         mockMvc.perform(post("/members/validate/token")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("validateTokenInvalidTokenFailed",
@@ -431,9 +438,9 @@ class MemberControllerTest {
                 .thenReturn(new ProfileResponse(url));
 
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("profileUrl").value(url))
                 .andDo(document("profile",
                         preprocessRequest(prettyPrint()),
@@ -453,7 +460,7 @@ class MemberControllerTest {
         doThrow(new S3FileNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
 
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
@@ -475,7 +482,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         doThrow(new MemberNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
@@ -494,7 +501,7 @@ class MemberControllerTest {
         //when
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
@@ -514,7 +521,7 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
 
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
@@ -607,10 +614,116 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("PUT - /members/me/bio - success")
+    void updateBio() throws Exception {
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest("안녕하세요! 로키입니다.");
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(document("updateBio",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "       "})
+    @DisplayName("PUT - /members/me/bio - invalid bio")
+    void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest(invalidBioValue);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(BioValidationRequestException.ERROR_CODE))
+                .andDo(document("updateBioInvalidBioValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "로키", "로키1", "로1키", "1로키"
+    })
+    @DisplayName("PUT - /me/nick-name - success")
+    void updateNickName(String validNickName) throws Exception {
+        //given
+        NicknameRequest request = new NicknameRequest(validNickName);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(document("updateNickName",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {
+            "로", "_로키", "로키_", "_로키_", "-로키", "로키-", " 로키", "로키 ", " 로키 ", "   "
+    })
+    @DisplayName("PUT - /me/nick-name - invalid nickName")
+    void updateNickNameInvalidNickNameValueRequestFailed(String invalidNickName) throws Exception {
+        //given
+        NicknameRequest request = new NicknameRequest(invalidNickName);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
+                .andDo(document("updateNickNameInvalidNickNameValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(new LoginMember(1L, "email"));
+    }
+
+    private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
+        MockMultipartHttpServletRequestBuilder putRequest = MockMvcRequestBuilders.multipart(url);
+
+        putRequest.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        return putRequest;
+
     }
 }

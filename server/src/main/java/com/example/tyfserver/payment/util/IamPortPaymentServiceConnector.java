@@ -5,6 +5,7 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.IamPortPaymentInfo;
+import com.example.tyfserver.payment.dto.PaymentRequest;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Component
 public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
+    private static final String MODULE_NAME = "아임포트";
     private static final String IAMPORT_API_URL = "https://api.iamport.kr";
 
     @Value("${iamport.rest_api_key}")
@@ -95,7 +97,8 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
                 PaymentStatus.valueOf(response.getStatus().toUpperCase()),
                 Long.parseLong(response.getAmount()),
                 response.getName(),
-                response.getImp_uid());
+                response.getImp_uid(),
+                MODULE_NAME);
     }
 
     private HttpEntity<String> accessTokenRequest() {

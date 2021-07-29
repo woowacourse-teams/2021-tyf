@@ -1,7 +1,6 @@
 package com.example.tyfserver.payment.domain;
 
-import com.example.tyfserver.payment.exception.PaymentCancelException;
-import com.example.tyfserver.payment.exception.PaymentRequestException;
+import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,6 +23,7 @@ class PaymentTest {
     private static final String PAGE_NAME = "test";
     private static final String IMP_UID = "test_imp_uid";
     private static final String ERROR_CODE = "errorCode";
+    private static final String MODULE = "테스트모듈";
 
     public static Payment testPayment() {
         return new Payment(MERCHANT_UID, AMOUNT, "test@test.com", PAGE_NAME);
@@ -33,7 +33,7 @@ class PaymentTest {
     @DisplayName("결제 정보 유효성 검사 통과 시, 결제가 완료된다.")
     void testComplete() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -48,13 +48,13 @@ class PaymentTest {
     @MethodSource("testCompleteNotPaid_source")
     void testCompleteNotPaid(PaymentStatus status) {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
         //then
         assertThatThrownBy(() -> payment.complete(paymentInfo))
-                .isExactlyInstanceOf(PaymentRequestException.class)
+                .isExactlyInstanceOf(IllegalPaymentInfoException.class)
                 .extracting(ERROR_CODE).isEqualTo(ERROR_CODE_NOT_PAID);
 
         assertThat(payment.getStatus()).isEqualTo(status);
@@ -74,13 +74,13 @@ class PaymentTest {
     @Test
     void testCompleteWhenIdDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(INVALID_MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(INVALID_MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
         //then
         assertThatThrownBy(() -> payment.complete(paymentInfo))
-                .isExactlyInstanceOf(PaymentRequestException.class)
+                .isExactlyInstanceOf(IllegalPaymentInfoException.class)
                 .extracting(ERROR_CODE).isEqualTo(ERROR_CODE_INVALID_MERCHANT_ID);
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.INVALID);
@@ -90,13 +90,13 @@ class PaymentTest {
     @Test
     void testCompleteWhenAmountDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, 10000000L, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, 10000000L, PAGE_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
         //then
         assertThatThrownBy(() -> payment.complete(paymentInfo))
-                .isExactlyInstanceOf(PaymentRequestException.class)
+                .isExactlyInstanceOf(IllegalPaymentInfoException.class)
                 .extracting(ERROR_CODE).isEqualTo(ERROR_CODE_INVALID_AMOUNT);
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.INVALID);
@@ -106,13 +106,13 @@ class PaymentTest {
     @Test
     void testCompleteWhenPageNameDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, "fake", IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, "fake", IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
         //then
         assertThatThrownBy(() -> payment.complete(paymentInfo))
-                .isExactlyInstanceOf(PaymentRequestException.class)
+                .isExactlyInstanceOf(IllegalPaymentInfoException.class)
                 .extracting(ERROR_CODE).isEqualTo(ERROR_INVALID_CREATOR);
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.INVALID);
@@ -122,7 +122,7 @@ class PaymentTest {
     @DisplayName("결제 정보 환불 유효성 검사 통과 시, 결제가 환불된다.")
     void testCancel() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.CANCELLED, AMOUNT, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.CANCELLED, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -137,13 +137,13 @@ class PaymentTest {
     @MethodSource("testCancelNotCancelled_source")
     void testCancelNotCancelled(PaymentStatus status) {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
         //then
         assertThatThrownBy(() -> payment.cancel(paymentInfo))
-                .isExactlyInstanceOf(PaymentCancelException.class);
+                .isExactlyInstanceOf(IllegalPaymentInfoException.class);
 
         assertThat(payment.getStatus()).isEqualTo(status);
     }
