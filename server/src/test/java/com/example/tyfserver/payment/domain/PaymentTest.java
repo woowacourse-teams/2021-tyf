@@ -13,7 +13,8 @@ class PaymentTest {
     @DisplayName("결제 정보 유효성 검사 통과 시, 결제가 완료된다.")
     void testComplete() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.PAID, 1000L, "test", "test");
+        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.PAID, 1000L,
+                "test", "test", "테스트모듈");
         Payment payment = new Payment(1L,1000L, "test@test.com", "test");
 
         //when
@@ -27,7 +28,8 @@ class PaymentTest {
     @Test
     void testCompleteNotPaid() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.CANCELLED, 1000L, "test", "test");
+        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.CANCELLED, 1000L,
+                "test", "test", "테스트모듈");
         Payment payment = new Payment(1L,1000L, "test@test.com", "test");
 
         //when
@@ -43,7 +45,8 @@ class PaymentTest {
     @Test
     void testCompleteWhenIdDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(2L, PaymentStatus.PAID, 1000L, "test", "test");
+        PaymentInfo paymentInfo = new PaymentInfo(2L, PaymentStatus.PAID, 1000L,
+                "test", "test", "테스트모듈");
         Payment payment = new Payment(1L,1000L, "test@test.com", "test");
 
         //when
@@ -59,7 +62,8 @@ class PaymentTest {
     @Test
     void testCompleteWhenAmountDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.PAID, 10000000L, "test", "test");
+        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.PAID, 10000000L,
+                "test", "test", "테스트모듈");
         Payment payment = new Payment(1L,1000L, "test@test.com", "test");
 
         //when
@@ -75,7 +79,8 @@ class PaymentTest {
     @Test
     void testCompleteWhenPageNameDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.PAID, 1000L, "fake", "test");
+        PaymentInfo paymentInfo = new PaymentInfo(1L, PaymentStatus.PAID, 1000L,
+                "fake", "test", "테스트모듈");
         Payment payment = new Payment(1L,1000L, "test@test.com", "test");
 
         //when

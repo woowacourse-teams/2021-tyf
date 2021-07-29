@@ -9,6 +9,7 @@ import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.PaymentRequest;
 import com.example.tyfserver.payment.dto.PaymentSaveRequest;
 import com.example.tyfserver.payment.dto.PaymentSaveResponse;
+import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentRequestException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.assertj.core.api.Assertions;
@@ -68,7 +69,7 @@ class PaymentServiceTest {
         PaymentRequest paymentRequest = new PaymentRequest("impuid", 1L);
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(PaymentRequest.class)))
                 .thenReturn(new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, 1000L,
-                        "pagename",  paymentRequest.getImpUid()));
+                        "pagename",  paymentRequest.getImpUid(), "테스트모듈"));
 
         when(paymentRepository.findById(anyLong()))
                 .thenReturn(
@@ -86,7 +87,7 @@ class PaymentServiceTest {
         //given
         PaymentRequest paymentRequest = new PaymentRequest("impuid", 1L);
         PaymentInfo paymentInfo = new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.CANCELLED, 1000L,
-                "pageName", paymentRequest.getImpUid());
+                "pageName", paymentRequest.getImpUid(), "테스트모듈");
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(PaymentRequest.class)))
                 .thenReturn(paymentInfo);
@@ -99,8 +100,8 @@ class PaymentServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> {
              paymentService.completePayment(paymentRequest);
-        }).isInstanceOf(PaymentRequestException.class)
-        .hasFieldOrPropertyWithValue("errorCode", PaymentRequestException.ERROR_CODE_NOT_PAID);
+        }).isInstanceOf(IllegalPaymentInfoException.class)
+        .hasFieldOrPropertyWithValue("errorCode", IllegalPaymentInfoException.ERROR_CODE_NOT_PAID);
     }
 
     @DisplayName("저장된 결제 ID와 외부 전달받은 결제 정보 ID가 다를 경우 결제승인 실패한다.")
@@ -109,7 +110,7 @@ class PaymentServiceTest {
         //given
         PaymentRequest paymentRequest = new PaymentRequest("impuid", 12345L);
         PaymentInfo paymentInfo = new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, 1000L,
-                "pageName", paymentRequest.getImpUid());
+                "pageName", paymentRequest.getImpUid(), "테스트모듈");
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(PaymentRequest.class)))
                 .thenReturn(paymentInfo);
@@ -122,8 +123,8 @@ class PaymentServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> {
             paymentService.completePayment(paymentRequest);
-        }).isInstanceOf(PaymentRequestException.class)
-                .hasFieldOrPropertyWithValue("errorCode", PaymentRequestException.ERROR_CODE_INVALID_MERCHANT_ID);
+        }).isInstanceOf(IllegalPaymentInfoException.class)
+                .hasFieldOrPropertyWithValue("errorCode", IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID);
     }
 
 
@@ -133,7 +134,7 @@ class PaymentServiceTest {
         //given
         PaymentRequest paymentRequest = new PaymentRequest("impuid", 1L);
         PaymentInfo paymentInfo = new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, 1_000_000L,
-                "pageName", paymentRequest.getImpUid());
+                "pageName", paymentRequest.getImpUid(), "테스트모듈");
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(PaymentRequest.class)))
                 .thenReturn(paymentInfo);
@@ -146,8 +147,8 @@ class PaymentServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> {
             paymentService.completePayment(paymentRequest);
-        }).isInstanceOf(PaymentRequestException.class)
-                .hasFieldOrPropertyWithValue("errorCode", PaymentRequestException.ERROR_CODE_INVALID_AMOUNT);
+        }).isInstanceOf(IllegalPaymentInfoException.class)
+                .hasFieldOrPropertyWithValue("errorCode", IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT);
     }
 
     @DisplayName("저장된 결제 PageName 정보와 전달받 PageName 정보가 다를 경우 결제승인 실패한다.")
@@ -156,7 +157,7 @@ class PaymentServiceTest {
         //given
         PaymentRequest paymentRequest = new PaymentRequest("impuid", 1L);
         PaymentInfo paymentInfo = new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, 1000L,
-                "pageName", paymentRequest.getImpUid());
+                "pageName", paymentRequest.getImpUid(), "테스트모듈");
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(PaymentRequest.class)))
                 .thenReturn(paymentInfo);
@@ -169,7 +170,7 @@ class PaymentServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> {
             paymentService.completePayment(paymentRequest);
-        }).isInstanceOf(PaymentRequestException.class)
-                .hasFieldOrPropertyWithValue("errorCode", PaymentRequestException.ERROR_INVALID_CREATOR);
+        }).isInstanceOf(IllegalPaymentInfoException.class)
+                .hasFieldOrPropertyWithValue("errorCode", IllegalPaymentInfoException.ERROR_INVALID_CREATOR);
     }
 }
