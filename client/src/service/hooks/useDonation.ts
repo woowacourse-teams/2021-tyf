@@ -11,7 +11,7 @@ import useCreator from './useCreator';
 const useDonation = (creatorId: CreatorId) => {
   const history = useHistory();
   const [donation, setDonation] = useRecoilState(donationState);
-  const { pageName, nickname } = useCreator(creatorId);
+  const { pageName } = useCreator(creatorId);
 
   const donate = async (amount: number) => {
     const { merchantUid } = await requestPayment({ amount, email: '', pageName });

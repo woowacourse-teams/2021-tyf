@@ -13,7 +13,7 @@ interface Props {
   nickname: string;
   isAdmin: boolean;
   shareUrl: () => void;
-  popupDonationPage: () => void;
+  popupDonationAmountPage: () => void;
 }
 
 const DesktopCreatorInfo = ({
@@ -21,7 +21,7 @@ const DesktopCreatorInfo = ({
   nickname,
   isAdmin,
   shareUrl,
-  popupDonationPage,
+  popupDonationAmountPage,
 }: Props) => {
   return (
     <StyledCreatorInfo>
@@ -32,7 +32,7 @@ const DesktopCreatorInfo = ({
           {isAdmin ? (
             <StyledButton onClick={shareUrl}>내 페이지 공유하기</StyledButton>
           ) : (
-            <StyledButton onClick={popupDonationPage}>후원하기</StyledButton>
+            <StyledButton onClick={popupDonationAmountPage}>후원하기</StyledButton>
           )}
         </StyledInfo>
 

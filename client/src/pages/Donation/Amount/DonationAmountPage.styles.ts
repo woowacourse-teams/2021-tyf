@@ -12,7 +12,7 @@ export const popupStyle = css`
   top: 0;
 `;
 
-export const DonationPageTemplate = styled(Template)`
+export const DonationAmountPageTemplate = styled(Template)`
   ${popupStyle}
 
   display: flex;

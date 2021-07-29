@@ -3,24 +3,24 @@ import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import Profile from '../../../components/Creator/Profile/Profile';
-import DonationForm from '../../../components/Donation/DonationForm/DonationForm';
+import DonationAmountForm from '../../../components/Donation/AmountForm/DonationAmountForm';
 import { popupWindow } from '../../../service/popup';
-import { DonationPageTemplate } from './DonationPage.styles';
+import { DonationAmountPageTemplate } from './DonationAmountPage.styles';
 
-const DonationPage = () => {
+const DonationAmountPage = () => {
   const { creatorId } = useParams<ParamTypes>();
 
   return (
-    <DonationPageTemplate>
+    <DonationAmountPageTemplate>
       <FixedLogo onClick={() => popupWindow('/')} />
       <section>
         <Profile />
       </section>
       <section>
-        <DonationForm creatorId={creatorId} />
+        <DonationAmountForm creatorId={creatorId} />
       </section>
-    </DonationPageTemplate>
+    </DonationAmountPageTemplate>
   );
 };
 
-export default DonationPage;
+export default DonationAmountPage;

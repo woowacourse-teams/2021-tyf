@@ -29,7 +29,7 @@ const CreatorPage = () => {
   const { windowWidth } = useWindowResize();
   const isAdmin = userInfo?.pageName === creatorId;
 
-  const popupDonationPage = () => {
+  const popupDonationAmountPage = () => {
     popupWindow(`/donation/${creatorId}`, {
       width: DONATION_POPUP.WIDTH,
       height: DONATION_POPUP.HEIGHT,
@@ -62,13 +62,13 @@ const CreatorPage = () => {
               nickname={nickname}
               isAdmin={isAdmin}
               shareUrl={openShareURLModal}
-              popupDonationPage={popupDonationPage}
+              popupDonationAmountPage={popupDonationAmountPage}
             />
           ) : (
             <MobileCreatorInfo
               isAdmin={isAdmin}
               shareUrl={onMobileShare}
-              popupDonationPage={popupDonationPage}
+              popupDonationAmountPage={popupDonationAmountPage}
             />
           )}
         </Suspense>

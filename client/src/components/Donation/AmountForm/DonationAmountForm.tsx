@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 
 import useDonation from '../../../service/hooks/useDonation';
-import useDonationForm from '../../../service/hooks/useDonationForm';
+import useDonationAmountForm from '../../../service/hooks/useDonationAmountForm';
 import { CreatorId } from '../../../types';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Button from '../../@atom/Button/Button';
@@ -11,16 +11,16 @@ import {
   InputLabel,
   MoneyAddButton,
   MoneyInput,
-  StyledDonationForm,
-} from './DonationForm.styles';
+  StyledDonationAmountForm,
+} from './DonationAmountForm.styles';
 
-export interface DonationFormProps {
+export interface DonationAmountFormProps {
   creatorId: CreatorId;
 }
 
-const DonationForm = ({ creatorId }: DonationFormProps) => {
+const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
   const { donationAmount, addDonationAmount, setDonationAmount, isDonationAmountInValidRange } =
-    useDonationForm();
+    useDonationAmountForm();
   const { donate } = useDonation(creatorId);
 
   const onDonate = (event: FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,7 @@ const DonationForm = ({ creatorId }: DonationFormProps) => {
   };
 
   return (
-    <StyledDonationForm onSubmit={onDonate}>
+    <StyledDonationAmountForm onSubmit={onDonate}>
       <SubTitle>후원할 금액을 입력해주세요! 🎉</SubTitle>
       <InputLabel>
         <MoneyInput
@@ -51,8 +51,8 @@ const DonationForm = ({ creatorId }: DonationFormProps) => {
         </MoneyAddButton>
       </ButtonContainer>
       <Button disabled={!isDonationAmountInValidRange}>후원하기</Button>
-    </StyledDonationForm>
+    </StyledDonationAmountForm>
   );
 };
 
-export default DonationForm;
+export default DonationAmountForm;

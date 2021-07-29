@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import Template from '../../../components/@atom/Template/Template';
-import { popupStyle } from '../Donation/DonationPage.styles';
+import { popupStyle } from '../Amount/DonationAmountPage.styles';
 
 export const StyledTemplate = styled(Template)`
   ${popupStyle}

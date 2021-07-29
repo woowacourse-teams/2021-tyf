@@ -4,7 +4,7 @@ import Container from '../../@atom/Container/Container';
 import Input from '../../@atom/Input/Input';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
 
-export const StyledDonationForm = styled.form`
+export const StyledDonationAmountForm = styled.form`
   width: 100%;
 `;
 

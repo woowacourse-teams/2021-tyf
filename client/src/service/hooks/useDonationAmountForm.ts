@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MIN_DONATION_AMOUNT } from '../../constants/donation';
 
-const useDonationForm = () => {
+const useDonationAmountForm = () => {
   const [donationAmount, _setDonationAmount] = useState('');
 
   const addDonationAmount = (amount: number) => {
@@ -28,4 +28,4 @@ const useDonationForm = () => {
   };
 };
 
-export default useDonationForm;
+export default useDonationAmountForm;
