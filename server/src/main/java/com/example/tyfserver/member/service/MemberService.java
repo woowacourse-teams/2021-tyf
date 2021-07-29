@@ -30,7 +30,7 @@ public class MemberService {
         }
     }
 
-    public void validateNickname(NicknameValidationRequest request) {
+    public void validateNickname(NicknameRequest request) {
         if (memberRepository.existsByNickname(request.getNickname())) {
             throw new DuplicatedNicknameException();
         }
@@ -52,11 +52,6 @@ public class MemberService {
         return new PointResponse(member.getPoint());
     }
 
-    private Member findMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
     public List<CurationsResponse> findCurations() {
         return memberRepository.findCurations();
     }
@@ -72,6 +67,21 @@ public class MemberService {
     public void deleteProfile(LoginMember loginMember) {
         Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
+    }
+
+    public void updateBio(LoginMember loginMember, String bio) {
+        Member member = findMember(loginMember.getId());
+        member.updateBio(bio);
+    }
+
+    public void updateNickName(LoginMember loginMember, String nickName) {
+        Member member = findMember(loginMember.getId());
+        member.updateNickName(nickName);
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     private void deleteProfile(Member member) {

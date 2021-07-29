@@ -3,6 +3,7 @@ package com.example.tyfserver.member.controller;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.dto.*;
+import com.example.tyfserver.member.exception.BioValidationRequestException;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
@@ -36,7 +37,7 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request,
+    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameRequest request,
                                                  BindingResult result) {
         if (result.hasErrors()) {
             throw new NicknameValidationRequestException();
@@ -73,7 +74,8 @@ public class MemberController {
 
     @PostMapping("/profile")
     public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.uploadProfile(multipartFile, loginMember));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(memberService.uploadProfile(multipartFile, loginMember));
     }
 
     @DeleteMapping("/profile")
@@ -81,4 +83,29 @@ public class MemberController {
         memberService.deleteProfile(loginMember);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/me/bio")
+    public ResponseEntity<Void> updateBio(LoginMember loginMember,
+                                          @Valid @RequestBody MemberBioUpdateRequest memberBioUpdateRequest,
+                                          BindingResult result) {
+        if (result.hasErrors()) {
+            throw new BioValidationRequestException();
+        }
+
+        memberService.updateBio(loginMember, memberBioUpdateRequest.getBio());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/me/nickname")
+    public ResponseEntity<Void> updateNickname(LoginMember loginMember,
+                                               @Valid @RequestBody NicknameRequest nicknameRequest,
+                                               BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NicknameValidationRequestException();
+        }
+
+        memberService.updateNickName(loginMember, nicknameRequest.getNickname());
+        return ResponseEntity.ok().build();
+    }
+
 }
