@@ -46,17 +46,13 @@ public class PaymentService {
     }
 
     public PaymentCancelResponse cancelPayment(PaymentCancelRequest paymentCancelRequest) {
-        Long merchantUid = paymentServiceConnector
-                .requestPaymentInfo(paymentCancelRequest.getMerchantUid())
-                .getMerchantUid();
-
         Payment payment = paymentRepository
-                .findById(merchantUid)
+                .findById(paymentCancelRequest.getMerchantUid())
                 .orElseThrow(RuntimeException::new);
 
-        PaymentInfo paymentInfo = paymentServiceConnector.requestPaymentCancel(payment.getId());
+        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getId());
 
-        payment.cancel(paymentInfo);
+        payment.cancel(paymentCancelInfo);
         return new PaymentCancelResponse(payment.getId());
     }
 }
