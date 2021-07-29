@@ -2,7 +2,6 @@ package com.example.tyfserver.common.util;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.util.Base64;
 import com.example.tyfserver.common.exception.S3FileNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

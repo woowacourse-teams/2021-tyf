@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.payment.exception.PaymentCancelRequestException;
 import com.example.tyfserver.payment.exception.PaymentRequestException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,14 +44,14 @@ public class Payment extends BaseTimeEntity {
         this(null, amount, email, pageName);
     }
 
+    public void updateStatus(PaymentStatus paymentStatus) {
+        this.status = paymentStatus;
+    }
+
     public void complete(PaymentInfo paymentInfo) {
         validatePaymentComplete(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
-    }
-
-    public void updateStatus(PaymentStatus paymentStatus) {
-        this.status = paymentStatus;
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
@@ -62,8 +63,23 @@ public class Payment extends BaseTimeEntity {
         validatePaymentInfo(paymentInfo);
     }
 
+    public void cancel(PaymentInfo paymentInfo) {
+        validatePaymentCancel(paymentInfo);
+        this.impUid = paymentInfo.getImpUid();
+        this.status = PaymentStatus.CANCELLED;
+    }
+
+    private void validatePaymentCancel(PaymentInfo paymentInfo) {
+        if (!PaymentStatus.isCancelled(paymentInfo.getStatus())) {
+            updateStatus(paymentInfo.getStatus());
+            throw new PaymentCancelRequestException();
+        }
+
+        validatePaymentInfo(paymentInfo);
+    }
+
     private void validatePaymentInfo(PaymentInfo paymentInfo) {
-        if (!id.equals(paymentInfo.getMerchantId())) {
+        if (!id.equals(paymentInfo.getMerchantUid())) {
             updateStatus(PaymentStatus.INVALID);
             throw new PaymentRequestException(ERROR_CODE_INVALID_MERCHANT_ID);
         }
