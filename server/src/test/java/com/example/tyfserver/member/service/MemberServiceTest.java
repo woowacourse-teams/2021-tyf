@@ -61,7 +61,7 @@ class MemberServiceTest {
     @DisplayName("nickNameRequest validate test")
     public void validateNickname() {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("중복됨");
+        NicknameRequest request = new NicknameRequest("중복됨");
         //when
         when(memberRepository.existsByNickname(request.getNickname()))
                 .thenReturn(true);

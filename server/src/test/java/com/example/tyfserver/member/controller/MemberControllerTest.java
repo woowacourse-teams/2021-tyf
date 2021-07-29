@@ -122,7 +122,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - success")
     public void validateNickname() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("nickname");
+        NicknameRequest request = new NicknameRequest("nickname");
 
         //when
         doNothing().when(memberService).validateNickname(Mockito.any());
@@ -141,7 +141,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - 유효하지 않은 request")
     public void validateNicknameRequestFailed() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("!@#INVALID");
+        NicknameRequest request = new NicknameRequest("!@#INVALID");
 
         //when
         doNothing().when(memberService).validateNickname(Mockito.any());
@@ -161,7 +161,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - 중복된 nickname")
     public void validateNicknameDuplicatedFailed() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("nickname");
+        NicknameRequest request = new NicknameRequest("nickname");
 
         //when
         doThrow(new DuplicatedNicknameException()).when(memberService).validateNickname(Mockito.any());
@@ -659,7 +659,7 @@ class MemberControllerTest {
     @DisplayName("PUT - /me/nick-name - success")
     void updateNickName(String validNickName) throws Exception {
         //given
-        MemberNickNameUpdateRequest request = new MemberNickNameUpdateRequest(validNickName);
+        NicknameRequest request = new NicknameRequest(validNickName);
 
         //when
         validInterceptorAndArgumentResolverMocking();
@@ -684,13 +684,13 @@ class MemberControllerTest {
     @DisplayName("PUT - /me/nick-name - invalid nickName")
     void updateNickNameInvalidNickNameValueRequestFailed(String invalidNickName) throws Exception {
         //given
-        MemberNickNameUpdateRequest request = new MemberNickNameUpdateRequest(invalidNickName);
+        NicknameRequest request = new NicknameRequest(invalidNickName);
 
         //when
         validInterceptorAndArgumentResolverMocking();
 
         //then
-        mockMvc.perform(put("/members/me/nick-name")
+        mockMvc.perform(put("/members/me/nickname")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())

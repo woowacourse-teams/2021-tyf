@@ -37,7 +37,7 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request,
+    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameRequest request,
                                                  BindingResult result) {
         if (result.hasErrors()) {
             throw new NicknameValidationRequestException();
@@ -96,15 +96,15 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/me/nick-name")
+    @PutMapping("/me/nickname")
     public ResponseEntity<Void> updateNickName(LoginMember loginMember,
-                                               @Valid @RequestBody MemberNickNameUpdateRequest memberNickNameUpdateRequest,
+                                               @Valid @RequestBody NicknameRequest nicknameRequest,
                                                BindingResult result) {
         if (result.hasErrors()) {
             throw new NicknameValidationRequestException();
         }
 
-        memberService.updateNickName(loginMember, memberNickNameUpdateRequest.getNickName());
+        memberService.updateNickName(loginMember, nicknameRequest.getNickname());
         return ResponseEntity.ok().build();
     }
 

@@ -10,14 +10,14 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NicknameValidationRequest {
+public class NicknameRequest {
 
     @NotBlank
     @Length(min = 2, max = 20)
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]+$")
     private String nickname;
 
-    public NicknameValidationRequest(String nickname) {
+    public NicknameRequest(String nickname) {
         this.nickname = nickname;
     }
 }

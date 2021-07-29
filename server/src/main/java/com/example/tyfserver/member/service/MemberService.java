@@ -30,7 +30,7 @@ public class MemberService {
         }
     }
 
-    public void validateNickname(NicknameValidationRequest request) {
+    public void validateNickname(NicknameRequest request) {
         if (memberRepository.existsByNickname(request.getNickname())) {
             throw new DuplicatedNicknameException();
         }
