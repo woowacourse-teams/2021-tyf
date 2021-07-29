@@ -73,7 +73,7 @@ public class MemberController {
 
     @PutMapping("/profile")
     public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.uploadProfile(multipartFile, loginMember));
+        return ResponseEntity.ok((memberService.uploadProfile(multipartFile, loginMember)));
     }
 
     @DeleteMapping("/profile")

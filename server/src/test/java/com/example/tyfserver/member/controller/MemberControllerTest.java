@@ -19,9 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.Arrays;
 
@@ -431,9 +436,9 @@ class MemberControllerTest {
                 .thenReturn(new ProfileResponse(url));
 
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("profileUrl").value(url))
                 .andDo(document("profile",
                         preprocessRequest(prettyPrint()),
@@ -453,7 +458,7 @@ class MemberControllerTest {
         doThrow(new S3FileNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
 
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
@@ -475,7 +480,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         doThrow(new MemberNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
@@ -494,7 +499,7 @@ class MemberControllerTest {
         //when
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
@@ -514,7 +519,7 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
 
         //then
-        mockMvc.perform(multipart("/members/profile")
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
@@ -612,5 +617,20 @@ class MemberControllerTest {
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(new LoginMember(1L, "email"));
+    }
+
+    private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
+        MockMultipartHttpServletRequestBuilder putRequest = MockMvcRequestBuilders.multipart(url);
+
+        putRequest.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        return putRequest;
+
     }
 }
