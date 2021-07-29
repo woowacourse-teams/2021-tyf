@@ -58,8 +58,7 @@ public class Member extends BaseTimeEntity {
         this.profileImage = null;
     }
 
-    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type,
-                  String profileImage) {
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;

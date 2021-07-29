@@ -27,9 +27,8 @@ public class MemberController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/validate/pageName")
-    public ResponseEntity<Void> validatePageName(
-            @Valid @RequestBody PageNameValidationRequest request,
-            BindingResult result) {
+    public ResponseEntity<Void> validatePageName(@Valid @RequestBody PageNameValidationRequest request,
+                                                 BindingResult result) {
         if (result.hasErrors()) {
             throw new PageNameValidationRequestException();
         }
@@ -38,9 +37,8 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickname(
-            @Valid @RequestBody NicknameValidationRequest request,
-            BindingResult result) {
+    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request,
+                                                 BindingResult result) {
         if (result.hasErrors()) {
             throw new NicknameValidationRequestException();
         }
@@ -75,8 +73,7 @@ public class MemberController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile,
-                                                   LoginMember loginMember) {
+    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(memberService.uploadProfile(multipartFile, loginMember));
     }
