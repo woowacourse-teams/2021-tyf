@@ -29,9 +29,7 @@ public class PaymentService {
 
         Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(),
                 creator.getPageName());
-        Payment savedPayment = paymentRepository.save(payment);
-
-        return new PaymentSaveResponse(savedPayment);
+        return new PaymentSaveResponse(paymentRepository.save(payment));
     }
 
     public Payment completePayment(PaymentRequest paymentRequest) {
