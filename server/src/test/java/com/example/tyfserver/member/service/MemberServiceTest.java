@@ -61,7 +61,7 @@ class MemberServiceTest {
     @DisplayName("nickNameRequest validate test")
     public void validateNickname() {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("중복됨");
+        NicknameRequest request = new NicknameRequest("중복됨");
         //when
         when(memberRepository.existsByNickname(request.getNickname()))
                 .thenReturn(true);
@@ -180,5 +180,39 @@ class MemberServiceTest {
         //then
         assertThatThrownBy(() -> memberService.deleteProfile(new LoginMember(1L, "email")))
                 .isInstanceOf(S3FileNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("updateBio test")
+    void updateBioTest() {
+        //given
+        LoginMember loginMember = new LoginMember(1L, "test@email.com");
+        String expectedBio = "안녕하세요! 로키입니다.";
+        Member givenMember = new Member("test@email.com", "로키", "roki", Oauth2Type.NAVER);
+        when(memberRepository.findById(loginMember.getId()))
+                .thenReturn(Optional.of(givenMember));
+
+        //when
+        memberService.updateBio(loginMember, expectedBio);
+
+        //then
+        assertThat(givenMember.getBio()).isEqualTo(expectedBio);
+    }
+
+    @Test
+    @DisplayName("updateNickName test")
+    void updateNickNameTest() {
+        //given
+        LoginMember loginMember = new LoginMember(1L, "test@email.com");
+        String expectedNickName = "로키";
+        Member givenMember = MemberTest.testMember();
+        when(memberRepository.findById(loginMember.getId()))
+                .thenReturn(Optional.of(givenMember));
+
+        //when
+        memberService.updateNickName(loginMember, expectedNickName);
+
+        //then
+        assertThat(givenMember.getNickname()).isEqualTo(expectedNickName);
     }
 }

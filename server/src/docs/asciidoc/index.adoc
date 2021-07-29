@@ -152,6 +152,27 @@ include::{snippets}/deleteProfileInvalidTokenFailed/http-response.adoc[]
 include::{snippets}/deleteProfileMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/deleteProfileMemberNotFoundFailed/http-response.adoc[]
+=== 자기 소개 수정 - 성공
+==== Request
+include::{snippets}/updateBio/http-request.adoc[]
+==== Response
+include::{snippets}/updateBio/http-response.adoc[]
+=== 자기 소개 수정 - 유효하지 않은 Request
+==== Request
+include::{snippets}/updateBioInvalidBioValueRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/updateBioInvalidBioValueRequestFailed/http-response.adoc[]
+=== 닉네임 수정 - 성공
+==== Request
+include::{snippets}/updateNickName/http-request.adoc[]
+==== Response
+include::{snippets}/updateNickName/http-response.adoc[]
+=== 닉네임 수정 - 유효하지 않은 Request
+==== Request
+include::{snippets}/updateNickNameInvalidNickNameValueRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/updateNickNameInvalidNickNameValueRequestFailed/http-response.adoc[]
+
 == Banners (배너)
 === 배너 이미지 목록 조회 - 성공
 ==== Request

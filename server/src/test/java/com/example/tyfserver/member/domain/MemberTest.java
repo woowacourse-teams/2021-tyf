@@ -34,4 +34,32 @@ public class MemberTest {
         //then
         assertThat(member.getPoint()).isEqualTo(1000L);
     }
+
+    @Test
+    @DisplayName("updateBio 메서드 테스트")
+    public void updateBioTest() {
+        //given
+        Member member = testMember();
+        String bio = "안녕하세요! 로키입니다.";
+
+        //when
+        member.updateBio(bio);
+
+        //then
+        assertThat(member.getBio()).isEqualTo(bio);
+    }
+
+    @Test
+    @DisplayName("updateNickName 메서드 테스트")
+    public void updateNickNameTest() {
+        //given
+        Member member = testMember();
+        String nickName = "로키";
+
+        //when
+        member.updateNickName(nickName);
+
+        //then
+        assertThat(member.getNickname()).isEqualTo(nickName);
+    }
 }
