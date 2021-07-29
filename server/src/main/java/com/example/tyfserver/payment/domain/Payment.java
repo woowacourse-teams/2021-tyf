@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentRequestException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -56,7 +57,7 @@ public class Payment extends BaseTimeEntity {
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
         if (!PaymentStatus.isPaid(paymentInfo.getStatus())) {
             updateStatus(paymentInfo.getStatus());
-            throw new PaymentRequestException(ERROR_CODE_NOT_PAID);
+            throw IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_NOT_PAID, paymentInfo.getModule());
         }
 
         validatePaymentInfo(paymentInfo);
@@ -65,17 +66,17 @@ public class Payment extends BaseTimeEntity {
     private void validatePaymentInfo(PaymentInfo paymentInfo) {
         if (!id.equals(paymentInfo.getMerchantId())) {
             updateStatus(PaymentStatus.INVALID);
-            throw new PaymentRequestException(ERROR_CODE_INVALID_MERCHANT_ID);
+            throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, paymentInfo.getModule());
         }
 
         if (!amount.equals(paymentInfo.getAmount())) {
             updateStatus(PaymentStatus.INVALID);
-            throw new PaymentRequestException(ERROR_CODE_INVALID_AMOUNT);
+            throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, paymentInfo.getModule());
         }
 
         if (!pageName.equals(paymentInfo.getPageName())) {
             updateStatus(PaymentStatus.INVALID);
-            throw new PaymentRequestException(ERROR_INVALID_CREATOR);
+            throw IllegalPaymentInfoException.from(ERROR_INVALID_CREATOR, paymentInfo.getModule());
         }
     }
 }

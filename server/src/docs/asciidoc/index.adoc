@@ -225,6 +225,26 @@ include::{snippets}/createDonationMemberNotFoundFailed/http-response.adoc[]
 include::{snippets}/createDonationRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createDonationRequestFailed/http-response.adoc[]
+=== 후원 요청 - 결제정보 상태가 지불(PAID)가 아님
+==== Request
+include::{snippets}/createDonationFailedStatusNotPaid/http-request.adoc[]
+==== Response
+include::{snippets}/createDonationFailedStatusNotPaid/http-response.adoc[]
+=== 후원 요청 - 결제정보 결제 Id 미일치
+==== Request
+include::{snippets}/createDonationFailedStatusInvalidId/http-request.adoc[]
+==== Response
+include::{snippets}/createDonationFailedStatusInvalidId/http-response.adoc[]
+=== 후원 요청 - 결제정보 결제금액 미일치
+==== Request
+include::{snippets}/createDonationFailedStatusInvalidId/http-request.adoc[]
+==== Response
+include::{snippets}/createDonationFailedStatusInvalidId/http-response.adoc[]
+=== 후원 요청 - 결제정보 유저정보(PageName) 미일치
+==== Request
+include::{snippets}/createDonationFailedInvalidPageName/http-request.adoc[]
+==== Response
+include::{snippets}/createDonationFailedInvalidPageName/http-response.adoc[]
 === 후원 메세지 전송 - 성공
 ==== Request
 include::{snippets}/addDonationMessage/http-request.adoc[]
@@ -270,4 +290,19 @@ include::{snippets}/publicDonations/http-response.adoc[]
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
-
+== Payment (결제)
+=== 결제 요청 - 성공
+==== Request
+include::{snippets}/createPayment/http-request.adoc[]
+==== Response
+include::{snippets}/createPayment/http-response.adoc[]
+=== 결제 요청 - 실패 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/createPaymentMemberNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentMemberNotFoundFailed/http-response.adoc[]
+=== 결제 요청 - 실패 - 유효하지 않은 Request
+==== Request
+include::{snippets}/createPaymentRequestFailed/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentRequestFailed/http-response.adoc[]
