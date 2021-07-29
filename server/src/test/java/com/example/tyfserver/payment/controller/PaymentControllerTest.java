@@ -53,9 +53,10 @@ public class PaymentControllerTest {
 
 
         //when
-        when(paymentService.createPayment(any(PaymentSaveRequest.class))).thenReturn(
-                paymentSaveResponse
-        );
+        when(paymentService.createPayment(any(PaymentSaveRequest.class)))
+                .thenReturn(
+                        paymentSaveResponse
+                );
 
         //then
         mockMvc.perform(post("/payments")
