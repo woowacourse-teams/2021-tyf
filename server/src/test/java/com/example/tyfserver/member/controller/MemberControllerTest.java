@@ -15,8 +15,7 @@ import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -631,8 +630,7 @@ class MemberControllerTest {
     }
 
     @ParameterizedTest
-    @NullSource
-    @EmptySource
+    @NullAndEmptySource
     @ValueSource(strings = {" ", "       "})
     @DisplayName("PUT - /members/me/bio - invalid bio")
     void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
@@ -678,8 +676,7 @@ class MemberControllerTest {
     }
 
     @ParameterizedTest
-    @NullSource
-    @EmptySource
+    @NullAndEmptySource
     @ValueSource(strings = {
             "로", "_로키", "로키_", "_로키_", "-로키", "로키-", " 로키", "로키 ", " 로키 ", "   "
     })
