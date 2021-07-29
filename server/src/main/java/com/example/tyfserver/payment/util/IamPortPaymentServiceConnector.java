@@ -13,6 +13,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     private static final String IAMPORT_API_URL = "https://api.iamport.kr";
@@ -50,7 +52,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     }
 
     @Override
-    public PaymentInfo requestPaymentCancel(Long merchantUid) {
+    public PaymentInfo requestPaymentCancel(UUID merchantUid) {
         String accessToken = getAccessToken();
         IamPortPaymentInfo.Response response = requestPaymentCancel(merchantUid, accessToken)
                 .getResponse();
@@ -58,7 +60,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         return convertToPaymentInfo(response);
     }
 
-    private IamPortPaymentInfo requestPaymentCancel(Long merchantUid, String accessToken) {
+    private IamPortPaymentInfo requestPaymentCancel(UUID merchantUid, String accessToken) {
         return ApiSender.send(
                 IAMPORT_API_URL + "/payments/cancel",
                 HttpMethod.POST,
@@ -67,7 +69,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         );
     }
 
-    private HttpEntity<String> paymentCancelRequest(String accessToken, Long merchantUid) {
+    private HttpEntity<String> paymentCancelRequest(String accessToken, UUID merchantUid) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, accessToken);
@@ -89,7 +91,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private PaymentInfo convertToPaymentInfo(IamPortPaymentInfo.Response response) {
         return new PaymentInfo(
-                Long.parseLong(response.getMerchant_uid()),
+                UUID.fromString(response.getMerchant_uid()),
                 PaymentStatus.valueOf(response.getStatus().toUpperCase()),
                 Long.parseLong(response.getAmount()),
                 response.getName(),

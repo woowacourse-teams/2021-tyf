@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.example.tyfserver.payment.exception.PaymentRequestException.*;
@@ -17,7 +18,8 @@ import static org.junit.jupiter.params.ParameterizedTest.DISPLAY_NAME_PLACEHOLDE
 
 class PaymentTest {
 
-    private static final long MERCHANT_UID = 1L;
+    private static final UUID MERCHANT_UID = UUID.randomUUID();
+    private static final UUID INVALID_MERCHANT_UID = UUID.randomUUID();
     private static final long AMOUNT = 1000L;
     private static final String PAGE_NAME = "test";
     private static final String IMP_UID = "test_imp_uid";
@@ -72,7 +74,7 @@ class PaymentTest {
     @Test
     void testCompleteWhenIdDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(2L, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(INVALID_MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID);
         Payment payment = testPayment();
 
         //when
@@ -117,7 +119,7 @@ class PaymentTest {
     }
 
     @Test
-    @DisplayName("결제 정보 환불 유효성 검사 통과 시, 결제가 취소된다.")
+    @DisplayName("결제 정보 환불 유효성 검사 통과 시, 결제가 환불된다.")
     void testCancel() {
         //given
         PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.CANCELLED, AMOUNT, PAGE_NAME, IMP_UID);

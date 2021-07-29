@@ -4,20 +4,15 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
-
-import java.time.LocalDateTime;
-
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.dto.PaymentRequest;
 import com.example.tyfserver.payment.service.PaymentService;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,6 +36,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DonationServiceTest {
 
+    private static final UUID PAYMENT_ID = UUID.randomUUID();
     @Mock
     private MemberRepository memberRepository;
 
@@ -66,7 +63,7 @@ class DonationServiceTest {
                 .thenReturn(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage()));
 
         when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
-                .thenReturn(new Payment(1L, 1000L, "test@test.com", "test"));
+                .thenReturn(new Payment(PAYMENT_ID, 1000L, "test@test.com", "test"));
 
         //then
         DonationResponse response = donationService.createDonation(request);
@@ -82,7 +79,7 @@ class DonationServiceTest {
         PaymentRequest request = new PaymentRequest("impUid", 1L);
         //when
         when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
-                .thenReturn(new Payment(1L, 1000L, "test@test.com", "test"));
+                .thenReturn(new Payment(PAYMENT_ID, 1000L, "test@test.com", "test"));
 
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(Optional.empty());

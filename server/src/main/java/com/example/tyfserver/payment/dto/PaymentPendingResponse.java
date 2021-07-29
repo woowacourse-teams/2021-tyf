@@ -5,11 +5,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentPendingResponse {
 
-    private Long merchantUid;
+    private UUID merchantUid;
 
     public PaymentPendingResponse(Payment payment) {
         merchantUid = payment.getId();

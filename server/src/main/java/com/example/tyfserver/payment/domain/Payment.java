@@ -6,8 +6,11 @@ import com.example.tyfserver.payment.exception.PaymentRequestException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+
+import java.util.UUID;
 
 import static com.example.tyfserver.payment.exception.PaymentRequestException.*;
 
@@ -17,8 +20,9 @@ import static com.example.tyfserver.payment.exception.PaymentRequestException.*;
 public class Payment extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    private UUID id;
 
     @Column(nullable = false)
     private Long amount;
@@ -33,7 +37,7 @@ public class Payment extends BaseTimeEntity {
 
     private String impUid;
 
-    public Payment(Long id, Long amount, String email, String pageName) {
+    public Payment(UUID id, Long amount, String email, String pageName) {
         this.id = id;
         this.amount = amount;
         this.email = email;
