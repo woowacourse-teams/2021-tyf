@@ -71,7 +71,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findCurations());
     }
 
-    @PostMapping("/profile")
+    @PutMapping("/profile")
     public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.uploadProfile(multipartFile, loginMember));
     }
