@@ -36,12 +36,12 @@ public class PaymentControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    PaymentService paymentService;
+    private PaymentService paymentService;
 
     @MockBean
-    AuthenticationArgumentResolver authenticationArgumentResolver;
+    private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
-    AuthenticationInterceptor authenticationInterceptor;
+    private AuthenticationInterceptor authenticationInterceptor;
 
     @Test
     @DisplayName("/payments - success")

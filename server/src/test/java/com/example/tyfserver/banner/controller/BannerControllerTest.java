@@ -44,9 +44,9 @@ class BannerControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    AuthenticationArgumentResolver authenticationArgumentResolver;
+    private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
-    AuthenticationInterceptor authenticationInterceptor;
+    private AuthenticationInterceptor authenticationInterceptor;
     @MockBean
     private BannerService bannerService;
 

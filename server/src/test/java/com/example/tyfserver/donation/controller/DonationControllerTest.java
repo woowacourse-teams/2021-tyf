@@ -47,9 +47,9 @@ class DonationControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    AuthenticationArgumentResolver authenticationArgumentResolver;
+    private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
-    AuthenticationInterceptor authenticationInterceptor;
+    private AuthenticationInterceptor authenticationInterceptor;
     @MockBean
     private DonationService donationService;
 
