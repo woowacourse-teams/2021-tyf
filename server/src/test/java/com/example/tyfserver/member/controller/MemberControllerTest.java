@@ -647,6 +647,7 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(BioValidationRequestException.ERROR_CODE))
                 .andDo(document("updateBioInvalidBioValueRequestFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -695,6 +696,7 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
                 .andDo(document("updateNickNameInvalidNickNameValueRequestFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))

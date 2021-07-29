@@ -205,7 +205,7 @@ class MemberServiceTest {
         //given
         LoginMember loginMember = new LoginMember(1L, "test@email.com");
         String expectedNickName = "로키";
-        Member givenMember = new Member("test@email.com", "로키", "roki", Oauth2Type.NAVER);
+        Member givenMember = MemberTest.testMember();
         when(memberRepository.findById(loginMember.getId()))
                 .thenReturn(Optional.of(givenMember));
 
