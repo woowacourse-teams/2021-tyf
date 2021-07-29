@@ -97,7 +97,7 @@ public class MemberController {
     }
 
     @PutMapping("/me/nickname")
-    public ResponseEntity<Void> updateNickName(LoginMember loginMember,
+    public ResponseEntity<Void> updateNickname(LoginMember loginMember,
                                                @Valid @RequestBody NicknameRequest nicknameRequest,
                                                BindingResult result) {
         if (result.hasErrors()) {
