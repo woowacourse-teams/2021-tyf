@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface PaymentServiceConnector {
 
-    PaymentInfo requestPaymentInfo(Long merchantUid);
+    PaymentInfo requestPaymentInfo(UUID merchantUid);
 
     PaymentInfo requestPaymentCancel(UUID merchantUid);
 }

@@ -26,7 +26,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     private String impSecret;
 
     @Override
-    public PaymentInfo requestPaymentInfo(Long merchantUid) {
+    public PaymentInfo requestPaymentInfo(UUID merchantUid) {
         String accessToken = getAccessToken();
         IamPortPaymentInfo.Response response = requestPaymentInfo(merchantUid, accessToken)
                 .getResponse();
@@ -34,7 +34,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         return convertToPaymentInfo(response);
     }
 
-    private IamPortPaymentInfo requestPaymentInfo(Long merchantUid, String accessToken) {
+    private IamPortPaymentInfo requestPaymentInfo(UUID merchantUid, String accessToken) {
         return ApiSender.send(
                 IAMPORT_API_URL + "/payments/find/" + merchantUid,
                 HttpMethod.POST,

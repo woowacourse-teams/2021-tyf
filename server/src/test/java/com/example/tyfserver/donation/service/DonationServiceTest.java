@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
 class DonationServiceTest {
 
     private static final UUID PAYMENT_ID = UUID.randomUUID();
+    private static final UUID MERCHANT_UID = UUID.randomUUID();
     @Mock
     private MemberRepository memberRepository;
 
@@ -53,7 +54,7 @@ class DonationServiceTest {
     @DisplayName("createDonation Test")
     public void createDonationTest() {
         //given
-        PaymentRequest request = new PaymentRequest("impUid", 1L);
+        PaymentRequest request = new PaymentRequest("impUid", MERCHANT_UID);
         //when
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(
@@ -68,15 +69,15 @@ class DonationServiceTest {
         //then
         DonationResponse response = donationService.createDonation(request);
         assertThat(response).usingRecursiveComparison()
-            .ignoringFields("createdAt")
-            .isEqualTo(new DonationResponse(1L, Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, 1000L, LocalDateTime.now()));
+                .ignoringFields("createdAt")
+                .isEqualTo(new DonationResponse(1L, Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, 1000L, LocalDateTime.now()));
     }
 
     @Test
     @DisplayName("createDonation member not found Test")
     public void createDonationNotFoundTest() {
         //given
-        PaymentRequest request = new PaymentRequest("impUid", 1L);
+        PaymentRequest request = new PaymentRequest("impUid", MERCHANT_UID);
         //when
         when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
                 .thenReturn(new Payment(PAYMENT_ID, 1000L, "test@test.com", "test"));

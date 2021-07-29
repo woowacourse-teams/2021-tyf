@@ -4,13 +4,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentCancelRequest {
 
-    private Long merchantUid;
+    private UUID merchantUid;
 
-    public PaymentCancelRequest(Long merchantUid) {
+    public PaymentCancelRequest(UUID merchantUid) {
         this.merchantUid = merchantUid;
     }
 }

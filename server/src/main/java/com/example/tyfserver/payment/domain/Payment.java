@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-
 import java.util.UUID;
 
 import static com.example.tyfserver.payment.exception.PaymentRequestException.*;

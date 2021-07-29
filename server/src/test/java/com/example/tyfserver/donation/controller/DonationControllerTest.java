@@ -5,7 +5,6 @@ import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
@@ -26,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -39,11 +39,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 class DonationControllerTest {
 
+    private static final UUID MERCHANT_UID = UUID.randomUUID();
+
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
@@ -55,9 +58,8 @@ class DonationControllerTest {
     @DisplayName("/donations - success")
     public void createDonation() throws Exception {
         //given
-        DonationRequest request = new DonationRequest("pagename", 1000L);
-        DonationResponse response = new DonationResponse(1L, "name", "message", 1000L, LocalDateTime
-            .now());
+        PaymentRequest request = new PaymentRequest("pagename", MERCHANT_UID);
+        DonationResponse response = new DonationResponse(1L, "name", "message", 1000L, LocalDateTime.now());
         //when
         when(donationService.createDonation(Mockito.any(PaymentRequest.class)))
                 .thenReturn(response);
@@ -80,7 +82,7 @@ class DonationControllerTest {
     @DisplayName("/donations - 회원을 찾을 수 없음")
     public void createDonationMemberNotFoundFailed() throws Exception {
         //given
-        DonationRequest request = new DonationRequest("pagename", 1000L);
+        PaymentRequest request = new PaymentRequest("pagename", MERCHANT_UID);
         //when
         doThrow(new MemberNotFoundException()).when(donationService).createDonation(Mockito.any(PaymentRequest.class));
         //then
@@ -99,7 +101,7 @@ class DonationControllerTest {
     @DisplayName("/donations - 유효하지 않은 request")
     public void createDonationRequestFailed() throws Exception {
         //given
-        PaymentRequest request = new PaymentRequest("  ", 1L);
+        PaymentRequest request = new PaymentRequest("  ", MERCHANT_UID);
         //when
         //then
         mockMvc.perform(post("/donations")

@@ -1,8 +1,6 @@
 package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
-import com.example.tyfserver.member.domain.Member;
 
 public class DonationTest {
 
@@ -16,9 +14,5 @@ public class DonationTest {
 
     public static DonationMessageRequest testSecretMessageRequest() {
         return new DonationMessageRequest(NAME, MESSAGE, true);
-    }
-
-    public static DonationRequest testDonationRequest(Member member) {
-        return new DonationRequest(member.getPageName(), DONATION_AMOUNT);
     }
 }
