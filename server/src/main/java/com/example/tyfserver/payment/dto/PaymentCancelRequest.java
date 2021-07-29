@@ -10,10 +10,7 @@ public class PaymentCancelRequest {
 
     private Long merchantUid;
 
-    private Long cancelRequestAmount;
-
-    public PaymentCancelRequest(Long merchantUid, Long cancelRequestAmount) {
+    public PaymentCancelRequest(Long merchantUid) {
         this.merchantUid = merchantUid;
-        this.cancelRequestAmount = cancelRequestAmount;
     }
 }
