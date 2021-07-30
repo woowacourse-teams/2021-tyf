@@ -7,6 +7,7 @@ export const donationState = atom<Donation>({
   key: 'donationState',
   default: {
     donationId: INVALID_DONATION_ID,
+    email: '',
     name: '',
     message: '',
     amount: -1,

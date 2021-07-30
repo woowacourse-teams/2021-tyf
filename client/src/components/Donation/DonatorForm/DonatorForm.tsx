@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useDonatorForm from '../../../service/hooks/useDonatorForm';
 
 import { CreatorId } from '../../../types';
 import Button from '../../@atom/Button/Button';
 import Input from '../../@atom/Input/Input';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
+import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
   StyledDonatorForm,
   InputContainer,
@@ -19,7 +21,7 @@ export interface DonatorFormProps {
 
 const DonatorForm = ({ creatorId }: DonatorFormProps) => {
   const history = useHistory();
-  const [email, setEmail] = useState('');
+  const { form, isTermChecked, isValidEmail, setEmail, setIsTermChecked } = useDonatorForm();
 
   const routeToPaymentPage = () => {
     history.push(`/donation/${creatorId}/payment`);
@@ -29,17 +31,21 @@ const DonatorForm = ({ creatorId }: DonatorFormProps) => {
     <StyledDonatorForm onSubmit={routeToPaymentPage}>
       <SubTitle>후원자님의 정보를 입력해주세요!</SubTitle>
 
-      <Input
+      <ValidationInput
+        role="email-input"
         placeholder="이메일 입력하기"
-        value={email}
+        value={form.email}
         onChange={({ target }) => setEmail(target.value)}
+        isSuccess={isValidEmail}
+        successMessage="올바른 이메일 형식입니다!"
+        failureMessage="잘못된 이메일 형식입니다."
       />
       <InputContainer>
         <TermLabel>
           <TermCheckbox
             name="termsOfService"
-            // checked={termsChecked['termsOfService']}
-            // onChange={(e) => toggleTermChecked(e.target)}
+            checked={isTermChecked}
+            onChange={({ target }) => setIsTermChecked(target.checked)}
           ></TermCheckbox>
           <TermLink href="/" target="_blank">
             결제 약관
@@ -47,7 +53,7 @@ const DonatorForm = ({ creatorId }: DonatorFormProps) => {
           에 동의 (필수)
         </TermLabel>
 
-        <Button>다음</Button>
+        <Button disabled={!(isValidEmail && isTermChecked)}>다음</Button>
       </InputContainer>
     </StyledDonatorForm>
   );

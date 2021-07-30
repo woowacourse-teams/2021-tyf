@@ -9,6 +9,9 @@ import {
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
 
 const DonationPaymentPage = () => {
+  // const { donate } = useDonation(creatorId);
+  // donate(Number(donationAmount));
+
   return (
     <DonationPaymentPageTemplate>
       <FixedLogo onClick={() => popupWindow('/')} />

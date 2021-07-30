@@ -35,8 +35,10 @@ export interface Statistics {
 // DONATION
 
 export type DonationId = number;
+
 export interface Donation {
   donationId: DonationId;
+  email: string;
   name: string;
   message: string;
   amount: number;
