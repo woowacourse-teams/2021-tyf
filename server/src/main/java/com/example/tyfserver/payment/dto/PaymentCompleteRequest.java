@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentRequest {
+public class PaymentCompleteRequest {
 
     @NotBlank
     private String impUid;
@@ -20,7 +20,7 @@ public class PaymentRequest {
     @JsonDeserialize
     private UUID merchantUid;
 
-    public PaymentRequest(String impUid, UUID merchantUid) {
+    public PaymentCompleteRequest(String impUid, UUID merchantUid) {
         this.impUid = impUid;
         this.merchantUid = merchantUid;
     }

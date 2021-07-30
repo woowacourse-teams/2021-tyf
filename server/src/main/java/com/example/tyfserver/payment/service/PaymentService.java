@@ -32,11 +32,11 @@ public class PaymentService {
         return new PaymentPendingResponse(paymentRepository.save(payment));
     }
 
-    public Payment completePayment(PaymentRequest paymentRequest) {
+    public Payment completePayment(PaymentCompleteRequest paymentCompleteRequest) {
         PaymentInfo paymentInfo = paymentServiceConnector
-                .requestPaymentInfo(paymentRequest.getMerchantUid());
+                .requestPaymentInfo(paymentCompleteRequest.getMerchantUid());
 
-        Payment payment = findPayment(paymentRequest.getMerchantUid());
+        Payment payment = findPayment(paymentCompleteRequest.getMerchantUid());
 
         payment.complete(paymentInfo);
         return payment;

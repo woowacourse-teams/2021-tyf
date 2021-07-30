@@ -10,7 +10,7 @@ import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -123,10 +123,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     private Long 후원을_생성한다(Member member) {
         // given
-        PaymentRequest paymentRequest = new PaymentRequest(member.getPageName(), UUID.randomUUID());
+        PaymentCompleteRequest request = new PaymentCompleteRequest(member.getPageName(), UUID.randomUUID());
 
         // when // then
-        return post("/donations", paymentRequest)
+        return post("/donations", request)
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(DonationResponse.class).getDonationId();

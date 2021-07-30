@@ -11,7 +11,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
-import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import com.example.tyfserver.payment.service.PaymentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ class DonationServiceTest {
     @DisplayName("createDonation Test")
     public void createDonationTest() {
         //given
-        PaymentRequest request = new PaymentRequest("impUid", MERCHANT_UID);
+        PaymentCompleteRequest request = new PaymentCompleteRequest("impUid", MERCHANT_UID);
         //when
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(
@@ -63,7 +63,7 @@ class DonationServiceTest {
         when(donationRepository.save(Mockito.any(Donation.class)))
                 .thenReturn(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage()));
 
-        when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
+        when(paymentService.completePayment(Mockito.any(PaymentCompleteRequest.class)))
                 .thenReturn(new Payment(PAYMENT_ID, 1000L, "test@test.com", "test"));
 
         //then
@@ -77,9 +77,9 @@ class DonationServiceTest {
     @DisplayName("createDonation member not found Test")
     public void createDonationNotFoundTest() {
         //given
-        PaymentRequest request = new PaymentRequest("impUid", MERCHANT_UID);
+        PaymentCompleteRequest request = new PaymentCompleteRequest("impUid", MERCHANT_UID);
         //when
-        when(paymentService.completePayment(Mockito.any(PaymentRequest.class)))
+        when(paymentService.completePayment(Mockito.any(PaymentCompleteRequest.class)))
                 .thenReturn(new Payment(PAYMENT_ID, 1000L, "test@test.com", "test"));
 
         when(memberRepository.findByPageName(Mockito.anyString()))
