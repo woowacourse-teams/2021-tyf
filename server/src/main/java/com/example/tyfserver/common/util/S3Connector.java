@@ -33,7 +33,7 @@ public class S3Connector {
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
-        return cloudfrontUrl + "/" + fileName;
+        return cloudfrontUrl + fileName;
     }
 
     public void delete(String fileName) {
