@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 class DonationControllerTest {
 
-    private static final UUID MERCHANT_UID = UUID.randomUUID();
+    private static final String MERCHANT_UID = UUID.randomUUID().toString();
     private static final String IMP_ID = "imp_id";
     private static final String MODULE = "테스트모듈";
 

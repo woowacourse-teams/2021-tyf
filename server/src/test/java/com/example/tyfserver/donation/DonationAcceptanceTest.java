@@ -123,7 +123,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     private Long 후원을_생성한다(Member member) {
         // given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(member.getPageName(), UUID.randomUUID());
+        PaymentCompleteRequest request = new PaymentCompleteRequest(member.getPageName(), UUID.randomUUID().toString());
 
         // when // then
         return post("/donations", request)

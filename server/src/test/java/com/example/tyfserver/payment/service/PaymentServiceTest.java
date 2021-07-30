@@ -6,9 +6,9 @@ import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
+import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import com.example.tyfserver.payment.dto.PaymentPendingRequest;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.assertj.core.api.Assertions;
@@ -75,15 +75,15 @@ class PaymentServiceTest {
     @Test
     void completePayment() {
         //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID);
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
                 .thenReturn(
-                        new PaymentInfo(request.getMerchantUid(), PaymentStatus.PAID, AMOUNT,
+                        new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT,
                                 PAGE_NAME, request.getImpUid(), MODULE));
 
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(AMOUNT, EMAIL, PAGE_NAME, request.getMerchantUid())));
+                        Optional.of(new Payment(AMOUNT, EMAIL, PAGE_NAME, MERCHANT_UID)));
 
         //then
         Payment payment = paymentService.completePayment(request);
@@ -95,8 +95,8 @@ class PaymentServiceTest {
     @Test
     void failCompletePaymentNotPaid() {
         //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID);
-        PaymentInfo paymentInfo = new PaymentInfo(request.getMerchantUid(), PaymentStatus.CANCELLED, AMOUNT,
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.CANCELLED, AMOUNT,
                 PAGE_NAME, request.getImpUid(), MODULE);
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
@@ -104,7 +104,7 @@ class PaymentServiceTest {
 
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(AMOUNT, EMAIL, paymentInfo.getPageName(), request.getMerchantUid())));
+                        Optional.of(new Payment(AMOUNT, EMAIL, paymentInfo.getPageName(), MERCHANT_UID)));
 
         //then
         Assertions.assertThatThrownBy(() -> paymentService.completePayment(request))
@@ -117,7 +117,7 @@ class PaymentServiceTest {
     void failCompletePaymentInvalidMerchantId() {
         //given
         UUID invalidMerchantUid = UUID.randomUUID();
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID);
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         PaymentInfo paymentInfo = new PaymentInfo(invalidMerchantUid, PaymentStatus.PAID, AMOUNT,
                 PAGE_NAME, request.getImpUid(), MODULE);
 
@@ -139,8 +139,8 @@ class PaymentServiceTest {
     @Test
     void failCompletePaymentInvalidAmount() {
         //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID);
-        PaymentInfo paymentInfo = new PaymentInfo(request.getMerchantUid(), PaymentStatus.PAID, 1_000_000L,
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, 1_000_000L,
                 PAGE_NAME, request.getImpUid(), MODULE);
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
@@ -160,7 +160,7 @@ class PaymentServiceTest {
     @Test
     void failCompletePaymentInvalidPageName() {
         //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID);
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))

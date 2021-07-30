@@ -20,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -121,7 +120,7 @@ public class PaymentControllerTest {
     @DisplayName("/payments/cancel - success")
     public void cancelPayment() throws Exception {
         //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID);
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID.toString());
         PaymentCancelResponse cancelResponse = new PaymentCancelResponse(MERCHANT_UID);
 
         //when
@@ -144,7 +143,7 @@ public class PaymentControllerTest {
     @DisplayName("/payments/cancel - 회원을 찾을 수 없음")
     public void cancelPaymentMemberNotFoundFailed() throws Exception {
         //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID);
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID.toString());
 
         //when
         doThrow(new MemberNotFoundException())
@@ -167,17 +166,13 @@ public class PaymentControllerTest {
     @DisplayName("/payments/cancel - 유효하지 않은 Request")
     public void cancelPaymentRequestFailed() throws Exception {
         //given
-        HashMap<Object, Object> map = new HashMap<>() {{
-            put("merchantUid", "UUID형식이 아닌 문자열");
-        }};
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(UUID.randomUUID());
-
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest("UUID형식이 아닌 문자열");
 
         //when
         //then
         mockMvc.perform(post("/payments/cancel")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(map)))
+                .content(objectMapper.writeValueAsString(cancelRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentCancelRequestException.ERROR_CODE))
                 .andDo(document("cancelPaymentRequestFailed",
