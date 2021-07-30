@@ -30,10 +30,9 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     @Override
     public PaymentInfo requestPaymentInfo(UUID merchantUid) {
         String accessToken = getAccessToken();
-        IamPortPaymentInfo.Response response = requestPaymentInfo(merchantUid, accessToken)
-                .getResponse();
+        IamPortPaymentInfo paymentInfo = requestPaymentInfo(merchantUid, accessToken);
 
-        return convertToPaymentInfo(response);
+        return convertToPaymentInfo(paymentInfo);
     }
 
     private IamPortPaymentInfo requestPaymentInfo(UUID merchantUid, String accessToken) {
@@ -56,10 +55,9 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     @Override
     public PaymentInfo requestPaymentCancel(UUID merchantUid) {
         String accessToken = getAccessToken();
-        IamPortPaymentInfo.Response response = requestPaymentCancel(merchantUid, accessToken)
-                .getResponse();
+        IamPortPaymentInfo paymentInfo = requestPaymentCancel(merchantUid, accessToken);
 
-        return convertToPaymentInfo(response);
+        return convertToPaymentInfo(paymentInfo);
     }
 
     private IamPortPaymentInfo requestPaymentCancel(UUID merchantUid, String accessToken) {
@@ -91,7 +89,9 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         return extractAccessToken(body);
     }
 
-    private PaymentInfo convertToPaymentInfo(IamPortPaymentInfo.Response response) {
+    private PaymentInfo convertToPaymentInfo(IamPortPaymentInfo iamPortPaymentInfo) {
+        IamPortPaymentInfo.Response response = iamPortPaymentInfo.getResponse();
+
         return new PaymentInfo(
                 UUID.fromString(response.getMerchant_uid()),
                 PaymentStatus.valueOf(response.getStatus().toUpperCase()),

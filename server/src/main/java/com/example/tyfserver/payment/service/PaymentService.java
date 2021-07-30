@@ -30,7 +30,6 @@ public class PaymentService {
 
         Payment payment = new Payment(pendingRequest.getAmount(), pendingRequest.getEmail(), creator.getPageName());
         return new PaymentPendingResponse(paymentRepository.save(payment));
-        // todo: PaymentSaveResponse에 어떤 필드값들이 있으면 좋을까? (일단은 정말 필요한 값인 merchantUid만 추가!)
     }
 
     public Payment completePayment(PaymentRequest paymentRequest) {
@@ -49,6 +48,7 @@ public class PaymentService {
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getId());
 
         payment.cancel(paymentCancelInfo);
+        // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
         return new PaymentCancelResponse(payment.getId());
     }
 
