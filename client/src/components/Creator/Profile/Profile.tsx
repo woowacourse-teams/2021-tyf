@@ -7,12 +7,12 @@ import useCreator from '../../../service/hooks/useCreator';
 
 const Profile = () => {
   const { creatorId } = useParams<ParamTypes>();
-  const { nickname } = useCreator(creatorId);
+  const { nickname, profileImage } = useCreator(creatorId);
 
   return (
     <>
       <Link to={`/creator/${creatorId}`}>
-        <ProfileImg src={defaultUserProfile} />
+        <ProfileImg src={profileImage ?? defaultUserProfile} />
       </Link>
       <NickName>{nickname}</NickName>
     </>

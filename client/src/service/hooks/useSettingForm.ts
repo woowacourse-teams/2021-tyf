@@ -6,14 +6,14 @@ interface Setting {
   nickname: string;
   bio: string;
   profileImgData: File | null;
-  profileImg: string;
+  profileImage: string;
 }
 
 const useSettingForm = () => {
   const [form, setForm] = useState<Setting>({
     nickname: '',
     bio: '',
-    profileImg: '',
+    profileImage: '',
     profileImgData: null,
   });
   const { userInfo } = useUserInfo();
@@ -34,7 +34,7 @@ const useSettingForm = () => {
     reader.onload = ({ target }) => {
       if (!target) return alert('파일을 불러오는데 실패했습니다.');
 
-      setForm({ ...form, profileImgData, profileImg: target.result as string });
+      setForm({ ...form, profileImgData, profileImage: target.result as string });
     };
   };
 

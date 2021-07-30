@@ -15,7 +15,7 @@ export type CreatorId = string;
 export interface Creator {
   pageName: CreatorId;
   nickname: string;
-  profileImg: string;
+  profileImage: string;
   bio: string;
   email: string;
 }

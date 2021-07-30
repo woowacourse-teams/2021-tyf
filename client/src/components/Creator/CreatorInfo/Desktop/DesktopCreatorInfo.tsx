@@ -11,6 +11,7 @@ import {
 interface Props {
   defaultUserProfile: string;
   nickname: string;
+  profileImage: string;
   isAdmin: boolean;
   shareUrl: () => void;
   popupDonationAmountPage: () => void;
@@ -19,13 +20,14 @@ interface Props {
 const DesktopCreatorInfo = ({
   defaultUserProfile,
   nickname,
+  profileImage,
   isAdmin,
   shareUrl,
   popupDonationAmountPage,
 }: Props) => {
   return (
     <StyledCreatorInfo>
-      <ProfileImg src={defaultUserProfile} />
+      <ProfileImg src={profileImage ?? defaultUserProfile} />
       <InfoContainer>
         <StyledInfo>
           <NickName>{nickname}</NickName>

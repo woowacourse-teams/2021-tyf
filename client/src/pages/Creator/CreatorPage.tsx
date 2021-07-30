@@ -25,7 +25,7 @@ const CreatorPage = () => {
   const { creatorId } = useParams<ParamTypes>();
   const { isOpen, toggleModal, closeModal } = useModal();
   const { userInfo } = useUserInfo();
-  const { nickname } = useCreator(creatorId);
+  const { nickname, profileImage } = useCreator(creatorId);
   const { windowWidth } = useWindowResize();
   const isAdmin = userInfo?.pageName === creatorId;
 
@@ -59,6 +59,7 @@ const CreatorPage = () => {
           {windowWidth > SIZE.DESKTOP_LARGE ? (
             <DesktopCreatorInfo
               defaultUserProfile={defaultUserProfile}
+              profileImage={profileImage}
               nickname={nickname}
               isAdmin={isAdmin}
               shareUrl={openShareURLModal}

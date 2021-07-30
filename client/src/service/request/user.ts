@@ -11,7 +11,7 @@ export const requestUpdateProfileImg = (
 ): Promise<{ profileUrl: string }> => {
   const formData = new FormData();
 
-  formData.append('multipartFile', profileImg, profileImg.name);
+  formData.append('profileImage', profileImg, profileImg.name);
 
   return apiClient.put('/members/profile', formData, authorizationHeader(accessToken));
 };

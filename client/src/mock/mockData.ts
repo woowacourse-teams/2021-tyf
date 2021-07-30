@@ -4,28 +4,28 @@ import { Creator, Donation, UserInfo, Statistics } from '../types';
 export const creatorListMock: Creator[] = [
   {
     nickname: 'asdf',
-    profileImg: whiteBackground,
+    profileImage: whiteBackground,
     bio: '빈칸아님',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
   {
     nickname: 'asdf',
-    profileImg: whiteBackground,
+    profileImage: whiteBackground,
     bio: '',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
   {
     nickname: 'asdf',
-    profileImg: whiteBackground,
+    profileImage: whiteBackground,
     bio: '안녕하세요~',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
   },
   {
     nickname: 'asdf',
-    profileImg: whiteBackground,
+    profileImage: whiteBackground,
     bio: '',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
@@ -36,7 +36,7 @@ export const userInfoMock: UserInfo = {
   nickname: 'inch',
   bio: 'hi',
   pageName: 'inchpage',
-  profileImg: 'asdf',
+  profileImage: 'asdf',
   email: 'jho2301@gmail.com',
 };
 
