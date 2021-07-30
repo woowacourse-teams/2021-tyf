@@ -23,12 +23,12 @@ public class PaymentService {
     private final MemberRepository memberRepository;
     private final PaymentServiceConnector paymentServiceConnector;
 
-    public PaymentPendingResponse createPayment(PaymentPendingRequest saveRequest) {
+    public PaymentPendingResponse createPayment(PaymentPendingRequest pendingRequest) {
         Member creator = memberRepository
-                .findByPageName(saveRequest.getPageName())
+                .findByPageName(pendingRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        Payment payment = new Payment(saveRequest.getAmount(), saveRequest.getEmail(), creator.getPageName());
+        Payment payment = new Payment(pendingRequest.getAmount(), pendingRequest.getEmail(), creator.getPageName());
         return new PaymentPendingResponse(paymentRepository.save(payment));
         // todo: PaymentSaveResponse에 어떤 필드값들이 있으면 좋을까? (일단은 정말 필요한 값인 merchantUid만 추가!)
     }

@@ -4,8 +4,11 @@ import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.dto.PaymentCancelRequest;
+import com.example.tyfserver.payment.dto.PaymentCancelResponse;
 import com.example.tyfserver.payment.dto.PaymentPendingRequest;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
+import com.example.tyfserver.payment.exception.PaymentCancelRequestException;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PaymentControllerTest {
 
     private static final UUID ID = UUID.randomUUID();
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -43,6 +47,7 @@ public class PaymentControllerTest {
 
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
+
     @MockBean
     private AuthenticationInterceptor authenticationInterceptor;
 
@@ -50,19 +55,18 @@ public class PaymentControllerTest {
     @DisplayName("/payments - success")
     public void createPayment() throws Exception {
         //given
-        PaymentPendingRequest paymentSaveRequest = new PaymentPendingRequest(1000L, "test@test.com", "test");
-        PaymentPendingResponse paymentSaveResponse = new PaymentPendingResponse(new Payment(ID, paymentSaveRequest.getAmount(),
-                paymentSaveRequest.getEmail(), paymentSaveRequest.getPageName()));
-
+        PaymentPendingRequest pendingRequest = new PaymentPendingRequest(1000L, "test@test.com", "test");
+        PaymentPendingResponse pendingResponse = new PaymentPendingResponse(new Payment(ID, pendingRequest.getAmount(),
+                pendingRequest.getEmail(), pendingRequest.getPageName()));
 
         //when
         when(paymentService.createPayment(any(PaymentPendingRequest.class)))
-                .thenReturn(paymentSaveResponse);
+                .thenReturn(pendingResponse);
 
         //then
         mockMvc.perform(post("/payments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(paymentSaveRequest)))
+                .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("merchantUid").value(ID.toString()))
                 .andDo(document("createPayment",
@@ -75,15 +79,17 @@ public class PaymentControllerTest {
     @DisplayName("/payments - 회원을 찾을 수 없음")
     public void createPaymentMemberNotFoundFailed() throws Exception {
         //given
-        PaymentPendingRequest paymentSaveRequest = new PaymentPendingRequest(1000L, "test@test.com", "test");
+        PaymentPendingRequest pendingRequest = new PaymentPendingRequest(1000L, "test@test.com", "test");
 
         //when
-        doThrow(new MemberNotFoundException()).when(paymentService).createPayment(any(PaymentPendingRequest.class));
+        doThrow(new MemberNotFoundException())
+                .when(paymentService)
+                .createPayment(any(PaymentPendingRequest.class));
 
         //then
         mockMvc.perform(post("/payments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(paymentSaveRequest)))
+                .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("createPaymentMemberNotFoundFailed",
@@ -97,16 +103,81 @@ public class PaymentControllerTest {
     @DisplayName("/payments - 유효하지 않은 Request")
     public void createPaymentRequestFailed() throws Exception {
         //given
-        PaymentPendingRequest paymentSaveRequest = new PaymentPendingRequest(1000L, "  ", "test");
+        PaymentPendingRequest pendingRequest = new PaymentPendingRequest(1000L, "  ", "test");
 
         //when
         //then
         mockMvc.perform(post("/payments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(paymentSaveRequest)))
+                .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentPendingRequestException.ERROR_CODE))
                 .andDo(document("createPaymentRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/cancel - success")
+    public void cancelPayment() throws Exception {
+        //given
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(ID.toString());
+        PaymentCancelResponse cancelResponse = new PaymentCancelResponse(ID);
+
+        //when
+        when(paymentService.cancelPayment(any(PaymentCancelRequest.class)))
+                .thenReturn(cancelResponse);
+
+        //then
+        mockMvc.perform(post("/payments/cancel")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(cancelRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("merchantUid").value(ID.toString()))
+                .andDo(document("cancelPayment",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/cancel - 회원을 찾을 수 없음")
+    public void cancelPaymentMemberNotFoundFailed() throws Exception {
+        //given
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(ID.toString());
+
+        //when
+        doThrow(new MemberNotFoundException())
+                .when(paymentService)
+                .cancelPayment(any(PaymentCancelRequest.class));
+
+        //then
+        mockMvc.perform(post("/payments/cancel")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(cancelRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("cancelPaymentMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/cancel - 유효하지 않은 Request")
+    public void cancelPaymentRequestFailed() throws Exception {
+        //given
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest("");
+
+        //when
+        //then
+        mockMvc.perform(post("/payments/cancel")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(cancelRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(PaymentCancelRequestException.ERROR_CODE))
+                .andDo(document("cancelPaymentRequestFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

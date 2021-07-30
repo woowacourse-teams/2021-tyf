@@ -51,17 +51,17 @@ class PaymentServiceTest {
     @Test
     void createPayment() {
         //given
-        PaymentPendingRequest paymentSaveRequest = new PaymentPendingRequest(AMOUNT, EMAIL, PAGE_NAME);
+        PaymentPendingRequest pendingRequest = new PaymentPendingRequest(AMOUNT, EMAIL, PAGE_NAME);
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(
                         Optional.of(MemberTest.testMember()));
 
         when(paymentRepository.save(Mockito.any(Payment.class)))
                 .thenReturn(
-                        new Payment(MERCHANT_UID, paymentSaveRequest.getAmount(), paymentSaveRequest.getEmail(), paymentSaveRequest.getPageName()));
+                        new Payment(MERCHANT_UID, pendingRequest.getAmount(), pendingRequest.getEmail(), pendingRequest.getPageName()));
 
         //when
-        PaymentPendingResponse paymentSaveResponse = paymentService.createPayment(paymentSaveRequest);
+        PaymentPendingResponse paymentSaveResponse = paymentService.createPayment(pendingRequest);
 
         //then
         Assertions.assertThat(paymentSaveResponse.getMerchantUid()).isEqualTo(MERCHANT_UID);
