@@ -101,6 +101,22 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         assertThat(donations.get(0).getAmount()).isEqualTo(DonationTest.DONATION_AMOUNT);
     }
 
+    @Test
+    @DisplayName("창작자가 자신이 받은 후원 목록을 조회한다.")
+    public void 전체_후원_리스트_실패() {
+        //given
+        Long donationId = 후원을_생성한다();
+        DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
+        후원메시지를_보낸다(donationId, messageRequest);
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
+
+        //when //then
+        authGet("/donations/me", token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().body()
+                .jsonPath().getList(".", DonationResponse.class);
+    }
+
     private Long 후원을_생성한다() {
         return 후원을_생성한다(member);
     }

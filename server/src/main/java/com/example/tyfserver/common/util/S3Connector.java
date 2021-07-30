@@ -19,16 +19,20 @@ public class S3Connector {
 
     private final AmazonS3 awsS3Client;
 
+    @Value("${cloudfront.url}")
+    private static String cloudfrontUrl;
+
     @Value("${s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = memberId + "/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
+        String fileName = "users/"
+                + memberId + "profiles/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
-        return fileName;
+        return cloudfrontUrl + "/" + fileName;
     }
 
     public void delete(String fileName) {

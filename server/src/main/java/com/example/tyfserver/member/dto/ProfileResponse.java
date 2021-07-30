@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileResponse {
 
-    private String profileUrl;
+    private String profileImage;
 
     public ProfileResponse(String profileUrl) {
-        this.profileUrl = profileUrl;
+        this.profileImage = profileUrl;
     }
 }

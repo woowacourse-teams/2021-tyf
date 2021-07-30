@@ -58,7 +58,7 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberDetailResponse> memberDetail(LoginMember loginMember) {
+    public ResponseEntity<MemberResponse> memberDetail(LoginMember loginMember) {
         return ResponseEntity.ok(memberService.findMemberDetail(loginMember.getId()));
     }
 
@@ -73,8 +73,8 @@ public class MemberController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile multipartFile, LoginMember loginMember) {
-        return ResponseEntity.ok((memberService.uploadProfile(multipartFile, loginMember)));
+    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile profileImage, LoginMember loginMember) {
+        return ResponseEntity.ok((memberService.uploadProfile(profileImage, loginMember)));
     }
 
     @DeleteMapping("/profile")
