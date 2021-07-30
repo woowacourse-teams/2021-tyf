@@ -1,18 +1,22 @@
-import { UserInfo } from '../../types';
 import { requestUpdateBio, requestUpdateNickname, requestUpdateProfileImg } from '../request/user';
 import useAccessToken from './useAccessToken';
 import useUserInfo from './useUserInfo';
 
-type SubmitArgsType = Pick<UserInfo, 'profileImg' | 'nickname' | 'bio'>;
+interface SubmitArgsType {
+  profileImg: string;
+  profileImgData: File | null;
+  nickname: string;
+  bio: string;
+}
 
 const useSetting = () => {
   const { accessToken } = useAccessToken();
   const { userInfo } = useUserInfo();
 
-  const submit = async ({ profileImg, nickname, bio }: SubmitArgsType) => {
+  const submit = async ({ profileImg, profileImgData, nickname, bio }: SubmitArgsType) => {
     try {
-      if (profileImg !== userInfo?.profileImg) {
-        await requestUpdateProfileImg(profileImg, accessToken);
+      if (profileImgData && profileImg !== userInfo?.profileImg) {
+        await requestUpdateProfileImg(profileImgData, accessToken);
       }
 
       if (nickname !== userInfo?.nickname) {

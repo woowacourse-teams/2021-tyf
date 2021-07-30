@@ -1,4 +1,4 @@
-import { apiClient, authorizationHeader, multipartAuthorizationHeader } from '../../API';
+import { apiClient, authorizationHeader } from '../../API';
 import { UserInfo } from '../../types';
 
 export const requestUserInfo = (accessToken: string): Promise<UserInfo> => {
@@ -6,22 +6,20 @@ export const requestUserInfo = (accessToken: string): Promise<UserInfo> => {
 };
 
 export const requestUpdateProfileImg = (
-  profileImg: string,
+  profileImg: File,
   accessToken: string
 ): Promise<{ profileUrl: string }> => {
-  return apiClient.put(
-    '/members/profile',
-    { multipartFile: profileImg },
-    multipartAuthorizationHeader(accessToken)
-  );
+  const formData = new FormData();
+
+  formData.append('multipartFile', profileImg, profileImg.name);
+
+  return apiClient.put('/members/profile', formData, authorizationHeader(accessToken));
 };
 
-// TODO: endpoint 나중에 바꿈
-
 export const requestUpdateNickname = (nickname: string, accessToken: string) => {
-  return apiClient.put('/members/profile', { nickname }, authorizationHeader(accessToken));
+  return apiClient.put('/members/me/nickname', { nickname }, authorizationHeader(accessToken));
 };
 
 export const requestUpdateBio = (bio: string, accessToken: string) => {
-  return apiClient.put('/members/profile', { bio }, authorizationHeader(accessToken));
+  return apiClient.put('/members/me/bio', { bio }, authorizationHeader(accessToken));
 };

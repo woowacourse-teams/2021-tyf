@@ -5,11 +5,17 @@ import useUserInfo from './useUserInfo';
 interface Setting {
   nickname: string;
   bio: string;
+  profileImgData: File | null;
   profileImg: string;
 }
 
 const useSettingForm = () => {
-  const [form, setForm] = useState<Setting>({ nickname: '', bio: '', profileImg: '' });
+  const [form, setForm] = useState<Setting>({
+    nickname: '',
+    bio: '',
+    profileImg: '',
+    profileImgData: null,
+  });
   const { userInfo } = useUserInfo();
 
   const setNickname = (nickname: string) => {
@@ -20,24 +26,22 @@ const useSettingForm = () => {
     setForm({ ...form, bio });
   };
 
-  const setProfileImg = (files: FileList) => {
+  const setProfileImg = (profileImgData: File) => {
     const reader = new FileReader();
 
-    reader.readAsDataURL(files[0]);
+    reader.readAsDataURL(profileImgData);
 
-    reader.onloadend = ({ target }) => {
-      if (typeof target?.result !== 'string') {
-        return alert('파일을 읽는데 실패했습니다. 다시 시도해주세요.');
-      }
+    reader.onload = ({ target }) => {
+      if (!target) return alert('파일을 불러오는데 실패했습니다.');
 
-      setForm({ ...form, profileImg: target.result });
+      setForm({ ...form, profileImgData, profileImg: target.result as string });
     };
   };
 
   useEffect(() => {
     if (!userInfo) return;
 
-    setForm(userInfo);
+    setForm({ ...userInfo, profileImgData: null });
   }, [userInfo]);
 
   return { form, setNickname, setBio, setProfileImg };

@@ -20,7 +20,11 @@ export const authorizationHeader = (accessToken: string) => ({
 
 export const multipartAuthorizationHeader = (accessToken: string) => ({
   headers: {
-    'Content-Type': 'multipart/form-data',
-    'Authorization': `bearer ${accessToken}`,
+    // 'Content-Type': 'multipart/form-data',
+    // 'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: `bearer ${accessToken}`,
+    // enctype: 'multipart/form-data',
+    // contentType: 'multipart/form-data',
+    // 'Access-Control-Allow-Origin': '*',
   },
 });

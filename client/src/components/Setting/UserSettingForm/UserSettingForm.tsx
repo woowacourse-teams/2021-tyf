@@ -23,7 +23,7 @@ const UserSettingForm = () => {
   const onChangeProfileImg = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (!target.files) return;
 
-    setProfileImg(target.files);
+    setProfileImg(target.files[0]);
   };
 
   const onApply = async (event: FormEvent<HTMLFormElement>) => {
