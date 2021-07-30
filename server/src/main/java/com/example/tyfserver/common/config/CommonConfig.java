@@ -23,11 +23,4 @@ public class CommonConfig implements WebMvcConfigurer {
         viewResolver.setSuffix(".html");
         registry.viewResolver(viewResolver);
     }
-
-    @Bean
-    public MultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(2000000000);
-        return multipartResolver;
-    }
 }
