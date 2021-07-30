@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static com.example.tyfserver.payment.exception.PaymentRequestException.*;
+import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
@@ -113,7 +113,7 @@ class PaymentTest {
         //then
         assertThatThrownBy(() -> payment.complete(paymentInfo))
                 .isExactlyInstanceOf(IllegalPaymentInfoException.class)
-                .extracting(ERROR_CODE).isEqualTo(ERROR_INVALID_CREATOR);
+                .extracting(ERROR_CODE).isEqualTo(ERROR_CODE_INVALID_CREATOR);
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.INVALID);
     }

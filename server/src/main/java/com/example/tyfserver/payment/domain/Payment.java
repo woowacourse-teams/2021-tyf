@@ -10,8 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.UUID;
 
-import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED;
-import static com.example.tyfserver.payment.exception.PaymentRequestException.*;
+import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
 
 @Entity
 @Getter
@@ -94,7 +93,7 @@ public class Payment extends BaseTimeEntity {
 
         if (!pageName.equals(paymentInfo.getPageName())) {
             updateStatus(PaymentStatus.INVALID);
-            throw IllegalPaymentInfoException.from(ERROR_INVALID_CREATOR, paymentInfo.getModule());
+            throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
         }
     }
 }

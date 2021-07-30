@@ -13,7 +13,6 @@ import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.PaymentRequest;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
-import com.example.tyfserver.payment.exception.PaymentRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +42,7 @@ class DonationControllerTest {
 
     private static final UUID MERCHANT_UID = UUID.randomUUID();
     private static final String IMP_ID = "imp_id";
+    private static final String MODULE = "테스트모듈";
 
     @Autowired
     private MockMvc mockMvc;
@@ -144,7 +144,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(new PaymentRequestException(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID))
+        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
@@ -165,7 +165,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(new PaymentRequestException(IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT))
+        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT, MODULE))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
@@ -186,7 +186,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(new PaymentRequestException(IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR))
+        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR, MODULE))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
