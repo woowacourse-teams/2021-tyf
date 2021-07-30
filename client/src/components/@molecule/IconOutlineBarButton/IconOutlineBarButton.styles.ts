@@ -21,8 +21,8 @@ export const StyledIconOutlineBarButton = styled(Button)`
 `;
 
 export const ButtonIcon = styled.img`
+  padding: 0.5rem;
   height: 2.25rem;
-  object-fit: cover;
 `;
 
 export const ButtonContent = styled.span`

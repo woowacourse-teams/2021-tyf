@@ -39,7 +39,6 @@ export const StyledSpinner = styled.div.attrs({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(1.5px);
 `;
 

@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { useHistory } from 'react-router-dom';
 
 import CreatorList from '../../components/Main/CreatorList/CreatorList';
-import Spinner from '../../components/Setting/Spinner/Spinner';
+import Spinner from '../../components/Spinner/Spinner';
 import useUserInfo from '../../service/hooks/useUserInfo';
 import { DEVICE } from '../../constants/device';
 import {

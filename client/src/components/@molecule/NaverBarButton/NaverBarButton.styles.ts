@@ -16,6 +16,10 @@ const NaverBarButton = styled(IconBarButton).attrs({
   &:active {
     background-color: ${PALETTE.GREEN_900};
   }
+
+  img {
+    padding: 0.625rem;
+  }
 `;
 
 export default NaverBarButton;

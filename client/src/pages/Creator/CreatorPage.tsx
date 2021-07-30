@@ -12,7 +12,7 @@ import useCreator from '../../service/hooks/useCreator';
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';
 import { DONATION_POPUP } from '../../constants/popup';
-import Spinner from '../../components/Setting/Spinner/Spinner';
+import Spinner from '../../components/Spinner/Spinner';
 import { SIZE } from '../../constants/device';
 import defaultUserProfile from '../../assets/images/default-user-profile.png';
 import { popupWindow } from '../../service/popup';

@@ -1,4 +1,5 @@
 import { FormEvent } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import useDonation from '../../../service/hooks/useDonation';
 import useDonationAmountForm from '../../../service/hooks/useDonationAmountForm';
@@ -19,6 +20,7 @@ export interface DonationAmountFormProps {
 }
 
 const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
+  const history = useHistory();
   const { donationAmount, addDonationAmount, setDonationAmount, isDonationAmountInValidRange } =
     useDonationAmountForm();
   const { donate } = useDonation(creatorId);
@@ -26,7 +28,9 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
   const onDonate = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    donate(Number(donationAmount));
+    // donate(Number(donationAmount));
+
+    history.push(`/donation/${creatorId}/donatorInfo`);
   };
 
   return (

@@ -1,4 +1,4 @@
-import useScrollLock from '../../../utils/useScrollLock';
+import useScrollLock from '../../utils/useScrollLock';
 import { SpinnerIcon, StyledSpinner } from './Spinner.styles';
 
 const Spinner = () => {

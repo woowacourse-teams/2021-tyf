@@ -10,6 +10,10 @@ const GoogleBarButton = styled(IconOutlineBarButton).attrs({
 })`
   color: ${PALETTE.GRAY_500};
   margin-bottom: 1rem;
+
+  img {
+    margin-left: 0.125rem;
+  }
 `;
 
 export default GoogleBarButton;

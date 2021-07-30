@@ -12,6 +12,7 @@ export const StyledIconBarButton = styled(Button)`
 `;
 
 export const ButtonIcon = styled.img`
+  padding: 0.5rem;
   height: 2.25rem;
   object-fit: cover;
   position: absolute;
