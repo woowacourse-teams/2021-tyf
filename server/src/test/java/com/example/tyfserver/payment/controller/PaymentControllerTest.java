@@ -3,7 +3,6 @@ package com.example.tyfserver.payment.controller;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.dto.PaymentCancelRequest;
 import com.example.tyfserver.payment.dto.PaymentCancelResponse;
 import com.example.tyfserver.payment.dto.PaymentPendingRequest;

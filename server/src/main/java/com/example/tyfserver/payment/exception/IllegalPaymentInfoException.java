@@ -21,7 +21,7 @@ public class IllegalPaymentInfoException extends BaseException {
     private static final String MESSAGE_INVALID_ERROR_CODE = "적절하지 않은 IllegalPaymentInfoException ErrorCode 입니다.";
 
     private IllegalPaymentInfoException(String code, String message) {
-        super(code,  message);
+        super(code, message);
     }
 
     public static IllegalPaymentInfoException from(String code, String module) {

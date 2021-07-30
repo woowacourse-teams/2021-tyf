@@ -5,7 +5,6 @@ import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;

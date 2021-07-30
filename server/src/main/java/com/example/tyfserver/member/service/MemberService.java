@@ -80,7 +80,7 @@ public class MemberService {
 
     private Member findMember(Long id) {
         return memberRepository.findById(id)
-            .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     private void deleteProfile(Member member) {

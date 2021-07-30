@@ -5,7 +5,6 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.IamPortPaymentInfo;
-import com.example.tyfserver.payment.dto.PaymentRequest;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
