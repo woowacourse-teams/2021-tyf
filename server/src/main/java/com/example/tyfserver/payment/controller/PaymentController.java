@@ -4,6 +4,7 @@ import com.example.tyfserver.payment.dto.PaymentCancelRequest;
 import com.example.tyfserver.payment.dto.PaymentCancelResponse;
 import com.example.tyfserver.payment.dto.PaymentPendingRequest;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
+import com.example.tyfserver.payment.exception.PaymentCancelRequestException;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class PaymentController {
     @PostMapping("/cancel")
     public ResponseEntity<PaymentCancelResponse> cancelPayment(@Valid @RequestBody PaymentCancelRequest paymentCancelRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new PaymentPendingRequestException();
+            throw new PaymentCancelRequestException();
         }
 
         PaymentCancelResponse response = paymentService.cancelPayment(paymentCancelRequest);
