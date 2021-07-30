@@ -1,7 +1,6 @@
 import { useState } from 'react';
+import { S3_URL } from '../../constants/s3';
 import { UserInfo } from '../../types';
-
-const S3_URL = 'https://de56jrhz7aye2.cloudfront.net';
 
 type ColorType = 'red' | 'black' | 'yellow' | 'green' | 'blue' | 'purple';
 

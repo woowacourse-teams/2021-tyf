@@ -17,7 +17,7 @@ const DonationPaymentPage = () => {
 
   return (
     <DonationPaymentPageTemplate>
-      <FixedLogo onClick={() => popupWindow('/')} />
+      <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <StyledSubTitle>결제수단을 선택해주세요!</StyledSubTitle>
       <PaymentButtonContainer>
         <IconOutlineBarButton src={KakaoPay} onClick={donate}>

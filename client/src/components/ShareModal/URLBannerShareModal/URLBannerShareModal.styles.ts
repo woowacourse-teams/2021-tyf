@@ -26,7 +26,9 @@ export const DisplayButtonContainer = styled(Container)`
   position: relative;
 `;
 
-export const DisplayButton = styled.img``;
+export const DisplayButton = styled.img`
+  height: 2.5rem;
+`;
 
 export const SourceCodeContainer = styled.div`
   width: 100%;

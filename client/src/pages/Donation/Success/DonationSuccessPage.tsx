@@ -25,7 +25,7 @@ const DonationSuccessPage = () => {
   const { donation } = useDonation(creatorId);
 
   const openCreatorPage = () => {
-    popupWindow(`/creator/${creatorId}`);
+    popupWindow(window.location.origin + `/creator/${creatorId}`);
     window.close();
   };
 
@@ -41,7 +41,7 @@ const DonationSuccessPage = () => {
 
   return (
     <StyledTemplate>
-      <FixedLogo onClick={() => popupWindow('/')} />
+      <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <SuccessMessageContainer>
         <SubText>{nickname}님에게</SubText>
         <MainText>{toCommaSeparatedString(donation.amount)}원</MainText>

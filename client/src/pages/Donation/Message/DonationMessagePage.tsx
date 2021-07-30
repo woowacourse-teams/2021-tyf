@@ -13,7 +13,7 @@ const DonationMessagePage = () => {
 
   return (
     <StyledTemplate>
-      <FixedLogo onClick={() => popupWindow('/')} />
+      <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <section>
         <MessageForm creatorId={creatorId} />
       </section>

@@ -39,4 +39,6 @@ export const Icon = styled.img`
   fill: #333333;
 `;
 
-export const ImgIcon = styled.img``;
+export const ImgIcon = styled.img`
+  height: 2.5rem;
+`;

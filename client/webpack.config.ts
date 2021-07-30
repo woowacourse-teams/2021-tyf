@@ -44,12 +44,6 @@ const config: WebpackConfig = {
       base: '/',
       favicon: path.resolve('public', 'favicon.ico'),
     }),
-    new webpack.ProvidePlugin({
-      process: 'process/browser',
-    }),
-    new webpack.EnvironmentPlugin({
-      PUBLIC_URL: path.resolve('public'),
-    }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
         diagnosticOptions: {

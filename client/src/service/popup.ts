@@ -9,5 +9,5 @@ export const popupWindow = (path: string, option?: { width?: number; height?: nu
     optionString += `height=${option.height}`;
   }
 
-  window.open(window.location.origin + path, '_blank', optionString);
+  window.open(path, '_blank', optionString);
 };

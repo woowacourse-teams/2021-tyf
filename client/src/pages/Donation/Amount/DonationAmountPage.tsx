@@ -12,7 +12,7 @@ const DonationAmountPage = () => {
 
   return (
     <DonationAmountPageTemplate>
-      <FixedLogo onClick={() => popupWindow('/')} />
+      <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <section>
         <Profile />
       </section>

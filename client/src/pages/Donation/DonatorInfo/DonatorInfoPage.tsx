@@ -11,7 +11,7 @@ const DonatorInfoPage = () => {
 
   return (
     <DonatorInfoPageTemplate>
-      <FixedLogo onClick={() => popupWindow('/')} />
+      <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <DonatorForm creatorId={creatorId} />
     </DonatorInfoPageTemplate>
   );

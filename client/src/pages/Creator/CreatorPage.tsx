@@ -30,7 +30,7 @@ const CreatorPage = () => {
   const isAdmin = userInfo?.pageName === creatorId;
 
   const popupDonationAmountPage = () => {
-    popupWindow(`/donation/${creatorId}`, {
+    popupWindow(window.location.origin + `/donation/${creatorId}`, {
       width: DONATION_POPUP.WIDTH,
       height: DONATION_POPUP.HEIGHT,
     });
