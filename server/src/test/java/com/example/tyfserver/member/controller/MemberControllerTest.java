@@ -185,7 +185,8 @@ class MemberControllerTest {
     @DisplayName("/members/{pageName} - success")
     public void memberInfo() throws Exception {
         //given
-        MemberResponse response = new MemberResponse("email", "nickname", "pagename");
+        MemberResponse response = new MemberResponse("email", "nickname",
+                "pagename", "profile.png");
         //when
         when(memberService.findMember(Mockito.anyString())).thenReturn(response);
         //then
@@ -222,7 +223,7 @@ class MemberControllerTest {
     @DisplayName("/members/me - success")
     public void memberDetail() throws Exception {
         //given
-        MemberDetailResponse response = new MemberDetailResponse("email", "nickname", "pagename");
+        MemberResponse response = new MemberResponse("email", "nickname", "pagename", "profile.png");
         //when
         when(memberService.findMemberDetail(Mockito.anyLong())).thenReturn(response);
         validInterceptorAndArgumentResolverMocking();
@@ -368,8 +369,10 @@ class MemberControllerTest {
         //given
         //when
         when(memberService.findCurations()).thenReturn(
-                Arrays.asList(new CurationsResponse("nickname1", 1000L, "pagename1"),
-                        new CurationsResponse("nickname2", 2000L, "pagename2"))
+                Arrays.asList(new CurationsResponse("nickname1", 1000L,
+                                "pagename1", "https://cloudfront.net/profile1.png"),
+                        new CurationsResponse("nickname2", 2000L,
+                                "pagename2", "https://cloudfront.net/profile2.png"))
         );
         //then
         mockMvc.perform(get("/members/curations")
@@ -381,6 +384,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$[0].nickname").value("nickname1"))
                 .andExpect(jsonPath("$[0].donationAmount").value(1000L))
                 .andExpect(jsonPath("$[0].pageName").value("pagename1"))
+                .andExpect(jsonPath("$[0].profileImage").value("https://cloudfront.net/profile1.png"))
                 .andDo(document("curations",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -428,7 +432,7 @@ class MemberControllerTest {
     @DisplayName("POST - /members/profile - success")
     public void profile() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("profileImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
         String url = "https://de56jrhz7aye2.cloudfront.net/file";
 
@@ -441,7 +445,7 @@ class MemberControllerTest {
         mockMvc.perform(generateMultipartPutRequest("/members/profile")
                 .file(file))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("profileUrl").value(url))
+                .andExpect(jsonPath("profileImage").value(url))
                 .andDo(document("profile",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -453,7 +457,7 @@ class MemberControllerTest {
     public void profileS3FileNotFoundFailed() throws Exception {
         //given
         //given
-        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("profileImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
         //when
         validInterceptorAndArgumentResolverMocking();
@@ -474,7 +478,7 @@ class MemberControllerTest {
     @DisplayName("POST - /members/profile - member not found failed")
     public void profileMemberNotFoundFailed() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("profileImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
         String url = "https://de56jrhz7aye2.cloudfront.net/file";
 
