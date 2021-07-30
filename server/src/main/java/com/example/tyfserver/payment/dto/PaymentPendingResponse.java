@@ -13,7 +13,11 @@ public class PaymentPendingResponse {
 
     private UUID merchantUid;
 
+    public PaymentPendingResponse(UUID merchantUid) {
+        this.merchantUid = merchantUid;
+    }
+
     public PaymentPendingResponse(Payment payment) {
-        merchantUid = payment.getId();
+        this(payment.getMerchantUid());
     }
 }

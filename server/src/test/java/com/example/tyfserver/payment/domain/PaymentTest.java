@@ -26,7 +26,7 @@ class PaymentTest {
     private static final String MODULE = "테스트모듈";
 
     public static Payment testPayment() {
-        return new Payment(MERCHANT_UID, AMOUNT, "test@test.com", PAGE_NAME);
+        return new Payment(AMOUNT, "test@test.com", PAGE_NAME, MERCHANT_UID);
     }
 
     @Test

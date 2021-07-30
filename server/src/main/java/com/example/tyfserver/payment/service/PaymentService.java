@@ -45,16 +45,16 @@ public class PaymentService {
     public PaymentCancelResponse cancelPayment(PaymentCancelRequest paymentCancelRequest) {
         Payment payment = findPayment(UUID.fromString(paymentCancelRequest.getMerchantUid()));
 
-        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getId());
+        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
 
         payment.cancel(paymentCancelInfo);
         // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
-        return new PaymentCancelResponse(payment.getId());
+        return new PaymentCancelResponse(payment.getMerchantUid());
     }
 
     private Payment findPayment(UUID uuid) {
         return paymentRepository
-                .findById(uuid)
+                .findByMerchantUid(uuid)
                 .orElseThrow(PaymentNotFoundException::new);
     }
 }

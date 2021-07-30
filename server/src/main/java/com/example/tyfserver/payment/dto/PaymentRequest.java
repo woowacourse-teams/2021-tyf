@@ -1,5 +1,6 @@
 package com.example.tyfserver.payment.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class PaymentRequest {
     private String impUid;
 
     @NotNull
+    @JsonDeserialize
     private UUID merchantUid;
 
     public PaymentRequest(String impUid, UUID merchantUid) {

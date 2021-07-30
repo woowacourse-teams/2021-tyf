@@ -18,9 +18,8 @@ import static com.example.tyfserver.payment.exception.IllegalPaymentInfoExceptio
 public class Payment extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private Long amount;
@@ -35,15 +34,31 @@ public class Payment extends BaseTimeEntity {
 
     private String impUid;
 
-    public Payment(UUID id, Long amount, String email, String pageName) {
+    private UUID merchantUid;
+
+    @PrePersist
+    protected void onCreate() {
+        merchantUid = UUID.randomUUID();
+    }
+
+    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
         this.email = email;
         this.pageName = pageName;
+        this.merchantUid = merchantUid;
+    }
+
+    public Payment(Long amount, String email, String pageName, UUID merchantUid) {
+        this(null, amount, email, pageName, merchantUid);
+    }
+
+    public Payment(Long id, Long amount, String email, String pageName) {
+        this(id, amount, email, pageName, null);
     }
 
     public Payment(Long amount, String email, String pageName) {
-        this(null, amount, email, pageName);
+        this(null, amount, email, pageName, null);
     }
 
     public void updateStatus(PaymentStatus paymentStatus) {
@@ -81,7 +96,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     private void validatePaymentInfo(PaymentInfo paymentInfo) {
-        if (!id.equals(paymentInfo.getMerchantUid())) {
+        if (!merchantUid.equals(paymentInfo.getMerchantUid())) {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, paymentInfo.getModule());
         }

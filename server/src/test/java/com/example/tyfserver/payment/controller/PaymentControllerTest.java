@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 public class PaymentControllerTest {
 
-    private static final UUID ID = UUID.randomUUID();
+    private static final UUID MERCHANT_UID = UUID.randomUUID();
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,8 +56,7 @@ public class PaymentControllerTest {
     public void createPayment() throws Exception {
         //given
         PaymentPendingRequest pendingRequest = new PaymentPendingRequest(1000L, "test@test.com", "test");
-        PaymentPendingResponse pendingResponse = new PaymentPendingResponse(new Payment(ID, pendingRequest.getAmount(),
-                pendingRequest.getEmail(), pendingRequest.getPageName()));
+        PaymentPendingResponse pendingResponse = new PaymentPendingResponse(MERCHANT_UID);
 
         //when
         when(paymentService.createPayment(any(PaymentPendingRequest.class)))
@@ -68,7 +67,7 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("merchantUid").value(ID.toString()))
+                .andExpect(jsonPath("merchantUid").value(MERCHANT_UID.toString()))
                 .andDo(document("createPayment",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -122,8 +121,8 @@ public class PaymentControllerTest {
     @DisplayName("/payments/cancel - success")
     public void cancelPayment() throws Exception {
         //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(ID.toString());
-        PaymentCancelResponse cancelResponse = new PaymentCancelResponse(ID);
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID.toString());
+        PaymentCancelResponse cancelResponse = new PaymentCancelResponse(MERCHANT_UID);
 
         //when
         when(paymentService.cancelPayment(any(PaymentCancelRequest.class)))
@@ -134,7 +133,7 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cancelRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("merchantUid").value(ID.toString()))
+                .andExpect(jsonPath("merchantUid").value(MERCHANT_UID.toString()))
                 .andDo(document("cancelPayment",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -145,7 +144,7 @@ public class PaymentControllerTest {
     @DisplayName("/payments/cancel - 회원을 찾을 수 없음")
     public void cancelPaymentMemberNotFoundFailed() throws Exception {
         //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(ID.toString());
+        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID.toString());
 
         //when
         doThrow(new MemberNotFoundException())

@@ -58,7 +58,10 @@ class PaymentServiceTest {
 
         when(paymentRepository.save(Mockito.any(Payment.class)))
                 .thenReturn(
-                        new Payment(MERCHANT_UID, pendingRequest.getAmount(), pendingRequest.getEmail(), pendingRequest.getPageName()));
+                        new Payment(pendingRequest.getAmount(),
+                                pendingRequest.getEmail(),
+                                pendingRequest.getPageName(),
+                                MERCHANT_UID));
 
         //when
         PaymentPendingResponse paymentSaveResponse = paymentService.createPayment(pendingRequest);
@@ -74,12 +77,13 @@ class PaymentServiceTest {
         //given
         PaymentRequest paymentRequest = new PaymentRequest(IMP_UID, MERCHANT_UID);
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
-                .thenReturn(new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, AMOUNT,
-                        PAGE_NAME, paymentRequest.getImpUid(), MODULE));
-
-        when(paymentRepository.findById(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(paymentRequest.getMerchantUid(), AMOUNT, EMAIL, PAGE_NAME)));
+                        new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, AMOUNT,
+                                PAGE_NAME, paymentRequest.getImpUid(), MODULE));
+
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+                .thenReturn(
+                        Optional.of(new Payment(AMOUNT, EMAIL, PAGE_NAME, paymentRequest.getMerchantUid())));
 
         //then
         Payment payment = paymentService.completePayment(paymentRequest);
@@ -98,10 +102,9 @@ class PaymentServiceTest {
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
                 .thenReturn(paymentInfo);
 
-        when(paymentRepository.findById(Mockito.any(UUID.class)))
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(paymentRequest.getMerchantUid(), AMOUNT,
-                                EMAIL, paymentInfo.getPageName())));
+                        Optional.of(new Payment(AMOUNT, EMAIL, paymentInfo.getPageName(), paymentRequest.getMerchantUid())));
 
         //then
         Assertions.assertThatThrownBy(() -> paymentService.completePayment(paymentRequest))
@@ -113,16 +116,17 @@ class PaymentServiceTest {
     @Test
     void failCompletePaymentInvalidMerchantId() {
         //given
-        PaymentRequest paymentRequest = new PaymentRequest(IMP_UID, UUID.randomUUID());
-        PaymentInfo paymentInfo = new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, AMOUNT,
+        UUID invalidMerchantUid = UUID.randomUUID();
+        PaymentRequest paymentRequest = new PaymentRequest(IMP_UID, MERCHANT_UID);
+        PaymentInfo paymentInfo = new PaymentInfo(invalidMerchantUid, PaymentStatus.PAID, AMOUNT,
                 PAGE_NAME, paymentRequest.getImpUid(), MODULE);
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
                 .thenReturn(paymentInfo);
 
-        when(paymentRepository.findById(Mockito.any(UUID.class)))
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(MERCHANT_UID, AMOUNT, EMAIL, paymentInfo.getPageName())));
+                        Optional.of(new Payment(AMOUNT, EMAIL, paymentInfo.getPageName(), MERCHANT_UID)));
 
         //then
         Assertions.assertThatThrownBy(() -> paymentService.completePayment(paymentRequest))
@@ -142,10 +146,9 @@ class PaymentServiceTest {
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
                 .thenReturn(paymentInfo);
 
-        when(paymentRepository.findById(Mockito.any(UUID.class)))
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(paymentRequest.getMerchantUid(), AMOUNT,
-                                EMAIL, paymentInfo.getPageName())));
+                        Optional.of(new Payment(AMOUNT, EMAIL, PAGE_NAME, MERCHANT_UID)));
 
         //then
         Assertions.assertThatThrownBy(() -> paymentService.completePayment(paymentRequest))
@@ -158,16 +161,14 @@ class PaymentServiceTest {
     void failCompletePaymentInvalidPageName() {
         //given
         PaymentRequest paymentRequest = new PaymentRequest(IMP_UID, MERCHANT_UID);
-        PaymentInfo paymentInfo = new PaymentInfo(paymentRequest.getMerchantUid(), PaymentStatus.PAID, AMOUNT,
-                PAGE_NAME, paymentRequest.getImpUid(), MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
 
         when(paymentServiceConnector.requestPaymentInfo(Mockito.any(UUID.class)))
                 .thenReturn(paymentInfo);
 
-        when(paymentRepository.findById(Mockito.any(UUID.class)))
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(paymentRequest.getMerchantUid(), AMOUNT,
-                                EMAIL, "diffPageName")));
+                        Optional.of(new Payment(AMOUNT, EMAIL, "diffPageName", MERCHANT_UID)));
 
         //then
         Assertions.assertThatThrownBy(() -> paymentService.completePayment(paymentRequest))

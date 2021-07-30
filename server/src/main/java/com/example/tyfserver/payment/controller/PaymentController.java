@@ -34,6 +34,7 @@ public class PaymentController {
         return ResponseEntity.ok(response);
     }
 
+    // todo 환불시 이메일 인증 필요
     @PostMapping("/cancel")
     public ResponseEntity<PaymentCancelResponse> cancelPayment(@Valid @RequestBody PaymentCancelRequest paymentCancelRequest, BindingResult result) {
         if (result.hasErrors()) {

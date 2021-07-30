@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DonationServiceTest {
 
-    private static final UUID PAYMENT_ID = UUID.randomUUID();
+    private static final Long PAYMENT_ID = 1L;
     private static final UUID MERCHANT_UID = UUID.randomUUID();
     @Mock
     private MemberRepository memberRepository;
