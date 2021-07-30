@@ -123,12 +123,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("창작자 자신의 정보 조회")
     public void getMemberInfoSelf() {
         String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
-        MemberDetailResponse memberResponse = authGet("/members/me", token)
+        MemberResponse MemberResponse = authGet("/members/me", token)
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(MemberDetailResponse.class);
+                .extract().as(MemberResponse.class);
 
-        assertThat(memberResponse).usingRecursiveComparison()
-                .isEqualTo(new MemberDetailResponse(member));
+        assertThat(MemberResponse).usingRecursiveComparison()
+                .isEqualTo(new MemberResponse(member));
     }
 
     @Test
