@@ -20,7 +20,7 @@ spring:
       ddl-auto: update
 
   profiles:
-    include: dev-secret
+    include: dev-secret, aws
 
   config:
     use-legacy-processing: true
