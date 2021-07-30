@@ -33,6 +33,7 @@ public class Payment extends BaseTimeEntity {
 
     private String impUid;
 
+    @Column(nullable = false)
     private UUID merchantUid;
 
     @PrePersist
