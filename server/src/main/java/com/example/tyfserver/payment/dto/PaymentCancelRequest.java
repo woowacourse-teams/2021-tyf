@@ -5,17 +5,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentCancelRequest {
 
-    @NotBlank
+    @NotNull
     @JsonDeserialize
-    private String merchantUid;
+    private UUID merchantUid;
 
-    public PaymentCancelRequest(String merchantUid) {
+    public PaymentCancelRequest(UUID merchantUid) {
         this.merchantUid = merchantUid;
     }
 }

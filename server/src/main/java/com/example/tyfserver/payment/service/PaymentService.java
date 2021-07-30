@@ -43,7 +43,7 @@ public class PaymentService {
     }
 
     public PaymentCancelResponse cancelPayment(PaymentCancelRequest paymentCancelRequest) {
-        Payment payment = findPayment(UUID.fromString(paymentCancelRequest.getMerchantUid()));
+        Payment payment = findPayment(paymentCancelRequest.getMerchantUid());
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
 
