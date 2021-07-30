@@ -15,7 +15,7 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
     public List<CurationsResponse> findCurations() {
         return em.createQuery(
                 "select new com.example.tyfserver.member.dto.CurationsResponse(" +
-                        "           d.member.nickname, sum(d.payment.amount), d.member.pageName) " +
+                        "           d.member.nickname, sum(d.payment.amount), d.member.pageName, d.member.profileImage) " +
                         "from Donation d " +
                         "join d.member " +
                         "group by d.member " +

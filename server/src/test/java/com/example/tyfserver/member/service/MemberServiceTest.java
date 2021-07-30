@@ -160,13 +160,14 @@ class MemberServiceTest {
         when(memberRepository.findCurations())
                 .thenReturn(
                         Collections.singletonList(
-                                new CurationsResponse("nickname", 100L, "pageName")));
+                                new CurationsResponse("nickname", 100L, "pageName", "profile1.png")));
         //when
         CurationsResponse response = memberService.findCurations().get(0);
         //then
         assertThat(response.getNickname()).isEqualTo("nickname");
         assertThat(response.getDonationAmount()).isEqualTo(100L);
         assertThat(response.getPageName()).isEqualTo("pageName");
+        assertThat(response.getProfileImage()).isEqualTo(CloudFrontUrlGenerator.generateUrl("profile1.png"));
     }
 
     @Test

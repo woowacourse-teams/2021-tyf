@@ -7,6 +7,7 @@ import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.exception.S3FileNotFoundException;
+import com.example.tyfserver.common.util.CloudFrontUrlGenerator;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
@@ -185,7 +186,8 @@ class MemberControllerTest {
     @DisplayName("/members/{pageName} - success")
     public void memberInfo() throws Exception {
         //given
-        MemberResponse response = new MemberResponse("email", "nickname", "pagename");
+        MemberResponse response = new MemberResponse("email", "nickname",
+                "pagename", "profile.png");
         //when
         when(memberService.findMember(Mockito.anyString())).thenReturn(response);
         //then
@@ -368,8 +370,8 @@ class MemberControllerTest {
         //given
         //when
         when(memberService.findCurations()).thenReturn(
-                Arrays.asList(new CurationsResponse("nickname1", 1000L, "pagename1"),
-                        new CurationsResponse("nickname2", 2000L, "pagename2"))
+                Arrays.asList(new CurationsResponse("nickname1", 1000L, "pagename1", "profile1.png"),
+                        new CurationsResponse("nickname2", 2000L, "pagename2", "profile2.png"))
         );
         //then
         mockMvc.perform(get("/members/curations")
@@ -381,6 +383,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$[0].nickname").value("nickname1"))
                 .andExpect(jsonPath("$[0].donationAmount").value(1000L))
                 .andExpect(jsonPath("$[0].pageName").value("pagename1"))
+                .andExpect(jsonPath("$[0].profileImage").value(CloudFrontUrlGenerator.generateUrl("profile1.png")))
                 .andDo(document("curations",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
