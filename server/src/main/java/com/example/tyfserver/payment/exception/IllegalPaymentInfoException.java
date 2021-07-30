@@ -16,7 +16,7 @@ public class IllegalPaymentInfoException extends BaseException {
     private static final String MESSAGE_INVALID_CREATOR = "결제 정보의 PageName(상품정보)가 일치하지 않습니다.";
 
     public static final String ERROR_CODE_NOT_CANCELLED = "payment-006";
-    private static final String MESSAGE_NOT_CANCELLED = "아임포트에서 환불이 완료되지 않았습니다.";
+    private static final String MESSAGE_NOT_CANCELLED = "환불이 완료되지 않았습니다.";
 
     private static final String MESSAGE_INVALID_ERROR_CODE = "적절하지 않은 IllegalPaymentInfoException ErrorCode 입니다.";
 

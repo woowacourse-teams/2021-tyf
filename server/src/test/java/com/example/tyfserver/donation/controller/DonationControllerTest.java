@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
+import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -123,7 +124,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_NOT_PAID, "테스트모듈"))
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_NOT_PAID, "테스트모듈"))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
@@ -131,7 +132,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(IllegalPaymentInfoException.ERROR_CODE_NOT_PAID))
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_NOT_PAID))
                 .andDo(document("createDonationFailedStatusNotPaid",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -144,7 +145,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
@@ -152,7 +153,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID))
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_ID))
                 .andDo(document("createDonationFailedStatusInvalidId",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -165,7 +166,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT, MODULE))
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, MODULE))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
@@ -173,7 +174,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT))
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_AMOUNT))
                 .andDo(document("createDonationFailedInvalidAmount",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -186,7 +187,7 @@ class DonationControllerTest {
         //given
         PaymentRequest request = new PaymentRequest(IMP_ID, MERCHANT_UID);
         //when
-        doThrow(IllegalPaymentInfoException.from(IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR, MODULE))
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, MODULE))
                 .when(donationService).createDonation(Mockito.any(PaymentRequest.class));
 
         //then
@@ -194,7 +195,7 @@ class DonationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR))
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_CREATOR))
                 .andDo(document("createDonationFailedInvalidPageName",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))

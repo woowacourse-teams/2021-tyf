@@ -37,22 +37,24 @@ public class PaymentService {
         PaymentInfo paymentInfo = paymentServiceConnector
                 .requestPaymentInfo(paymentRequest.getMerchantUid());
 
-        Payment payment = paymentRepository
-                .findById(paymentRequest.getMerchantUid())
-                .orElseThrow(PaymentNotFoundException::new);
+        Payment payment = findPayment(paymentRequest.getMerchantUid());
 
         payment.complete(paymentInfo);
         return payment;
     }
 
     public PaymentCancelResponse cancelPayment(PaymentCancelRequest paymentCancelRequest) {
-        Payment payment = paymentRepository
-                .findById(UUID.fromString(paymentCancelRequest.getMerchantUid()))
-                .orElseThrow(RuntimeException::new);
+        Payment payment = findPayment(UUID.fromString(paymentCancelRequest.getMerchantUid()));
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getId());
 
         payment.cancel(paymentCancelInfo);
         return new PaymentCancelResponse(payment.getId());
+    }
+
+    private Payment findPayment(UUID uuid) {
+        return paymentRepository
+                .findById(uuid)
+                .orElseThrow(PaymentNotFoundException::new);
     }
 }
