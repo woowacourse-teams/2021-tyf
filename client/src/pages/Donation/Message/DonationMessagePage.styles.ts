@@ -10,4 +10,10 @@ export const StyledTemplate = styled(Template)`
   justify-content: center;
   align-items: center;
   padding-top: 5rem;
+  margin: 0 auto;
+
+  section:nth-of-type(1) {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
 `;

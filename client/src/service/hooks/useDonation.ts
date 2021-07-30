@@ -12,9 +12,10 @@ const useDonation = (creatorId: CreatorId) => {
   const history = useHistory();
   const [donation, setDonation] = useRecoilState(donationState);
   const { pageName } = useCreator(creatorId);
+  const { amount, email } = donation;
 
-  const donate = async (amount: number) => {
-    const { merchantUid } = await requestPayment({ amount, email: '', pageName });
+  const donate = async () => {
+    const { merchantUid } = await requestPayment({ amount, email, pageName });
     const { IMP } = window;
 
     IMP.init('imp61348931'); // TODO: 가맹점 식별번호 입력
@@ -27,11 +28,11 @@ const useDonation = (creatorId: CreatorId) => {
         merchant_uid: merchantUid,
         name: pageName,
         amount,
-        buyer_email: 'gildong@gmail.com',
-        buyer_name: '홍길동',
-        buyer_tel: '010-4242-4242',
-        buyer_addr: '서울특별시 강남구 신사동',
-        buyer_postcode: '01181',
+        buyer_email: email,
+        // buyer_name: '홍길동',
+        // buyer_tel: '010-4242-4242',
+        // buyer_addr: '서울특별시 강남구 신사동',
+        // buyer_postcode: '01181',
       },
       async (response: IamportResponse) => {
         if (response.success) {

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { SIZE } from '../../../constants/device';
 
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button';
@@ -11,6 +12,8 @@ export const StyledMessageForm = styled.form`
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  max-width: ${SIZE.MOBILE_MAX}px;
+  margin: 0 auto;
 `;
 
 export const DonationMessageTitle = styled(Title)`
