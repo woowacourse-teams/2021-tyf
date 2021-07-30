@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useDonatorForm from '../../../service/hooks/useDonatorForm';
 
+import { DONATION_POPUP } from '../../../constants/popup';
+import useDonatorForm from '../../../service/hooks/useDonatorForm';
+import { popupWindow } from '../../../service/popup';
 import { CreatorId } from '../../../types';
 import Button from '../../@atom/Button/Button';
-import Input from '../../@atom/Input/Input';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
@@ -27,6 +27,13 @@ const DonatorForm = ({ creatorId }: DonatorFormProps) => {
     history.push(`/donation/${creatorId}/payment`);
   };
 
+  const popupTerms = (route: string) => {
+    popupWindow(route, {
+      width: DONATION_POPUP.WIDTH,
+      height: DONATION_POPUP.HEIGHT,
+    });
+  };
+
   return (
     <StyledDonatorForm onSubmit={routeToPaymentPage}>
       <SubTitle>후원자님의 정보를 입력해주세요!</SubTitle>
@@ -47,7 +54,7 @@ const DonatorForm = ({ creatorId }: DonatorFormProps) => {
             checked={isTermChecked}
             onChange={({ target }) => setIsTermChecked(target.checked)}
           ></TermCheckbox>
-          <TermLink href="/" target="_blank">
+          <TermLink onClick={() => popupTerms('/contracts/donator-policy.html')}>
             결제 약관
           </TermLink>
           에 동의 (필수)

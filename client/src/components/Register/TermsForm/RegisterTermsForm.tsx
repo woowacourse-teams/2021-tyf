@@ -1,7 +1,9 @@
 import { useHistory } from 'react-router-dom';
-import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 
+import { DONATION_POPUP } from '../../../constants/popup';
+import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 import useTerms from '../../../service/hooks/useTerms';
+import { popupWindow } from '../../../service/popup';
 import Button from '../../@atom/Button/Button';
 import {
   Divider,
@@ -20,6 +22,13 @@ const RegisterTermsForm = () => {
 
   const routeToRegisterPageNamePage = () => {
     history.push('/register/url');
+  };
+
+  const popupTerms = (route: string) => {
+    popupWindow(route, {
+      width: DONATION_POPUP.WIDTH,
+      height: DONATION_POPUP.HEIGHT,
+    });
   };
 
   useRegisterEffect();
@@ -43,7 +52,7 @@ const RegisterTermsForm = () => {
             checked={termsChecked['termsOfService']}
             onChange={(e) => toggleTermChecked(e.target)}
           ></TermCheckbox>
-          <TermLink href="/" target="_blank">
+          <TermLink onClick={() => popupTerms('/contracts/creator-policy.html')}>
             서비스 약관
           </TermLink>
           에 동의 (필수)
@@ -54,7 +63,7 @@ const RegisterTermsForm = () => {
             checked={termsChecked['personalInformationUsage']}
             onChange={(e) => toggleTermChecked(e.target)}
           ></TermCheckbox>
-          <TermLink href="/" target="_blank">
+          <TermLink onClick={() => popupTerms('/contracts/privacy.html')}>
             개인정보 수집 및 이용
           </TermLink>
           에 동의 (필수)

@@ -63,7 +63,7 @@ export const Divider = styled.hr`
   margin: 1rem 0;
 `;
 
-export const TermLink = styled.a`
+export const TermLink = styled.span`
   color: ${({ theme }) => theme.primary.base};
 
   &:hover {

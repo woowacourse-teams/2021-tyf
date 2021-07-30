@@ -28,7 +28,7 @@ export const TermCheckbox = styled(Checkbox)`
   margin-right: 1rem;
 `;
 
-export const TermLink = styled.a`
+export const TermLink = styled.span`
   color: ${({ theme }) => theme.primary.base};
 
   &:hover {

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { SIZE } from '../../../constants/device';
 
+import { SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button';
 import Container from '../../@atom/Container/Container';
