@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.dto;
 
-import com.example.tyfserver.common.util.CloudFrontUrlGenerator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,6 @@ public class CurationsResponse {
         this.nickname = nickname;
         this.donationAmount = donationAmount;
         this.pageName = pageName;
-        this.profileImage = CloudFrontUrlGenerator.generateUrl(profileImage);
+        this.profileImage = profileImage;
     }
 }

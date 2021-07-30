@@ -1,7 +1,6 @@
 package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
-import com.example.tyfserver.common.util.CloudFrontUrlGenerator;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
@@ -42,9 +41,9 @@ public class MemberService {
         return new MemberResponse(member);
     }
 
-    public MemberDetailResponse findMemberDetail(Long id) {
+    public MemberResponse findMemberDetail(Long id) {
         Member member = findMember(id);
-        return new MemberDetailResponse(member);
+        return new MemberResponse(member);
     }
 
     public PointResponse findMemberPoint(Long id) {
@@ -61,7 +60,7 @@ public class MemberService {
         deleteProfile(findMember);
         String uploadedFile = s3Connector.upload(multipartFile, loginMember.getId());
         findMember.uploadProfileImage(uploadedFile);
-        return new ProfileResponse(CloudFrontUrlGenerator.generateUrl(uploadedFile));
+        return new ProfileResponse(uploadedFile);
     }
 
     public void deleteProfile(LoginMember loginMember) {

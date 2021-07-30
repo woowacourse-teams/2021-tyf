@@ -99,12 +99,23 @@ class MemberRepositoryImplTest {
     @DisplayName("curationList Test")
     public void curationListTest() {
 
-        Member member1 = new Member("email1", "nick1", "page1", Oauth2Type.GOOGLE, "profile1.png");
-        Member member2 = new Member("email2", "nick2", "page2", Oauth2Type.GOOGLE, "profile2.png");
-        Member member3 = new Member("email3", "nick3", "page3", Oauth2Type.GOOGLE, "profile3.png");
-        Member member4 = new Member("email4", "nick4", "page4", Oauth2Type.GOOGLE, "profile4.png");
-        Member member5 = new Member("email5", "nick5", "page5", Oauth2Type.GOOGLE, "profile5.png");
-        Member member6 = new Member("email6", "nick6", "page6", Oauth2Type.GOOGLE, "profile6.png");
+        Member member1 = new Member("email1", "nick1", "page1",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile1.png");
+
+        Member member2 = new Member("email2", "nick2", "page2",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile2.png");
+
+        Member member3 = new Member("email3", "nick3", "page3",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile3.png");
+
+        Member member4 = new Member("email4", "nick4", "page4",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile4.png");
+
+        Member member5 = new Member("email5", "nick5", "page5",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile5.png");
+
+        Member member6 = new Member("email6", "nick6", "page6",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile6.png");
 
         Donation donation1 = new Donation(
                 paymentRepository.save(new Payment(1000L, "test@test.com", "test")
@@ -167,19 +178,19 @@ class MemberRepositoryImplTest {
 
         List<CurationsResponse> curations = memberRepository.findCurations();
         assertThat(curations.get(0)).usingRecursiveComparison().isEqualTo(
-                new CurationsResponse("nick6", 13000L, "page6", "profile6.png")
+                new CurationsResponse("nick6", 13000L, "page6", "https://cloudfront.net/profile6.png")
         );
         assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
-                new CurationsResponse("nick3", 7000L, "page3", "profile3.png")
+                new CurationsResponse("nick3", 7000L, "page3", "https://cloudfront.net/profile3.png")
         );
         assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(
-                new CurationsResponse("nick5", 5000L, "page5", "profile5.png")
+                new CurationsResponse("nick5", 5000L, "page5", "https://cloudfront.net/profile5.png")
         );
         assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-                new CurationsResponse("nick2", 2000L, "page2", "profile2.png")
+                new CurationsResponse("nick2", 2000L, "page2", "https://cloudfront.net/profile2.png")
         );
         assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
-                new CurationsResponse("nick1", 1000L, "page1", "profile1.png")
+                new CurationsResponse("nick1", 1000L, "page1", "https://cloudfront.net/profile1.png")
         );
     }
 }

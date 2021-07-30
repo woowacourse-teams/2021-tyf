@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.dto;
 
-import com.example.tyfserver.common.util.CloudFrontUrlGenerator;
 import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class MemberResponse {
 
     public MemberResponse(Member member) {
         this(member.getEmail(), member.getNickname(), member.getPageName(),
-                CloudFrontUrlGenerator.generateUrl(member.getProfileImage()));
+                member.getProfileImage());
     }
 
     public MemberResponse(String email, String nickname, String pageName, String profileImage) {
