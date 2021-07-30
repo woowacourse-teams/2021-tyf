@@ -23,7 +23,7 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
                 CurationsResponse.class
         )
                 .setFirstResult(0)
-                .setMaxResults(5)
+                .setMaxResults(10)
                 .getResultList();
     }
 }
