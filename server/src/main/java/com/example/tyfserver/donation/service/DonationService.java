@@ -9,7 +9,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
-import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +28,8 @@ public class DonationService {
     private final MemberRepository memberRepository;
     private final PaymentService paymentService;
 
-    public DonationResponse createDonation(PaymentRequest paymentRequest) {
-        Payment payment = paymentService.completePayment(paymentRequest);
+    public DonationResponse createDonation(PaymentCompleteRequest paymentCompleteRequest) {
+        Payment payment = paymentService.completePayment(paymentCompleteRequest);
         Donation donation = new Donation(payment);
         Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);

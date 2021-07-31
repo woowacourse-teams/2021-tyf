@@ -11,9 +11,10 @@ public enum PaymentStatus {
     }
 
     public static boolean isPaid(PaymentStatus paymentStatus) {
-        if (paymentStatus.equals(PAID)) {
-            return true;
-        }
-        return false;
+        return paymentStatus.equals(PAID);
+    }
+
+    public static boolean isCancelled(PaymentStatus paymentStatus) {
+        return paymentStatus.equals(CANCELLED);
     }
 }

@@ -10,7 +10,29 @@
 </head>
 <body>
 <button onclick="requestPay()">결제하기</button>
+<br>
+<button onclick="cancelPay()">환불하기</button>
 </body>
+
+<script>
+    async function cancelPay() {
+      await jQuery.ajax({
+        url: "http://localhost:8080/payments/cancel",
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        data: JSON.stringify({
+          merchantUid: "935cfb0e-86e5-4458-8994-993cd7dc4e19"
+        })
+      }).done(await function (data) {
+          console.log("환불 성공");
+          console.log(data);
+      }).fail(function (e) {
+          alert("실패!")
+      });
+    }
+</script>
+
+
 <script>
     var IMP = window.IMP;
     IMP.init('imp61348931');
@@ -24,19 +46,15 @@
         // IMP.request_pay(param, callback) 호출
         let result;
         await IMP.request_pay({ // param
-            pg: "kakaopay",
             pay_method: "card",
             merchant_uid: merchantUid,
             name: pageName,
             amount: amount,
-            buyer_email: email,
-            buyer_name: "홍길동",
-            buyer_tel: "010-4242-4242",
-            buyer_addr: "서울특별시 강남구 신사동",
-            buyer_postcode: "01181"
+            buyer_email: email
         }, async function (rsp) { // callback
             if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-                console.log(`rsp: ${rsp}`);
+                console.log("아임포트 요청 성공");
+                console.log(rsp);
                 await jQuery.ajax({
                     url: "http://localhost:8080/donations", // 가맹점 서버
                     method: "POST",
@@ -45,25 +63,17 @@
                         impUid: rsp.imp_uid,
                         merchantUid: rsp.merchant_uid
                     }),
-                    // jQuery로 HTTP 요청
                 }).done(await function (data) {
                     // 가맹점 서버 결제 API 성공시 로직'
-                    alert("결제 끝!");
+                    console.log("결제 끝!");
                     console.log(data);
                     result = {
                         "impUid": data.impUid,
                         "merchantUid": data.merchantUid
                     };
-                    switch (data.status) {
-                        case "vbankIssued":
-                            // 가상계좌 발급 시 로직
-                            console.log("가상계좌 발급 완료");
-                            break;
-                        case "success":
-                            // 결제 성공 시 로직
-                            console.log("결제 성공");
-                            break;
-                    }
+                    if(data.status === "success") {
+                        console.log("결제 성공");
+                    };
                 }).fail(function (e) {
                     alert("실패!")
                 });
@@ -91,12 +101,15 @@
             // jQuery로 HTTP 요청
         }).done(function (data) {
             // 가맹점 서버 결제 API 성공시 로직
-            console.log(`Payment 생성완료! : ${data}`) // 잘 들어오는데...
+            console.log(`Payment 생성완료!`) // 잘 들어오는데...
+            console.log(data)
             merchantUid = data.merchantUid;
         }).fail(function (data) {
-            console.log(`실패: ${data}`);
+            console.log(`실패`);
+            console.log(data)
         });
         return merchantUid;
     }
+
 </script>
 </html>

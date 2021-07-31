@@ -5,19 +5,18 @@ import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.domain.Payment;
-import com.example.tyfserver.payment.dto.PaymentRequest;
+import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -124,10 +123,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     private Long 후원을_생성한다(Member member) {
         // given
-        PaymentRequest paymentRequest = new PaymentRequest(member.getPageName(), DonationTest.DONATION_AMOUNT);
+        PaymentCompleteRequest request = new PaymentCompleteRequest(member.getPageName(), UUID.randomUUID().toString());
 
         // when // then
-        return post("/donations", paymentRequest)
+        return post("/donations", request)
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(DonationResponse.class).getDonationId();

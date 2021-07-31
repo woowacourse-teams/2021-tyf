@@ -1,22 +1,23 @@
-package com.example.tyfserver.donation.dto;
+package com.example.tyfserver.payment.dto;
 
+import com.example.tyfserver.payment.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DonationRequest {
+public class PaymentCompleteRequest {
 
     @NotBlank
     private String impUid;
-    @NotNull
-    private Long merchantUid;
 
-    public DonationRequest(String impUid, Long merchantUid) {
+    @UUID
+    private String merchantUid;
+
+    public PaymentCompleteRequest(String impUid, String merchantUid) {
         this.impUid = impUid;
         this.merchantUid = merchantUid;
     }

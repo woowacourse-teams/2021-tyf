@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentSaveRequest {
+public class PaymentPendingRequest {
 
     @NotNull
     private Long amount;
@@ -22,7 +22,7 @@ public class PaymentSaveRequest {
     @NotBlank
     private String pageName;
 
-    public PaymentSaveRequest(Long amount, String email, String pageName) {
+    public PaymentPendingRequest(Long amount, String email, String pageName) {
         this.amount = amount;
         this.email = email;
         this.pageName = pageName;

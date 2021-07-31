@@ -1,7 +1,10 @@
 package com.example.tyfserver.payment.domain;
 
-import com.example.tyfserver.payment.dto.PaymentRequest;
+import java.util.UUID;
 
 public interface PaymentServiceConnector {
-    PaymentInfo requestPaymentInfo(PaymentRequest paymentRequest);
+
+    PaymentInfo requestPaymentInfo(UUID merchantUid);
+
+    PaymentInfo requestPaymentCancel(UUID merchantUid);
 }
