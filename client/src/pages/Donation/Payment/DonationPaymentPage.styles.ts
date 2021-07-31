@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Container from '../../../components/@atom/Container/Container';
+import Container from '../../../components/@atom/Container/Container.styles';
 import SubTitle from '../../../components/@atom/SubTitle/SubTitle.styles';
 import Template from '../../../components/@atom/Template/Template';
 import { SIZE } from '../../../constants/device';

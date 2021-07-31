@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 import Input from '../../@atom/Input/Input';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
 

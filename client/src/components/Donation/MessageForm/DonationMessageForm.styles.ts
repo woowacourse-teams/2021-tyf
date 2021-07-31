@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 import Input from '../../@atom/Input/Input';
 import Title from '../../@atom/Title/Title';
 

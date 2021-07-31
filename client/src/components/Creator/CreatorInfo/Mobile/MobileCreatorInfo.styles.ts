@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import PALETTE from '../../../../constants/palette';
 import Button from '../../../@atom/Button/Button';
-import Container from '../../../@atom/Container/Container';
+import Container from '../../../@atom/Container/Container.styles';
 
 export const StyledCreatorInfo = styled.section`
   margin-top: 4rem;

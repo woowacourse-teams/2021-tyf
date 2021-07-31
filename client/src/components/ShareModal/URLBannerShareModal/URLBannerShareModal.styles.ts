@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PALETTE from '../../../constants/palette';
 import { Z_INDEX } from '../../../constants/style';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 
 import Modal from '../../@atom/Modal/Modal';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';

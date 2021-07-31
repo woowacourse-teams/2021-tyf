@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { SIZE } from '../../../constants/device';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 
 export const StyledDonatorForm = styled.form`
   display: flex;

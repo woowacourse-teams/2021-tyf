@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { DEVICE, SIZE } from '../../../constants/device';
 import Button from '../../@atom/Button/Button';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 import Title from '../../@atom/Title/Title';
 
 export const StyledRegisterNameForm = styled.form`

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { DEVICE, SIZE } from '../../../constants/device';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 import Title from '../../@atom/Title/Title';
 
 export const StyledRegisterTermsForm = styled.form`

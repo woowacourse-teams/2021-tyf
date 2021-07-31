@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import Button from '../../../components/@atom/Button/Button';
-import Container from '../../../components/@atom/Container/Container';
+import Container from '../../../components/@atom/Container/Container.styles';
 import Template from '../../../components/@atom/Template/Template';
 import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton';
 import { popupStyle } from '../Amount/DonationAmountPage.styles';

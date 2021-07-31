@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Container from '../../../components/@atom/Container/Container';
+import Container from '../../../components/@atom/Container/Container.styles';
 import Template from '../../../components/@atom/Template/Template';
 import Title from '../../../components/@atom/Title/Title';
 import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton';

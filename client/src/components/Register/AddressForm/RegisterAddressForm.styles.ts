@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 import Title from '../../@atom/Title/Title';
 import PALETTE from '../../../constants/palette';
 import { DEVICE, SIZE } from '../../../constants/device';

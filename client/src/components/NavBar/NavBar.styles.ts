@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import Container from '../@atom/Container/Container';
+import Container from '../@atom/Container/Container.styles';
 import IconButton from '../@atom/IconButton/IconButton';
 import logoImg from '../../assets/images/logo.svg';
 import Anchor from '../@atom/Anchor/Anchor';

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import PALETTE from '../../../constants/palette';
-import Container from '../../@atom/Container/Container';
+import Container from '../../@atom/Container/Container.styles';
 
 import Modal from '../../@atom/Modal/Modal';
 
