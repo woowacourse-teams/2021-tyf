@@ -15,19 +15,19 @@ public class IamPortPaymentInfo {
 
     @NoArgsConstructor
     @Getter
-    public class Response {
+    public static class Response {
         String status;
-        String merchant_uid;
+        String merchantUid;
         String amount;
         String name;
-        String imp_uid;
+        String impUid;
 
-        public Response(String status, String merchant_uid, String amount, String name, String imp_uid) {
+        public Response(String status, String merchantUid, String amount, String name, String impUid) {
             this.status = status;
-            this.merchant_uid = merchant_uid;
+            this.merchantUid = merchantUid;
             this.amount = amount;
             this.name = name;
-            this.imp_uid = imp_uid;
+            this.impUid = impUid;
         }
     }
 }
