@@ -1,0 +1,29 @@
+FROM node:14
+
+WORKDIR /app
+
+# install react with package.json
+COPY package.json yarn.lock ./
+RUN yarn
+
+# copy react app + express app
+COPY . .
+
+# react build
+RUN yarn build
+
+# change directory to server
+WORKDIR /app/server
+
+# install express with package.json
+RUN yarn
+
+# install pm2
+RUN yarn global add  pm2
+
+# expose port 9000
+EXPOSE 9000
+
+# run pm2
+CMD ["pm2-runtime", "app.js"]
+

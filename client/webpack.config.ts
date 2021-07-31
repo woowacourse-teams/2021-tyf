@@ -15,7 +15,7 @@ const config: WebpackConfig = {
   resolve: { extensions: ['.ts', '.tsx', '.js', '.jsx'] },
   output: {
     filename: '[contenthash].bundle.js',
-    path: path.resolve('build'),
+    path: path.resolve('server', 'dist'),
     clean: true,
   },
   module: {
