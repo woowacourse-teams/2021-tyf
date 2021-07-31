@@ -12,17 +12,19 @@ public class MemberResponse {
     private String email;
     private String nickname;
     private String pageName;
+    private String bio;
     private String profileImage;
 
     public MemberResponse(Member member) {
         this(member.getEmail(), member.getNickname(), member.getPageName(),
-                member.getProfileImage());
+                member.getBio(), member.getProfileImage());
     }
 
-    public MemberResponse(String email, String nickname, String pageName, String profileImage) {
+    public MemberResponse(String email, String nickname, String pageName, String bio, String profileImage) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
+        this.bio = bio;
         this.profileImage = profileImage;
     }
 }
