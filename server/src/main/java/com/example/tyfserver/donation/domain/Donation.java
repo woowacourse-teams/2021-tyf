@@ -2,6 +2,7 @@ package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,6 @@ public class Donation extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long amount;
-
     @Embedded
     private Message message;
 
@@ -26,18 +25,22 @@ public class Donation extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Donation(Long id, Long amount, Message message) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
+    public Donation(Long id, Payment payment, Message message) {
         this.id = id;
-        this.amount = amount;
+        this.payment = payment;
         this.message = message;
     }
 
-    public Donation(Long amount) {
-        this(amount, Message.defaultMessage());
+    public Donation(Payment payment) {
+        this(payment, Message.defaultMessage());
     }
 
-    public Donation(Long amount, Message message) {
-        this.amount = amount;
+    public Donation(Payment payment, Message message) {
+        this.payment = payment;
         this.message = message;
     }
 
@@ -61,9 +64,7 @@ public class Donation extends BaseTimeEntity {
         return message.isSecret();
     }
 
-    public void hideNameAndMessageWhenSecret() {
-        if (message.isSecret()) {
-            message.hideNameAndMessage();
-        }
+    public Long getAmount() {
+        return payment.getAmount();
     }
 }

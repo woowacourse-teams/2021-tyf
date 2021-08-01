@@ -3,6 +3,7 @@ package com.example.tyfserver.member.controller;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.dto.*;
+import com.example.tyfserver.member.exception.BioValidationRequestException;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
 import com.example.tyfserver.member.service.MemberService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,7 +36,7 @@ public class MemberController {
     }
 
     @PostMapping("/validate/nickname")
-    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameValidationRequest request,
+    public ResponseEntity<Void> validateNickname(@Valid @RequestBody NicknameRequest request,
                                                  BindingResult result) {
         if (result.hasErrors()) {
             throw new NicknameValidationRequestException();
@@ -55,7 +57,7 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberDetailResponse> memberDetail(LoginMember loginMember) {
+    public ResponseEntity<MemberResponse> memberDetail(LoginMember loginMember) {
         return ResponseEntity.ok(memberService.findMemberDetail(loginMember.getId()));
     }
 
@@ -68,4 +70,40 @@ public class MemberController {
     public ResponseEntity<List<CurationsResponse>> curations() {
         return ResponseEntity.ok(memberService.findCurations());
     }
+
+    @PutMapping("/profile")
+    public ResponseEntity<ProfileResponse> profile(@RequestParam MultipartFile profileImage, LoginMember loginMember) {
+        return ResponseEntity.ok((memberService.uploadProfile(profileImage, loginMember)));
+    }
+
+    @DeleteMapping("/profile")
+    public ResponseEntity<Void> deleteProfile(LoginMember loginMember) {
+        memberService.deleteProfile(loginMember);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/me/bio")
+    public ResponseEntity<Void> updateBio(LoginMember loginMember,
+                                          @Valid @RequestBody MemberBioUpdateRequest memberBioUpdateRequest,
+                                          BindingResult result) {
+        if (result.hasErrors()) {
+            throw new BioValidationRequestException();
+        }
+
+        memberService.updateBio(loginMember, memberBioUpdateRequest.getBio());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/me/nickname")
+    public ResponseEntity<Void> updateNickname(LoginMember loginMember,
+                                               @Valid @RequestBody NicknameRequest nicknameRequest,
+                                               BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NicknameValidationRequestException();
+        }
+
+        memberService.updateNickName(loginMember, nicknameRequest.getNickname());
+        return ResponseEntity.ok().build();
+    }
+
 }

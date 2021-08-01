@@ -66,7 +66,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("닉네임 유효성 검사")
     public void validateNicknameValidation() {
-        NicknameValidationRequest validationRequest = new NicknameValidationRequest("닉네임");
+        NicknameRequest validationRequest = new NicknameRequest("닉네임");
 
         post("/members/validate/nickname", validationRequest)
                 .statusCode(HttpStatus.OK.value());
@@ -75,7 +75,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("닉네임 유효성 검사 - 실패")
     public void validateNicknameValidation_fail() {
-        NicknameValidationRequest validationRequest = new NicknameValidationRequest(INVALID_NICK_NAME);
+        NicknameRequest validationRequest = new NicknameRequest(INVALID_NICK_NAME);
         post("/members/validate/nickname", validationRequest)
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
@@ -123,12 +123,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("창작자 자신의 정보 조회")
     public void getMemberInfoSelf() {
         String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
-        MemberDetailResponse memberResponse = authGet("/members/me", token)
+        MemberResponse MemberResponse = authGet("/members/me", token)
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(MemberDetailResponse.class);
+                .extract().as(MemberResponse.class);
 
-        assertThat(memberResponse).usingRecursiveComparison()
-                .isEqualTo(new MemberDetailResponse(member));
+        assertThat(MemberResponse).usingRecursiveComparison()
+                .isEqualTo(new MemberResponse(member));
     }
 
     @Test

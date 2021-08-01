@@ -13,7 +13,7 @@ spring:
       ddl-auto: create
 
   profiles:
-    include: oauth2
+    include: oauth2, aws
 
   config:
     use-legacy-processing: true
@@ -25,3 +25,7 @@ logging.level:
 jwt:
   secreteKey: ABCDEFG
   expire-length: 60000
+
+iamport:
+  rest_api_key: apiKey
+  rest_api_secret: apiSecret

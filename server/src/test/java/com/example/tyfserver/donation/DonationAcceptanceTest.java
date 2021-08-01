@@ -5,23 +5,22 @@ import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
-import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 public class DonationAcceptanceTest extends AcceptanceTest {
 
     @Autowired
@@ -35,6 +34,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     private Member member;
     private Member member2;
+
 
     @Override
     @BeforeEach
@@ -101,21 +101,21 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         assertThat(donations.get(0).getAmount()).isEqualTo(DonationTest.DONATION_AMOUNT);
     }
 
-//    @Test
-//    @DisplayName("창작자가 자신이 받은 후원 목록을 조회한다.")
-//    public void 전체_후원_리스트_실패() {
-//        //given
-//        Long donationId = 후원을_생성한다();
-//        DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
-//        후원메시지를_보낸다(donationId, messageRequest);
-//        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
-//
-//        //when //then
-//        authGet("/donations/me", token)
-//                .statusCode(HttpStatus.OK.value())
-//                .extract().body()
-//                .jsonPath().getList(".", DonationResponse.class);
-//    }
+    @Test
+    @DisplayName("창작자가 자신이 받은 후원 목록을 조회한다.")
+    public void 전체_후원_리스트_실패() {
+        //given
+        Long donationId = 후원을_생성한다();
+        DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
+        후원메시지를_보낸다(donationId, messageRequest);
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
+
+        //when //then
+        authGet("/donations/me", token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().body()
+                .jsonPath().getList(".", DonationResponse.class);
+    }
 
     private Long 후원을_생성한다() {
         return 후원을_생성한다(member);
@@ -123,10 +123,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     private Long 후원을_생성한다(Member member) {
         // given
-        DonationRequest donationRequest = new DonationRequest(member.getPageName(), DonationTest.DONATION_AMOUNT);
+        PaymentCompleteRequest request = new PaymentCompleteRequest(member.getPageName(), UUID.randomUUID().toString());
 
         // when // then
-        return post("/donations", donationRequest)
+        return post("/donations", request)
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(DonationResponse.class).getDonationId();

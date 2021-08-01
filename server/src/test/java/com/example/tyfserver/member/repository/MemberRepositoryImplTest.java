@@ -7,6 +7,8 @@ import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.CurationsResponse;
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,10 +34,16 @@ class MemberRepositoryImplTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    private Member testMember1;
+    private Member testMember2;
+
     @BeforeEach
     void setUp() {
-        memberRepository.save(MemberTest.testMember());
-        memberRepository.save(MemberTest.testMember2());
+        testMember1 = memberRepository.save(MemberTest.testMember());
+        testMember2 = memberRepository.save(MemberTest.testMember2());
     }
 
     @ParameterizedTest
@@ -91,20 +99,58 @@ class MemberRepositoryImplTest {
     @DisplayName("curationList Test")
     public void curationListTest() {
 
-        Member member1 = new Member("email1", "nick1", "page1", Oauth2Type.GOOGLE);
-        Member member2 = new Member("email2", "nick2", "page2", Oauth2Type.GOOGLE);
-        Member member3 = new Member("email3", "nick3", "page3", Oauth2Type.GOOGLE);
-        Member member4 = new Member("email4", "nick4", "page4", Oauth2Type.GOOGLE);
-        Member member5 = new Member("email5", "nick5", "page5", Oauth2Type.GOOGLE);
-        Member member6 = new Member("email6", "nick6", "page6", Oauth2Type.GOOGLE);
+        Member member1 = new Member("email1", "nick1", "page1",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile1.png");
 
-        Donation donation1 = new Donation(1000L, Message.defaultMessage());
-        Donation donation2 = new Donation(2000L, Message.defaultMessage());
-        Donation donation3 = new Donation(3000L, Message.defaultMessage());
-        Donation donation4 = new Donation(4000L, Message.defaultMessage());
-        Donation donation5 = new Donation(5000L, Message.defaultMessage());
-        Donation donation6 = new Donation(6000L, Message.defaultMessage());
-        Donation donation7 = new Donation(7000L, Message.defaultMessage());
+        Member member2 = new Member("email2", "nick2", "page2",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile2.png");
+
+        Member member3 = new Member("email3", "nick3", "page3",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile3.png");
+
+        Member member4 = new Member("email4", "nick4", "page4",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile4.png");
+
+        Member member5 = new Member("email5", "nick5", "page5",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile5.png");
+
+        Member member6 = new Member("email6", "nick6", "page6",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile6.png");
+
+        Donation donation1 = new Donation(
+                paymentRepository.save(new Payment(1000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation2 = new Donation(
+                paymentRepository.save(new Payment(2000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation3 = new Donation(
+                paymentRepository.save(new Payment(3000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation4 = new Donation(
+                paymentRepository.save(new Payment(4000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation5 = new Donation(
+                paymentRepository.save(new Payment(5000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation6 = new Donation(
+                paymentRepository.save(new Payment(6000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
+
+        Donation donation7 = new Donation(
+                paymentRepository.save(new Payment(7000L, "test@test.com", "test")
+                ), Message.defaultMessage()
+        );
 
         //member1 1000 member2 2000, member3 7000, member4 0, member5 5000, member6 13000
         member1.addDonation(donation1);
@@ -131,10 +177,20 @@ class MemberRepositoryImplTest {
         em.clear();
 
         List<CurationsResponse> curations = memberRepository.findCurations();
-        assertThat(curations.get(0)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick6", 13000L, "page6"));
-        assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick3", 7000L, "page3"));
-        assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick5", 5000L, "page5"));
-        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick2", 2000L, "page2"));
-        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(new CurationsResponse("nick1", 1000L, "page1"));
+        assertThat(curations.get(0)).usingRecursiveComparison().isEqualTo(
+                new CurationsResponse("nick6", 13000L, "page6", "https://cloudfront.net/profile6.png")
+        );
+        assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
+                new CurationsResponse("nick3", 7000L, "page3", "https://cloudfront.net/profile3.png")
+        );
+        assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(
+                new CurationsResponse("nick5", 5000L, "page5", "https://cloudfront.net/profile5.png")
+        );
+        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
+                new CurationsResponse("nick2", 2000L, "page2", "https://cloudfront.net/profile2.png")
+        );
+        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
+                new CurationsResponse("nick1", 1000L, "page1", "https://cloudfront.net/profile1.png")
+        );
     }
 }

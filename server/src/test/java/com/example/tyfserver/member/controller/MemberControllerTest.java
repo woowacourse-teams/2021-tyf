@@ -6,19 +6,29 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.common.exception.S3FileNotFoundException;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.Arrays;
 
@@ -27,6 +37,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,7 +126,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - success")
     public void validateNickname() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("nickname");
+        NicknameRequest request = new NicknameRequest("nickname");
 
         //when
         doNothing().when(memberService).validateNickname(Mockito.any());
@@ -133,7 +145,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - 유효하지 않은 request")
     public void validateNicknameRequestFailed() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("!@#INVALID");
+        NicknameRequest request = new NicknameRequest("!@#INVALID");
 
         //when
         doNothing().when(memberService).validateNickname(Mockito.any());
@@ -153,7 +165,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/nickname - 중복된 nickname")
     public void validateNicknameDuplicatedFailed() throws Exception {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("nickname");
+        NicknameRequest request = new NicknameRequest("nickname");
 
         //when
         doThrow(new DuplicatedNicknameException()).when(memberService).validateNickname(Mockito.any());
@@ -173,7 +185,8 @@ class MemberControllerTest {
     @DisplayName("/members/{pageName} - success")
     public void memberInfo() throws Exception {
         //given
-        MemberResponse response = new MemberResponse("email", "nickname", "pagename");
+        MemberResponse response = new MemberResponse("email", "nickname",
+                "pagename", "I am test","profile.png");
         //when
         when(memberService.findMember(Mockito.anyString())).thenReturn(response);
         //then
@@ -183,6 +196,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("email").value("email"))
                 .andExpect(jsonPath("nickname").value("nickname"))
                 .andExpect(jsonPath("pageName").value("pagename"))
+                .andExpect(jsonPath("bio").value("I am test"))
                 .andDo(document("memberInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -210,7 +224,8 @@ class MemberControllerTest {
     @DisplayName("/members/me - success")
     public void memberDetail() throws Exception {
         //given
-        MemberDetailResponse response = new MemberDetailResponse("email", "nickname", "pagename");
+        MemberResponse response = new MemberResponse("email", "nickname", "pagename",
+                "I am test", "profile.png");
         //when
         when(memberService.findMemberDetail(Mockito.anyLong())).thenReturn(response);
         validInterceptorAndArgumentResolverMocking();
@@ -221,6 +236,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("email").value("email"))
                 .andExpect(jsonPath("nickname").value("nickname"))
                 .andExpect(jsonPath("pageName").value("pagename"))
+                .andExpect(jsonPath("bio").value("I am test"))
                 .andDo(document("memberDetail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -356,8 +372,10 @@ class MemberControllerTest {
         //given
         //when
         when(memberService.findCurations()).thenReturn(
-                Arrays.asList(new CurationsResponse("nickname1", 1000L, "pagename1"),
-                        new CurationsResponse("nickname2", 2000L, "pagename2"))
+                Arrays.asList(new CurationsResponse("nickname1", 1000L,
+                                "pagename1", "https://cloudfront.net/profile1.png"),
+                        new CurationsResponse("nickname2", 2000L,
+                                "pagename2", "https://cloudfront.net/profile2.png"))
         );
         //then
         mockMvc.perform(get("/members/curations")
@@ -369,6 +387,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$[0].nickname").value("nickname1"))
                 .andExpect(jsonPath("$[0].donationAmount").value(1000L))
                 .andExpect(jsonPath("$[0].pageName").value("pagename1"))
+                .andExpect(jsonPath("$[0].profileImage").value("https://cloudfront.net/profile1.png"))
                 .andDo(document("curations",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -412,10 +431,306 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("POST - /members/profile - success")
+    public void profile() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("profileImage", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        String url = "https://de56jrhz7aye2.cloudfront.net/file";
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        when(memberService.uploadProfile(Mockito.any(), Mockito.any()))
+                .thenReturn(new ProfileResponse(url));
+
+        //then
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
+                .file(file))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("profileImage").value(url))
+                .andDo(document("profile",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST -  /members/profile - S3 File Not Found")
+    public void profileS3FileNotFoundFailed() throws Exception {
+        //given
+        //given
+        MockMultipartFile file = new MockMultipartFile("profileImage", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new S3FileNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
+                .file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
+                .andDo(document("profileS3FileNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /members/profile - member not found failed")
+    public void profileMemberNotFoundFailed() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("profileImage", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        String url = "https://de56jrhz7aye2.cloudfront.net/file";
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new MemberNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
+        //then
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
+                .file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("profileMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /members/profile - authorization header not found")
+    public void profileHeaderNotFoundFailed() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+        //then
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
+                .file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("profileHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /members/profile - invalid token")
+    public void profileInvalidTokenFailed() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("multipartFile", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(generateMultipartPutRequest("/members/profile")
+                .file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("profileInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("DELETE -  /members/profile - success")
+    public void deleteProfile() throws Exception {
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doNothing().when(memberService).deleteProfile(Mockito.any());
+
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isOk())
+                .andDo(document("deleteProfile",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("DELETE -  /members/profile - S3 File Not Found")
+    public void deleteProfileS3FileNotFoundFailed() throws Exception {
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new S3FileNotFoundException()).when(memberService).deleteProfile(Mockito.any());
+
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
+                .andDo(document("deleteProfileS3FileNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+
+    @Test
+    @DisplayName("DELETE -  /members/profile - authorization header not found")
+    public void deleteProfileHeaderNotFoundFailed() throws Exception {
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("deleteProfileHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+
+    @Test
+    @DisplayName("DELETE - /members/profile - invalid token")
+    public void deleteProfileInvalidTokenFailed() throws Exception {
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("deleteProfileInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("DELETE - /members/profile - member not found")
+    public void deleteProfileMemberNotFoundFailed() throws Exception {
+        //given
+        //when
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new MemberNotFoundException()).when(memberService).deleteProfile(Mockito.any());
+        //then
+        mockMvc.perform(delete("/members/profile"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("deleteProfileMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("PUT - /members/me/bio - success")
+    void updateBio() throws Exception {
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest("안녕하세요! 로키입니다.");
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(document("updateBio",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "       "})
+    @DisplayName("PUT - /members/me/bio - invalid bio")
+    void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest(invalidBioValue);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(BioValidationRequestException.ERROR_CODE))
+                .andDo(document("updateBioInvalidBioValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "로키", "로키1", "로1키", "1로키"
+    })
+    @DisplayName("PUT - /me/nick-name - success")
+    void updateNickName(String validNickName) throws Exception {
+        //given
+        NicknameRequest request = new NicknameRequest(validNickName);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/nickname")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(document("updateNickName",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {
+            "로", "_로키", "로키_", "_로키_", "-로키", "로키-", " 로키", "로키 ", " 로키 ", "   "
+    })
+    @DisplayName("PUT - /me/nick-name - invalid nickName")
+    void updateNickNameInvalidNickNameValueRequestFailed(String invalidNickName) throws Exception {
+        //given
+        NicknameRequest request = new NicknameRequest(invalidNickName);
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/nickname")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
+                .andDo(document("updateNickNameInvalidNickNameValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(new LoginMember(1L, "email"));
+    }
+
+    private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
+        MockMultipartHttpServletRequestBuilder putRequest = MockMvcRequestBuilders.multipart(url);
+
+        putRequest.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        return putRequest;
+
     }
 }

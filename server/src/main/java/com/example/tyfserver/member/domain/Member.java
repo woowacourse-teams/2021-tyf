@@ -17,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
+    private static final String DEFAULT_BIO = "제 페이지에 와주셔서 감사합니다!";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +28,11 @@ public class Member extends BaseTimeEntity {
 
     @Column(unique = true)
     private String nickname;
+
+    @Lob
+    private String bio = DEFAULT_BIO;
+
+    private String profileImage;
 
     @Embedded
     private Point point;
@@ -42,12 +49,17 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type) {
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
         this.point = new Point(0L);
+        this.profileImage = profileImage;
+    }
+
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type) {
+        this(email, nickname, pageName, oauth2Type, null);
     }
 
     public void addDonation(final Donation donation) {
@@ -60,11 +72,27 @@ public class Member extends BaseTimeEntity {
         this.point.add(donationAmount);
     }
 
+    public void updateBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void updateNickName(String nickname) {
+        this.nickname = nickname;
+    }
+
     public long getPoint() {
         return this.point.getPoint();
     }
 
     public boolean isSameOauthType(String type) {
         return this.oauth2Type.name().equals(type);
+    }
+
+    public void uploadProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void deleteProfile() {
+        this.profileImage = null;
     }
 }

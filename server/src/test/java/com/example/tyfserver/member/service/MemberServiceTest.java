@@ -1,7 +1,11 @@
 package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.common.exception.S3FileNotFoundException;
+import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
@@ -12,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
@@ -19,6 +24,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +33,9 @@ class MemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private S3Connector s3Connector;
 
     @InjectMocks
     private MemberService memberService;
@@ -47,7 +57,7 @@ class MemberServiceTest {
     @DisplayName("nickNameRequest validate test")
     public void validateNickname() {
         //given
-        NicknameValidationRequest request = new NicknameValidationRequest("중복됨");
+        NicknameRequest request = new NicknameRequest("중복됨");
         //when
         when(memberRepository.existsByNickname(request.getNickname()))
                 .thenReturn(true);
@@ -93,7 +103,7 @@ class MemberServiceTest {
                         Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
 
         //then
-        MemberDetailResponse response = memberService.findMemberDetail(1L);
+        MemberResponse response = memberService.findMemberDetail(1L);
         assertThat(response.getEmail()).isEqualTo("email");
         assertThat(response.getNickname()).isEqualTo("nickname");
         assertThat(response.getPageName()).isEqualTo("pagename");
@@ -146,12 +156,61 @@ class MemberServiceTest {
         when(memberRepository.findCurations())
                 .thenReturn(
                         Collections.singletonList(
-                                new CurationsResponse("nickname", 100L, "pageName")));
+                                new CurationsResponse("nickname", 100L,
+                                        "pageName", "https://cloudfront.net/profile1.png")));
         //when
         CurationsResponse response = memberService.findCurations().get(0);
         //then
         assertThat(response.getNickname()).isEqualTo("nickname");
         assertThat(response.getDonationAmount()).isEqualTo(100L);
         assertThat(response.getPageName()).isEqualTo("pageName");
+        assertThat(response.getProfileImage()).isEqualTo("https://cloudfront.net/profile1.png");
+    }
+
+    @Test
+    @DisplayName("deleteProfile throw exception test")
+    public void deleteProfileTestFileNotFoundException() {
+        //when
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.of(MemberTest.testMemberWithProfileImage()));
+
+        doThrow(new S3FileNotFoundException()).when(s3Connector).delete(Mockito.anyString());
+        //then
+        assertThatThrownBy(() -> memberService.deleteProfile(new LoginMember(1L, "email")))
+                .isInstanceOf(S3FileNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("updateBio test")
+    void updateBioTest() {
+        //given
+        LoginMember loginMember = new LoginMember(1L, "test@email.com");
+        String expectedBio = "안녕하세요! 로키입니다.";
+        Member givenMember = new Member("test@email.com", "로키", "roki", Oauth2Type.NAVER);
+        when(memberRepository.findById(loginMember.getId()))
+                .thenReturn(Optional.of(givenMember));
+
+        //when
+        memberService.updateBio(loginMember, expectedBio);
+
+        //then
+        assertThat(givenMember.getBio()).isEqualTo(expectedBio);
+    }
+
+    @Test
+    @DisplayName("updateNickName test")
+    void updateNickNameTest() {
+        //given
+        LoginMember loginMember = new LoginMember(1L, "test@email.com");
+        String expectedNickName = "로키";
+        Member givenMember = MemberTest.testMember();
+        when(memberRepository.findById(loginMember.getId()))
+                .thenReturn(Optional.of(givenMember));
+
+        //when
+        memberService.updateNickName(loginMember, expectedNickName);
+
+        //then
+        assertThat(givenMember.getNickname()).isEqualTo(expectedNickName);
     }
 }

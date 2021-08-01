@@ -45,6 +45,12 @@ dependencies {
     //rest docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws',
+            version : '2.2.1.RELEASE'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 test {
@@ -66,4 +72,11 @@ task copyDocument(type: Copy) {
 
 build {
     dependsOn copyDocument
+}
+
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'securityKey/application-dev-secret.yml', 'securityKey/application-prod-secret.yml'
+    into 'src/main/resources'
 }
