@@ -20,7 +20,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/banners", "/banners/me", "/donations/me", "/members/me", "/members/me/point",
-                        "/members/profile");
+                        "/members/profile", "/members/me/bio", "/members/me/nickname");
     }
 
     @Override
@@ -33,6 +33,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
         registry.addMapping("/**").allowedMethods("*")
                 .allowedOrigins(
                         "http://localhost:9000",
+                        "https://thankyou-for.com",
                         "https://thirsty-euler-f61b80.netlify.app"
                 );
     }
