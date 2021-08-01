@@ -17,17 +17,17 @@ public class IamPortPaymentInfo {
     @Getter
     public static class Response {
         String status;
-        String merchantUid;
+        String merchant_uid;
         String amount;
         String name;
-        String impUid;
+        String imp_uid;
 
-        public Response(String status, String merchantUid, String amount, String name, String impUid) {
+        public Response(String status, String merchant_uid, String amount, String name, String imp_uid) {
             this.status = status;
-            this.merchantUid = merchantUid;
+            this.merchant_uid = merchant_uid;
             this.amount = amount;
             this.name = name;
-            this.impUid = impUid;
+            this.imp_uid = imp_uid;
         }
     }
 }
