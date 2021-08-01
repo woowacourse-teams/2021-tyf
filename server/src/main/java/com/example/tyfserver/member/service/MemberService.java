@@ -84,7 +84,7 @@ public class MemberService {
     }
 
     private void deleteProfile(Member member) {
-        if (member.getProfileImage().isBlank()) {
+        if (member.getProfileImage() == null) {
             return;
         }
 

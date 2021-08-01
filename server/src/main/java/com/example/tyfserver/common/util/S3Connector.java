@@ -36,11 +36,12 @@ public class S3Connector {
     }
 
     public void delete(String fileName) {
-        if (awsS3Client.doesObjectExist(bucket, fileName)) {
-            awsS3Client.deleteObject(bucket, fileName);
+        String realFileName = fileName.split("cloudfront.net")[1];
+        if (awsS3Client.doesObjectExist(bucket, realFileName)) {
+            awsS3Client.deleteObject(bucket, realFileName);
             return;
         }
-        throw new S3FileNotFoundException(fileName);
+        throw new S3FileNotFoundException(realFileName);
     }
 
     private File convertToFile(MultipartFile multipartFile) {
