@@ -36,7 +36,7 @@ public class S3Connector {
     }
 
     public void delete(String fileName) {
-        String realFileName = fileName.split("cloudfront.net")[1];
+        String realFileName = fileName.split("cloudfront.net/")[1];
         if (awsS3Client.doesObjectExist(bucket, realFileName)) {
             awsS3Client.deleteObject(bucket, realFileName);
             return;
@@ -54,4 +54,7 @@ public class S3Connector {
         return convertedFile;
     }
 
+    public String getCloudfrontUrl() {
+        return cloudfrontUrl;
+    }
 }
