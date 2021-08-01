@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+<body>
+<button onclick="requestPay()">결제하기</button>
+<br>
+<button onclick="cancelPay()">환불하기</button>
+</body>
+
+<script>
+    async function cancelPay() {
+      await jQuery.ajax({
+        url: "http://localhost:8080/payments/cancel",
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        data: JSON.stringify({
+          merchantUid: "935cfb0e-86e5-4458-8994-993cd7dc4e19"
+        })
+      }).done(await function (data) {
+          console.log("환불 성공");
+          console.log(data);
+      }).fail(function (e) {
+          alert("실패!")
+      });
+    }
+</script>
+
+
+<script>
+    var IMP = window.IMP;
+    IMP.init('imp61348931');
+
+    async function requestPay() {
+        // 가맹점 서버에 Payment 생성 요청
+        const amount = 1000;
+        const email = "gildong@gmail.com";
+        const pageName = "hwanorama";
+        const merchantUid = await createMerchantUid(amount, email, pageName);
+        // IMP.request_pay(param, callback) 호출
+        let result;
+        await IMP.request_pay({ // param
+            pay_method: "card",
+            merchant_uid: merchantUid,
+            name: pageName,
+            amount: amount,
+            buyer_email: email
+        }, async function (rsp) { // callback
+            if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+                console.log("아임포트 요청 성공");
+                console.log(rsp);
+                await jQuery.ajax({
+                    url: "http://localhost:8080/donations", // 가맹점 서버
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    data: JSON.stringify({
+                        impUid: rsp.imp_uid,
+                        merchantUid: rsp.merchant_uid
+                    }),
+                }).done(await function (data) {
+                    // 가맹점 서버 결제 API 성공시 로직'
+                    console.log("결제 끝!");
+                    console.log(data);
+                    result = {
+                        "impUid": data.impUid,
+                        "merchantUid": data.merchantUid
+                    };
+                    if(data.status === "success") {
+                        console.log("결제 성공");
+                    };
+                }).fail(function (e) {
+                    alert("실패!")
+                });
+                alert("Flex 성공!");
+                return JSON.stringify(result);
+            } else {
+                alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+            }
+        });
+    }
+
+    async function createMerchantUid(amount, email, pageName) {
+        let merchantUid;
+        await jQuery.ajax({
+            url: "http://localhost:8080/payments", // 가맹점 서버
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            data: JSON.stringify({
+                amount: amount,
+                email: email,
+                pageName: pageName,
+            }),
+            contentType: "application/json",
+            dataType: "json"
+            // jQuery로 HTTP 요청
+        }).done(function (data) {
+            // 가맹점 서버 결제 API 성공시 로직
+            console.log(`Payment 생성완료!`) // 잘 들어오는데...
+            console.log(data)
+            merchantUid = data.merchantUid;
+        }).fail(function (data) {
+            console.log(`실패`);
+            console.log(data)
+        });
+        return merchantUid;
+    }
+
+</script>
+</html>
