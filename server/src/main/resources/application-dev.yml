@@ -14,11 +14,10 @@ spring:
 
   jpa:
     properties:
-      hibernate.hbm2ddl.auto: update
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
   profiles:
     include: dev-secret, aws
