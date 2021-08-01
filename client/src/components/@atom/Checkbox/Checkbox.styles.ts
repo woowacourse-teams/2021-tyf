@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import checkIcon from "../../../assets/icons/check.svg"
+import checkIcon from '../../../assets/icons/check.svg';
 
 export const StyledCheckbox = styled.input`
   position: relative;
@@ -18,6 +18,8 @@ export const StyledCheckbox = styled.input`
     border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: 5px;
     display: block;
+    background: rgba(0, 0, 0, 0);
+    transition: all 0.07s ease-in;
   }
 
   &:checked::after {

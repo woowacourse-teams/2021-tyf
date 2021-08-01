@@ -36,7 +36,7 @@ const UserSettingForm = () => {
     <StyledUserSettingForm onSubmit={onApply}>
       <Title>설정</Title>
       <ProfileImgInputLabel>
-        <ProfileImg src={form.profileImage ?? DefaultUserProfile} />
+        <ProfileImg src={form.profileImage || DefaultUserProfile} />
         <input
           type="file"
           onChange={onChangeProfileImg}

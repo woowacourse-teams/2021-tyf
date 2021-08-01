@@ -9,14 +9,14 @@ export interface CreatorCardProps {
 }
 
 const CARD_COLORS = [
-  '#55efc4',
-  '#81ecec',
+  '#aeecdb',
   '#74b9ff',
+  '#c4a1db',
   '#a29bfe',
   '#636e72',
   '#ffeaa7',
   '#fab1a0',
-  '#ff7675',
+  '#ff8c8c',
   '#fd79a8',
 ];
 

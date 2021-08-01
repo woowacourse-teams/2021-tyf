@@ -14,7 +14,7 @@ import { StyledTemplate } from './CreatorPage.styles';
 import { DONATION_POPUP } from '../../constants/popup';
 import Spinner from '../../components/Spinner/Spinner';
 import { SIZE } from '../../constants/device';
-import defaultUserProfile from '../../assets/images/default-user-profile.png';
+
 import { popupWindow } from '../../service/popup';
 import URLShareModal from '../../components/ShareModal/URLShareModal/URLShareModal';
 import useModal from '../../utils/useModal';
@@ -25,7 +25,7 @@ const CreatorPage = () => {
   const { creatorId } = useParams<ParamTypes>();
   const { isOpen, toggleModal, closeModal } = useModal();
   const { userInfo } = useUserInfo();
-  const { nickname, profileImage } = useCreator(creatorId);
+  const creator = useCreator(creatorId);
   const { windowWidth } = useWindowResize();
   const isAdmin = userInfo?.pageName === creatorId;
 
@@ -37,7 +37,7 @@ const CreatorPage = () => {
   };
 
   const onMobileShare = () => {
-    donationUrlShare(nickname, creatorId);
+    donationUrlShare(creator.nickname, creatorId);
   };
 
   const openShareURLModal = () => {
@@ -58,15 +58,14 @@ const CreatorPage = () => {
         <Suspense fallback={<p>사용자 정보를 불러오는 중입니다.</p>}>
           {windowWidth > SIZE.DESKTOP_LARGE ? (
             <DesktopCreatorInfo
-              defaultUserProfile={defaultUserProfile}
-              profileImage={profileImage}
-              nickname={nickname}
+              creator={creator}
               isAdmin={isAdmin}
               shareUrl={openShareURLModal}
               popupDonationAmountPage={popupDonationAmountPage}
             />
           ) : (
             <MobileCreatorInfo
+              creator={creator}
               isAdmin={isAdmin}
               shareUrl={onMobileShare}
               popupDonationAmountPage={popupDonationAmountPage}

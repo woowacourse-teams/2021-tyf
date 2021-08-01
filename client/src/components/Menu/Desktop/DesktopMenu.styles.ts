@@ -1,43 +1,53 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import PALETTE from '../../../constants/palette';
+
+const MenuOpen = keyframes`
+  0% {
+    transform: translateX(100%)
+  }
+
+  100% {
+    transform: translateX(0)
+  }
+`;
 
 export const StyledDesktopMenu = styled.div`
   position: fixed;
   top: 4rem;
   right: 0;
-  width: 100px;
+  width: 5.625rem;
   height: 100vh;
   background-color: ${PALETTE.WHITE_400};
+
+  animation: ${MenuOpen} 0.5s ease-in-out;
 `;
 
 export const MenuButton = styled.button`
   background-color: transparent;
   width: 100%;
-  height: 80px;
-  padding: 2rem 0;
-  margin: 0.5rem 0;
+  height: 4.625rem;
   border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
   cursor: pointer;
   position: relative;
+  font-size: 0.75rem;
+  font-weight: 500;
 
   :hover::after {
     content: '';
-    width: 0.375rem;
+    width: 0.25rem;
     height: 100%;
     background-color: ${({ theme }) => theme.primary.base};
     position: absolute;
     right: 0;
-    border-radius: 0.25rem 0 0 0.25rem;
   }
 `;
 
 export const MenuIcon = styled.img`
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   margin-bottom: 0.5rem;
 `;

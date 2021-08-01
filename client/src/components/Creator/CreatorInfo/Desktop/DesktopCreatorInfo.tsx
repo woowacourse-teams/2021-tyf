@@ -1,3 +1,5 @@
+import DefaultProfileImg from '../../../../assets/images/default-user-profile.png';
+import { Creator } from '../../../../types';
 import {
   DescriptionContainer,
   InfoContainer,
@@ -9,28 +11,19 @@ import {
 } from './DesktopCreatorInfo.styles';
 
 interface Props {
-  defaultUserProfile: string;
-  nickname: string;
-  profileImage: string;
+  creator: Creator;
   isAdmin: boolean;
   shareUrl: () => void;
   popupDonationAmountPage: () => void;
 }
 
-const DesktopCreatorInfo = ({
-  defaultUserProfile,
-  nickname,
-  profileImage,
-  isAdmin,
-  shareUrl,
-  popupDonationAmountPage,
-}: Props) => {
+const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage }: Props) => {
   return (
     <StyledCreatorInfo>
-      <ProfileImg src={profileImage ?? defaultUserProfile} />
+      <ProfileImg src={creator.profileImage || DefaultProfileImg} />
       <InfoContainer>
         <StyledInfo>
-          <NickName>{nickname}</NickName>
+          <NickName>{creator.nickname}</NickName>
           {isAdmin ? (
             <StyledButton onClick={shareUrl}>내 페이지 공유하기</StyledButton>
           ) : (
@@ -39,7 +32,7 @@ const DesktopCreatorInfo = ({
         </StyledInfo>
 
         <DescriptionContainer>
-          <p>제 페이지에 와주셔서 감사합니다!!</p>
+          <p>{creator.bio}</p>
         </DescriptionContainer>
       </InfoContainer>
     </StyledCreatorInfo>

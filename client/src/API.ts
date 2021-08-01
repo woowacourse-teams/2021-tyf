@@ -2,8 +2,8 @@ import axios, { AxiosInstance } from 'axios';
 
 export const baseURL =
   process.env.NODE_ENV === 'production'
-    ? 'https://thank-you-for.kro.kr'
-    : 'https://thank-you-for-test.kro.kr';
+    ? 'https://api.thankyou-for.com'
+    : 'https://api-dev.thankyou-for.com';
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL,

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Camera from '../../../assets/icons/camera.svg';
+import { DEVICE } from '../../../constants/device';
 
 export const StyledUserSettingForm = styled.form`
   display: flex;
@@ -19,7 +20,7 @@ export const ProfileImgInputLabel = styled.label`
   overflow: hidden;
   margin-bottom: 1rem;
   cursor: pointer;
-  margin: 2.75rem 0;
+  margin: 5rem 0 3rem;
 
   ::after {
     content: url(${Camera});
@@ -37,6 +38,11 @@ export const ProfileImgInputLabel = styled.label`
 
   &:hover::after {
     background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  @media ${DEVICE.DESKTOP_LARGE} {
+    width: 12rem;
+    height: 12rem;
   }
 `;
 
