@@ -14,6 +14,7 @@ spring:
 
   jpa:
     properties:
+      hibernate.hbm2ddl.auto: update
       hibernate:
         format_sql: true
     hibernate:
