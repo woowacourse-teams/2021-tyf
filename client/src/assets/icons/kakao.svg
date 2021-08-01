@@ -1,5 +1,0 @@
-<svg id="kakao" 
-    xmlns="http://www.w3.org/2000/svg" viewBox="-75 -90 350 350">
-    <polygon class="kakao logo" fill="#3c1e1e" points="45 140 40 185 90 150 45 140"/>
-    <ellipse class="kakao logo" fill="#3c1e1e" cx="100" cy="80" rx="100" ry="80"/>
-</svg>
