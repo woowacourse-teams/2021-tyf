@@ -4,15 +4,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentPendingRequest {
 
     @NotNull
+    @Min(1000)
+    @Max(9990000)
     private Long amount;
 
     @NotBlank

@@ -92,11 +92,11 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         IamPortPaymentInfo.Response response = iamPortPaymentInfo.getResponse();
 
         return new PaymentInfo(
-                UUID.fromString(response.getMerchantUid()),
+                UUID.fromString(response.getMerchant_uid()),
                 PaymentStatus.valueOf(response.getStatus().toUpperCase()),
                 Long.parseLong(response.getAmount()),
                 response.getName(),
-                response.getImpUid(),
+                response.getImp_uid(),
                 MODULE_NAME);
     }
 
