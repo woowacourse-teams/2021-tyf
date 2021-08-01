@@ -29,6 +29,8 @@ const UserSettingForm = () => {
   const onApply = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (!confirm('정말로 변경사항을 저장하시겠습니까?')) return;
+
     submit(form);
   };
 
