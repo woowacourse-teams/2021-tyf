@@ -35,7 +35,7 @@ public class Payment extends BaseTimeEntity {
 
     @Column(nullable = false)
     private UUID merchantUid;
-    
+
     public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;

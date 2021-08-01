@@ -29,7 +29,8 @@ public class PaymentService {
                 .orElseThrow(MemberNotFoundException::new);
 
         Payment payment = new Payment(pendingRequest.getAmount(), pendingRequest.getEmail(), creator.getPageName());
-        return new PaymentPendingResponse(paymentRepository.save(payment).getMerchantUid());
+        Payment savedPayment = paymentRepository.save(payment);
+        return new PaymentPendingResponse(savedPayment);
     }
 
     public Payment completePayment(PaymentCompleteRequest paymentCompleteRequest) {
