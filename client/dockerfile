@@ -1,5 +1,11 @@
 FROM node:14
 
+# volume for ssl
+VOLUME /etc/ssl
+
+# expose port 80 443
+EXPOSE 80 443
+
 WORKDIR /app
 
 # install react with package.json
@@ -21,8 +27,6 @@ RUN yarn
 # install pm2
 RUN yarn global add  pm2
 
-# expose port 9000
-EXPOSE 9000
 
 # run pm2
 CMD ["pm2-runtime", "app.js"]
