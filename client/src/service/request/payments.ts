@@ -10,5 +10,5 @@ export const requestPaymentComplete = ({
   imp_uid,
   merchant_uid,
 }: IamportResponse): Promise<Donation> => {
-  return apiClient.post('/donations', { impUid: imp_uid, merchantUid: Number(merchant_uid) });
+  return apiClient.post('/donations', { impUid: imp_uid, merchantUid: merchant_uid });
 };
