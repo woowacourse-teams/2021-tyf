@@ -373,9 +373,9 @@ class MemberControllerTest {
         //when
         when(memberService.findCurations()).thenReturn(
                 Arrays.asList(new CurationsResponse("nickname1", 1000L,
-                                "pagename1", "https://cloudfront.net/profile1.png"),
+                                "pagename1", "https://cloudfront.net/profile1.png", "I am test"),
                         new CurationsResponse("nickname2", 2000L,
-                                "pagename2", "https://cloudfront.net/profile2.png"))
+                                "pagename2", "https://cloudfront.net/profile2.png", "I am test"))
         );
         //then
         mockMvc.perform(get("/members/curations")
@@ -388,6 +388,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$[0].donationAmount").value(1000L))
                 .andExpect(jsonPath("$[0].pageName").value("pagename1"))
                 .andExpect(jsonPath("$[0].profileImage").value("https://cloudfront.net/profile1.png"))
+                .andExpect(jsonPath("$[0].bio").value("I am test"))
                 .andDo(document("curations",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
