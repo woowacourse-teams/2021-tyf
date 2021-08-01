@@ -35,12 +35,7 @@ public class Payment extends BaseTimeEntity {
 
     @Column(nullable = false)
     private UUID merchantUid;
-
-    @PrePersist
-    protected void onCreate() {
-        merchantUid = UUID.randomUUID();
-    }
-
+    
     public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
@@ -54,11 +49,11 @@ public class Payment extends BaseTimeEntity {
     }
 
     public Payment(Long id, Long amount, String email, String pageName) {
-        this(id, amount, email, pageName, null);
+        this(id, amount, email, pageName, UUID.randomUUID());
     }
 
     public Payment(Long amount, String email, String pageName) {
-        this(null, amount, email, pageName, null);
+        this(null, amount, email, pageName, UUID.randomUUID());
     }
 
     public void updateStatus(PaymentStatus paymentStatus) {
