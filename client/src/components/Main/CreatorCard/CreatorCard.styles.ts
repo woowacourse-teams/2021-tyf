@@ -16,7 +16,6 @@ export const StyledCreatorCard = styled.article<CardProps>`
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   background-color: ${({ color }) => color};
-  border: 1px solid ${PALETTE.GRAY_100};
 
   ::before {
     content: '';

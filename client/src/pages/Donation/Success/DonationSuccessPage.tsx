@@ -5,6 +5,7 @@ import { ParamTypes } from '../../../App';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import useCreator from '../../../service/hooks/useCreator';
 import useDonation from '../../../service/hooks/useDonation';
+import usePageRefreshGuardEffect from '../../../service/hooks/usePageRefreshGuardEffect';
 import { popupWindow } from '../../../service/popup';
 import { INVALID_DONATION_ID } from '../../../service/state/donation';
 import { toCommaSeparatedString } from '../../../utils/format';
@@ -23,6 +24,8 @@ const DonationSuccessPage = () => {
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
   const { donation } = useDonation(creatorId);
+
+  usePageRefreshGuardEffect(creatorId, false, '/donation/' + creatorId);
 
   const openCreatorPage = () => {
     popupWindow(window.location.origin + `/creator/${creatorId}`);

@@ -40,7 +40,7 @@ export const ProfileImgInputLabel = styled.label`
     background-color: rgba(0, 0, 0, 0.4);
   }
 
-  @media ${DEVICE.DESKTOP_LARGE} {
+  @media ${DEVICE.DESKTOP} {
     width: 12rem;
     height: 12rem;
   }

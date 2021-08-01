@@ -4,12 +4,15 @@ import { ParamTypes } from '../../../App';
 import TextButton from '../../../components/@atom/TextButton/TextButton.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import MessageForm from '../../../components/Donation/MessageForm/DonationMessageForm';
+import usePageRefreshGuardEffect from '../../../service/hooks/usePageRefreshGuardEffect';
 import { popupWindow } from '../../../service/popup';
 import { StyledTemplate } from './DonationMessagePage.styles';
 
 const DonationMessagePage = () => {
   const { creatorId } = useParams<ParamTypes>();
   const history = useHistory();
+
+  usePageRefreshGuardEffect(creatorId, false, '/donation/' + creatorId);
 
   return (
     <StyledTemplate>
