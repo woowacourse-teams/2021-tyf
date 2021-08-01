@@ -59,7 +59,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type) {
-        this(email, nickname, pageName, oauth2Type, "");
+        this(email, nickname, pageName, oauth2Type, null);
     }
 
     public void addDonation(final Donation donation) {
