@@ -157,7 +157,7 @@ class MemberServiceTest {
                 .thenReturn(
                         Collections.singletonList(
                                 new CurationsResponse("nickname", 100L,
-                                        "pageName", "https://cloudfront.net/profile1.png")));
+                                        "pageName", "https://cloudfront.net/profile1.png", "I am test")));
         //when
         CurationsResponse response = memberService.findCurations().get(0);
         //then
@@ -165,6 +165,7 @@ class MemberServiceTest {
         assertThat(response.getDonationAmount()).isEqualTo(100L);
         assertThat(response.getPageName()).isEqualTo("pageName");
         assertThat(response.getProfileImage()).isEqualTo("https://cloudfront.net/profile1.png");
+        assertThat(response.getBio()).isEqualTo("I am test");
     }
 
     @Test

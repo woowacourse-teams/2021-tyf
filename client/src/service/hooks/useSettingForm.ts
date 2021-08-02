@@ -29,6 +29,21 @@ const useSettingForm = () => {
   const setProfileImg = (profileImgData: File) => {
     const reader = new FileReader();
 
+    const mb = 1024 * 1024;
+    const { type, size } = profileImgData;
+
+    // gif 최대 용량 1mb 제한
+    if (type === 'image/gif' && size > mb) {
+      alert('gif 파일의 크기는 최대 1mb 이여야합니다.');
+      return;
+    }
+
+    // 이미지 최대 용량 2mb 제한
+    if (size > 2 * mb) {
+      alert('이미지 파일의 크기는 최대 2mb 이하여야합니다.');
+      return;
+    }
+
     reader.readAsDataURL(profileImgData);
 
     reader.onload = ({ target }) => {

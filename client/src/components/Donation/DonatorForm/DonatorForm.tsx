@@ -1,8 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
-import { DONATION_POPUP } from '../../../constants/popup';
 import useDonatorForm from '../../../service/hooks/useDonatorForm';
-import { popupWindow } from '../../../service/popup';
+import { popupTerms } from '../../../service/popup';
 import { CreatorId } from '../../../types';
 import Button from '../../@atom/Button/Button';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
@@ -25,13 +24,6 @@ const DonatorForm = ({ creatorId }: DonatorFormProps) => {
 
   const routeToPaymentPage = () => {
     history.push(`/donation/${creatorId}/payment`);
-  };
-
-  const popupTerms = (route: string) => {
-    popupWindow(route, {
-      width: DONATION_POPUP.WIDTH,
-      height: DONATION_POPUP.HEIGHT,
-    });
   };
 
   return (

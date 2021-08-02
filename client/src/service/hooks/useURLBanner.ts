@@ -15,8 +15,9 @@ const useURLBanner = (userInfo: UserInfo) => {
   };
 
   const copySourceCode = () => {
-    navigator.clipboard.writeText(sourceCode);
-    alert('소스코드가 복사되었습니다.');
+    navigator.clipboard.writeText(sourceCode).then(() => {
+      alert('소스코드가 복사되었습니다.');
+    });
   };
 
   return { sourceCode, bannerURL, changeButtonColor, copySourceCode };
