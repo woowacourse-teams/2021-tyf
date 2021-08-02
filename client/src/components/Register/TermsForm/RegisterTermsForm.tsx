@@ -1,10 +1,8 @@
 import { useHistory } from 'react-router-dom';
 
-import { DONATION_POPUP } from '../../../constants/popup';
-import { S3_URL } from '../../../constants/s3';
 import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
 import useTerms from '../../../service/hooks/useTerms';
-import { popupWindow } from '../../../service/popup';
+import { popupTerms } from '../../../service/popup';
 import Button from '../../@atom/Button/Button';
 import {
   Divider,
@@ -23,13 +21,6 @@ const RegisterTermsForm = () => {
 
   const routeToRegisterPageNamePage = () => {
     history.push('/register/url');
-  };
-
-  const popupTerms = (route: string) => {
-    popupWindow(S3_URL + route, {
-      width: DONATION_POPUP.WIDTH,
-      height: DONATION_POPUP.HEIGHT,
-    });
   };
 
   useRegisterEffect();
