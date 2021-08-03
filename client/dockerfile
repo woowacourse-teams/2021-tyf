@@ -1,0 +1,33 @@
+FROM node:14
+
+# volume for ssl
+VOLUME /etc/ssl
+
+# expose port 80 443
+EXPOSE 80 443
+
+WORKDIR /app
+
+# install react with package.json
+COPY package.json yarn.lock ./
+RUN yarn
+
+# copy react app + express app
+COPY . .
+
+# react build
+RUN yarn build
+
+# change directory to server
+WORKDIR /app/server
+
+# install express with package.json
+RUN yarn
+
+# install pm2
+RUN yarn global add  pm2
+
+
+# run pm2
+CMD ["pm2-runtime", "app.js"]
+
