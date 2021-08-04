@@ -1,13 +1,13 @@
 import styled from 'styled-components';
+
 import { DEVICE, SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import Container from '../../@atom/Container/Container.styles';
-import Input from '../../@atom/Input/Input';
+import Input from '../../@atom/Input/Input.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import TextButton from '../../@atom/TextButton/TextButton.styles';
-
-import Title from '../../@atom/Title/Title';
+import Title from '../../@atom/Title/Title.styles';
 
 export const StyledRefundCertificationForm = styled.form`
   width: 100%;

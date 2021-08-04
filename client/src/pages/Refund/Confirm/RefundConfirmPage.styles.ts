@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Button from '../../../components/@atom/Button/Button.styles';
 import Template from '../../../components/@atom/Template/Template';
 
-export const RefundPageTemplate = styled(Template)`
+export const RefundConfirmPageTemplate = styled(Template)`
   position: relative;
   display: flex;
   justify-content: center;

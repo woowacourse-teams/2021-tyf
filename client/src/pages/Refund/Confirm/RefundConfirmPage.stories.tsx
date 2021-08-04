@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 
-import RefundPage from './RefundPage';
+import RefundPage from './RefundConfirmPage';
 
 export default {
   title: 'pages/refund/refund',

@@ -23,6 +23,9 @@ import useInitScrollTopEffect from './utils/useInitScrollTopEffect';
 import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';
 import RefundCertificationPage from './pages/Refund/Certification/RefundCertificationPage';
+import RefundApplyPage from './pages/Refund/Apply/RefundApplyPage';
+import RefundPage from './pages/Refund/Confirm/RefundConfirmPage';
+import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -96,7 +99,9 @@ const App = () => {
           redirectTo="/login"
         />
 
+        <Route path="/refund" component={RefundApplyPage} />
         <Route path="/refund/cert" component={RefundCertificationPage} />
+        <Route path="/refund/confirm" component={RefundConfirmPage} />
 
         <Redirect from="*" to="/" />
       </Switch>
