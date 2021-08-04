@@ -8,6 +8,7 @@ import { getQueryVariable } from '../../utils/queryString';
 import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
 import { requestOAuthRegister } from '../request/register';
 import { newUserState } from '../state/register';
+import { AUTH_ERROR, AUTH_ERROR_MESSAGE } from '../../constants/error';
 
 const useRegisterEffect = () => {
   const history = useHistory();
@@ -20,7 +21,15 @@ const useRegisterEffect = () => {
 
       setUser({ ...user, email, oauthType });
     } catch (error) {
-      console.error(error.response.data.message);
+      const { message, errorCode } = error.response.data;
+
+      if (errorCode === AUTH_ERROR.ALREADY_REGISTER) {
+        alert(AUTH_ERROR_MESSAGE[AUTH_ERROR.ALREADY_REGISTER]);
+        history.push('/login');
+        return;
+      }
+
+      console.error(message);
       history.push('/register');
     }
   };
