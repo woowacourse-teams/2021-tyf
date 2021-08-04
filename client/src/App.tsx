@@ -22,6 +22,7 @@ import StatisticsPage from './pages/Statistics/StatisticsPage';
 import useInitScrollTopEffect from './utils/useInitScrollTopEffect';
 import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';
+import RefundCertificationPage from './pages/Refund/Certification/RefundCertificationPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -94,6 +95,8 @@ const App = () => {
           isAuthed={!!accessToken}
           redirectTo="/login"
         />
+
+        <Route path="/refund/cert" component={RefundCertificationPage} />
 
         <Redirect from="*" to="/" />
       </Switch>
