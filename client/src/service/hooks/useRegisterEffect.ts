@@ -20,6 +20,12 @@ const useRegisterEffect = () => {
 
       setUser({ ...user, email, oauthType });
     } catch (error) {
+      if (error.response.data.errorCode === 'auth-004') {
+        alert('이미 가입되어 있는 사용자입니다.');
+        history.push('/login');
+        return;
+      }
+
       console.error(error.response.data.message);
       history.push('/register');
     }
