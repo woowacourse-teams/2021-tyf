@@ -13,7 +13,7 @@ export const StyledFooter = styled.footer`
     margin-bottom: 1rem;
   }
 
-  p:nth-of-type(2) {
+  p:nth-of-type(3) {
     margin-bottom: 2rem;
   }
 `;
