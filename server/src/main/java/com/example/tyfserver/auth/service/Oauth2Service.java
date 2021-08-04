@@ -43,9 +43,9 @@ public class Oauth2Service {
 
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
-        Member persistMember = memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
 
-        return new SignUpResponse(authenticationService.createToken(persistMember), persistMember.getPageName());
+        return new SignUpResponse(authenticationService.createToken(savedMember), savedMember.getPageName());
     }
 
     private void validateRegisteredMember(String oauthType, Member member) {
