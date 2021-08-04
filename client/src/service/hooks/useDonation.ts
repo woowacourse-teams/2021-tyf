@@ -18,7 +18,7 @@ const useDonation = (creatorId: CreatorId) => {
     const { merchantUid } = await requestPayment({ amount, email, pageName });
     const { IMP } = window;
 
-    const accountId = 'imp61348931';
+    const accountId = 'imp52497817';
 
     IMP.init(accountId);
 
