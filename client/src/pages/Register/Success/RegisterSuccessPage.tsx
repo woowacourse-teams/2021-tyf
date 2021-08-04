@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import Anchor from '../../../components/@atom/Anchor/Anchor';
 import useRegister from '../../../service/hooks/auth/useRegister';
+import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
+import { REGISTER_PAGE_KEY } from '../Auth/RegisterAuthPage';
 import {
   MyPageOutlineButton,
   RegisterSuccessTitle,
@@ -12,11 +14,13 @@ import {
 
 const RegisterSuccessPage = () => {
   const history = useHistory();
-  const { pageName, resetRegister } = useRegister();
+  const { user, resetRegister } = useRegister();
 
   const routeToCreatorPage = () => {
-    history.push(`/creator/${pageName}`);
+    history.push(`/creator/${user.pageName}`);
   };
+
+  usePageRefreshGuardEffect(REGISTER_PAGE_KEY, false, '/register');
 
   useEffect(() => {
     return () => {

@@ -10,7 +10,6 @@ const useRegister = () => {
   const [user, setUser] = useRecoilState(newUserState);
 
   const { storeAccessToken } = useAccessToken();
-  const { pageName } = user;
 
   const resetRegister = () => {
     setUser({ email: '', nickname: '', oauthType: '', pageName: '' });
@@ -32,7 +31,7 @@ const useRegister = () => {
   };
 
   return {
-    pageName,
+    user,
     resetRegister,
     registerUser,
   };
