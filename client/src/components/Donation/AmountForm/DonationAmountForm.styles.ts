@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Container from '../../@atom/Container/Container.styles';
 import Input from '../../@atom/Input/Input';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
-import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 
 export const StyledDonationAmountForm = styled.form`
   width: 100%;
@@ -27,7 +26,7 @@ export const MoneyInputContainer = styled.div`
   }
 `;
 
-export const MoneyValidationInput = styled(ValidationInput)`
+export const MoneyInput = styled(Input)`
   font-size: 1.25rem;
   padding: 0 2rem;
   margin-top: 4.5rem;
