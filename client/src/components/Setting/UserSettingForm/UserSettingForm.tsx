@@ -8,9 +8,9 @@ import {
   StyledSubTitle,
   NickNameInputContainer,
   IntroductionTextareaContainer,
+  TextareaLengthLimit,
 } from './UserSettingForm.styles';
 import DefaultUserProfile from '../../../assets/images/default-user-profile.png';
-import Input from '../../@atom/Input/Input';
 import Textarea from '../../@atom/Textarea/Textarea';
 import Button from '../../@atom/Button/Button';
 import useSettingForm from '../../../service/hooks/useSettingForm';
@@ -80,7 +80,9 @@ const UserSettingForm = () => {
           value={form.bio}
           onChange={({ target }) => setBio(target.value)}
           placeholder="자기소개 입력하기"
+          maxLength={500}
         />
+        <TextareaLengthLimit>({form.bio.length} / 500)</TextareaLengthLimit>
       </IntroductionTextareaContainer>
       <Button disabled={!(isSameNickname || isValidNickName)}>적용하기</Button>
     </StyledUserSettingForm>

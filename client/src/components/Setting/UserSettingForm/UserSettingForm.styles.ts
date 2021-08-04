@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Camera from '../../../assets/icons/camera.svg';
 import { DEVICE } from '../../../constants/device';
+import PALETTE from '../../../constants/palette';
 
 export const StyledUserSettingForm = styled.form`
   display: flex;
@@ -65,4 +66,11 @@ export const NickNameInputContainer = styled.div`
 export const IntroductionTextareaContainer = styled.div`
   width: 100%;
   margin-bottom: 7.5rem;
+`;
+
+export const TextareaLengthLimit = styled.p`
+  margin-top: 0.5rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: ${PALETTE.GRAY_400};
 `;
