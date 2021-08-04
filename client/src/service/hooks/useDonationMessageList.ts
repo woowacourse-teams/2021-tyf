@@ -7,6 +7,7 @@ import {
   requestCreatorPublicDonationList,
 } from '../request/creator';
 import useAccessToken from './useAccessToken';
+import { AUTH_ERROR } from '../../constants/error';
 
 const useDonationMessageList = (isAdmin: boolean, creatorId: CreatorId) => {
   const [donationList, setDonationList] = useState<Donation[]>([]);
@@ -15,7 +16,17 @@ const useDonationMessageList = (isAdmin: boolean, creatorId: CreatorId) => {
   const { accessToken } = useAccessToken();
 
   const initDonationList = async () => {
-    if (isAdmin) return showMoreDonationList();
+    if (isAdmin) {
+      try {
+        return showMoreDonationList();
+      } catch (error) {
+        const { errorCode } = error.response.data;
+        if (errorCode === AUTH_ERROR.INVALID_TOKEN) {
+          alert('로그인이 만료되었습니다.');
+          window.location.reload();
+        }
+      }
+    }
 
     const newDonationList = await requestCreatorPublicDonationList(creatorId);
 
