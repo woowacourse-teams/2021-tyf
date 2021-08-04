@@ -49,4 +49,14 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         assertThat(signUpRequestException.getErrorCode()).isEqualTo(SignUpRequestException.ERROR_CODE);
     }
 
+    @Test
+    @DisplayName("로그인에 성공함")
+    public void login() {
+        회원생성을_요청("tyf@gmail.com", "GOOGLE", "nickname", "pagename");
+        ExtractableResponse<Response> response = 로그인_요청();
+
+        TokenResponse tokenResponse = response.as(TokenResponse.class);
+        assertThat(tokenResponse.getToken()).isNotNull();
+    }
+
 }
