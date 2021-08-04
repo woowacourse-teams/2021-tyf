@@ -22,6 +22,10 @@ export const accessTokenState = atom<string>({
 const getDefaultLoginPersistenceType = (): StorageType => {
   const isLoginPersist = getLocalStorageItem(STORAGE_KEY.IS_LOGIN_PERSIST);
 
+  if (isLoginPersist === null) {
+    return 'LOCAL';
+  }
+
   return isLoginPersist ? 'LOCAL' : 'SESSION';
 };
 

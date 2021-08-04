@@ -1,0 +1,82 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.asciidoctor.convert' version '1.5.9.2'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.json', name: 'json', version: '20210307'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'mysql:mysql-connector-java:8.0.22'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:2.1.2'
+
+    implementation 'com.github.maricn:logback-slack-appender:1.4.0'
+
+    //rest docs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws',
+            version : '2.2.1.RELEASE'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from file("build/asciidoc/html5/")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
+}
+
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'securityKey/application-dev-secret.yml', 'securityKey/application-prod-secret.yml'
+    into 'src/main/resources'
+}

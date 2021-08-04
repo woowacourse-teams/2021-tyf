@@ -3,28 +3,34 @@ import styled from 'styled-components';
 import Container from '../../@atom/Container/Container.styles';
 import Input from '../../@atom/Input/Input';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
+import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 
 export const StyledDonationAmountForm = styled.form`
   width: 100%;
 `;
 
 export const InputLabel = styled.label`
+  margin-bottom: 2rem;
+`;
+
+export const MoneyInputContainer = styled.div`
   position: relative;
+  margin-bottom: 0.5rem;
+  min-height: 10rem;
 
   &::after {
     content: '원';
     display: block;
     position: absolute;
     right: 0.5rem;
-    top: 0;
+    bottom: 3.5rem;
   }
 `;
 
-export const MoneyInput = styled(Input)`
+export const MoneyValidationInput = styled(ValidationInput)`
   font-size: 1.25rem;
   padding: 0 2rem;
   margin-top: 4.5rem;
-  margin-bottom: 1.75rem;
   text-align: right;
 
   -moz-appearance: textfield;

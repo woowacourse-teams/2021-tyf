@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+  profiles:
+    include: prod-secret
+
+  config:
+    use-legacy-processing: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace

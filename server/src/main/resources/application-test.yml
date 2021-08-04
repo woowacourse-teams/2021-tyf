@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+
+  profiles:
+    include: oauth2, aws
+
+  config:
+    use-legacy-processing: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+jwt:
+  secreteKey: ABCDEFG
+  expire-length: 60000
+
+iamport:
+  rest_api_key: apiKey
+  rest_api_secret: apiSecret

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { MIN_DONATION_AMOUNT } from '../../constants/donation';
+import { MAX_DONATION_AMOUNT, MIN_DONATION_AMOUNT } from '../../constants/donation';
 import { donationState } from '../state/donation';
 
 const useDonationAmountForm = () => {
@@ -22,7 +22,8 @@ const useDonationAmountForm = () => {
     setGlobalDonation((prev) => ({ ...prev, amount: Number(value) }));
   };
 
-  const isDonationAmountInValidRange = MIN_DONATION_AMOUNT <= Number(donationAmount);
+  const isDonationAmountInValidRange =
+    MIN_DONATION_AMOUNT <= Number(donationAmount) && Number(donationAmount) <= MAX_DONATION_AMOUNT;
 
   return {
     donationAmount,

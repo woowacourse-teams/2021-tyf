@@ -1,0 +1,26 @@
+google:
+  type: GOOGLE
+  client-id: ENC(2f/CyX/r+1t+8UrDHmopbPug/1b7ia3DWbHr0esB4NtpPXe6Ke73WfrEV7xak7uaYq85H32cMmB46cw4kfj0MRsSeF7g+qCcmALE5ecHKYleUrocB70x3g==)
+  client_secret: ENC(1szDbueGfuGBSJlhGcp4wq/e3xgydLacSEAeLxW5Ski29/6Gwaig8A==)
+  signup_redirect_url: ENC(lp2c4JDJVZPHAyUKF0HTcmMeGM/4FH7iXfXic0kGYSHQ8+btNzvwNhWS4ux2iOVYiXbZLg0J4Sg=)
+  login_redirect_url: ENC(C7Pmp7X06UgdQMOKR9aJ0jC6Ndi6izmD+aJnJO3yB22NhLADlYLK9V1RoBH5CQG+)
+  access_token_api: https://oauth2.googleapis.com/token
+  profile_api: https://www.googleapis.com/oauth2/v2/userinfo
+
+kakao:
+  type: KAKAO
+  client_id: ENC(9Uu9p2fXwD9CHp/Z+PbhTzrIJtYVjV+fv3cBRRyo2H7kdPP4aLx7Y5J+RkH08wjG)
+  client_secret: ENC(VDoGbTrDbutK2zJbrsFgYlmKotwK8VVJg87ds7U9QnKn2POgfwPXnDP0OrBOmKNZ)
+  signup_redirect_url: ENC(gu0P7bXtYSBGnIDlC6VGhmaIbdCxZ0n5hW3/wLEVv63Cr4BbzQOiv6nt+AniX8TnGdE8V0IKylM=)
+  login_redirect_url: ENC(egvxtsMCMoVYKjFxAKn/s8lP9AVOAJrd2caswD7FcD0xWpbO5OILi2YOyLGOvgOp)
+  access_token_api: https://kauth.kakao.com/oauth/token
+  profile_api: https://kapi.kakao.com/v2/user/me
+
+naver:
+  type: NAVER
+  client_id: ENC(0+XWlkEBxLGZm6f1m/Y7eAlaMWKGhz5Um6TAbhgbZWg=)
+  client_secret: ENC(Tk57HzBY6YMVUMGW/X9NmrToDv+GLgIl)
+  signup_redirect_url: ENC(AgpqozeM2G6GAhgImh1H1CWwXN23YPhylyqywozVlnHDx+HPrRYnq0mvUP8d7HeVD4lWcLEY8bw=)
+  login_redirect_url: ENC(Hg3QQURIKHnNc+ZmF15vGIrWWy2KqToPOxJvykjXMRk3fdArFb/Ip8XuBQOdOdw1)
+  access_token_api: https://nid.naver.com/oauth2.0/token
+  profile_api: https://openapi.naver.com/v1/nid/me
