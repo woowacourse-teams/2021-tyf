@@ -8,8 +8,13 @@ export const StyledFooter = styled.footer`
   padding: 1rem;
   font-size: 0.75rem;
   min-width: ${SIZE.MOBILE_MIN}px;
+  line-height: 1rem;
 
   p:nth-of-type(1) {
+    margin-bottom: 1rem;
+  }
+
+  p:nth-of-type(2) {
     margin-bottom: 1rem;
   }
 

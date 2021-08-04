@@ -31,6 +31,7 @@ const DonatorForm = ({ creatorId }: DonatorFormProps) => {
       <SubTitle>후원자님의 정보를 입력해주세요!</SubTitle>
 
       <ValidationInput
+        type="email"
         role="email-input"
         placeholder="이메일 입력하기"
         value={form.email}
