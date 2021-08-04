@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<included>
+    <appender name="ASYNC_SLACK_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <include resource="slack-appender.xml"/>
+        <appender-ref ref="SLACK"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+</included>

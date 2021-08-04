@@ -13,13 +13,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ErrorResponse> handle(BaseException exception) {
-        log.error("===ERROR===", exception);
+        log.info("=== EXCEPTION ===", exception);
         return ResponseEntity.badRequest().body(exception.toResponse());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleNotDefinedException(Exception exception) {
-        log.error("===ERROR_UNDEFINE===", exception);
+        log.error("=== UNDEFINED EXCEPTION ===", exception);
         return ResponseEntity.badRequest().body(new ErrorResponse("error-000", "예상하지 못한 에러가 발생했습니다."));
     }
 }
