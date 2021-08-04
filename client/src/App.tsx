@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import Footer from './components/Footer/Footer';
@@ -19,6 +19,7 @@ import RegisterSuccessPage from './pages/Register/Success/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/Terms/RegisterTermsPage';
 import SettingPage from './pages/Setting/SettingPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
+import useInitScrollTopEffect from './service/hooks/useInitScrollTopEffect';
 import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';
 
@@ -28,7 +29,10 @@ export interface ParamTypes {
 }
 
 const App = () => {
+  const { pathname } = useLocation();
   const accessToken = useRecoilValue(accessTokenState);
+
+  useInitScrollTopEffect(pathname);
 
   return (
     <>
