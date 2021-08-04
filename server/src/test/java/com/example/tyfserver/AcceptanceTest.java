@@ -26,6 +26,9 @@ public class AcceptanceTest {
     @MockBean
     private Oauth2ServiceConnector oauth2ServiceConnector;
 
+    public static final String DEFAULT_EMAIL = "thankyou@gmail.com";
+
+
     protected static RequestSpecification apiTemplate() {
         return RestAssured
                 .given().log().all()
@@ -80,6 +83,6 @@ public class AcceptanceTest {
     protected void setUp() {
         RestAssured.port = port;
         when(oauth2ServiceConnector.getEmailFromOauth2(any(), any()))
-                .thenReturn("thankyou@gmail.com");
+                .thenReturn(DEFAULT_EMAIL);
     }
 }

@@ -4,6 +4,7 @@ import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.exception.SignUpRequestException;
+import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.member.dto.SignUpRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -26,6 +27,11 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         return post("/oauth2/signup", new SignUpRequest(email, oauthType, nickname, pageName)).extract();
     }
 
+    public static SignUpResponse 회원가입_후_로그인되어_있음(String email, String oauthType, String nickname, String pageName) {
+        return 회원생성을_요청(email, oauthType, nickname, pageName)
+                .as(SignUpResponse.class);
+    }
+
     public static TokenResponse 로그인되어_있음() {
         return 로그인_요청().as(TokenResponse.class);
     }
@@ -44,15 +50,15 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("유효하지 않은 Request로 회원 가입을 하는 경우")
     public void signUpInvalidRequestFailed() {
         ExtractableResponse<Response> response = 회원생성을_요청("tyf@gmail.com", "GOOGLE", "myNickname", "PPP");
-        SignUpRequestException signUpRequestException = response.as(SignUpRequestException.class);
+        ErrorResponse errorResponse = response.as(ErrorResponse.class);
 
-        assertThat(signUpRequestException.getErrorCode()).isEqualTo(SignUpRequestException.ERROR_CODE);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(SignUpRequestException.ERROR_CODE);
     }
 
     @Test
     @DisplayName("로그인에 성공함")
     public void login() {
-        회원생성을_요청("tyf@gmail.com", "GOOGLE", "nickname", "pagename");
+        회원생성을_요청(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
         ExtractableResponse<Response> response = 로그인_요청();
 
         TokenResponse tokenResponse = response.as(TokenResponse.class);
