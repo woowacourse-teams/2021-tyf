@@ -1,14 +1,13 @@
 import { useRecoilState } from 'recoil';
+import { useHistory } from 'react-router-dom';
 
 import { newUserState } from '../../state/register';
 import { requestRegister } from '../../request/register';
-import { useHistory } from 'react-router-dom';
 import useAccessToken from './useAccessToken';
 
 const useRegister = () => {
   const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
-
   const { storeAccessToken } = useAccessToken();
 
   const resetRegister = () => {
@@ -17,9 +16,12 @@ const useRegister = () => {
 
   const registerUser = async () => {
     try {
-      if (!(user.email && user.nickname && user.oauthType && user.pageName)) {
+      const { email, nickname, oauthType, pageName } = user;
+
+      if (!(email && nickname && oauthType && pageName)) {
         throw Error('비정상적인 회원가입 절차입니다.');
       }
+
       const { token } = await requestRegister(user);
 
       storeAccessToken(token);
@@ -30,11 +32,7 @@ const useRegister = () => {
     }
   };
 
-  return {
-    user,
-    resetRegister,
-    registerUser,
-  };
+  return { user, resetRegister, registerUser };
 };
 
 export default useRegister;

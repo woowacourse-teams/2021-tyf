@@ -10,12 +10,12 @@ import { requestOAuthRegister } from '../../request/register';
 import { newUserState } from '../../state/register';
 import { AUTH_ERROR, AUTH_ERROR_MESSAGE } from '../../../constants/error';
 
-const useRegisterEffect = () => {
+const useRegisterOauthEffect = () => {
   const history = useHistory();
   const [user, setUser] = useRecoilState(newUserState);
   const { oauthProvider } = useParams<ParamTypes>();
 
-  const register = async (oauthProvider: OAuthProvider, authCode: string) => {
+  const registerOauth = async (oauthProvider: OAuthProvider, authCode: string) => {
     try {
       const { email, oauthType } = await requestOAuthRegister(oauthProvider, authCode);
 
@@ -48,8 +48,8 @@ const useRegisterEffect = () => {
 
     if (!oauthProvider || !authCode) return;
 
-    register(oauthProvider, authCode);
+    registerOauth(oauthProvider, authCode);
   }, []);
 };
 
-export default useRegisterEffect;
+export default useRegisterOauthEffect;

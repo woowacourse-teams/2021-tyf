@@ -1,4 +1,5 @@
 import { useRecoilState } from 'recoil';
+
 import { STORAGE_KEY } from '../../../constants/storage';
 import {
   getLocalStorageItem,
@@ -17,7 +18,7 @@ const useAccessToken = () => {
   };
 
   const storeAccessToken = (accessToken: string) => {
-    const isLoginPersist = getLocalStorageItem(STORAGE_KEY.IS_LOGIN_PERSIST);
+    const isLoginPersist: boolean = getLocalStorageItem(STORAGE_KEY.IS_LOGIN_PERSIST);
 
     clearAccessToken();
 

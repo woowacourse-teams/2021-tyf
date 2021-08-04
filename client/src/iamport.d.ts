@@ -1,3 +1,32 @@
+export interface RequestPayAdditionalParams {
+  digital?: boolean;
+  vbank_due?: string;
+  m_redirect_url?: string;
+  app_scheme?: string;
+  biz_num?: string;
+}
+
+export interface RequestPayParams extends RequestPayAdditionalParams {
+  pg?: string;
+  pay_method?: string;
+  escrow?: boolean;
+  merchant_uid: string;
+  name?: string;
+  amount: number;
+  custom_data?: any;
+  tax_free?: number;
+  vat?: number;
+  currency?: string;
+  language?: string;
+  buyer_email?: string;
+  buyer_name?: string;
+  buyer_tel?: string; // NOTE: 일부 PG사에서 필수항목
+  buyer_addr?: string;
+  buyer_postcode?: string;
+  notice_url?: string | string[];
+  display?: AnimationPlayState;
+}
+
 export interface IamportResponse {
   success: boolean; // 결제처리가 성공적이었는지 여부	실제 결제승인이 이뤄졌거나, 가상계좌 발급이 성공된 경우, True
   error_code: string; // 결제처리에 실패한 경우 단축메세지	현재 코드체계는 없음
@@ -22,7 +51,7 @@ export interface IamportResponse {
 
 export default interface Iamport {
   init: (accountID: string) => void;
-  request_pay: (params: any, callback?: any) => void;
+  request_pay: (params: RequestPayParams, callback?: any) => void;
 }
 
 declare global {

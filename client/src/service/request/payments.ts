@@ -2,7 +2,7 @@ import { apiClient } from '../../API';
 import { IamportResponse } from '../../iamport';
 import { Donation, Payment } from '../../types';
 
-export const requestPayment = (paymentInfo: Payment): Promise<{ merchantUid: number }> => {
+export const requestPayment = (paymentInfo: Payment): Promise<{ merchantUid: string }> => {
   return apiClient.post('/payments', paymentInfo);
 };
 

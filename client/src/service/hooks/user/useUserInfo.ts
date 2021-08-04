@@ -1,7 +1,7 @@
-import { useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { useRecoilValueLoadable } from 'recoil';
 
 import { UserInfo } from '../../../types';
-import { accessTokenState, loginUserInfoQuery } from '../../state/login';
+import { loginUserInfoQuery } from '../../state/login';
 import useAccessToken from '../auth/useAccessToken';
 
 interface useUserInfoReturnType {

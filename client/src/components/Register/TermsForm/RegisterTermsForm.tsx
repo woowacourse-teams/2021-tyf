@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import useRegisterEffect from '../../../service/hooks/auth/useRegisterEffect';
+import useRegisterOauthEffect from '../../../service/hooks/auth/useRegisterOauthEffect';
 
 import useTerms from '../../../service/hooks/auth/useTerms';
 import { popupTerms } from '../../../service/popup';
@@ -23,7 +23,7 @@ const RegisterTermsForm = () => {
     history.push('/register/url');
   };
 
-  useRegisterEffect();
+  useRegisterOauthEffect();
 
   return (
     <StyledRegisterTermsForm>

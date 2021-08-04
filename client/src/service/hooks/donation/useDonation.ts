@@ -1,9 +1,8 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { IamportResponse } from '../../../iamport';
+import { IamportResponse, RequestPayParams } from '../../../iamport';
 
 import { CreatorId } from '../../../types';
-
 import { requestPayment, requestPaymentComplete } from '../../request/payments';
 import { donationState } from '../../state/donation';
 import useCreator from '../creator/useCreator';
@@ -22,17 +21,13 @@ const useDonation = (creatorId: CreatorId) => {
 
     IMP.init(accountId);
 
-    const IMPRequestPayOption = {
+    const IMPRequestPayOption: RequestPayParams = {
       pg: 'kakaopay',
       pay_method: 'card',
       merchant_uid: merchantUid,
       name: pageName,
       amount,
       buyer_email: email,
-      // buyer_name: '홍길동',
-      // buyer_tel: '010-4242-4242',
-      // buyer_addr: '서울특별시 강남구 신사동',
-      // buyer_postcode: '01181',
     };
 
     const IMPResponseHandler = async (response: IamportResponse) => {
@@ -44,6 +39,7 @@ const useDonation = (creatorId: CreatorId) => {
 
       try {
         const donationResult = await requestPaymentComplete(response);
+
         setDonation(donationResult);
         alert('결제에 성공했습니다.');
         history.push(`/donation/${pageName}/message`);

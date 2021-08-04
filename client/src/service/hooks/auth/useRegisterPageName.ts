@@ -68,12 +68,7 @@ const useRegister = () => {
     setUser({ ...user, pageName: value });
   };
 
-  return {
-    pageName,
-    addressErrorMessage,
-    isValidAddress,
-    setPageName,
-  };
+  return { pageName, addressErrorMessage, isValidAddress, setPageName };
 };
 
 export default useRegister;

@@ -19,10 +19,3 @@ const useDonatorForm = () => {
 };
 
 export default useDonatorForm;
-
-// email state에 저장 및 읽기
-
-// 결제약관 동의 여부
-// 유효성 검증 완료, 동의 여부 - 다음버튼 활성화 용도
-
-// TODO :email 유효섬 검증 (미루기)

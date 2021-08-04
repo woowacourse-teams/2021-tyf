@@ -14,10 +14,13 @@ const useURLBanner = (userInfo: UserInfo) => {
     setColor(color);
   };
 
-  const copySourceCode = () => {
-    navigator.clipboard.writeText(sourceCode).then(() => {
+  const copySourceCode = async () => {
+    try {
+      await navigator.clipboard.writeText(sourceCode);
       alert('소스코드가 복사되었습니다.');
-    });
+    } catch (error) {
+      alert('소스코드 복사에 실패했습니다.');
+    }
   };
 
   return { sourceCode, bannerURL, changeButtonColor, copySourceCode };

@@ -7,12 +7,11 @@ import { useEffect, useRef, useState } from 'react';
 const useCreatorList = () => {
   const listRef = useRef<HTMLDivElement>(null);
   const creatorList: Creator[] = useRecoilValue(creatorListQuery);
-  const pageAmount = Math.ceil(creatorList.length / 3) - 1;
-
   const [currentPage, setCurrentPage] = useState(0);
 
-  const isLastPage = pageAmount === currentPage;
-  const isFirstPage = currentPage === 0;
+  const pageAmount = Math.ceil(creatorList.length / 3) - 1;
+  const isLastPage = currentPage >= pageAmount;
+  const isFirstPage = currentPage <= 0;
 
   const showPrevList = () => {
     if (isFirstPage) return;

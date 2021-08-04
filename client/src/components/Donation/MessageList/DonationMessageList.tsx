@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 
 import { ParamTypes } from '../../../App';
 import useCreator from '../../../service/hooks/creator/useCreator';
-import useDonationMessageList from '../../../service/hooks/donation/useDonationMessageList';
+import useDonationMessageList from '../../../service/hooks/creator/useDonationMessageList';
 import { toCommaSeparatedString } from '../../../utils/format';
 import {
   DonationListContainer,
