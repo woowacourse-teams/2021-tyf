@@ -1,6 +1,7 @@
 package com.example.tyfserver;
 
 import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
+import com.example.tyfserver.common.util.S3Connector;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -12,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -25,8 +25,11 @@ public class AcceptanceTest {
 
     @MockBean
     private Oauth2ServiceConnector oauth2ServiceConnector;
+    @MockBean
+    private S3Connector s3Connector;
 
     public static final String DEFAULT_EMAIL = "thankyou@gmail.com";
+    public static final String DEFAULT_PROFILE_IMAGE = "profileImage";
 
 
     protected static RequestSpecification apiTemplate() {
@@ -48,15 +51,15 @@ public class AcceptanceTest {
                 .then().log().all();
     }
 
-    protected static RequestSpecification paramTemplate(String name, String param) {
+    protected static RequestSpecification paramTemplate(String key, String value) {
         return RestAssured
                 .given().log().all()
-                .param(name, param)
+                .param(key, value)
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
-    protected static ValidatableResponse paramGet(String url, String name, String param) {
-        return paramTemplate(name, param)
+    protected static ValidatableResponse paramGet(String url, String key, String value) {
+        return paramTemplate(key, value)
                 .get(url)
                 .then().log().all();
     }
@@ -73,9 +76,22 @@ public class AcceptanceTest {
                 .then().log().all();
     }
 
+    protected static ValidatableResponse authPut(String url, String token, Object body) {
+        return authTemplate(token)
+                .body(body)
+                .put(url)
+                .then().log().all();
+    }
+
     protected static ValidatableResponse authGet(String url, String token) {
         return authTemplate(token)
                 .get(url)
+                .then().log().all();
+    }
+
+    protected static ValidatableResponse authDelete(String url, String token) {
+        return authTemplate(token)
+                .delete(url)
                 .then().log().all();
     }
 
@@ -84,5 +100,8 @@ public class AcceptanceTest {
         RestAssured.port = port;
         when(oauth2ServiceConnector.getEmailFromOauth2(any(), any()))
                 .thenReturn(DEFAULT_EMAIL);
+        when(s3Connector.upload(any(), any()))
+                .thenReturn(DEFAULT_PROFILE_IMAGE);
+        doNothing().when(s3Connector).delete(anyString());
     }
 }
