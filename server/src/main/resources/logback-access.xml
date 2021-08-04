@@ -6,8 +6,25 @@
         </encoder>
     </appender>
 
+    <property name ="home" value="logs/"/>
+    <appender name ="ACCESS-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${home}%d{yyyyMMdd}-access-%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf8</charset>
+            <pattern>
+                [%t{yy-MM-dd} %t{HH:mm:ss}]%n###### HTTP Request ######%n%fullRequest%n###### HTTP Response ######%n%fullResponse%n
+            </pattern>
+        </encoder>
+    </appender>
+
     <springProfile name="prod">
-        <include resouces="appender/access-file-appender.xml"/>
+        <appender-ref ref="ACCESS-FILE" />
     </springProfile>
 
     <springProfile name="dev">

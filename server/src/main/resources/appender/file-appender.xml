@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <included>
     <property name ="home" value="logs/"/>
-    <appender name ="FILE-PROD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name ="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${home}%d{yyyyMMdd}-prod-%i.log</fileNamePattern>
+            <fileNamePattern>${home}%d{yyyyMMdd}-app-%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
