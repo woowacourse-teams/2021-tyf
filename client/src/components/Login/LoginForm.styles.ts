@@ -3,7 +3,7 @@ import PALETTE from '../../constants/palette';
 
 import Checkbox from '../../components/@atom/Checkbox/Checkbox';
 import Container from '../../components/@atom/Container/Container.styles';
-import Title from '../../components/@atom/Title/Title';
+import Title from '../../components/@atom/Title/Title.styles';
 
 export const LoginButtonContainer = styled(Container)`
   margin-bottom: 4rem;

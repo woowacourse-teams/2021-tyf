@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import PALETTE from '../../../constants/palette';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 
 export const StyledIconOutlineBarButton = styled(Button)`
   display: flex;

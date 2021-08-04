@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import SubTitle from '../../components/@atom/SubTitle/SubTitle.styles';
 import Template from '../../components/@atom/Template/Template';
-import Title from '../../components/@atom/Title/Title';
+import Title from '../../components/@atom/Title/Title.styles';
 import { SIZE } from '../../constants/device';
 
 export const StyledTemplate = styled(Template)`

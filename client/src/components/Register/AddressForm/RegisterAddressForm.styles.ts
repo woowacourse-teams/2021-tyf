@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import Container from '../../@atom/Container/Container.styles';
-import Title from '../../@atom/Title/Title';
+import Title from '../../@atom/Title/Title.styles';
 import PALETTE from '../../../constants/palette';
 import { DEVICE, SIZE } from '../../../constants/device';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 
 export const StyledRegisterAddressForm = styled.form`
   width: 100%;

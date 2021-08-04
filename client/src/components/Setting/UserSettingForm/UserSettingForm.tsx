@@ -1,6 +1,6 @@
 import { FormEvent, ChangeEvent, useEffect } from 'react';
 
-import Title from '../../@atom/Title/Title';
+import Title from '../../@atom/Title/Title.styles';
 import {
   ProfileImgInputLabel,
   StyledUserSettingForm,
@@ -12,7 +12,7 @@ import {
 } from './UserSettingForm.styles';
 import DefaultUserProfile from '../../../assets/images/default-user-profile.png';
 import Textarea from '../../@atom/Textarea/Textarea';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import useSetting from '../../../service/hooks/user/useSetting';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import useUserInfo from '../../../service/hooks/user/useUserInfo';

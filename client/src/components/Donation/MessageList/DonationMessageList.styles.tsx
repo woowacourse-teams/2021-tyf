@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import Container from '../../@atom/Container/Container.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
-import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
+import OutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const DonationListContainer = styled(Container)`
   margin-bottom: 4rem;

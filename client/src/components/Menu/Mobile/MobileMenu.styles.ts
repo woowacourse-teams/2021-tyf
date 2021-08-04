@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Anchor from '../../@atom/Anchor/Anchor';
 import Container from '../../@atom/Container/Container.styles';
 import Modal from '../../@atom/Modal/Modal';
-import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
+import OutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const StyledModal = styled(Modal)`
   align-self: flex-end;

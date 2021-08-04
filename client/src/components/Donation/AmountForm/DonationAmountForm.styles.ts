@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 import Container from '../../@atom/Container/Container.styles';
-import Input from '../../@atom/Input/Input';
-import OutlineButton from '../../@molecule/OutlineButton/OutlineButton';
+import Input from '../../@atom/Input/Input.styles';
+import OutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const StyledDonationAmountForm = styled.form`
   width: 100%;
