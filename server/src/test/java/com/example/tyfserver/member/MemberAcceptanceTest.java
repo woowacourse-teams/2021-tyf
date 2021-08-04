@@ -50,7 +50,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("랜딩 페이지 유효성 검사")
     public void validateLandingPageValidation() {
-        PageNameValidationRequest validationRequest = new PageNameValidationRequest("tyf");
+        PageNameRequest validationRequest = new PageNameRequest("tyf");
         post("/members/validate/pageName", validationRequest)
                 .statusCode(HttpStatus.OK.value());
     }
@@ -58,7 +58,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("랜딩 페이지 유효성 검사 - 실패")
     public void validateLandingPageValidation_fail() {
-        PageNameValidationRequest validationRequest = new PageNameValidationRequest("ㅁㄴㅇㄹ");
+        PageNameRequest validationRequest = new PageNameRequest("ㅁㄴㅇㄹ");
         post("/members/validate/pageName", validationRequest)
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
