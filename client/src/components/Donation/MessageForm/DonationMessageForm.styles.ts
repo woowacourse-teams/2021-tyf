@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 import { SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import Container from '../../@atom/Container/Container.styles';
-import Input from '../../@atom/Input/Input';
-import Title from '../../@atom/Title/Title';
+import Input from '../../@atom/Input/Input.styles';
+import Title from '../../@atom/Title/Title.styles';
 
 export const StyledMessageForm = styled.form`
   display: flex;

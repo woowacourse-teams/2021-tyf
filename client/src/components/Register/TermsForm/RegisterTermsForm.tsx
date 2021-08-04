@@ -3,7 +3,7 @@ import useRegisterOauthEffect from '../../../service/hooks/auth/useRegisterOauth
 
 import useTerms from '../../../service/hooks/auth/useTerms';
 import { popupTerms } from '../../../service/popup';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import {
   Divider,
   RegisterTermsTitle,

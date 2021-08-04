@@ -2,7 +2,7 @@ import { MouseEvent, useState } from 'react';
 
 import { UserInfo } from '../../../types';
 import DummyButton from '../../../assets/images/dummy/button.png';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import Textarea from '../../@atom/Textarea/Textarea';
 import {
   CloseButton,

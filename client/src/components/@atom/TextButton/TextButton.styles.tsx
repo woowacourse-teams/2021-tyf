@@ -5,6 +5,8 @@ const TextButton = styled.button`
   border: none;
   cursor: pointer;
   font-weight: 500;
+  font-size: 1rem;
+  width: 100%;
 
   :hover {
     font-weight: 600;

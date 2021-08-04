@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import PALETTE from '../../../constants/palette';
 
-const StyledButton = styled.button`
+const Button = styled.button`
   height: 3rem;
   min-width: 5rem;
   width: 100%;
@@ -37,4 +37,4 @@ const StyledButton = styled.button`
   }
 `;
 
-export default StyledButton;
+export default Button;

@@ -1,6 +1,6 @@
 import { InputHTMLAttributes, VFC } from 'react';
 
-import Input from '../../@atom/Input/Input';
+import Input from '../../@atom/Input/Input.styles';
 import { FailureMessage, StyledValidationInput, SuccessMessage } from './ValidationInput.styles';
 
 export interface ValidationInputProps extends InputHTMLAttributes<HTMLInputElement> {

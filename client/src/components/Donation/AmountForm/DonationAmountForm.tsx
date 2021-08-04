@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import useDonationAmountForm from '../../../service/hooks/donation/useDonationAmountForm';
 import { CreatorId } from '../../../types';
 import { toCommaSeparatedString } from '../../../utils/format';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import {
   ButtonContainer,

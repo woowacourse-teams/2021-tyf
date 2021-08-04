@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { DEVICE } from '../../../constants/device';
 
-export const StyledTitle = styled.h2`
+const Title = styled.h2`
   width: 100%;
   line-height: 2.5rem;
   padding: 0 1rem;
@@ -14,3 +14,5 @@ export const StyledTitle = styled.h2`
     font-size: 2.25rem;
   }
 `;
+
+export default Title;

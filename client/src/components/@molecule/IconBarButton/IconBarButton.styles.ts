@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 
 export const StyledIconBarButton = styled(Button)`
   position: relative;

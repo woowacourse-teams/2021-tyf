@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import PALETTE from '../../../constants/palette';
 
 const StyledOutlineButton = styled(Button)`

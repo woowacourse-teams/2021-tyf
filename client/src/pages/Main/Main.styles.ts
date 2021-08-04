@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SubTitle from '../../components/@atom/SubTitle/SubTitle.styles';
 import Template from '../../components/@atom/Template/Template';
 import Logo from '../../components/@molecule/Logo/Logo';
-import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton';
+import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton.styles';
 import { DEVICE } from '../../constants/device';
 
 export const MainTemplate = styled(Template)`

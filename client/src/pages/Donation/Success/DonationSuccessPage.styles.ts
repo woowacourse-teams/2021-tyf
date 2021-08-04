@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import Button from '../../../components/@atom/Button/Button';
+import Button from '../../../components/@atom/Button/Button.styles';
 import Container from '../../../components/@atom/Container/Container.styles';
 import Template from '../../../components/@atom/Template/Template';
-import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton';
+import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton.styles';
 import { popupStyle } from '../Amount/DonationAmountPage.styles';
 
 export const StyledTemplate = styled(Template)`

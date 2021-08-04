@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import Container from '../../../components/@atom/Container/Container.styles';
 import Template from '../../../components/@atom/Template/Template';
-import Title from '../../../components/@atom/Title/Title';
-import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton';
+import Title from '../../../components/@atom/Title/Title.styles';
+import OutlineButton from '../../../components/@molecule/OutlineButton/OutlineButton.styles';
 import { SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
 

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import PALETTE from '../../../constants/palette';
 
-const StyledInput = styled.input`
+const Input = styled.input`
   height: 3rem;
   min-width: 5rem;
   width: 100%;
@@ -22,4 +22,4 @@ const StyledInput = styled.input`
   }
 `;
 
-export default StyledInput;
+export default Input;

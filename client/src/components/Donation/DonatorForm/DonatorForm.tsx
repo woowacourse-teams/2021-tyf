@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import useDonatorForm from '../../../service/hooks/donation/useDonatorForm';
 import { popupTerms } from '../../../service/popup';
 import { CreatorId } from '../../../types';
-import Button from '../../@atom/Button/Button';
+import Button from '../../@atom/Button/Button.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {

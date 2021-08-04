@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 
-import Input, { InputProps } from './Input';
+import Input from './Input.styles';
 
 export default {
   title: 'components/atom/Input',
@@ -8,7 +8,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-const Template: Story<InputProps> = (args) => <Input {...args}></Input>;
+const Template: Story = (args) => <Input {...args}></Input>;
 
 export const Default = Template.bind({});
 

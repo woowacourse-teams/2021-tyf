@@ -1,7 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 
-import { ButtonProps } from '../../@atom/Button/Button';
-import OutlineButton from './OutlineButton';
+import OutlineButton from './OutlineButton.styles';
 
 export default {
   title: 'components/molecule/OutlineButton',
@@ -9,7 +8,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-const Template: Story<ButtonProps> = (args) => <OutlineButton {...args}>버튼</OutlineButton>;
+const Template: Story = (args) => <OutlineButton {...args}>버튼</OutlineButton>;
 
 export const Default = Template.bind({});
 
