@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class PaymentService {
+
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final PaymentServiceConnector paymentServiceConnector;
@@ -38,7 +39,6 @@ public class PaymentService {
         PaymentInfo paymentInfo = paymentServiceConnector.requestPaymentInfo(merchantUid);
 
         Payment payment = findPayment(merchantUid);
-
         payment.complete(paymentInfo);
         return payment;
     }
