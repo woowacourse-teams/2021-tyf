@@ -1,12 +1,12 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { IamportResponse } from '../../iamport';
+import { IamportResponse } from '../../../iamport';
 
-import { CreatorId } from '../../types';
+import { CreatorId } from '../../../types';
 
-import { requestPayment, requestPaymentComplete } from '../request/payments';
-import { donationState } from '../state/donation';
-import useCreator from './useCreator';
+import { requestPayment, requestPaymentComplete } from '../../request/payments';
+import { donationState } from '../../state/donation';
+import useCreator from '../creator/useCreator';
 
 const useDonation = (creatorId: CreatorId) => {
   const history = useHistory();

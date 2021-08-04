@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { MAX_DONATION_AMOUNT, MIN_DONATION_AMOUNT } from '../../constants/donation';
-import { donationState } from '../state/donation';
+import { MAX_DONATION_AMOUNT, MIN_DONATION_AMOUNT } from '../../../constants/donation';
+import { donationState } from '../../state/donation';
 
 const useDonationAmountForm = () => {
   const [donationAmount, _setDonationAmount] = useState('');

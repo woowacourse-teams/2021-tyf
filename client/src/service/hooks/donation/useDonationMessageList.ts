@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { CreatorId, Donation } from '../../types';
-import { DONATION_MESSAGE_AMOUNT_PER_PAGE } from '../../constants/donation';
+import { CreatorId, Donation } from '../../../types';
+import { DONATION_MESSAGE_AMOUNT_PER_PAGE } from '../../../constants/donation';
 import {
   requestCreatorPrivateDonationList,
   requestCreatorPublicDonationList,
-} from '../request/creator';
-import useAccessToken from './useAccessToken';
-import { AUTH_ERROR } from '../../constants/error';
+} from '../../request/creator';
+import useAccessToken from '../auth/useAccessToken';
+import { AUTH_ERROR } from '../../../constants/error';
 
 const useDonationMessageList = (isAdmin: boolean, creatorId: CreatorId) => {
   const [donationList, setDonationList] = useState<Donation[]>([]);

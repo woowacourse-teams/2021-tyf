@@ -19,7 +19,7 @@ import RegisterSuccessPage from './pages/Register/Success/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/Terms/RegisterTermsPage';
 import SettingPage from './pages/Setting/SettingPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
-import useInitScrollTopEffect from './service/hooks/useInitScrollTopEffect';
+import useInitScrollTopEffect from './utils/useInitScrollTopEffect';
 import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';
 

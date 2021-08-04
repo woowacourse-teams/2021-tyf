@@ -1,5 +1,5 @@
-import useUserInfo from '../../service/hooks/useUserInfo';
-import useStatistics from '../../service/hooks/useStatistics';
+import useStatistics from '../../service/hooks/user/useStatistics';
+import useUserInfo from '../../service/hooks/user/useUserInfo';
 import { toCommaSeparatedString } from '../../utils/format';
 import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
 

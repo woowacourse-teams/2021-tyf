@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { STORAGE_KEY } from '../../constants/storage';
-import { accessTokenState } from '../state/login';
+import { STORAGE_KEY } from '../../../constants/storage';
+import { accessTokenState } from '../../state/login';
 
 const useLogout = () => {
   const setAccessToken = useSetRecoilState(accessTokenState);

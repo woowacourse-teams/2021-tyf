@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 
 import { ParamTypes } from '../../../App';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
-import useCreator from '../../../service/hooks/useCreator';
-import useDonation from '../../../service/hooks/useDonation';
-import usePageRefreshGuardEffect from '../../../service/hooks/usePageRefreshGuardEffect';
+import useCreator from '../../../service/hooks/creator/useCreator';
+import useDonation from '../../../service/hooks/donation/useDonation';
 import { popupWindow } from '../../../service/popup';
 import { INVALID_DONATION_ID } from '../../../service/state/donation';
 import { toCommaSeparatedString } from '../../../utils/format';
+import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import {
   CloseButton,
   CreatorRouteButton,

@@ -3,11 +3,11 @@ import { useHistory, useParams } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
-import useUserInfo from '../../service/hooks/useUserInfo';
+import useUserInfo from '../../service/hooks/user/useUserInfo';
 import DesktopCreatorInfo from '../../components/Creator/CreatorInfo/Desktop/DesktopCreatorInfo';
 import MobileCreatorInfo from '../../components/Creator/CreatorInfo/Mobile/MobileCreatorInfo';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
-import useCreator from '../../service/hooks/useCreator';
+import useCreator from '../../service/hooks/creator/useCreator';
 
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';

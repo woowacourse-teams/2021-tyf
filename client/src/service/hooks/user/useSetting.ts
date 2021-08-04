@@ -1,5 +1,9 @@
-import { requestUpdateBio, requestUpdateNickname, requestUpdateProfileImg } from '../request/user';
-import useAccessToken from './useAccessToken';
+import {
+  requestUpdateBio,
+  requestUpdateNickname,
+  requestUpdateProfileImg,
+} from '../../request/user';
+import useAccessToken from '../auth/useAccessToken';
 import useUserInfo from './useUserInfo';
 
 interface SubmitArgsType {

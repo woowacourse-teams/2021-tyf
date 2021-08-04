@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 
-import useUserInfo from '../../service/hooks/useUserInfo';
+import useUserInfo from '../../service/hooks/user/useUserInfo';
 import useModal from '../../utils/useModal';
 import Menu from '../Menu/Menu';
 import {

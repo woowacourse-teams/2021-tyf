@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { REGISTER } from '../../constants/register';
-import { debounceGenerator } from '../../utils/debounce';
-import { requestValidatePageName } from '../request/register';
-import { newUserState } from '../state/register';
+import { REGISTER } from '../../../constants/register';
+import { debounceGenerator } from '../../../utils/debounce';
+import { requestValidatePageName } from '../../request/register';
+import { newUserState } from '../../state/register';
 
 const pageNameValidation = async (pageName: string) => {
   if (pageName.length < REGISTER.ADDRESS.MIN_LENGTH) {

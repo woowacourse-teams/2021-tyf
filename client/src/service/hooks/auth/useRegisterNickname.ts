@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { REGISTER } from '../../constants/register';
-import { debounceGenerator } from '../../utils/debounce';
-import { requestValidateNickName } from '../request/register';
-import { newUserState } from '../state/register';
+import { REGISTER } from '../../../constants/register';
+import { debounceGenerator } from '../../../utils/debounce';
+import { requestValidateNickName } from '../../request/register';
+import { newUserState } from '../../state/register';
 
 const nicknameValidation = async (nickname: string) => {
   if (nickname.length < REGISTER.NICKNAME.MIN_LENGTH) {

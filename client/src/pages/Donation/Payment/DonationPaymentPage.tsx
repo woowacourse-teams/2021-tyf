@@ -7,10 +7,10 @@ import {
   StyledSubTitle,
 } from './DonationPaymentPage.styles';
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
-import useDonation from '../../../service/hooks/useDonation';
+import useDonation from '../../../service/hooks/donation/useDonation';
 import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
-import usePageRefreshGuardEffect from '../../../service/hooks/usePageRefreshGuardEffect';
+import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 
 const DonationPaymentPage = () => {
   const { creatorId } = useParams<ParamTypes>();

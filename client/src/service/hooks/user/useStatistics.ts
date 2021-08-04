@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { requestIdState } from '../state/request';
+import { requestIdState } from '../../state/request';
 
-import { userStatisticsQuery, userStatisticsQueryKey } from '../state/statistics';
+import { userStatisticsQuery, userStatisticsQueryKey } from '../../state/statistics';
 
 const useStatistics = () => {
   const { point: totalAmount } = useRecoilValue(userStatisticsQuery);

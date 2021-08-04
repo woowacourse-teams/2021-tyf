@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { S3_URL } from '../../constants/s3';
-import { UserInfo } from '../../types';
+import { S3_URL } from '../../../constants/s3';
+import { UserInfo } from '../../../types';
 
 type ColorType = 'red' | 'black' | 'yellow' | 'green' | 'blue' | 'purple';
 

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import CreatorList from '../../components/Main/CreatorList/CreatorList';
 import Spinner from '../../components/Spinner/Spinner';
-import useUserInfo from '../../service/hooks/useUserInfo';
+import useUserInfo from '../../service/hooks/user/useUserInfo';
 import { DEVICE } from '../../constants/device';
 import {
   HeroContent,

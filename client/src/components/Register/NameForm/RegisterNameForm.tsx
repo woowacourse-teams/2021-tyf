@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 
-import useRegister from '../../../service/hooks/useRegister';
-import useRegisterNickname from '../../../service/hooks/useRegisterNickname';
+import useRegister from '../../../service/hooks/auth/useRegister';
+import useRegisterNickname from '../../../service/hooks/auth/useRegisterNickname';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
   StyledRegisterNameForm,

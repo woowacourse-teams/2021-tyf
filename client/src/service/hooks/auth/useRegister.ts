@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 
-import { newUserState } from '../state/register';
-import { requestRegister } from '../request/register';
+import { newUserState } from '../../state/register';
+import { requestRegister } from '../../request/register';
 import { useHistory } from 'react-router-dom';
 import useAccessToken from './useAccessToken';
 

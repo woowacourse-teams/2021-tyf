@@ -13,7 +13,7 @@ import GoogleBarButton from '../@molecule/GoogleBarButton/GoogleBarButton.styles
 import NaverBarButton from '../@molecule/NaverBarButton/NaverBarButton.styles';
 import KakaoBarButton from '../@molecule/KakaoBarButton/KaKaoBarButton.styles';
 import { routeToOAuthPage } from '../../service/auth';
-import useLoginPersistenceType from '../../service/hooks/useLoginPersistenceType';
+import useLoginPersistenceType from '../../service/hooks/auth/useLoginPersistenceType';
 
 const LoginForm = () => {
   const { loginPersistenceType, setLoginPersistenceType } = useLoginPersistenceType();

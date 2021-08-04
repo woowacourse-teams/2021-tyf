@@ -13,11 +13,11 @@ import {
 import DefaultUserProfile from '../../../assets/images/default-user-profile.png';
 import Textarea from '../../@atom/Textarea/Textarea';
 import Button from '../../@atom/Button/Button';
-import useSettingForm from '../../../service/hooks/useSettingForm';
-import useSetting from '../../../service/hooks/useSetting';
-import useRegisterNickname from '../../../service/hooks/useRegisterNickname';
+import useSetting from '../../../service/hooks/user/useSetting';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
-import useUserInfo from '../../../service/hooks/useUserInfo';
+import useUserInfo from '../../../service/hooks/user/useUserInfo';
+import useRegisterNickname from '../../../service/hooks/auth/useRegisterNickname';
+import useSettingForm from '../../../service/hooks/user/useSettingForm';
 
 const UserSettingForm = () => {
   const { userInfo } = useUserInfo();

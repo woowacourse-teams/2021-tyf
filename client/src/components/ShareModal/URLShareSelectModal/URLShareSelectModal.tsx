@@ -8,7 +8,7 @@ import {
   StyledContainerButton,
   StyledModal,
 } from './URLShareSelectModal.styles';
-import useURLBanner from '../../../service/hooks/useURLBanner';
+import useURLBanner from '../../../service/hooks/user/useURLBanner';
 
 export interface URLShareSelectModalProps {
   userInfo: UserInfo;

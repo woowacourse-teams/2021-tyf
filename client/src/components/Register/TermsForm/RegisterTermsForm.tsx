@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
+import useRegisterEffect from '../../../service/hooks/auth/useRegisterEffect';
 
-import useRegisterEffect from '../../../service/hooks/useRegisterEffect';
-import useTerms from '../../../service/hooks/useTerms';
+import useTerms from '../../../service/hooks/auth/useTerms';
 import { popupTerms } from '../../../service/popup';
 import Button from '../../@atom/Button/Button';
 import {

@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import defaultUserProfile from '../../../assets/images/default-user-profile.png';
 import { NickName, ProfileImg } from './Profile.styles';
 import { ParamTypes } from '../../../App';
-import useCreator from '../../../service/hooks/useCreator';
+import useCreator from '../../../service/hooks/creator/useCreator';
 
 const Profile = () => {
   const { creatorId } = useParams<ParamTypes>();

@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useHistory } from 'react-router';
 
-import useRegisterPageName from '../../../service/hooks/useRegisterPageName';
+import useRegisterPageName from '../../../service/hooks/auth/useRegisterPageName';
 import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import {
   StyledRegisterAddressForm,

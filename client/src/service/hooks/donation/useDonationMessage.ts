@@ -1,9 +1,9 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { CreatorId } from '../../types';
-import { requestSendDonationMessage } from '../request/donation';
-import { donationState } from '../state/donation';
+import { CreatorId } from '../../../types';
+import { requestSendDonationMessage } from '../../request/donation';
+import { donationState } from '../../state/donation';
 
 const useDonationMessage = (creatorId: CreatorId) => {
   const donation = useRecoilValue(donationState);

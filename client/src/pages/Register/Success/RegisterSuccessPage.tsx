@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Anchor from '../../../components/@atom/Anchor/Anchor';
-import useRegister from '../../../service/hooks/useRegister';
+import useRegister from '../../../service/hooks/auth/useRegister';
 import {
   MyPageOutlineButton,
   RegisterSuccessTitle,

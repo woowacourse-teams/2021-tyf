@@ -1,5 +1,5 @@
-import useUserInfo from '../../../service/hooks/useUserInfo';
-import useLogout from '../../../service/hooks/useLogout';
+import useLogout from '../../../service/hooks/auth/useLogout';
+import useUserInfo from '../../../service/hooks/user/useUserInfo';
 import { donationUrlShare } from '../../../service/share';
 import { ProfileContainer, StyledModal, StyledAnchor, URLCopyButton } from './MobileMenu.styles';
 

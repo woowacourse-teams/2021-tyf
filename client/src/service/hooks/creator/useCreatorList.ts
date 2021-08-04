@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 
-import { creatorListQuery } from './../state/creator';
-import { Creator } from './../../types';
+import { creatorListQuery } from '../../state/creator';
+import { Creator } from '../../../types';
 import { useEffect, useRef, useState } from 'react';
 
 const useCreatorList = () => {
