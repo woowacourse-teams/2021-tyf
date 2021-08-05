@@ -107,7 +107,7 @@ class MemberServiceTest {
     @DisplayName("findCurations")
     public void findCurationsTest() {
         List<CurationsResponse> curations = memberService.findCurations();
-        assertThat(curations).hasSize(0);
+        assertThat(curations).hasSize(1);
     }
 
     @Test
