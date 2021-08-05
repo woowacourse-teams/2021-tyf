@@ -23,7 +23,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final S3Connector s3Connector;
 
-    public void validatePageName(PageNameValidationRequest request) {
+    public void validatePageName(PageNameRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
             throw new DuplicatedPageNameException();
         }

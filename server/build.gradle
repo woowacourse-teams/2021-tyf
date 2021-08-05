@@ -3,6 +3,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.9.2'
     id 'java'
+    //queryDsl
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.example'
@@ -47,7 +49,7 @@ dependencies {
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws',
-            version : '2.2.1.RELEASE'
+            version: '2.2.1.RELEASE'
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
@@ -57,6 +59,12 @@ dependencies {
 
     // aws cloudwatch log
     implementation group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.4.0'
+
+    //static method mocking 가능하게해줌
+    testImplementation('org.mockito:mockito-inline:3.4.0')
+    //queryDsl
+    implementation 'com.querydsl:querydsl-jpa'
+
 }
 
 test {
@@ -86,3 +94,21 @@ task copySecret(type: Copy) {
     from 'securityKey/application-dev-secret.yml', 'securityKey/application-prod-secret.yml'
     into 'src/main/resources'
 }
+
+//queryDsl
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+//queryDsl end
