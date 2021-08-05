@@ -14,6 +14,7 @@ import java.util.List;
 public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     private final AuthenticationArgumentResolver authenticationArgumentResolver;
+    private final RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
     private final AuthenticationInterceptor authenticationInterceptor;
 
     @Override
@@ -26,6 +27,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authenticationArgumentResolver);
+        resolvers.add(refundAuthenticationArgumentResolver);
     }
 
     @Override

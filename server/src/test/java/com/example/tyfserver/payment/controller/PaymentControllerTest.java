@@ -3,6 +3,7 @@ package com.example.tyfserver.payment.controller;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.PaymentCancelRequest;
 import com.example.tyfserver.payment.dto.PaymentCancelResponse;
@@ -44,6 +45,9 @@ public class PaymentControllerTest {
 
     @MockBean
     private PaymentService paymentService;
+
+    @MockBean
+    private AuthenticationService authenticationService;
 
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
@@ -129,7 +133,7 @@ public class PaymentControllerTest {
                 .thenReturn(cancelResponse);
 
         //then
-        mockMvc.perform(post("/payments/cancel")
+        mockMvc.perform(post("/payments/refund")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cancelRequest)))
                 .andExpect(status().isOk())
@@ -152,7 +156,7 @@ public class PaymentControllerTest {
                 .refundPayment(any(VerifiedRefundRequest.class));
 
         //then
-        mockMvc.perform(post("/payments/cancel")
+        mockMvc.perform(post("/payments/refund")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + MERCHANT_UID.toString()))
                 .andExpect(status().isBadRequest())
@@ -171,7 +175,7 @@ public class PaymentControllerTest {
 
         //when
         //then
-        mockMvc.perform(post("/payments/cancel")
+        mockMvc.perform(post("/payments/refund")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cancelRequest)))
                 .andExpect(status().isBadRequest())
