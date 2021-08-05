@@ -3,6 +3,19 @@ import { baseURL } from '../API';
 
 import { creatorListMock, donationMessageListMock, statisticsMock, userInfoMock } from './mockData';
 
+export const Handlers = [
+  rest.get(`${baseURL}/donations/public/:pageName`, (req, res, ctx) => {
+    return res(ctx.json(donationMessageListMock));
+  }),
+
+  rest.get(`${baseURL}/donations/me`, (req, res, ctx) => {
+    const page = Number(req.url.searchParams.get('page'));
+    const size = Number(req.url.searchParams.get('size'));
+
+    return res(ctx.json(donationMessageListMock.slice(page * size, page * size + size)));
+  }),
+];
+
 export const donationHandlers = [
   rest.get(`${baseURL}/donations/public/:pageName`, (req, res, ctx) => {
     return res(ctx.json(donationMessageListMock));

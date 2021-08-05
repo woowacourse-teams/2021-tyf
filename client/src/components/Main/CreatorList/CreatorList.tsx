@@ -1,8 +1,5 @@
 import { SIZE } from '../../../constants/device';
-import useCreatorList from '../../../service/hooks/creator/useCreatorList';
 import { useWindowResize } from '../../../utils/useWindowResize';
-import Anchor from '../../@atom/Anchor/Anchor';
-import CreatorCard from '../CreatorCard/CreatorCard';
 import DesktopCreatorList from './Desktop/DesktopCreatorList';
 import MobileCreatorList from './Mobile/MobileCreatorList';
 
