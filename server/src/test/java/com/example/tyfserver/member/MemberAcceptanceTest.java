@@ -6,6 +6,7 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.payment.dto.PaymentPendingResponse;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
@@ -16,8 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.util.MimeTypeUtils;
 
+import java.util.List;
+
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
+import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.페이먼트_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
@@ -241,5 +246,20 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(200);
     }
 
-    //todo Curation 로직 고치고 추가
+    @Test
+    @DisplayName("큐레이션 조회")
+    public void curations() {
+        회원생성을_요청("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
+        회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
+        회원생성을_요청("user1@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        후원_생성("impUid", pendingResponse.getMerchantUid().toString());
+
+        List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
+
+        assertThat(curations).hasSize(3);
+        assertThat(curations.get(0).getPageName()).isEqualTo("pagename");
+        assertThat(curations.get(1).getPageName()).isEqualTo("pagename3");
+        assertThat(curations.get(2).getPageName()).isEqualTo("pagename2");
+    }
 }
