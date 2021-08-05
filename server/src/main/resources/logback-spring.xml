@@ -13,7 +13,7 @@
         </encoder>
     </appender>
 
-    <root level="TRACE">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
     </root>
 
@@ -35,9 +35,5 @@
             <appender-ref ref="ASYNC_AWS"/>
             <appender-ref ref="ASYNC_SLACK_INFO"/>
         </root>
-    </springProfile>
-
-    <springProfile name="test">
-        <appender-ref ref="CONSOLE"/>
     </springProfile>
 </configuration>
