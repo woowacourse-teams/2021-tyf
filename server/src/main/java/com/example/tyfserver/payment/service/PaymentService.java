@@ -52,14 +52,13 @@ public class PaymentService {
 
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
-        // 인증코드 생성
         VerificationCode verificationCode = VerificationCode.newCode(refundVerificationReadyRequest.getMerchantUid());
         verificationCodeRepository.save(verificationCode);
 
-        // todo 이메일로 전송
         Payment payment = findPayment(verificationCode.getMerchantUid());
 
-        // 가려진 이메일 응답
+        // todo 이메일로 전송
+        // todo timeout, resendCoolTime 같이 응답
         return new RefundVerificationReadyResponse(payment.getMaskedEmail());
     }
 
@@ -87,7 +86,7 @@ public class PaymentService {
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
 
-        payment.cancel(paymentCancelInfo);
+        payment.refund(paymentCancelInfo);
         // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
         return new PaymentCancelResponse(payment.getMerchantUid());
     }

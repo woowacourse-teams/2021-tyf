@@ -154,7 +154,7 @@ public class PaymentControllerTest {
         //then
         mockMvc.perform(post("/payments/cancel")
                 .contentType(MediaType.APPLICATION_JSON)
-                        .header("Ah"))
+                .header("Authorization", "Bearer " + MERCHANT_UID.toString()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("cancelPaymentMemberNotFoundFailed",

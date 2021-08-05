@@ -84,7 +84,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentInfo(paymentInfo);
     }
 
-    public void cancel(PaymentInfo paymentInfo) {
+    public void refund(PaymentInfo paymentInfo) {
         validatePaymentCancel(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.CANCELLED;

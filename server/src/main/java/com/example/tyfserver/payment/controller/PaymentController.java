@@ -7,10 +7,7 @@ import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -51,7 +48,7 @@ public class PaymentController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/refund/info")
+    @GetMapping("/refund/info")
     public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefundRequest refundInfoRequest) {
         RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
         return ResponseEntity.ok(response);
