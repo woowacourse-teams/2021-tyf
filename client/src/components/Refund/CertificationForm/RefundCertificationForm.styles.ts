@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { DEVICE, SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
+import { MIN_PAGE_HEIGHT } from '../../../constants/style';
 import Button from '../../@atom/Button/Button.styles';
 import Container from '../../@atom/Container/Container.styles';
 import Input from '../../@atom/Input/Input.styles';
@@ -14,7 +15,7 @@ export const StyledRefundCertificationForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: calc(100vh - 4rem);
+  height: ${MIN_PAGE_HEIGHT};
   margin: 0 auto;
   max-width: ${SIZE.MOBILE_MAX}px;
 `;

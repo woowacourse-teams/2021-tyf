@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 import { DEVICE, SIZE } from '../../../constants/device';
+import { MIN_PAGE_HEIGHT } from '../../../constants/style';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Container from '../../@atom/Container/Container.styles';
 import Title from '../../@atom/Title/Title.styles';
 
 export const StyledRegisterTermsForm = styled.form`
   width: 100%;
-  height: calc(100vh - 4rem);
+  height: ${MIN_PAGE_HEIGHT};
   display: flex;
   flex-direction: column;
   justify-content: space-around;

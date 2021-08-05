@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Template from '../../../components/@atom/Template/Template';
 import PALETTE from '../../../constants/palette';
+import { MIN_PAGE_HEIGHT } from '../../../constants/style';
 
 export const RefundApplyPageTemplate = styled(Template)`
   position: relative;
@@ -9,6 +10,7 @@ export const RefundApplyPageTemplate = styled(Template)`
   align-items: center;
   flex-direction: column;
   min-height: 50rem;
+  height: ${MIN_PAGE_HEIGHT};
 `;
 
 export const CautionContainer = styled.div`

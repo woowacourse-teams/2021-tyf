@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { SIZE } from '../../../constants/device';
+import { MIN_PAGE_HEIGHT } from '../../../constants/style';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Container from '../../@atom/Container/Container.styles';
 
@@ -9,7 +10,7 @@ export const StyledDonatorForm = styled.form`
   flex-direction: column;
   justify-content: space-around;
   width: 100%;
-  height: calc(100vh - 4rem);
+  height: ${MIN_PAGE_HEIGHT};
   max-width: ${SIZE.MOBILE_MAX}px;
 `;
 

@@ -4,13 +4,14 @@ import Title from '../../@atom/Title/Title.styles';
 import PALETTE from '../../../constants/palette';
 import { DEVICE, SIZE } from '../../../constants/device';
 import Button from '../../@atom/Button/Button.styles';
+import { MIN_PAGE_HEIGHT } from '../../../constants/style';
 
 export const StyledRegisterAddressForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: calc(100vh - 4rem);
+  height: ${MIN_PAGE_HEIGHT};
 `;
 
 export const RegisterAddressTitle = styled(Title)`

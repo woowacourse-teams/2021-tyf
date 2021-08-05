@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DEVICE, SIZE } from '../../../constants/device';
+import { MIN_PAGE_HEIGHT } from '../../../constants/style';
 import Button from '../../@atom/Button/Button.styles';
 import Container from '../../@atom/Container/Container.styles';
 import Title from '../../@atom/Title/Title.styles';
@@ -9,7 +10,7 @@ export const StyledRegisterNameForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: calc(100vh - 4rem);
+  height: ${MIN_PAGE_HEIGHT};
   margin: 0 auto;
 `;
 

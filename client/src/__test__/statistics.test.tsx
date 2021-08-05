@@ -4,9 +4,9 @@ import StatisticsPage from '../pages/Statistics/StatisticsPage';
 import { toCommaSeparatedString } from '../utils/format';
 import { myRender } from './utils/testUtil';
 
-// beforeEach(() => {
-//   myRender(<StatisticsPage />);
-// });
+beforeEach(() => {
+  myRender(<StatisticsPage />);
+});
 
 describe('StatisticsPage', () => {
   test('창작자의 후원 총 금액을 나타낸다.', async () => {
