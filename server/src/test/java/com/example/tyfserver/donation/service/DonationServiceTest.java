@@ -12,6 +12,7 @@ import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.payment.service.PaymentService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,13 @@ class DonationServiceTest {
         paymentRepository.save(payment);
         memberRepository.save(member);
         donationRepository.save(donation);
+    }
+
+    @AfterEach
+    void tearDown() {
+        paymentRepository.delete(payment);
+        memberRepository.delete(member);
+        donationRepository.delete(donation);
     }
 
     @Test

@@ -7,15 +7,14 @@ import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import io.restassured.RestAssured;
+import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.apache.http.entity.ContentType;
+import io.restassured.specification.MultiPartSpecification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.MimeTypeUtils;
 
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
@@ -51,15 +50,15 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         return get("/members/curations").extract();
     }
 
-    public static ExtractableResponse<Response> 프로필_수정(MultipartFile multipartFile, String token) {
+    public static ExtractableResponse<Response> 프로필_수정(MultiPartSpecification multiPartSpecification, String token) {
         return RestAssured
                 .given().log().all()
                 .auth().oauth2(token)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .multiPart("profileImage", multipartFile)
+                .multiPart(multiPartSpecification)
                 .put("/members/profile")
                 .then().extract()
-        ;
+                ;
     }
 
     public static ExtractableResponse<Response> 프로필_삭제(String token) {
@@ -221,13 +220,16 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("토큰으로 프로필을 수정하는 경우")
     public void updateProfile() {
-        MockMultipartFile multipartFile = new MockMultipartFile(DEFAULT_PROFILE_IMAGE, "testImage1.jpg",
-                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+        MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
+                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
+                .controlName("profileImage")
+                .fileName("testImage1.jpg")
+                .build();
 
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        ProfileResponse profileResponse = 프로필_수정(multipartFile, signUpResponse.getToken()).as(ProfileResponse.class);
+        ExtractableResponse<Response> response = 프로필_수정(multiPartSpecification, signUpResponse.getToken());
 
-        assertThat(profileResponse.getProfileImage()).isEqualTo(DEFAULT_PROFILE_IMAGE);
+        assertThat(response.statusCode()).isEqualTo(200);
     }
 
     @Test

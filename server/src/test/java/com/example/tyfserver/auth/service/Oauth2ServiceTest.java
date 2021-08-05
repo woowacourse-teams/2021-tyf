@@ -9,6 +9,7 @@ import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.SignUpRequest;
 import com.example.tyfserver.member.repository.MemberRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,11 @@ class Oauth2ServiceTest {
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
+    }
+
+    @AfterEach
+    void tearDown() {
+        memberRepository.delete(member);
     }
 
     @Test
