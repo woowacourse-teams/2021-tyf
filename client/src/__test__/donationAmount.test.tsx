@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+
 import DonationAmountPage from '../pages/Donation/Amount/DonationAmountPage';
 import { myRender } from './utils/testUtil';
 
@@ -34,11 +35,3 @@ describe('donationAmount', () => {
     expect($moneyInput.value).toBe('1000');
   });
 });
-
-// describe("donatorInfo", () => {
-
-// })
-
-// describe("donationMessage", () => {
-
-// })

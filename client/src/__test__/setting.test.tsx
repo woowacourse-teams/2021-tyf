@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+
 import { userInfoMock } from '../mock/mockData';
 import SettingPage from '../pages/Setting/SettingPage';
 import { myRender } from './utils/testUtil';
