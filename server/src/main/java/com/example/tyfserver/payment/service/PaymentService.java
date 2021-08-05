@@ -1,5 +1,8 @@
 package com.example.tyfserver.payment.service;
 
+import com.example.tyfserver.auth.domain.VerificationCode;
+import com.example.tyfserver.auth.repository.VerificationCodeRepository;
+import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -19,9 +22,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class PaymentService {
+
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final PaymentServiceConnector paymentServiceConnector;
+    private final VerificationCodeRepository verificationCodeRepository;
+    private final AuthenticationService authenticationService;
 
     public PaymentPendingResponse createPayment(PaymentPendingRequest pendingRequest) {
         Member creator = memberRepository
@@ -52,6 +58,38 @@ public class PaymentService {
         payment.cancel(paymentCancelInfo);
         // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
         return new PaymentCancelResponse(payment.getMerchantUid());
+    }
+
+
+    public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
+        // 인증코드 생성
+        VerificationCode verificationCode = VerificationCode.newCode(refundVerificationReadyRequest.getMerchantUid());
+        verificationCodeRepository.save(verificationCode);
+
+        // todo 이메일로 전송
+        Payment payment = findPayment(UUID.fromString(verificationCode.getMerchantUid()));
+
+        // 가려진 이메일 응답
+        return new RefundVerificationReadyResponse(payment.getMaskedEmail());
+    }
+
+    public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
+        // 인증번호 확인 후
+        String merChantUid = verificationRequest.getMerChantUid();
+        VerificationCode verificationCode = verificationCodeRepository.findById(merChantUid)
+                .orElseThrow(RuntimeException::new);
+
+        verificationCode.verify(verificationRequest.getVerificationCode());
+
+        // 액세스 토큰 응답
+        String refundToken = authenticationService.createRefundToken(merChantUid);
+
+        return new RefundVerificationResponse(refundToken);
+    }
+
+    public void refundInfo() {
+        // Payment 찾아서
+        // 결제정보 응답
     }
 
     private Payment findPayment(UUID merchantUid) {

@@ -33,6 +33,18 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String createRefundToken(String merchantUid) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .claim("merchantUid", merchantUid)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secreteKey)
+                .compact();
+    }
+
     public void validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secreteKey).parseClaimsJws(token);
@@ -49,7 +61,13 @@ public class JwtTokenProvider {
                 claims.get("email", String.class));
     }
 
-    public Claims claims(String token) {
+    public String findMerchantUidFromToken(String token) {
+        Claims claims = claims(token);
+
+        return claims.get("merchantUid", String.class);
+    }
+
+    private Claims claims(String token) {
         return Jwts.parser()
                 .setSigningKey(secreteKey).parseClaimsJws(token)
                 .getBody();

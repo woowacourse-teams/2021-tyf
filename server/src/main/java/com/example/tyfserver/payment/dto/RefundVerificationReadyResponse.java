@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PaymentRefundResponse {
+public class RefundVerificationReadyResponse {
 
     private String email;
 
-    public PaymentRefundResponse(String email) {
+    public RefundVerificationReadyResponse(String email) {
         this.email = email;
     }
 }

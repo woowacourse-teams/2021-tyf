@@ -23,7 +23,8 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private Long amount;
 
-    private String email;
+    @Embedded
+    private Email email;
 
     @Column(nullable = false)
     private String pageName;
@@ -36,12 +37,16 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private UUID merchantUid;
 
-    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
+    public Payment(Long id, Long amount, Email email, String pageName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
         this.email = email;
         this.pageName = pageName;
         this.merchantUid = merchantUid;
+    }
+
+    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
+        this(id, amount, new Email(email), pageName, merchantUid);
     }
 
     public Payment(Long amount, String email, String pageName, UUID merchantUid) {
@@ -54,6 +59,10 @@ public class Payment extends BaseTimeEntity {
 
     public Payment(Long amount, String email, String pageName) {
         this(null, amount, email, pageName, UUID.randomUUID());
+    }
+
+    public String getMaskedEmail() {
+        return email.maskedEmail();
     }
 
     public void updateStatus(PaymentStatus paymentStatus) {

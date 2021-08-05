@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PaymentRefundRequest {
+public class RefundVerificationReadyRequest {
 
     @UUID
     private String merchantUid;
 
-    public PaymentRefundRequest(String merchantUid) {
+    public RefundVerificationReadyRequest(String merchantUid) {
         this.merchantUid = merchantUid;
     }
 }

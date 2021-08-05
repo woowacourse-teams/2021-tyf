@@ -17,6 +17,10 @@ public class AuthenticationService {
         return jwtTokenProvider.createToken(member.getId(), member.getEmail());
     }
 
+    public String createRefundToken(String merchantUid) {
+        return jwtTokenProvider.createRefundToken(merchantUid);
+    }
+
     public LoginMember createLoginMemberByToken(String token) {
         IdAndEmail idAndEmail = jwtTokenProvider.findIdAndEmailFromToken(token);
         return new LoginMember(idAndEmail.getId(), idAndEmail.getEmail());
