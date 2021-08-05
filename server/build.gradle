@@ -54,10 +54,17 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
+    // logback-access
+    implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+
+    // aws cloudwatch log
+    implementation group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.4.0'
+
     //static method mocking 가능하게해줌
     testImplementation('org.mockito:mockito-inline:3.4.0')
     //queryDsl
     implementation 'com.querydsl:querydsl-jpa'
+
 }
 
 test {
