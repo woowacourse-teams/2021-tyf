@@ -61,6 +61,8 @@ export const LoginButton = styled(Anchor)`
 `;
 
 export const StyledTextButton = styled(TextButton)`
+  width: fit-content;
+
   @media ${DEVICE.DESKTOP} {
     font-size: 1.125rem;
   }
