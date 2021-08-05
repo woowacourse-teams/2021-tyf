@@ -2,6 +2,9 @@ package com.example.tyfserver;
 
 import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.payment.domain.PaymentInfo;
+import com.example.tyfserver.payment.domain.PaymentServiceConnector;
+import com.example.tyfserver.payment.domain.PaymentStatus;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -12,6 +15,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -27,6 +32,8 @@ public class AcceptanceTest {
     private Oauth2ServiceConnector oauth2ServiceConnector;
     @MockBean
     private S3Connector s3Connector;
+    @MockBean
+    private PaymentServiceConnector paymentServiceConnector;
 
     public static final String DEFAULT_EMAIL = "thankyou@gmail.com";
     public static final String DEFAULT_PROFILE_IMAGE = "profileImage";
@@ -103,5 +110,8 @@ public class AcceptanceTest {
         when(s3Connector.upload(any(), any()))
                 .thenReturn(DEFAULT_PROFILE_IMAGE);
         doNothing().when(s3Connector).delete(anyString());
+        when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 1000L,
+                        "pagename", "impUid", "module"));
     }
 }
