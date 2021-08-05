@@ -31,7 +31,7 @@
         <include resource="appender/file-appender.xml"/>
         <include resource="appender/slack-async-info-appender.xml"/>
 
-        <root level="TRACE">
+        <root level="DEBUG">
             <appender-ref ref="FILE"/>
             <appender-ref ref="ASYNC_SLACK_INFO"/>
         </root>
