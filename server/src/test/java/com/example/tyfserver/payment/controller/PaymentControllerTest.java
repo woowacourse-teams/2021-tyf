@@ -2,6 +2,7 @@ package com.example.tyfserver.payment.controller;
 
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
+import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.PaymentCancelRequest;
 import com.example.tyfserver.payment.dto.PaymentCancelResponse;
@@ -118,13 +119,13 @@ public class PaymentControllerTest {
 
     @Test
     @DisplayName("/payments/cancel - success")
-    public void cancelPayment() throws Exception {
+    public void cancelPayment() throws Exception { //todo: 토큰을 받도록 변경
         //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID.toString());
+        VerifiedRefundRequest cancelRequest = new VerifiedRefundRequest(MERCHANT_UID.toString());
         PaymentCancelResponse cancelResponse = new PaymentCancelResponse(MERCHANT_UID);
 
         //when
-        when(paymentService.cancelPayment(any(PaymentCancelRequest.class)))
+        when(paymentService.refundPayment(any(VerifiedRefundRequest.class)))
                 .thenReturn(cancelResponse);
 
         //then
@@ -141,19 +142,19 @@ public class PaymentControllerTest {
 
     @Test
     @DisplayName("/payments/cancel - 회원을 찾을 수 없음")
-    public void cancelPaymentMemberNotFoundFailed() throws Exception {
+    public void cancelPaymentMemberNotFoundFailed() throws Exception { //todo: 토큰을 받도록 변경
         //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest(MERCHANT_UID.toString());
+        VerifiedRefundRequest verifiedRefundRequest = new VerifiedRefundRequest(MERCHANT_UID.toString());
 
         //when
-        doThrow(new MemberNotFoundException())
+        doThrow(new MemberNotFoundException()) //todo: MemberNotFoundException 다른 예외로 변경 
                 .when(paymentService)
-                .cancelPayment(any(PaymentCancelRequest.class));
+                .refundPayment(any(VerifiedRefundRequest.class));
 
         //then
         mockMvc.perform(post("/payments/cancel")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(cancelRequest)))
+                        .header("Ah"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("cancelPaymentMemberNotFoundFailed",

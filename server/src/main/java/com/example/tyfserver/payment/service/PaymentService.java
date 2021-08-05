@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.service;
 
 import com.example.tyfserver.auth.domain.VerificationCode;
+import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.domain.Member;
@@ -49,17 +50,6 @@ public class PaymentService {
         return payment;
     }
 
-    public PaymentCancelResponse cancelPayment(PaymentCancelRequest paymentCancelRequest) {
-        UUID merchantUid = UUID.fromString(paymentCancelRequest.getMerchantUid());
-        Payment payment = findPayment(merchantUid);
-
-        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
-
-        payment.cancel(paymentCancelInfo);
-        // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
-        return new PaymentCancelResponse(payment.getMerchantUid());
-    }
-
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         // 인증코드 생성
@@ -67,7 +57,7 @@ public class PaymentService {
         verificationCodeRepository.save(verificationCode);
 
         // todo 이메일로 전송
-        Payment payment = findPayment(UUID.fromString(verificationCode.getMerchantUid()));
+        Payment payment = findPayment(verificationCode.getMerchantUid());
 
         // 가려진 이메일 응답
         return new RefundVerificationReadyResponse(payment.getMaskedEmail());
@@ -87,9 +77,23 @@ public class PaymentService {
         return new RefundVerificationResponse(refundToken);
     }
 
-    public void refundInfo() {
-        // Payment 찾아서
-        // 결제정보 응답
+    public RefundInfoResponse refundInfo(VerifiedRefundRequest refundInfoRequest) {
+        Payment payment = findPayment(refundInfoRequest.getMerchantUid());
+        return new RefundInfoResponse(payment);
+    }
+
+    public PaymentCancelResponse refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
+        Payment payment = findPayment(verifiedRefundRequest.getMerchantUid());
+
+        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
+
+        payment.cancel(paymentCancelInfo);
+        // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
+        return new PaymentCancelResponse(payment.getMerchantUid());
+    }
+
+    private Payment findPayment(String merchantUid) {
+        return findPayment(UUID.fromString(merchantUid));
     }
 
     private Payment findPayment(UUID merchantUid) {

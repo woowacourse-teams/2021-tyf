@@ -1,6 +1,6 @@
 package com.example.tyfserver.auth.config;
 
-import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.auth.util.AuthorizationExtractor;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class RefundAuthenticationArgumentResolver implements HandlerMethodArgume
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(LoginMember.class);
+        return parameter.getParameterType().equals(VerifiedRefundRequest.class);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class RefundAuthenticationArgumentResolver implements HandlerMethodArgume
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         String token = AuthorizationExtractor.extract(request);
-        return authenticationService.createLoginMemberByToken(token);
+        return authenticationService.createRefundInfoRequestByToken(token);
     }
 }
