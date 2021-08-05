@@ -20,7 +20,7 @@ interface Props {
 const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage }: Props) => {
   return (
     <StyledCreatorInfo>
-      <ProfileImg src={creator.profileImage || DefaultProfileImg} />
+      <ProfileImg role="profile-img" src={creator.profileImage || DefaultProfileImg} />
       <InfoContainer>
         <StyledInfo>
           <NickName>{creator.nickname}</NickName>

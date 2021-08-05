@@ -1,8 +1,10 @@
-import { fireEvent, screen, waitFor } from '@testing-library/dom';
+import { screen, waitFor } from '@testing-library/dom';
+import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 import DonationMessageList from '../components/Donation/MessageList/DonationMessageList';
+import { donationMessageListMock, userInfoMock } from '../mock/mockData';
+import CreatorPage from '../pages/Creator/CreatorPage';
 import { myRender } from './utils/testUtil';
 
 describe('DonationMessageList', () => {
@@ -37,24 +39,43 @@ describe('DonationMessageList', () => {
   });
 
   test('더보기 버튼을 누르면 도네이션 메세지 목록이 더 추가된다', async () => {
-    //   myRender(<DonationMessageList isAdmin={true} />);
-    //   // const prevDonationMessages = await screen.findAllByRole('donation-message');
-    //   jest.useFakeTimers();
-    //   const moreButton = await screen.findByRole('button', { name: /더보기/i });
-    //   // const promise = Promise.resolve();
-    //   await userEvent.click(moreButton);
-    //   await waitFor(() => {
-    //     const donationMessages = screen.getAllByRole('donation-message');
-    //     console.log(donationMessages.length);
-    //     // expect(prevDonationMessages.length).toBe(donationMessages.length);
-    //   });
+    myRender(<DonationMessageList isAdmin={true} />);
+
+    const moreButton = await screen.findByRole('button', { name: /더보기/i });
+
+    act(() => userEvent.click(moreButton));
+
+    await waitFor(() => {
+      const donationMessages = screen.getAllByRole('donation-message');
+
+      expect(donationMessageListMock.length).toBe(donationMessages.length);
+    });
   });
 
   test('더 불러올 메세지가 없다면 더보기 버튼은 보이지 않는다.', async () => {
-    // myRender(<DonationMessageList isAdmin={true} />);
-    // const moreButton = screen.getByRole('button', { name: /더보기/i });
-    // fireEvent.click(moreButton);
+    myRender(<DonationMessageList isAdmin={true} />);
+
+    const moreButton = await screen.findByRole('button', { name: /더보기/i });
+
+    act(() => userEvent.click(moreButton));
+
+    await waitFor(() => {
+      expect(moreButton).not.toBeInTheDocument();
+    });
   });
 });
 
-// profile 불러오기 구현하기
+describe('Profile', () => {
+  test('profile에 창작자 정보가 보여진다.', async () => {
+    myRender(<CreatorPage />);
+
+    await screen.findByText(userInfoMock.nickname);
+    await screen.findByText(userInfoMock.bio);
+
+    await waitFor(async () => {
+      const $profileImg = (await screen.findByRole('profile-img')) as HTMLImageElement;
+
+      expect($profileImg.src).toMatch(new RegExp(`${userInfoMock.profileImage}$`));
+    });
+  });
+});
