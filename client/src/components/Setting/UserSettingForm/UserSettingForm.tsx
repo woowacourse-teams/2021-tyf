@@ -49,12 +49,14 @@ const UserSettingForm = () => {
   }, [form.nickname]);
 
   const isSameNickname = userInfo?.nickname === nickname;
+
   return (
     <StyledUserSettingForm onSubmit={onApply}>
       <Title>설정</Title>
       <ProfileImgInputLabel>
-        <ProfileImg src={form.profileImage || DefaultUserProfile} />
+        <ProfileImg role="profile-img" src={form.profileImage || DefaultUserProfile} />
         <input
+          role="profile-img-input"
           type="file"
           onChange={onChangeProfileImg}
           accept="image/png,image/jpeg, image/jpg, image/gif"
@@ -65,7 +67,7 @@ const UserSettingForm = () => {
       <NickNameInputContainer>
         <StyledSubTitle>닉네임</StyledSubTitle>
         <ValidationInput
-          role="nickname"
+          role="nickname-input"
           value={form.nickname}
           onChange={({ target }) => setNickname(target.value)}
           placeholder="닉네임 입력하기"
@@ -77,6 +79,7 @@ const UserSettingForm = () => {
       <IntroductionTextareaContainer>
         <StyledSubTitle>자기소개</StyledSubTitle>
         <Textarea
+          role="bio-input"
           value={form.bio}
           onChange={({ target }) => setBio(target.value)}
           placeholder="자기소개 입력하기"

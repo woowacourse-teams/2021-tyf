@@ -35,8 +35,8 @@ export const creatorListMock: Creator[] = [
 export const userInfoMock: UserInfo = {
   nickname: 'inch',
   bio: 'hi',
-  pageName: 'inchpage',
   profileImage: 'asdf',
+  pageName: 'inchpage',
   email: 'jho2301@gmail.com',
 };
 
