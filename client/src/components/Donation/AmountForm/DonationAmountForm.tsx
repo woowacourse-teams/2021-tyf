@@ -36,6 +36,7 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
       <MoneyInputContainer>
         <InputLabel>
           <MoneyInput
+            role="money-input"
             placeholder="0"
             value={donationAmount}
             onChange={({ target }) => setDonationAmount(target.value)}
