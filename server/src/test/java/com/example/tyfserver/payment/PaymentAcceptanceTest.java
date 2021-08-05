@@ -29,9 +29,8 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @DisplayName("페이먼트를 성공적으로 생성하는 경우")
     public void payment() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "tyfpage");
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "tyfpage").as(PaymentPendingResponse.class);
 
-        ExtractableResponse<Response> response = 페이먼트_생성(1000L, "donator@gmail.com", "tyfpage");
-        PaymentPendingResponse paymentPendingResponse = response.as(PaymentPendingResponse.class);
         assertThat(paymentPendingResponse.getMerchantUid()).isNotNull();
     }
 
@@ -39,17 +38,16 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @DisplayName("페이먼트를 생성하는데 유효하지 않은 Request인 경우")
     public void paymentInvalidRequest() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "tyfpage");
+        ErrorResponse errorResponse = 페이먼트_생성(900L, "", "tyfpage").as(ErrorResponse.class);
 
-        ExtractableResponse<Response> response = 페이먼트_생성(900L, "", "tyfpage");
-        ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(errorResponse.getErrorCode()).isEqualTo(PaymentPendingRequestException.ERROR_CODE);
     }
 
     @Test
     @DisplayName("페이먼트를 생성하는데 존재하지 않는 창작자인 경우")
     public void paymentCreatorNotFound() {
-        ExtractableResponse<Response> response = 페이먼트_생성(1000L, "donator@gmail.com", "tyfpage");
-        ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        ErrorResponse errorResponse = 페이먼트_생성(1000L, "donator@gmail.com", "tyfpage").as(ErrorResponse.class);
+
         assertThat(errorResponse.getErrorCode()).isEqualTo(MemberNotFoundException.ERROR_CODE);
     }
 }

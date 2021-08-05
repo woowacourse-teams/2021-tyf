@@ -39,8 +39,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("성공적인 회원 가입을 하는 경우")
     public void signUp() {
-        ExtractableResponse<Response> response = 회원생성을_요청("tyf@gmail.com", "GOOGLE", "myNickname", "mypagename");
-        SignUpResponse signUpResponse = response.as(SignUpResponse.class);
+        SignUpResponse signUpResponse = 회원생성을_요청("tyf@gmail.com", "GOOGLE", "myNickname", "mypagename").as(SignUpResponse.class);
 
         assertThat(signUpResponse.getPageName()).isEqualTo("mypagename");
         assertThat(signUpResponse.getToken()).isNotNull();
@@ -49,8 +48,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("유효하지 않은 Request로 회원 가입을 하는 경우")
     public void signUpInvalidRequestFailed() {
-        ExtractableResponse<Response> response = 회원생성을_요청("tyf@gmail.com", "GOOGLE", "myNickname", "PPP");
-        ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        ErrorResponse errorResponse = 회원생성을_요청("tyf@gmail.com", "GOOGLE", "myNickname", "PPP").as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(SignUpRequestException.ERROR_CODE);
     }
@@ -59,9 +57,8 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("로그인에 성공함")
     public void login() {
         회원생성을_요청(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
-        ExtractableResponse<Response> response = 로그인_요청();
+        TokenResponse tokenResponse = 로그인_요청().as(TokenResponse.class);
 
-        TokenResponse tokenResponse = response.as(TokenResponse.class);
         assertThat(tokenResponse.getToken()).isNotNull();
     }
 
