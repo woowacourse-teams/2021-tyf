@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+
 import { statisticsMock } from '../mock/mockData';
 import StatisticsPage from '../pages/Statistics/StatisticsPage';
 import { toCommaSeparatedString } from '../utils/format';

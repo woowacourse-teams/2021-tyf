@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/dom';
+
 import RegisterNamePage from '../pages/Register/Name/RegisterNamePage';
 import { myRender } from './utils/testUtil';
 

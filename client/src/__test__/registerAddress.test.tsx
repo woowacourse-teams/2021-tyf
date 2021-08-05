@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/dom';
-import RegisterAddressPage from '../pages/Register/Address/RegisterAddressPage';
 
+import RegisterAddressPage from '../pages/Register/Address/RegisterAddressPage';
 import { myRender } from './utils/testUtil';
 
 describe('RegisterAddressPage', () => {

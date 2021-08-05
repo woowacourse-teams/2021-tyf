@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { myRender } from './utils/testUtil';
 
+import { myRender } from './utils/testUtil';
 import RegisterTermsPage from '../pages/Register/Terms/RegisterTermsPage';
 
 describe('RegisterTerms', () => {
