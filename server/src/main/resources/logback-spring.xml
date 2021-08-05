@@ -18,21 +18,21 @@
     </root>
 
     <springProfile name ="prod">
-        <include resource ="appender/file-appender.xml"/>
+        <include resource ="appender/aws-log-appender.xml"/>
         <include resource ="appender/slack-async-error-appender.xml"/>
 
         <root level="INFO">
-            <appender-ref ref="FILE"/>
+            <appender-ref ref="ASYNC_AWS"/>
             <appender-ref ref="ASYNC_SLACK_ERROR"/>
         </root>
     </springProfile>
 
     <springProfile name = "dev">
-        <include resource="appender/file-appender.xml"/>
         <include resource="appender/slack-async-info-appender.xml"/>
+        <include resource="appender/aws-log-appender.xml"/>
 
         <root level="DEBUG">
-            <appender-ref ref="FILE"/>
+            <appender-ref ref="ASYNC_AWS"/>
             <appender-ref ref="ASYNC_SLACK_INFO"/>
         </root>
     </springProfile>
