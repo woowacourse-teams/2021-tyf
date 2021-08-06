@@ -28,10 +28,6 @@ spring:
 logging:
   config: classpath:logback-spring.xml
 
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: trace
-
 cloudwatch:
   log_group:
     /tyf/logs/app/dev
