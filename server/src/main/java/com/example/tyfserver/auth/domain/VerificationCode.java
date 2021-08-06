@@ -45,7 +45,7 @@ public class VerificationCode {
         return sb.toString();
     }
 
-    public boolean isVerified(String code) {
-        return Objects.equals(this.code, code);
+    public boolean isUnverified(String code) {
+        return !Objects.equals(this.code, code);
     }
 }

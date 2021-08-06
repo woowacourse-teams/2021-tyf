@@ -3,6 +3,8 @@ package com.example.tyfserver.payment.service;
 import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.VerificationCode;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.exception.VerificationCodeNotFoundException;
+import com.example.tyfserver.auth.exception.VerificationFailedException;
 import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
@@ -90,29 +92,33 @@ public class PaymentService {
     }
 
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
-        // todo 인증 제한 확인
-        Payment payment = paymentRepository.findByMerchantUid(UUID.fromString(verificationRequest.getMerChantUid()))
-                .orElseThrow(RuntimeException::new);
-        payment.checkRemainTryCount();
-
-        // 인증번호 확인
         String merChantUid = verificationRequest.getMerChantUid();
-        VerificationCode verificationCode = verificationCodeRepository.findById(merChantUid)
+        Payment payment = paymentRepository.findByMerchantUid(UUID.fromString(merChantUid))
                 .orElseThrow(RuntimeException::new);
 
-        if (verificationCode.isVerified(verificationRequest.getVerificationCode())) {
-            // 액세스 토큰 응답
-            String refundToken = authenticationService.createRefundToken(merChantUid);
+        payment.checkRemainTryCount();
+        verify(verificationRequest.getVerificationCode(), payment, merChantUid);
 
-            return new RefundVerificationResponse(refundToken);
+        String refundToken = authenticationService.createRefundToken(merChantUid);
+        return new RefundVerificationResponse(refundToken);
+    }
+
+    private void verify(String code, Payment payment, String merChantUid) {
+        VerificationCode verificationCode = verificationCodeRepository.findById(merChantUid)
+                .orElseThrow(VerificationCodeNotFoundException::new);
+        if (verificationCode.isUnverified(code)) {
+            reduceRefundTryCount(payment);
+            throw new VerificationFailedException(payment.getRemainTryCount());
         }
+    }
 
-        // todo 실패시
-        //  카운트 감소 (없다면 엔티티 생성)
+    private void reduceRefundTryCount(Payment payment) {
+        if (payment.hasNoRefundFailure()) {
+            RefundFailure refundFailure = refundFailureRepository.save(new RefundFailure());
+            payment.updateRefundFailure(refundFailure);
+        }
         payment.reduceTryCount();
-
-        //  remainTryCount 포함된 dto 응답해야함
-        throw new RuntimeException();
+        payment.checkRemainTryCount(); // todo: (해당 메서드를 중복으로 사용하는게 좋을지) 아니면 (인증 요청을 하면서 tryCount가 1 -> 0이 되는 순간 예외발생하게 할지?)
     }
 
     public RefundInfoResponse refundInfo(VerifiedRefundRequest refundInfoRequest) {
