@@ -13,13 +13,18 @@
     </root>
 
     <springProfile name="prod">
-        <include resource ="appender/aws-log-appender.xml"/>
-        <appender-ref ref="ASYNC_AWS"/>
+        <include resource ="appender/aws-log-appender-debug.xml"/>
+        <root>
+            <appender-ref ref="ASYNC_AWS-D"/>
+        </root>
+
     </springProfile>
 
     <springProfile name="dev">
-        <include resource ="appender/aws-log-appender.xml"/>
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="ASYNC_AWS"/>
+        <include resource ="appender/aws-log-appender-debug.xml"/>
+        <root>
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_AWS-D"/>
+        </root>
     </springProfile>
 </configuration>
