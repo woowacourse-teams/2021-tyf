@@ -5,4 +5,8 @@ if [ -z "$1" ]; then
   exit 2;
 fi
 
-sudo docker build -t jho2301/tyf-client:$1 .
+# specified semver tag
+sudo docker push jho2301/tyf-client:$1 .
+
+# push latest
+sudo docker push jho2301/tyf-client
