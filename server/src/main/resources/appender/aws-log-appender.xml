@@ -17,8 +17,5 @@
 
     <appender name="ASYNC_AWS" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="AWS"/>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
     </appender>
 </included>
