@@ -27,7 +27,7 @@
     "test:clean": "jest --clearCache && jest src --watch ",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "prepare": "husky install client/husky && cd client"
+    "prepare": "cd .. && husky install client/husky && cd client"
   },
   "devDependencies": {
     "@jest/types": "^27.0.6",

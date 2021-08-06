@@ -3,11 +3,21 @@ import path from 'path';
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
+import subodmain from 'express-subdomain';
+
+const BASE_URL = 'https://thankyou-for.com';
 
 const app = express();
+const sub = express.Router();
+
+app.use(subodmain('www', sub));
+
+sub.get('/*', (req, res) => {
+  res.redirect(BASE_URL + req.path);
+});
 
 app.use((req, res, next) => {
-  req.protocol === 'https' ? next() : res.redirect('https://' + req.headers.host + req.url);
+  req.protocol === 'https' ? next() : res.redirect(BASE_URL + req.path);
 });
 
 app.use('/', express.static(path.resolve('dist')));
