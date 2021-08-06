@@ -10,9 +10,7 @@ export const requestOAuthRegister = (
 };
 
 export const requestValidatePageName = (urlName: string) => {
-  return apiClient.post('/members/validate/pageName', {
-    pageName: urlName,
-  });
+  return apiClient.post('/members/validate/pageName', { pageName: urlName });
 };
 
 export const requestValidateNickName = (nickName: string) => {

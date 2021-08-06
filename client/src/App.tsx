@@ -99,7 +99,7 @@ const App = () => {
           redirectTo="/login"
         />
 
-        <Route path="/refund" component={RefundApplyPage} />
+        <Route path="/refund" component={RefundApplyPage} exact />
         <Route path="/refund/cert" component={RefundCertificationPage} />
         <Route path="/refund/confirm" component={RefundConfirmPage} />
 

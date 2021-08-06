@@ -54,3 +54,18 @@ export interface Payment {
   email: string;
   pageName: string;
 }
+
+// REFUND
+
+export interface Refund {
+  email: string;
+  merchantUid: string;
+  timeout: number;
+  resendCoolTime: number;
+  refundAccessToken: string;
+}
+
+export interface refundOrderDetail {
+  creator: Pick<Creator, 'nickname' | 'pageName'>;
+  donation: Pick<Donation, 'name' | 'amount' | 'message' | 'createdAt'>;
+}

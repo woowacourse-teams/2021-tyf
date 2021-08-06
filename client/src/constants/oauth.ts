@@ -1,6 +1,7 @@
 export const AUTH_CODE = 'code';
 
-const origin = window.location.origin;
+const origin =
+  process.env.NODE_ENV === 'production' ? 'https://thankyou-for.com' : 'http://localhost:9000';
 
 export const OAUTH = {
   KAKAO: {

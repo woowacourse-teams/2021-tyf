@@ -20,9 +20,9 @@
   "private": false,
   "scripts": {
     "start": "webpack serve",
-    "mock:server": "json-server --watch src/mock/mock.json",
-    "build:dev": "jest src && webpack --mode=development --node-env=development",
+    "mock:server": "json-server --watch src/mock/jsonServer/db.json --routes src/mock/jsonServer/routes.json ",
     "build": "jest src && webpack --mode=production --node-env=production",
+    "build:dev": "jest src && webpack --mode=development --node-env=development",
     "test": "jest src --watch ",
     "test:once": "jest src",
     "test:clean": "jest --clearCache && jest src --watch ",

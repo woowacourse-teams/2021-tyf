@@ -1,5 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
+// jsonServer baseURL
+// export const baseURL = 'http://localhost:3000';
 export const baseURL =
   process.env.NODE_ENV === 'production'
     ? 'https://api.thankyou-for.com'
