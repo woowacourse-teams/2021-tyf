@@ -18,14 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class VerificationCode {
 
     private static final int CODE_LENGTH = 6;
-    private static final int DEFAULT_TTL = 5;
+    private static final int DEFAULT_TTL = 5 * 60;
 
     @Id
-    private String merchantUid; // todo id or merchantUid?
+    private String merchantUid;
 
     private String code;
 
-    @TimeToLive(unit = TimeUnit.MINUTES)
+    @TimeToLive
     private Integer timeout = DEFAULT_TTL;
 
     public VerificationCode(String merchantUid, String code) {
@@ -45,10 +45,7 @@ public class VerificationCode {
         return sb.toString();
     }
 
-    public void verify(String code) {
-        if (!Objects.equals(this.code, code)) {
-            // todo 예외 정하기
-            throw new RuntimeException();
-        }
+    public boolean isVerified(String code) {
+        return Objects.equals(this.code, code);
     }
 }

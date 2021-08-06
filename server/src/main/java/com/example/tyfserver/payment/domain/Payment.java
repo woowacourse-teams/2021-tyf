@@ -37,6 +37,10 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private UUID merchantUid;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "refund_failure_id")
+    private RefundFailure refundFailure;
+
     public Payment(Long id, Long amount, Email email, String pageName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
@@ -114,5 +118,20 @@ public class Payment extends BaseTimeEntity {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
         }
+    }
+
+    public void checkRemainTryCount() {
+        if (refundFailure == null) {
+            return;
+        }
+        if (refundFailure.getRemainTryCount() == 0) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void reduceTryCount() {
+        // todo 있다면 감소, null이면 생성.
+        // Cascade 설정 확인 필요
+        this.refundFailure = new RefundFailure(9);
     }
 }

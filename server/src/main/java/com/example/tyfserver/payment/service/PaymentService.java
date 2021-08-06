@@ -1,18 +1,25 @@
 package com.example.tyfserver.payment.service;
 
+import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.VerificationCode;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.exception.DonationNotFoundException;
+import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
+import com.example.tyfserver.payment.domain.RefundFailure;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.PaymentNotFoundException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
+import com.example.tyfserver.payment.repository.RefundFailureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +33,12 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
+    private final DonationRepository donationRepository;
+    private final RefundFailureRepository refundFailureRepository;
+
     private final PaymentServiceConnector paymentServiceConnector;
     private final VerificationCodeRepository verificationCodeRepository;
+    private final CodeResendCoolTimeRepository codeResendCoolTimeRepository;
     private final AuthenticationService authenticationService;
 
     public PaymentPendingResponse createPayment(PaymentPendingRequest pendingRequest) {
@@ -52,33 +63,65 @@ public class PaymentService {
 
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
-        VerificationCode verificationCode = VerificationCode.newCode(refundVerificationReadyRequest.getMerchantUid());
-        verificationCodeRepository.save(verificationCode);
+        String merchantUid = refundVerificationReadyRequest.getMerchantUid();
+        Integer resendCoolTime = checkResendCoolTime(merchantUid);
 
+        VerificationCode verificationCode = VerificationCode.newCode(merchantUid);
+        verificationCodeRepository.save(verificationCode);
         Payment payment = findPayment(verificationCode.getMerchantUid());
 
         // todo 이메일로 전송
-        // todo timeout, resendCoolTime 같이 응답
-        return new RefundVerificationReadyResponse(payment.getMaskedEmail());
+
+        return new RefundVerificationReadyResponse(
+                payment.getMaskedEmail(),
+                verificationCode.getTimeout(),
+                resendCoolTime
+        );
+    }
+
+    private Integer checkResendCoolTime(String merchantUid) {
+        codeResendCoolTimeRepository.findById(merchantUid)
+                .ifPresent(codeResendCoolTime -> {
+                    // todo 인증번호 재발송 쿨타임이라면 400에러
+                    throw new RuntimeException();
+                });
+        CodeResendCoolTime resendCoolTime = codeResendCoolTimeRepository.save(new CodeResendCoolTime(merchantUid));
+        return resendCoolTime.getTimeout();
     }
 
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
-        // 인증번호 확인 후
+        // todo 인증 제한 확인
+        Payment payment = paymentRepository.findByMerchantUid(UUID.fromString(verificationRequest.getMerChantUid()))
+                .orElseThrow(RuntimeException::new);
+        payment.checkRemainTryCount();
+
+        // 인증번호 확인
         String merChantUid = verificationRequest.getMerChantUid();
         VerificationCode verificationCode = verificationCodeRepository.findById(merChantUid)
                 .orElseThrow(RuntimeException::new);
 
-        verificationCode.verify(verificationRequest.getVerificationCode());
+        if (verificationCode.isVerified(verificationRequest.getVerificationCode())) {
+            // 액세스 토큰 응답
+            String refundToken = authenticationService.createRefundToken(merChantUid);
 
-        // 액세스 토큰 응답
-        String refundToken = authenticationService.createRefundToken(merChantUid);
+            return new RefundVerificationResponse(refundToken);
+        }
 
-        return new RefundVerificationResponse(refundToken);
+        // todo 실패시
+        //  카운트 감소 (없다면 엔티티 생성)
+        payment.reduceTryCount();
+
+        //  remainTryCount 포함된 dto 응답해야함
+        throw new RuntimeException();
     }
 
     public RefundInfoResponse refundInfo(VerifiedRefundRequest refundInfoRequest) {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
-        return new RefundInfoResponse(payment);
+        Donation donation = donationRepository.findByPaymentId(payment.getId())
+                .orElseThrow(DonationNotFoundException::new);
+        Member member = memberRepository.findByPageName(payment.getPageName())
+                .orElseThrow(MemberNotFoundException::new);
+        return new RefundInfoResponse(payment, donation, member);
     }
 
     public PaymentCancelResponse refundPayment(VerifiedRefundRequest verifiedRefundRequest) {

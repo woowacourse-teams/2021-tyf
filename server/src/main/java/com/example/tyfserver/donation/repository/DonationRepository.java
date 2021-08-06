@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DonationRepository extends JpaRepository<Donation, Long> {
 
@@ -18,4 +19,6 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     List<Donation> findFirst5ByMemberOrderByCreatedAtDesc(Member member);
 
     List<Donation> findDonationByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
+
+    Optional<Donation> findByPaymentId(Long id);
 }
