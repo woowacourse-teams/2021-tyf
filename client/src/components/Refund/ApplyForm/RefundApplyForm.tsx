@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 
-import useRefund from '../../../service//refund/useRefund';
+import useRefund from '../../../service/refund/useRefund';
 import Input from '../../@atom/Input/Input.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import TextButton from '../../@atom/TextButton/TextButton.styles';
