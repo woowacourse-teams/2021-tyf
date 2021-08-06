@@ -55,8 +55,9 @@ public class PaymentController {
     }
 
     @PostMapping("/refund")
-    public ResponseEntity<PaymentCancelResponse> refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
-        PaymentCancelResponse response = paymentService.refundPayment(verifiedRefundRequest);
+    // todo PaymentRefundResponse 리턴할 필요있나? 200으로 충분할 듯?
+    public ResponseEntity<PaymentRefundResponse> refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
+        PaymentRefundResponse response = paymentService.refundPayment(verifiedRefundRequest);
         return ResponseEntity.ok(response);
     }
 }

@@ -11,13 +11,13 @@ import javax.validation.constraints.NotNull;
 public class RefundVerificationRequest {
 
     @NotNull
-    private String merChantUid;
+    private String merchantUid;
 
     @NotNull
     private String verificationCode;
 
-    public RefundVerificationRequest(String merChantUid, String verificationCode) {
-        this.merChantUid = merChantUid;
+    public RefundVerificationRequest(String merchantUid, String verificationCode) {
+        this.merchantUid = merchantUid;
         this.verificationCode = verificationCode;
     }
 }

@@ -2,14 +2,13 @@ package com.example.tyfserver.payment.controller;
 
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
+import com.example.tyfserver.auth.config.RefundAuthenticationArgumentResolver;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.example.tyfserver.payment.dto.PaymentCancelRequest;
-import com.example.tyfserver.payment.dto.PaymentCancelResponse;
 import com.example.tyfserver.payment.dto.PaymentPendingRequest;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import com.example.tyfserver.payment.exception.PaymentCancelRequestException;
+import com.example.tyfserver.payment.dto.PaymentRefundResponse;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +50,9 @@ public class PaymentControllerTest {
 
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
+
+    @MockBean
+    private RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
 
     @MockBean
     private AuthenticationInterceptor authenticationInterceptor;
@@ -122,65 +124,22 @@ public class PaymentControllerTest {
     }
 
     @Test
-    @DisplayName("/payments/cancel - success")
-    public void cancelPayment() throws Exception { //todo: 토큰을 받도록 변경
+    @DisplayName("/payments/refund - success")
+    public void refundPayment() throws Exception {
         //given
-        VerifiedRefundRequest cancelRequest = new VerifiedRefundRequest(MERCHANT_UID.toString());
-        PaymentCancelResponse cancelResponse = new PaymentCancelResponse(MERCHANT_UID);
+        PaymentRefundResponse refundResponse = new PaymentRefundResponse(MERCHANT_UID);
 
         //when
         when(paymentService.refundPayment(any(VerifiedRefundRequest.class)))
-                .thenReturn(cancelResponse);
-
-        //then
-        mockMvc.perform(post("/payments/refund")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(cancelRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("merchantUid").value(MERCHANT_UID.toString()))
-                .andDo(document("cancelPayment",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
-
-    @Test
-    @DisplayName("/payments/cancel - 회원을 찾을 수 없음")
-    public void cancelPaymentMemberNotFoundFailed() throws Exception { //todo: 토큰을 받도록 변경
-        //given
-        VerifiedRefundRequest verifiedRefundRequest = new VerifiedRefundRequest(MERCHANT_UID.toString());
-
-        //when
-        doThrow(new MemberNotFoundException()) //todo: MemberNotFoundException 다른 예외로 변경 
-                .when(paymentService)
-                .refundPayment(any(VerifiedRefundRequest.class));
+                .thenReturn(refundResponse);
 
         //then
         mockMvc.perform(post("/payments/refund")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + MERCHANT_UID.toString()))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
-                .andDo(document("cancelPaymentMemberNotFoundFailed",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
-
-    @Test
-    @DisplayName("/payments/cancel - 유효하지 않은 Request")
-    public void cancelPaymentRequestFailed() throws Exception {
-        //given
-        PaymentCancelRequest cancelRequest = new PaymentCancelRequest("UUID형식이 아닌 문자열");
-
-        //when
-        //then
-        mockMvc.perform(post("/payments/refund")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(cancelRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(PaymentCancelRequestException.ERROR_CODE))
-                .andDo(document("cancelPaymentRequestFailed",
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("merchantUid").value(MERCHANT_UID.toString()))
+                .andDo(document("cancelPayment",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

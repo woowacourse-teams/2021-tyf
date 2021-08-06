@@ -9,7 +9,6 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 
 @RedisHash("verificationCode")

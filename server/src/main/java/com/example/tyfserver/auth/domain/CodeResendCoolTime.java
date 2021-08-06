@@ -3,13 +3,9 @@ package com.example.tyfserver.auth.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 
 @RedisHash("codeResendCoolTime")

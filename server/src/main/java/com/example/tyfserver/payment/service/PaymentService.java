@@ -8,6 +8,7 @@ import com.example.tyfserver.auth.exception.VerificationFailedException;
 import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.repository.DonationRepository;
@@ -39,6 +40,8 @@ public class PaymentService {
     private final RefundFailureRepository refundFailureRepository;
 
     private final PaymentServiceConnector paymentServiceConnector;
+    private final SmtpMailConnector smtpMailConnector;
+
     private final VerificationCodeRepository verificationCodeRepository;
     private final CodeResendCoolTimeRepository codeResendCoolTimeRepository;
     private final AuthenticationService authenticationService;
@@ -63,7 +66,6 @@ public class PaymentService {
         return payment;
     }
 
-
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
@@ -72,7 +74,7 @@ public class PaymentService {
         verificationCodeRepository.save(verificationCode);
         Payment payment = findPayment(verificationCode.getMerchantUid());
 
-        // todo 이메일로 전송
+        smtpMailConnector.sendVerificationCode(payment.getEmail().getEmail(), verificationCode.getCode());
 
         return new RefundVerificationReadyResponse(
                 payment.getMaskedEmail(),
@@ -92,7 +94,7 @@ public class PaymentService {
     }
 
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
-        String merChantUid = verificationRequest.getMerChantUid();
+        String merChantUid = verificationRequest.getMerchantUid();
         Payment payment = paymentRepository.findByMerchantUid(UUID.fromString(merChantUid))
                 .orElseThrow(RuntimeException::new);
 
@@ -130,14 +132,14 @@ public class PaymentService {
         return new RefundInfoResponse(payment, donation, member);
     }
 
-    public PaymentCancelResponse refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
+    public PaymentRefundResponse refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
         Payment payment = findPayment(verifiedRefundRequest.getMerchantUid());
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
 
         payment.refund(paymentCancelInfo);
         // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
-        return new PaymentCancelResponse(payment.getMerchantUid());
+        return new PaymentRefundResponse(payment.getMerchantUid());
     }
 
     private Payment findPayment(String merchantUid) {

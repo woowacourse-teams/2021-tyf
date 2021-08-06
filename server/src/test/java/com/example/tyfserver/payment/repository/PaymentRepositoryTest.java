@@ -52,7 +52,7 @@ class PaymentRepositoryTest {
         //then
         Payment findPayment = paymentRepository.findByMerchantUid(payment.getMerchantUid()).get();
         assertThat(findPayment.getRefundFailure()).isNotNull();
-        assertThat(findPayment.getRefundFailure().getRemainTryCount()).isEqualTo(9);
+        assertThat(findPayment.getRefundFailure().getRemainTryCount()).isEqualTo(10);
     }
 
 }

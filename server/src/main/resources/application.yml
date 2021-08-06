@@ -10,8 +10,18 @@ spring:
       hibernate:
         format_sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   profiles:
-    include: oauth2, aws
+    include: oauth2, aws, dev-secret
 
 logging:
   config: classpath:logback-spring.xml
