@@ -3,10 +3,6 @@
     <springProperty name="CLOUDWATCH_LOG_GROUP" source="cloudwatch.log_group"/>
 
     <appender name ="AWS" class="ca.pjer.logback.AwsLogsAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
-
         <layout>
             <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS} %t ${PID:-}){faint} %clr([%-5p]) %clr([%-40.40logger{35}]){cyan} %clr(:){faint} %m%n</pattern>
         </layout>
