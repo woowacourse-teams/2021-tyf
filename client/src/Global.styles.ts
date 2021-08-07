@@ -24,7 +24,6 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-
   :root {
     font-size: 16px;
     color: ${({ theme }) => theme.color.main};
@@ -36,8 +35,6 @@ const GlobalStyle = createGlobalStyle`
       display: none;
     };
   }
-
-
 
   button {
     font-family: 'Noto Sans KR', sans-serif;

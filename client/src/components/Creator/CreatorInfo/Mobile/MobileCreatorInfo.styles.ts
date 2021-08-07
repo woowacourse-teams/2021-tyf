@@ -5,6 +5,7 @@ import Button from '../../../@atom/Button/Button.styles';
 import Container from '../../../@atom/Container/Container.styles';
 
 export const StyledCreatorInfo = styled.section`
+  width: 100%;
   margin-top: 4rem;
   margin-bottom: 10rem;
   display: flex;

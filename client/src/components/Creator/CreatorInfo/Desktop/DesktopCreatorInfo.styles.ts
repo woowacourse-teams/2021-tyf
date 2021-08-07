@@ -12,6 +12,7 @@ export const StyledCreatorInfo = styled.section`
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 100%;
   }
 `;
 

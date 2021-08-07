@@ -7,8 +7,4 @@ export const StyledTemplate = styled(Template)`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-
-  section {
-    width: 100%;
-  }
 `;

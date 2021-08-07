@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import Footer from './components/Footer/Footer';
@@ -24,7 +24,6 @@ import { accessTokenState } from './service/state/login';
 import { CreatorId, OAuthProvider } from './types';
 import RefundCertificationPage from './pages/Refund/Certification/RefundCertificationPage';
 import RefundApplyPage from './pages/Refund/Apply/RefundApplyPage';
-import RefundPage from './pages/Refund/Confirm/RefundConfirmPage';
 import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
 
 export interface ParamTypes {

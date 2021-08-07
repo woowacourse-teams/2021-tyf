@@ -11,6 +11,7 @@ import useDonation from '../../../service/hooks/donation/useDonation';
 import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
+import Transition from '../../../components/@atom/Transition/Transition.styles';
 
 const DonationPaymentPage = () => {
   const { creatorId } = useParams<ParamTypes>();
@@ -21,12 +22,14 @@ const DonationPaymentPage = () => {
   return (
     <DonationPaymentPageTemplate>
       <FixedLogo onClick={() => popupWindow(window.location.origin)} />
-      <StyledSubTitle>결제수단을 선택해주세요!</StyledSubTitle>
-      <PaymentButtonContainer>
-        <IconOutlineBarButton src={KakaoPay} onClick={donate}>
-          카카오페이
-        </IconOutlineBarButton>
-      </PaymentButtonContainer>
+      <Transition>
+        <StyledSubTitle>결제수단을 선택해주세요!</StyledSubTitle>
+        <PaymentButtonContainer>
+          <IconOutlineBarButton src={KakaoPay} onClick={donate}>
+            카카오페이
+          </IconOutlineBarButton>
+        </PaymentButtonContainer>
+      </Transition>
     </DonationPaymentPageTemplate>
   );
 };

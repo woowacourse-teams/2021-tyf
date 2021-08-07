@@ -1,5 +1,6 @@
 import { StyledTemplate } from './RegisterAuthPage.styles';
 import RegisterAuthForm from '../../../components/Register/AuthForm/RegisterAuthForm';
+import Transition from '../../../components/@atom/Transition/Transition.styles';
 
 export const REGISTER_PAGE_KEY = 'register';
 
@@ -7,7 +8,9 @@ const RegisterAuthPage = () => {
   return (
     <StyledTemplate>
       <section>
-        <RegisterAuthForm />
+        <Transition>
+          <RegisterAuthForm />
+        </Transition>
       </section>
     </StyledTemplate>
   );

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import { ParamTypes } from '../../../App';
+import Transition from '../../../components/@atom/Transition/Transition.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import DonatorForm from '../../../components/Donation/DonatorForm/DonatorForm';
 import { popupWindow } from '../../../service/popup';
@@ -14,7 +15,9 @@ const DonatorInfoPage = () => {
   return (
     <DonatorInfoPageTemplate>
       <FixedLogo onClick={() => popupWindow(window.location.origin)} />
-      <DonatorForm creatorId={creatorId} />
+      <Transition>
+        <DonatorForm creatorId={creatorId} />
+      </Transition>
     </DonatorInfoPageTemplate>
   );
 };

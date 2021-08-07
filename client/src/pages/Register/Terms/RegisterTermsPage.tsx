@@ -1,3 +1,4 @@
+import Transition from '../../../components/@atom/Transition/Transition.styles';
 import RegisterTermsForm from '../../../components/Register/TermsForm/RegisterTermsForm';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { REGISTER_PAGE_KEY } from '../Auth/RegisterAuthPage';
@@ -8,7 +9,9 @@ const RegisterTermsPage = () => {
 
   return (
     <StyledTemplate>
-      <RegisterTermsForm />
+      <Transition>
+        <RegisterTermsForm />
+      </Transition>
     </StyledTemplate>
   );
 };

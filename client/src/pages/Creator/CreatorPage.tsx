@@ -4,47 +4,27 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
 import useUserInfo from '../../service/hooks/user/useUserInfo';
-import DesktopCreatorInfo from '../../components/Creator/CreatorInfo/Desktop/DesktopCreatorInfo';
-import MobileCreatorInfo from '../../components/Creator/CreatorInfo/Mobile/MobileCreatorInfo';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
-import useCreator from '../../service/hooks/creator/useCreator';
-
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';
-import { DONATION_POPUP } from '../../constants/popup';
 import Spinner from '../../components/Spinner/Spinner';
 import { SIZE } from '../../constants/device';
-
-import { popupWindow } from '../../service/popup';
 import URLShareModal from '../../components/ShareModal/URLShareModal/URLShareModal';
 import useModal from '../../utils/useModal';
-import { donationUrlShare } from '../../service/share';
+import Transition from '../../components/@atom/Transition/Transition.styles';
+import CreatorInfo from '../../components/Creator/CreatorInfo/CreatorInfo';
 
 const CreatorPage = () => {
   const history = useHistory();
   const { creatorId } = useParams<ParamTypes>();
   const { isOpen, toggleModal, closeModal } = useModal();
   const { userInfo } = useUserInfo();
-  const creator = useCreator(creatorId);
+
   const { windowWidth } = useWindowResize();
   const isAdmin = userInfo?.pageName === creatorId;
 
-  const popupDonationAmountPage = () => {
-    popupWindow(window.location.origin + `/donation/${creatorId}`, {
-      width: DONATION_POPUP.WIDTH,
-      height: DONATION_POPUP.HEIGHT,
-    });
-  };
-
-  const onMobileShare = () => {
-    donationUrlShare(creator.nickname, creatorId);
-  };
-
-  const openShareURLModal = () => {
-    toggleModal();
-  };
-
   const isModalOpen = windowWidth > SIZE.DESKTOP_LARGE && isOpen && userInfo;
+
   return (
     <StyledTemplate>
       <ErrorBoundary
@@ -56,27 +36,15 @@ const CreatorPage = () => {
         }}
       >
         <Suspense fallback={<p>사용자 정보를 불러오는 중입니다.</p>}>
-          {windowWidth > SIZE.DESKTOP_LARGE ? (
-            <DesktopCreatorInfo
-              creator={creator}
-              isAdmin={isAdmin}
-              shareUrl={openShareURLModal}
-              popupDonationAmountPage={popupDonationAmountPage}
-            />
-          ) : (
-            <MobileCreatorInfo
-              creator={creator}
-              isAdmin={isAdmin}
-              shareUrl={onMobileShare}
-              popupDonationAmountPage={popupDonationAmountPage}
-            />
-          )}
+          <Transition>
+            <CreatorInfo isAdmin={isAdmin} creatorId={creatorId} toggleModal={toggleModal} />
+          </Transition>
         </Suspense>
 
         <Suspense fallback={<Spinner />}>
-          <section>
+          <Transition delay={0.2}>
             <DonationMessageList isAdmin={isAdmin} />
-          </section>
+          </Transition>
           {isModalOpen && <URLShareModal userInfo={userInfo!} onClose={closeModal} />}
         </Suspense>
       </ErrorBoundary>

@@ -11,8 +11,4 @@ export const DonatorInfoPageTemplate = styled(Template)`
   justify-content: space-around;
   align-items: center;
   padding-top: 5rem;
-
-  section:nth-of-type(1) {
-    margin-bottom: 3rem;
-  }
 `;

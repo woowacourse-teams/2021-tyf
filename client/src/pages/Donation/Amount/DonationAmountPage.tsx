@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import { ParamTypes } from '../../../App';
+import Transition from '../../../components/@atom/Transition/Transition.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import Profile from '../../../components/Creator/Profile/Profile';
 import DonationAmountForm from '../../../components/Donation/AmountForm/DonationAmountForm';
@@ -17,10 +18,14 @@ const DonationAmountPage = () => {
     <DonationAmountPageTemplate>
       <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <section>
-        <Profile />
+        <Transition>
+          <Profile />
+        </Transition>
       </section>
       <section>
-        <DonationAmountForm creatorId={creatorId} />
+        <Transition delay={0.2}>
+          <DonationAmountForm creatorId={creatorId} />
+        </Transition>
       </section>
     </DonationAmountPageTemplate>
   );

@@ -1,3 +1,4 @@
+import Transition from '../../../components/@atom/Transition/Transition.styles';
 import RegisterAddressForm from '../../../components/Register/AddressForm/RegisterAddressForm';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { REGISTER_PAGE_KEY } from '../Auth/RegisterAuthPage';
@@ -8,7 +9,9 @@ const RegisterAddressPage = () => {
 
   return (
     <StyledTemplate>
-      <RegisterAddressForm />
+      <Transition>
+        <RegisterAddressForm />
+      </Transition>
     </StyledTemplate>
   );
 };
