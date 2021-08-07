@@ -68,8 +68,21 @@ public class Member extends BaseTimeEntity {
         addPoint(donation.getAmount());
     }
 
-    private void addPoint(final long donationAmount) {
-        this.point.add(donationAmount);
+    private void addPoint(final long amount) {
+        this.point.add(amount);
+    }
+
+    public void cancelDonation(Donation donation) {
+        // todo 도네이션 취소 로직 필요
+        //  1. 멤버와 도네이션의 관계를 끊는다.
+        //  2. 도네이션의 상태를 "취소"로 바꾼다.
+        //  2-1. 페이먼트의 상태를 "CANCELLED"로 바꿨으니 그걸 통해 쿼리한다. 쿼리 겁나 복잡;
+//        donation.cancel();
+        reducePoint(donation.getAmount());
+    }
+
+    private void reducePoint(final long amount) {
+        this.point.reduce(amount);
     }
 
     public void updateBio(String bio) {

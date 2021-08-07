@@ -21,4 +21,8 @@ public class Point {
     public void add(final long donationAmount) {
         this.point += donationAmount;
     }
+
+    public void reduce(final long amount) {
+        this.point -= amount;
+    }
 }

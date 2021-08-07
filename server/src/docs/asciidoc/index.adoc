@@ -303,6 +303,11 @@ include::{snippets}/createPaymentMemberNotFoundFailed/http-request.adoc[]
 include::{snippets}/createPaymentMemberNotFoundFailed/http-response.adoc[]
 === 결제 요청 - 실패 - 유효하지 않은 Request
 ==== Request
-include::{snippets}/createPaymentRequestFailed/http-request.adoc[]
+include::{snippets}/PaymentRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createPaymentRequestFailed/http-response.adoc[]
+=== 환불 요청 - 성공
+==== Request
+include::{snippets}/refundPayment/http-request.adoc[]
+==== Response
+include::{snippets}/refundPayment/http-response.adoc[]

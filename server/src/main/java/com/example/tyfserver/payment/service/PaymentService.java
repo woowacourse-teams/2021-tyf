@@ -132,14 +132,18 @@ public class PaymentService {
         return new RefundInfoResponse(payment, donation, member);
     }
 
-    public PaymentRefundResponse refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
+    public void refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
         Payment payment = findPayment(verifiedRefundRequest.getMerchantUid());
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
 
         payment.refund(paymentCancelInfo);
-        // todo Member의 포인트에서 차감, 도네이션 취소 등의 로직 필요.
-        return new PaymentRefundResponse(payment.getMerchantUid());
+
+        Member member = memberRepository.findByPageName(payment.getPageName())
+                .orElseThrow(MemberNotFoundException::new);
+        Donation donation = donationRepository.findByPaymentId(payment.getId())
+                .orElseThrow(DonationNotFoundException::new);
+        member.cancelDonation(donation);
     }
 
     private Payment findPayment(String merchantUid) {

@@ -1,14 +1,11 @@
 package com.example.tyfserver.payment.controller;
 
-import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
-import com.example.tyfserver.auth.config.RefundAuthenticationArgumentResolver;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.PaymentPendingRequest;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import com.example.tyfserver.payment.dto.PaymentRefundResponse;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,12 +44,6 @@ public class PaymentControllerTest {
 
     @MockBean
     private AuthenticationService authenticationService;
-
-    @MockBean
-    private AuthenticationArgumentResolver authenticationArgumentResolver;
-
-    @MockBean
-    private RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
 
     @MockBean
     private AuthenticationInterceptor authenticationInterceptor;
@@ -127,19 +118,15 @@ public class PaymentControllerTest {
     @DisplayName("/payments/refund - success")
     public void refundPayment() throws Exception {
         //given
-        PaymentRefundResponse refundResponse = new PaymentRefundResponse(MERCHANT_UID);
-
         //when
-        when(paymentService.refundPayment(any(VerifiedRefundRequest.class)))
-                .thenReturn(refundResponse);
+        doNothing().when(paymentService).refundPayment(any(VerifiedRefundRequest.class));
 
         //then
         mockMvc.perform(post("/payments/refund")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + MERCHANT_UID.toString()))
+                .header("Authorization", "Bearer {refundAccessToken}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("merchantUid").value(MERCHANT_UID.toString()))
-                .andDo(document("cancelPayment",
+                .andDo(document("refundPayment",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
