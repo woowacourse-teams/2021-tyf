@@ -96,7 +96,8 @@ public class PaymentService {
 
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
         String merChantUid = verificationRequest.getMerchantUid();
-        Payment payment = findPayment(merChantUid);
+        Payment payment = paymentRepository.findByMerchantUidWithRefundFailure(UUID.fromString(merChantUid))
+                .orElseThrow(PaymentNotFoundException::new);
 
         payment.checkRemainTryCount();
         verify(verificationRequest.getVerificationCode(), payment, merChantUid);
@@ -142,11 +143,11 @@ public class PaymentService {
         Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        member.validatePointIsEnough(donation.getAmount());
+        member.validatePointIsEnough(donation.getAmount()); // todo: 예외 1: Member가 가진 Point가 donation 금액보다 적으면 예외!
         donation.validateIsValid();
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
-        payment.refund(paymentCancelInfo);
+        payment.refund(paymentCancelInfo);  // todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외!
         donation.cancel();
         member.reducePoint(donation.getAmount());
     }
