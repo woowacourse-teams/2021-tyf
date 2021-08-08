@@ -113,5 +113,8 @@ public class AcceptanceTest {
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
                 .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 1000L,
                         "pagename", "impUid", "module"));
+        when(paymentServiceConnector.requestPaymentCancel(any(UUID.class)))
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, 1000L,
+                        "pagename", "impUid", "module"));
     }
 }
