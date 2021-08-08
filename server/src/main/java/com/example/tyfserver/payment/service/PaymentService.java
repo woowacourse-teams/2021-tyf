@@ -20,6 +20,7 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.RefundFailure;
 import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
 import com.example.tyfserver.payment.exception.PaymentNotFoundException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.payment.repository.RefundFailureRepository;
@@ -86,8 +87,7 @@ public class PaymentService {
     private Integer checkResendCoolTime(String merchantUid) {
         codeResendCoolTimeRepository.findById(merchantUid)
                 .ifPresent(codeResendCoolTime -> {
-                    // todo 인증번호 재발송 쿨타임이라면 400에러
-                    throw new RuntimeException();
+                    throw new CodeResendCoolTimeException();
                 });
         CodeResendCoolTime resendCoolTime = codeResendCoolTimeRepository.save(new CodeResendCoolTime(merchantUid));
         return resendCoolTime.getTimeout();
@@ -95,8 +95,7 @@ public class PaymentService {
 
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
         String merChantUid = verificationRequest.getMerchantUid();
-        Payment payment = paymentRepository.findByMerchantUid(UUID.fromString(merChantUid))
-                .orElseThrow(RuntimeException::new);
+        Payment payment = findPayment(merChantUid);
 
         payment.checkRemainTryCount();
         verify(verificationRequest.getVerificationCode(), payment, merChantUid);

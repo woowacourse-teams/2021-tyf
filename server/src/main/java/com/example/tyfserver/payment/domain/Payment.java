@@ -2,6 +2,7 @@ package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
+import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -126,7 +127,7 @@ public class Payment extends BaseTimeEntity {
 
     public void checkRemainTryCount() {
         if (refundFailure != null && refundFailure.getRemainTryCount() == 0) {
-            throw new RuntimeException(); // todo: 님 시도횟수 끝남 block 임ㅋ 고객센터 문의 ㄱ  Message
+            throw new RefundVerificationBlockedException();
         }
     }
 

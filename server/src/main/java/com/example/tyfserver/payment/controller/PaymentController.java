@@ -3,6 +3,8 @@ package com.example.tyfserver.payment.controller;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
+import com.example.tyfserver.payment.exception.RefundVerificationException;
+import com.example.tyfserver.payment.exception.RefundVerificationReadyException;
 import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class PaymentController {
     @PostMapping("/refund/verification/ready")
     public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new RuntimeException();
+            throw new RefundVerificationReadyException();
         }
 
         RefundVerificationReadyResponse response = paymentService.refundVerificationReady(verificationReadyRequest);
@@ -41,7 +43,7 @@ public class PaymentController {
     @PostMapping("/refund/verification")
     public ResponseEntity<RefundVerificationResponse> refundVerification(@Valid @RequestBody RefundVerificationRequest verificationRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new RuntimeException();
+            throw new RefundVerificationException();
         }
 
         RefundVerificationResponse response = paymentService.refundVerification(verificationRequest);

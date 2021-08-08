@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataRedisTest
 class VerificationCodeRepositoryTest {
 
@@ -14,19 +16,16 @@ class VerificationCodeRepositoryTest {
     @Test
     void save() {
         //given
-        VerificationCode verificationCode1 = new VerificationCode(null, "value1");
-        VerificationCode verificationCode2 = new VerificationCode(null, "value2");
+        String merchantUid = "merchantUid";
+        String code = "code";
+        VerificationCode verificationCode = new VerificationCode(merchantUid, code);
 
         //when
-        VerificationCode save = verificationCodeRepository.save(verificationCode1);
-        verificationCodeRepository.save(verificationCode2);
-
-        VerificationCode verificationCode = verificationCodeRepository.findById(save.getMerchantUid())
-                .orElseThrow(RuntimeException::new);
+        verificationCodeRepository.save(verificationCode);
+        VerificationCode findVerificationCode = verificationCodeRepository.findById(merchantUid).get();
 
         //then
-//        assertThat(savedVerificationCode.getValue()).isEqualTo(verificationCode2.getValue());
-//        assertThat(savedVerificationCode.getId()).isEqualTo(verificationCode2.getId());
-//        System.out.println("savedVerificationCode = " + savedVerificationCode.getId());
+        assertThat(findVerificationCode.getCode()).isEqualTo(code);
+        assertThat(findVerificationCode.getMerchantUid()).isEqualTo(merchantUid);
     }
 }
