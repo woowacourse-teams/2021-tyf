@@ -29,6 +29,6 @@ public class RefundAuthenticationArgumentResolver implements HandlerMethodArgume
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         String token = AuthorizationExtractor.extract(request);
-        return authenticationService.createRefundInfoRequestByToken(token);
+        return authenticationService.createVerifiedRefundRequestByToken(token);
     }
 }

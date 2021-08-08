@@ -27,7 +27,7 @@ public class AuthenticationService {
         return new LoginMember(idAndEmail.getId(), idAndEmail.getEmail());
     }
 
-    public VerifiedRefundRequest createRefundInfoRequestByToken(String token) {
+    public VerifiedRefundRequest createVerifiedRefundRequestByToken(String token) {
         String merchantUid = jwtTokenProvider.findMerchantUidFromToken(token);
         return new VerifiedRefundRequest(merchantUid);
     }

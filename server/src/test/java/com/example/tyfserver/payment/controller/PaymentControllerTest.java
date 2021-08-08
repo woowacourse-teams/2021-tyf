@@ -4,8 +4,7 @@ import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.example.tyfserver.payment.dto.PaymentPendingRequest;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
+import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +21,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -109,6 +109,67 @@ public class PaymentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentPendingRequestException.ERROR_CODE))
                 .andDo(document("createPaymentRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/refund/verification/ready - success")
+    public void refundVerificationReady() throws Exception {
+        //given
+        //when
+        when(paymentService.refundVerificationReady(any(RefundVerificationReadyRequest.class)))
+                .thenReturn(new RefundVerificationReadyResponse("test@test.com"));
+
+        //then
+        mockMvc.perform(post("/payments/refund/verification/ready")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("refundVerificationReady",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/refund/verification - success")
+    public void refundVerification() throws Exception {
+        //given
+        //when
+        when(paymentService.refundVerification(any(RefundVerificationRequest.class)))
+                .thenReturn(new RefundVerificationResponse("refund access token"));
+
+        //then
+        mockMvc.perform(post("/payments/refund/verification")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("refundVerification",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/refund/info - success")
+    public void refundInfo() throws Exception {
+        //given
+        //when
+        when(paymentService.refundInfo(any(VerifiedRefundRequest.class)))
+                .thenReturn(new RefundInfoResponse(
+                        new RefundInfoResponse.CreatorInfoResponse("joy", "joy"),
+                        new RefundInfoResponse.DonationInfoResponse("후원자이름", 10000L, "화이팅", null)
+                ));
+
+        when(authenticationService.createVerifiedRefundRequestByToken(anyString()))
+                .thenReturn(new VerifiedRefundRequest("merchant uid"));
+
+        //then
+        mockMvc.perform(get("/payments/refund/info")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer {refundAccessToken}"))
+                .andExpect(status().isOk())
+                .andDo(document("refundInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

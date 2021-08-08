@@ -68,7 +68,7 @@ public class PaymentService {
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
-        //todo: 해당 MerchantUid Payment 확인해서 보낸다. 이게 7일 이전인가
+        //todo: 해당 Payment가 환불가능(결제된지 7일 이전)인지 확인해야함.
 
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
 
@@ -120,7 +120,10 @@ public class PaymentService {
             payment.updateRefundFailure(refundFailure);
         }
         payment.reduceTryCount();
-        payment.checkRemainTryCount(); // todo: (해당 메서드를 중복으로 사용하는게 좋을지) 아니면 (인증 요청을 하면서 tryCount가 1 -> 0이 되는 순간 예외발생하게 할지?)
+        // todo: refundVerification() 로직에서 payment.checkRemainTryCount() 가 2번 호출하고 있다.
+        //  1. 인증요청시 tryCount가 1에서 0이 될 때 예외발생 -> 2번 호출하도록 그대로 둠
+        //  2. 1번 상황에선 예외발생 X, 인증요청시 tryCount가 이미 0일 때만 예외발생 -> 아래의 payment.checkRemainTryCount() 제거
+        payment.checkRemainTryCount();
     }
 
     public RefundInfoResponse refundInfo(VerifiedRefundRequest refundInfoRequest) {
