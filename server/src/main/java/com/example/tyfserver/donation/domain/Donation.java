@@ -30,7 +30,7 @@ public class Donation extends BaseTimeEntity {
     private Payment payment;
 
     @Enumerated(value = EnumType.STRING)
-    private DonationStatus status = DonationStatus.VALID;
+    private DonationStatus status = DonationStatus.REFUNDABLE;
 
     public Donation(Long id, Payment payment, Message message) {
         this.id = id;
