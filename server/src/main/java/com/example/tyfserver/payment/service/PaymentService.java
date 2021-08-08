@@ -141,7 +141,7 @@ public class PaymentService {
                 .orElseThrow(DonationNotFoundException::new);
 
         member.validatePointIsEnough(donation.getAmount()); // todo: 예외 1: Member가 가진 Point가 donation 금액보다 적으면 예외!
-        donation.validateIsValid();  // todo: 예외 2: 이미 취소된 donation이라면 예외!
+        donation.validateIsValid();
 
         PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
         payment.refund(paymentCancelInfo);  // todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외!
