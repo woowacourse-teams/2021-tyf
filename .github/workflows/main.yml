@@ -53,7 +53,7 @@ jobs:
           push: true # optional, default is false
           
           # List of tags
-          tags: main # ${{ steps.docker_meta.outputs.tags }}
+          tags: jho2301/tyf-client # ${{ steps.docker_meta.outputs.tags }}
           # List of metadata for an image
           labels: main # ${{ steps.docker_meta.outputs.labels }}
       - 
