@@ -67,5 +67,5 @@ jobs:
           script: |
             docker pull jho2301/tyf-client:main
             docker rm -f tyf-client
-            docker run --name tyf-client -p 80:80 -p 443:443 -v /etc/ssl:/etc/ssl jho2301/tyf-client:main
+            docker run --name tyf-client -p 80:80 -p 443:443 -v /etc/ssl:/etc/ssl -d jho2301/tyf-client:main
             
