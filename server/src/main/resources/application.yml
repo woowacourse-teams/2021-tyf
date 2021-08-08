@@ -9,6 +9,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    hibernate:
+      ddl-auto: create
 
   mail:
     host: smtp.gmail.com

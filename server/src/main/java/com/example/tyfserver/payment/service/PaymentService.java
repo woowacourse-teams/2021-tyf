@@ -62,7 +62,6 @@ public class PaymentService {
         PaymentInfo paymentInfo = paymentServiceConnector.requestPaymentInfo(merchantUid);
 
         Payment payment = findPayment(merchantUid);
-
         payment.complete(paymentInfo);
         return payment;
     }
