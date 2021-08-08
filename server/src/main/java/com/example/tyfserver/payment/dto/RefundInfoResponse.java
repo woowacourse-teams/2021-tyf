@@ -17,9 +17,13 @@ public class RefundInfoResponse {
     private CreatorInfoResponse creator;
     private DonationInfoResponse donation;
 
+    public RefundInfoResponse(CreatorInfoResponse creator, DonationInfoResponse donation) {
+        this.creator = creator;
+        this.donation = donation;
+    }
+
     public RefundInfoResponse(Payment payment, Donation donation, Member member) {
-        this.creator = new CreatorInfoResponse(member);
-        this.donation = new DonationInfoResponse(donation, payment);
+        this(new CreatorInfoResponse(member), new DonationInfoResponse(donation, payment));
     }
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)

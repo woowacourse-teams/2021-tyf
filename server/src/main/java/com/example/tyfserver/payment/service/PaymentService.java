@@ -70,8 +70,8 @@ public class PaymentService {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
 
-        VerificationCode verificationCode = VerificationCode.newCode(merchantUid);
-        verificationCodeRepository.save(verificationCode);
+        VerificationCode verificationCode = verificationCodeRepository
+                .save(VerificationCode.newCode(merchantUid));
         Payment payment = findPayment(verificationCode.getMerchantUid());
 
         smtpMailConnector.sendVerificationCode(payment.getEmail().getEmail(), verificationCode.getCode());
@@ -132,10 +132,10 @@ public class PaymentService {
 
     public void refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
         Payment payment = findPayment(verifiedRefundRequest.getMerchantUid());
-        Member member = memberRepository.findByPageName(payment.getPageName())
-                .orElseThrow(MemberNotFoundException::new);
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
+        Member member = memberRepository.findByPageName(payment.getPageName())
+                .orElseThrow(MemberNotFoundException::new);
 
         member.validatePointIsEnough(donation.getAmount());
         donation.validateIsValid();

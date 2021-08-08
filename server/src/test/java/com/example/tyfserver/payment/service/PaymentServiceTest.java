@@ -1,17 +1,27 @@
 package com.example.tyfserver.payment.service;
 
+import com.example.tyfserver.auth.domain.CodeResendCoolTime;
+import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.auth.domain.VerificationCode;
+import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
+import com.example.tyfserver.auth.repository.VerificationCodeRepository;
+import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.common.util.SmtpMailConnector;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
+import com.example.tyfserver.member.domain.Point;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
-import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
-import com.example.tyfserver.payment.dto.PaymentPendingRequest;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
+import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +34,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +47,7 @@ class PaymentServiceTest {
     private static final String ERROR_CODE = "errorCode";
     private static final String MODULE = "테스트모듈";
     private static final long AMOUNT = 1000L;
+
     @Mock
     private PaymentRepository paymentRepository;
 
@@ -43,7 +55,22 @@ class PaymentServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
+    private DonationRepository donationRepository;
+
+    @Mock
+    private CodeResendCoolTimeRepository codeResendCoolTimeRepository;
+
+    @Mock
+    private VerificationCodeRepository verificationCodeRepository;
+
+    @Mock
     private PaymentServiceConnector paymentServiceConnector;
+
+    @Mock
+    private AuthenticationService authenticationService;
+
+    @Mock
+    private SmtpMailConnector smtpMailConnector;
 
     @InjectMocks
     private PaymentService paymentService;
@@ -175,5 +202,119 @@ class PaymentServiceTest {
         assertThatThrownBy(() -> paymentService.completePayment(request))
                 .isInstanceOf(IllegalPaymentInfoException.class)
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR);
+    }
+
+    @DisplayName("인증번호가 생성되고 마스킹처리된 인증메일, 인증번호 유효시간, 재전송 대기시간이 응답된다")
+    @Test
+    void refundVerificationReady() {
+        // given
+        String merchantUid = UUID.randomUUID().toString();
+        RefundVerificationReadyRequest request = new RefundVerificationReadyRequest(merchantUid);
+
+        // when
+        when(codeResendCoolTimeRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        when(codeResendCoolTimeRepository.save(Mockito.any(CodeResendCoolTime.class)))
+                .thenReturn(new CodeResendCoolTime(merchantUid));
+
+        when(verificationCodeRepository.save(Mockito.any(VerificationCode.class)))
+                .thenReturn(new VerificationCode(merchantUid, "123456", VerificationCode.DEFAULT_TTL));
+
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+                .thenReturn(
+                        Optional.of(new Payment(1000L, "joy@naver.com", "joy")));
+
+        doNothing().when(smtpMailConnector).sendVerificationCode(Mockito.anyString(), Mockito.anyString());
+
+        // then
+        RefundVerificationReadyResponse response = paymentService.refundVerificationReady(request);
+        assertThat(response.getEmail()).isEqualTo("j*y@naver.com");
+        assertThat(response.getTimeout()).isEqualTo(VerificationCode.DEFAULT_TTL);
+        assertThat(response.getResendCoolTime()).isEqualTo(CodeResendCoolTime.DEFAULT_TTL);
+    }
+
+    @DisplayName("인증번호를 받아 확인되면 환불 엑세스 토큰이 응답된다")
+    @Test
+    void refundVerification() {
+        // given
+        String merchantUid = UUID.randomUUID().toString();
+        String verificationCode = "123456";
+        String refundAccessToken = "Refund Access Token";
+        RefundVerificationRequest request = new RefundVerificationRequest(merchantUid, verificationCode);
+
+        // when
+        when(authenticationService.createRefundToken(Mockito.anyString()))
+                .thenReturn(refundAccessToken);
+
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+                .thenReturn(
+                        Optional.of(new Payment(10000L, "joy@naver.com", "joy")));
+
+        when(verificationCodeRepository.findById(Mockito.anyString()))
+                .thenReturn(
+                        Optional.of(new VerificationCode(merchantUid, verificationCode)));
+
+        // then
+        RefundVerificationResponse response = paymentService.refundVerification(request);
+        assertThat(response.getRefundAccessToken()).isEqualTo(refundAccessToken);
+    }
+
+    @Test
+    void refundInfo() {
+        // given
+        String merchantUid = UUID.randomUUID().toString();
+        VerifiedRefundRequest request = new VerifiedRefundRequest(merchantUid);
+
+        // when
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+                .thenReturn(
+                        Optional.of(new Payment(1L, 10000L, "joy@naver.com", "joy")));
+
+        when(donationRepository.findByPaymentId(Mockito.anyLong()))
+                .thenReturn(
+                        Optional.of(new Donation(null, new Message("후원자이름", "화이팅", false))));
+
+        when(memberRepository.findByPageName(Mockito.anyString()))
+                .thenReturn(
+                        Optional.of(new Member("joy@naver.com", "joy", "joy", Oauth2Type.NAVER)));
+
+        // then
+        RefundInfoResponse response = paymentService.refundInfo(request);
+        RefundInfoResponse expectedResponse = new RefundInfoResponse(
+                new RefundInfoResponse.CreatorInfoResponse("joy", "joy"),
+                new RefundInfoResponse.DonationInfoResponse("후원자이름", 10000L, "화이팅", null)
+        );
+
+        assertThat(response).usingRecursiveComparison()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    void refundPayment() {
+        // given
+        String merchantUid = UUID.randomUUID().toString();
+        VerifiedRefundRequest request = new VerifiedRefundRequest(merchantUid);
+        Payment payment = new Payment(1L, 10000L, "joy@naver.com", "joy", UUID.fromString(merchantUid));
+
+        // when
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+                .thenReturn(
+                        Optional.of(payment));
+
+        when(donationRepository.findByPaymentId(Mockito.anyLong()))
+                .thenReturn(
+                        Optional.of(new Donation(payment, new Message("후원자이름", "화이팅", false))));
+
+        when(memberRepository.findByPageName(Mockito.anyString()))
+                .thenReturn(
+                        Optional.of(new Member("joy@naver.com", "joy", "joy", Oauth2Type.NAVER, null, new Point(10000L))));
+
+        when(paymentServiceConnector.requestPaymentCancel(Mockito.any(UUID.class)))
+                .thenReturn(new PaymentInfo(UUID.fromString(merchantUid), PaymentStatus.CANCELLED, 10000L, "joy", "impUid", "testModule"));
+
+        // then
+        assertThatCode(() -> paymentService.refundPayment(request))
+                .doesNotThrowAnyException();
     }
 }

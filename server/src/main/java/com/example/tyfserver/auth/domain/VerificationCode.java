@@ -17,7 +17,7 @@ import java.util.Objects;
 public class VerificationCode {
 
     private static final int CODE_LENGTH = 6;
-    private static final int DEFAULT_TTL = 5 * 60;
+    public static final int DEFAULT_TTL = 5 * 60;
 
     @Id
     private String merchantUid;
@@ -27,9 +27,14 @@ public class VerificationCode {
     @TimeToLive
     private Integer timeout = DEFAULT_TTL;
 
-    public VerificationCode(String merchantUid, String code) {
+    public VerificationCode(String merchantUid, String code, Integer timeout) {
         this.merchantUid = merchantUid;
         this.code = code;
+        this.timeout = timeout;
+    }
+
+    public VerificationCode(String merchantUid, String code) {
+        this(merchantUid, code, null);
     }
 
     public static VerificationCode newCode(String merchantUid) {

@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.TimeToLive;
 @Getter
 public class CodeResendCoolTime {
 
-    private static final int DEFAULT_TTL = 1 * 60;
+    public static final int DEFAULT_TTL = 1 * 60;
 
     @Id
     private String merchantUid;
