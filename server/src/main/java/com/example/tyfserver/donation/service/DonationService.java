@@ -52,7 +52,7 @@ public class DonationService {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findDonationByMemberAndStatusOrderByCreatedAtDesc(findMember, DonationStatus.VALID, pageable);
+        List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED, pageable);
 
         return privateDonationResponses(donations);
     }
@@ -61,7 +61,7 @@ public class DonationService {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusOrderByCreatedAtDesc(findMember, DonationStatus.VALID);
+        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED);
 
         return publicDonationResponses(donations);
     }

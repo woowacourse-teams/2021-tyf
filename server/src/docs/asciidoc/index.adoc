@@ -355,3 +355,8 @@ include::{snippets}/signUpRequestFailed/http-response.adoc[]
 include::{snippets}/signUpInvalidOauth2TypeFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/signUpInvalidOauth2TypeFailed/http-response.adoc[]
+=== 환불 요청 - 성공
+==== Request
+include::{snippets}/refundPayment/http-request.adoc[]
+==== Response
+include::{snippets}/refundPayment/http-response.adoc[]

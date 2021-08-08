@@ -68,6 +68,8 @@ public class PaymentService {
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
+        //todo: 해당 MerchantUid Payment 확인해서 보낸다. 이게 7일 이전인가
+
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
 
         VerificationCode verificationCode = verificationCodeRepository
