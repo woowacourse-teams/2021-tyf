@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.member.domain.Member;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,9 +17,9 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     List<Donation> findPublicDonations(
             @Param("member") Member member, @Param("secret") boolean secret, Pageable pageable);
 
-    List<Donation> findFirst5ByMemberOrderByCreatedAtDesc(Member member);
+    List<Donation> findFirst5ByMemberAndStatusOrderByCreatedAtDesc(Member member, DonationStatus status);
 
-    List<Donation> findDonationByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
+    List<Donation> findDonationByMemberAndStatusOrderByCreatedAtDesc(Member member, DonationStatus status, Pageable pageable);
 
     Optional<Donation> findByPaymentId(Long id);
 }

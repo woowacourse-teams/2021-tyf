@@ -1,0 +1,6 @@
+package com.example.tyfserver.donation.domain;
+
+public enum DonationStatus {
+
+    VALID, CANCELLED;
+}

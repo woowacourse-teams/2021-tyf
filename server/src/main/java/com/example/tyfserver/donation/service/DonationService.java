@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
@@ -51,7 +52,7 @@ public class DonationService {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(findMember, pageable);
+        List<Donation> donations = donationRepository.findDonationByMemberAndStatusOrderByCreatedAtDesc(findMember, DonationStatus.VALID, pageable);
 
         return privateDonationResponses(donations);
     }
@@ -60,7 +61,7 @@ public class DonationService {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(findMember);
+        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusOrderByCreatedAtDesc(findMember, DonationStatus.VALID);
 
         return publicDonationResponses(donations);
     }

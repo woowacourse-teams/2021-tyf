@@ -27,7 +27,7 @@ public class AuthenticationService {
         return new LoginMember(idAndEmail.getId(), idAndEmail.getEmail());
     }
 
-    public VerifiedRefundRequest createRefundInfoRequestByToken(String token) { // todo: 'RefundInfoRequest' 네이밍 고민해보기!
+    public VerifiedRefundRequest createRefundInfoRequestByToken(String token) {
         String merchantUid = jwtTokenProvider.findMerchantUidFromToken(token);
         return new VerifiedRefundRequest(merchantUid);
     }

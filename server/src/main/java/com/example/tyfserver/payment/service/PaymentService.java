@@ -133,16 +133,18 @@ public class PaymentService {
 
     public void refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
         Payment payment = findPayment(verifiedRefundRequest.getMerchantUid());
-
-        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
-
-        payment.refund(paymentCancelInfo);
-
         Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
-        member.cancelDonation(donation);
+
+        member.validatePointIsEnough(donation.getAmount());
+        donation.validateIsValid();
+
+        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
+        payment.refund(paymentCancelInfo);
+        donation.cancel();
+        member.reducePoint(donation.getAmount());
     }
 
     private Payment findPayment(String merchantUid) {

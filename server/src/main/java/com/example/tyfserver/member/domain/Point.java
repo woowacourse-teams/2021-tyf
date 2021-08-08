@@ -23,6 +23,9 @@ public class Point {
     }
 
     public void reduce(final long amount) {
+        if (amount > point) {
+            throw new RuntimeException();
+        }
         this.point -= amount;
     }
 }

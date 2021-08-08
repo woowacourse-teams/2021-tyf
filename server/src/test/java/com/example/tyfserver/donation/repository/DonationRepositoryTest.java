@@ -2,6 +2,7 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
@@ -103,7 +104,7 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
     public void findTop5ByMember() {
-        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(member);
+        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusOrderByCreatedAtDesc(member, DonationStatus.VALID);
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation6, donation5, donation4, donation3
         );
@@ -112,8 +113,8 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
     public void findDonationByMemberOrderByCreatedAtDesc() {
-        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(
-                member, PageRequest.of(1, 3));
+        List<Donation> donations = donationRepository.findDonationByMemberAndStatusOrderByCreatedAtDesc(
+                member, DonationStatus.VALID, PageRequest.of(1, 3));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation4, donation3, donation2
         );

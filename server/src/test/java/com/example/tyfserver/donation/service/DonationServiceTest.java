@@ -2,6 +2,7 @@ package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
@@ -124,14 +125,14 @@ class DonationServiceTest {
     @DisplayName("findMyDonation Test")
     public void findMyDonationTest() {
         //given
-        PageRequest reqeust = PageRequest.of(0, 1);
+        PageRequest request = PageRequest.of(0, 1);
         //when
         when(memberRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
-        when(donationRepository.findDonationByMemberOrderByCreatedAtDesc(Mockito.any(Member.class), Mockito.any(Pageable.class)))
+        when(donationRepository.findDonationByMemberAndStatusOrderByCreatedAtDesc(Mockito.any(Member.class), Mockito.any(DonationStatus.class),Mockito.any(Pageable.class)))
                 .thenReturn(Collections.singletonList(new Donation(1L, new Payment(1000L, "test@test.com", "test"), Message.defaultMessage())));
         //then
-        List<DonationResponse> response = donationService.findMyDonations(1L, reqeust);
+        List<DonationResponse> response = donationService.findMyDonations(1L, request);
         assertThat(response.get(0).getName()).isEqualTo(Message.DEFAULT_NAME);
         assertThat(response.get(0).getMessage()).isEqualTo(Message.DEFAULT_MESSAGE);
     }
@@ -140,12 +141,12 @@ class DonationServiceTest {
     @DisplayName("findMyDonation member not found Test")
     public void findMyDonationMemberNotFoundTest() {
         //given
-        PageRequest reqeust = PageRequest.of(0, 1);
+        PageRequest request = PageRequest.of(0, 1);
         //when
         when(memberRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.empty());
         //then
-        assertThatThrownBy(() -> donationService.findMyDonations(1L, reqeust))
+        assertThatThrownBy(() -> donationService.findMyDonations(1L, request))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -156,7 +157,7 @@ class DonationServiceTest {
         //when
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(Optional.of(new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE)));
-        when(donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(Mockito.any(Member.class)))
+        when(donationRepository.findFirst5ByMemberAndStatusOrderByCreatedAtDesc(Mockito.any(Member.class),Mockito.any(DonationStatus.class)))
                 .thenReturn(
                         Collections.singletonList(new Donation(1L, new Payment(1000L, "test@test.com", "test"), new Message("name", "message", true))));
         //then
