@@ -106,4 +106,9 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/me/detailedPoint")
+    public ResponseEntity<DetailedPointResponse> detailedPoint(LoginMember loginMember) {
+        DetailedPointResponse response = memberService.detailedPoint(loginMember.getId());
+        return ResponseEntity.ok(response);
+    }
 }
