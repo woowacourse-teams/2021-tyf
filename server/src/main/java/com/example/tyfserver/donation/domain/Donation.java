@@ -14,6 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Donation extends BaseTimeEntity {
 
+    public final static long exchangeableDayLimit = 7;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +30,9 @@ public class Donation extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @Enumerated(value = EnumType.STRING)
+    private DonationStatus status = DonationStatus.VALIDATE;
 
     public Donation(Long id, Payment payment, Message message) {
         this.id = id;
@@ -66,5 +71,9 @@ public class Donation extends BaseTimeEntity {
 
     public Long getAmount() {
         return payment.getAmount();
+    }
+
+    public void updateStatus(DonationStatus updatedStatus) {
+        this.status = updatedStatus;
     }
 }
