@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 public class PaymentAcceptanceTest extends AcceptanceTest {
 
     @MockBean
-    private VerificationCodeRepository verificationCodeRepository; // todo 레디스 모킹 지우고, 스태틱모킹으로 하기
+    private VerificationCodeRepository verificationCodeRepository;
 
     public static ExtractableResponse<Response> 페이먼트_생성(Long amount, String email, String pageName) {
         return post("/payments", new PaymentPendingRequest(amount, email, pageName)).extract();
@@ -297,7 +297,6 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         //todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외!
         // 현재 AcceptanceTest에서 @BeforeEach로 mocking을 통해 아임포트에서 조회한 정보를 가져오고있음. (부분 모킹을 하려면 해당 부분에서 진행해야한다)
         // 이 상황을 테스트할 수 있는 방법이 없을까?
-
     }
 
     private ExtractableResponse<Response> 환불_인증코드_생성(String merchantUid, String verificationCode) {
