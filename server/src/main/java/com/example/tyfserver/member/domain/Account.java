@@ -32,6 +32,7 @@ public class Account extends BaseTimeEntity {
         this.name = name;
         this.accountNumber = accountNumber;
         this.bankbookUrl = bankbookUrl;
+        this.bank = bank;
     }
 
     public void register(Account account) {
@@ -41,6 +42,14 @@ public class Account extends BaseTimeEntity {
         this.bank = account.bank;
         this.bankbookUrl = bankbookUrl;
         this.status = AccountStatus.REQUESTING;
+    }
+
+    public void approve() {
+        this.status = AccountStatus.REGISTERED;
+    }
+
+    public void cancel() {
+        this.status = AccountStatus.CANCELLED;
     }
 
     private void validateRegisterAccount() {
