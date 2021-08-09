@@ -13,11 +13,10 @@ import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.payment.domain.PaymentInfo;
+import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.*;
-import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
-import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
-import com.example.tyfserver.payment.exception.RefundVerificationException;
-import com.example.tyfserver.payment.exception.RefundVerificationReadyException;
+import com.example.tyfserver.payment.exception.*;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +28,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
@@ -54,10 +54,6 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
     public static ExtractableResponse<Response> 환불정보_조회(String token) {
         return authGet("/payments/refund/info", token).extract();
-    }
-
-    public static ExtractableResponse<Response> 환불_요청(String token, String merchantUid) {
-        return authPost("/payments/refund", token, new VerifiedRefundRequest(merchantUid)).extract();
     }
 
     @Test
@@ -267,7 +263,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         환불_인증코드_생성(merchantUid, "123456");
         String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
 
-        ExtractableResponse<Response> response = 환불_요청(token, merchantUid);
+        ExtractableResponse<Response> response = 환불_요청_성공(token, merchantUid);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
@@ -284,20 +280,72 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
         환불_인증코드_생성(merchantUid, "123456");
         String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
-        환불_요청(token, merchantUid);
+        환불_요청_성공(token, merchantUid);
 
-        ErrorResponse errorResponse = 환불_요청(token, merchantUid).as(ErrorResponse.class);
+        ErrorResponse errorResponse = 환불_요청_성공(token, merchantUid).as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(DonationAlreadyCancelledException.ERROR_CODE);
     }
 
     @DisplayName("환불을 서버의 환불정보와 결제 서버의 정보와 일치하지 않은 경우")
-    @Test
-    void refundPaymentNotMatchingRefundInfo() {
-        //todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외!
-        // 현재 AcceptanceTest에서 @BeforeEach로 mocking을 통해 아임포트에서 조회한 정보를 가져오고있음. (부분 모킹을 하려면 해당 부분에서 진행해야한다)
-        // 이 상황을 테스트할 수 있는 방법이 없을까?
+    @ParameterizedTest
+    @MethodSource
+    void refundPaymentNotMatchingRefundInfo(long amount, String pageName, PaymentStatus paymentStatus, String errorCode) {
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        String merchantUid = paymentPendingResponse.getMerchantUid().toString();
+        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+
+        후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
+        환불_인증코드_생성(merchantUid, "123456");
+        String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
+
+        ErrorResponse errorResponse = 환불_요청_실패(token, merchantUid, amount, pageName, paymentStatus).as(ErrorResponse.class);
+
+        assertThat(errorResponse.getErrorCode()).isEqualTo(errorCode);
     }
+
+    private static Stream<Arguments> refundPaymentNotMatchingRefundInfo() {
+        return Stream.of(
+                Arguments.of(1000L, "pagename", PaymentStatus.PAID, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
+                Arguments.of(1000L, "pagename", PaymentStatus.PENDING, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
+                Arguments.of(2000L, "pagename", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT),
+                Arguments.of(1000L, "pagename2", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR)
+        );
+    }
+
+    @DisplayName("환불을 서버의 환불정보와 결제 서버의 merchnatUid 정보와 일치하지 않은 경우")
+    @Test
+    void refundPaymentNotMatchingMerchantUid() {
+        String pagename = "pagename";
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pagename);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", pagename).as(PaymentPendingResponse.class);
+        String merchantUid = paymentPendingResponse.getMerchantUid().toString();
+        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+
+        후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
+        환불_인증코드_생성(merchantUid, "123456");
+        String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
+
+        ErrorResponse errorResponse = 환불_요청_실패(token, UUID.randomUUID().toString(), 1000L, pagename, PaymentStatus.CANCELLED).as(ErrorResponse.class);
+
+        assertThat(errorResponse.getErrorCode()).isEqualTo(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID);
+    }
+
+    private ExtractableResponse<Response> 환불_요청_성공(String token, String merchantUid) {
+        when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, 1000L,
+                        "pagename", "impUid", "module"));
+        return authPost("/payments/refund", token, new VerifiedRefundRequest(merchantUid)).extract();
+    }
+
+    private ExtractableResponse<Response> 환불_요청_실패(String token, String merchantUid, long amount, String pageName, PaymentStatus paymentStatus) {
+        when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
+                .thenReturn(new PaymentInfo(UUID.fromString(merchantUid), paymentStatus, amount,
+                        pageName, "impUid", "module"));
+        return authPost("/payments/refund", token, new VerifiedRefundRequest(merchantUid)).extract();
+    }
+
 
     private ExtractableResponse<Response> 환불_인증코드_생성(String merchantUid, String verificationCode) {
         when(verificationCodeRepository.save(any())).thenReturn(new VerificationCode(merchantUid, verificationCode));
