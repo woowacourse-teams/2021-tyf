@@ -3,11 +3,14 @@ package com.example.tyfserver.member.service;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +35,9 @@ import static org.mockito.Mockito.when;
 class MemberServiceTest {
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
@@ -44,7 +50,8 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+        savedMember.addInitialAccount(accountRepository.save(new Account()));
     }
 
     @Test
@@ -155,4 +162,19 @@ class MemberServiceTest {
         //then
         assertThat(member.getBio()).isEqualTo("updatedBio");
     }
+
+    @Test
+    @DisplayName("계좌정보를 등록한다.")
+    public void registerAccountInfo() {
+        //given
+        LoginMember loginMember = new LoginMember(member.getId(), member.getEmail());
+        final AccountRegisterRequest test = new AccountRegisterRequest("test", "1234-5678-1234", null);
+
+        //when
+        memberService.registerAccount(loginMember, test);
+
+        //then
+        assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.REQUESTING);
+    }
+
 }

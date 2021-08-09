@@ -16,8 +16,10 @@ import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class Oauth2Service {
 
@@ -47,7 +49,9 @@ public class Oauth2Service {
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
         Member savedMember = memberRepository.save(member);
-        savedMember.addInitialAccount(accountRepository.save(new Account()));
+        Account save = accountRepository.save(new Account());
+        savedMember.addInitialAccount(save);
+
         return new SignUpResponse(authenticationService.createToken(savedMember), savedMember.getPageName());
     }
 

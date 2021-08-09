@@ -24,7 +24,7 @@ public class Account extends BaseTimeEntity {
     private String bankbookUrl;
 
     @Enumerated(value = EnumType.STRING)
-    private AccountStatus status;
+    private AccountStatus status = AccountStatus.UNREGISTERED;
 
     public Account(String name, String accountNumber, String bankbookUrl) {
         this.name = name;

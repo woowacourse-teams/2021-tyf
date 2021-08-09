@@ -37,8 +37,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -713,6 +712,26 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("Post - /members/me/account - success")
+    void registerAccount() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        //when
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("name", "test")
+                .param("account", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isOk())
+                .andDo(document("registerAccount",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+        ;
+    }
+
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
@@ -721,7 +740,7 @@ class MemberControllerTest {
     }
 
     private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
-        MockMultipartHttpServletRequestBuilder putRequest = MockMvcRequestBuilders.multipart(url);
+        MockMultipartHttpServletRequestBuilder putRequest = multipart(url);
 
         putRequest.with(new RequestPostProcessor() {
             @Override
