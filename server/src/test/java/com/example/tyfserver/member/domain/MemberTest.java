@@ -73,6 +73,7 @@ public class MemberTest {
     public void registerAccount() {
         //given
         Member member = testMember();
+        member.addInitialAccount(new Account());
         Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png");
         member.registerAccount(account);
 
@@ -84,6 +85,7 @@ public class MemberTest {
     public void registerAccountWhenRequesting() {
         //given
         Member member = testMember();
+        member.addInitialAccount(new Account());
         Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png");
         member.registerAccount(account);
 

@@ -3,7 +3,6 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.member.exception.AccountRegisteredException;
 import com.example.tyfserver.member.exception.AccountRequestingException;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor()
 public class Account extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +24,7 @@ public class Account extends BaseTimeEntity {
     private String bankbookUrl;
 
     @Enumerated(value = EnumType.STRING)
-    private AccountStatus status = AccountStatus.UNREGISTERED;
+    private AccountStatus status;
 
     public Account(String name, String accountNumber, String bankbookUrl) {
         this.name = name;
