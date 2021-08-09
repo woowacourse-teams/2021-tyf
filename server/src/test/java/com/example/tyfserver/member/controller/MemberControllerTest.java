@@ -713,6 +713,43 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("GET - /me/detailedPoint - success")
+    public void detailedPoint() throws Exception {
+        //given
+        DetailedPointResponse response = new DetailedPointResponse(1000L, 1000L, 100L);
+
+        //when
+        when(memberService.detailedPoint(any())).thenReturn(response);
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(get("/members/me/detailedPoint")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("detailedPoint",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("GET - /me/detailedPoint - invalid token")
+    public void detailedPointInvalidTokenFailed() throws Exception {
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(get("/members/me/detailedPoint")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("detailedPointInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
@@ -732,6 +769,5 @@ class MemberControllerTest {
         });
 
         return putRequest;
-
     }
 }
