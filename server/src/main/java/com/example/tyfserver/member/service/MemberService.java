@@ -101,6 +101,6 @@ public class MemberService {
         Long possessPoint = donationRepository.possessedPoint(id);
         Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.exchangeableDayLimit);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
-        return new DetailedPointResponse(1L, exchangeablePoint, exchangedTotalPoint);
+        return new DetailedPointResponse(possessPoint, exchangeablePoint, exchangedTotalPoint);
     }
 }
