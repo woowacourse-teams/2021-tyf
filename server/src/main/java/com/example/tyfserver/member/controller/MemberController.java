@@ -108,7 +108,7 @@ public class MemberController {
 
     @PostMapping("/me/account")
     public ResponseEntity<Void> registerAccount(LoginMember loginMember,
-                                                @Valid @RequestBody AccountRegisterRequest accountRegisterRequest,
+                                                @Valid @ModelAttribute AccountRegisterRequest accountRegisterRequest,
                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException();
