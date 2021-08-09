@@ -17,7 +17,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long>, Donat
     List<Donation> findPublicDonations(
             @Param("member") Member member, @Param("secret") boolean secret, Pageable pageable);
 
-    List<Donation> findFirst5ByMemberOrderByCreatedAtDesc(Member member);
+    List<Donation> findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(Member member, DonationStatus status);
 
     List<Donation> findDonationByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
 
