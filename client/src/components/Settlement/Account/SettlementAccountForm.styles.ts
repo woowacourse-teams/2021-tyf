@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { DEVICE } from '../../../constants/device';
+import { Z_INDEX } from '../../../constants/style';
 import Modal from '../../@atom/Modal/Modal';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
+import StyledOutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const StyledModal = styled(Modal)`
   //TODO: 실제 적용해보고 수정 필요. 전체화면이면 닫기 버튼도 있어야될듯?
@@ -44,9 +46,6 @@ export const InputContainer = styled.div`
 
 export const UploadLabel = styled.label`
   height: auto;
-  input[type='file'] {
-    display: none;
-  }
 `;
 
 export const FileName = styled.span`
@@ -54,4 +53,8 @@ export const FileName = styled.span`
   width: 100%;
   text-align: center;
   margin-bottom: 0.75rem;
+`;
+
+export const UploadLabelButton = styled(StyledOutlineButton)`
+  pointer-events: none;
 `;

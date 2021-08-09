@@ -25,6 +25,7 @@ import { CreatorId, OAuthProvider } from './types';
 import RefundCertificationPage from './pages/Refund/Certification/RefundCertificationPage';
 import RefundApplyPage from './pages/Refund/Apply/RefundApplyPage';
 import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
+import SettlementAccountForm from './components/Settlement/Account/SettlementAccountForm';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
