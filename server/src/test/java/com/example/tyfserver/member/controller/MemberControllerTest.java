@@ -742,7 +742,7 @@ class MemberControllerTest {
         //then
         mockMvc.perform(get("/members/me/account"))
                 .andExpect(status().isBadRequest())
-                .andDo(document("accountInfo",
+                .andDo(document("accountInfoHeaderNotFoundFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
@@ -757,7 +757,7 @@ class MemberControllerTest {
         //then
         mockMvc.perform(get("/members/me/account"))
                 .andExpect(status().isBadRequest())
-                .andDo(document("accountInfo",
+                .andDo(document("accountInfoInvalidTokenFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
