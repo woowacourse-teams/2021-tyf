@@ -2,11 +2,12 @@ package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.DuplicatedNicknameException;
-import com.example.tyfserver.member.exception.DuplicatedPageNameException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final AccountRepository accountRepository;
     private final S3Connector s3Connector;
 
     public void validatePageName(PageNameRequest request) {
@@ -90,5 +92,13 @@ public class MemberService {
 
         s3Connector.delete(member.getProfileImage());
         member.deleteProfile();
+    }
+
+    public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
+        Member member = findMember(loginMember.getId());
+
+        String uploadedFile = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
+        member.registerAccount(new Account(accountRegisterRequest.getName(),
+                accountRegisterRequest.getAccount(), uploadedFile));
     }
 }

@@ -106,4 +106,15 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/me/account")
+    public ResponseEntity<Void> registerAccount(LoginMember loginMember,
+                                                @Valid @RequestBody AccountRegisterRequest accountRegisterRequest,
+                                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new RuntimeException();
+        }
+
+        memberService.registerAccount(loginMember, accountRegisterRequest);
+        return ResponseEntity.ok().build();
+    }
 }

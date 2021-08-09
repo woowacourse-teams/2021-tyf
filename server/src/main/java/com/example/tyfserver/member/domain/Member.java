@@ -46,7 +46,7 @@ public class Member extends BaseTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    private Account account;
+    private Account account = new Account();
 
     @OneToMany(mappedBy = "member")
     private final List<Banner> banners = new ArrayList<>();
@@ -99,5 +99,13 @@ public class Member extends BaseTimeEntity {
 
     public void deleteProfile() {
         this.profileImage = null;
+    }
+
+    public void registerAccount(Account account) {
+        this.account.register(account);
+    }
+
+    public AccountStatus getAccountStatus() {
+        return this.account.getStatus();
     }
 }
