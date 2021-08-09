@@ -75,7 +75,7 @@ class PaymentServiceTest {
     @InjectMocks
     private PaymentService paymentService;
 
-    @DisplayName("결제정보를 생성한다.")
+    @DisplayName("결제정보를 생성한다")
     @Test
     void createPayment() {
         //given
@@ -99,7 +99,7 @@ class PaymentServiceTest {
     }
 
 
-    @DisplayName("결제정보 승인이 완료된다.")
+    @DisplayName("결제정보 승인이 완료된다")
     @Test
     void completePayment() {
         //given
@@ -119,7 +119,7 @@ class PaymentServiceTest {
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.PAID);
     }
 
-    @DisplayName("결제상태가 지불(PAID)이 아닌 결제정보가 전달되면 승인이 실패 한다.")
+    @DisplayName("결제상태가 지불(PAID)이 아닌 결제정보가 전달되면 승인이 실패 한다")
     @Test
     void failCompletePaymentNotPaid() {
         //given
@@ -140,7 +140,7 @@ class PaymentServiceTest {
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_NOT_PAID);
     }
 
-    @DisplayName("저장된 결제 ID와 외부 전달받은 결제 정보 ID가 다를 경우 결제승인 실패한다.")
+    @DisplayName("저장된 결제 ID와 외부 전달받은 결제 정보 ID가 다를 경우 결제승인 실패한다")
     @Test
     void failCompletePaymentInvalidMerchantId() {
         //given
@@ -163,7 +163,7 @@ class PaymentServiceTest {
     }
 
 
-    @DisplayName("저장된 결제 금액과 외부 결제모듈의 결제 금액 정보가 다를 경우 결제승인 실패한다.")
+    @DisplayName("저장된 결제 금액과 외부 결제모듈의 결제 금액 정보가 다를 경우 결제승인 실패한다")
     @Test
     void failCompletePaymentInvalidAmount() {
         //given
@@ -184,7 +184,7 @@ class PaymentServiceTest {
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT);
     }
 
-    @DisplayName("저장된 결제 PageName 정보와 전달받 PageName 정보가 다를 경우 결제승인 실패한다.")
+    @DisplayName("저장된 결제 PageName 정보와 전달받 PageName 정보가 다를 경우 결제승인 실패한다")
     @Test
     void failCompletePaymentInvalidPageName() {
         //given
@@ -260,6 +260,7 @@ class PaymentServiceTest {
         assertThat(response.getRefundAccessToken()).isEqualTo(refundAccessToken);
     }
 
+    @DisplayName("환불 엑세스 토큰이 유효하면 환불 대상 정보를 조회한다")
     @Test
     void refundInfo() {
         // given
@@ -290,6 +291,7 @@ class PaymentServiceTest {
                 .isEqualTo(expectedResponse);
     }
 
+    @DisplayName("환불요청이 완료된다")
     @Test
     void refundPayment() {
         // given
