@@ -106,6 +106,12 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+
+    @GetMapping("/me/account")
+    public ResponseEntity<AccountInfoResponse> accountInfo(LoginMember loginMember) {
+        return ResponseEntity.ok(memberService.accountInfo(loginMember));
+    }
+
     @PostMapping("/me/account")
     public ResponseEntity<Void> registerAccount(LoginMember loginMember,
                                                 @Valid @ModelAttribute AccountRegisterRequest accountRegisterRequest,

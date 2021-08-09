@@ -101,4 +101,9 @@ public class MemberService {
         member.registerAccount(new Account(accountRegisterRequest.getName(),
                 accountRegisterRequest.getAccount(), uploadedFile, accountRegisterRequest.getBank()));
     }
+
+    public AccountInfoResponse accountInfo(LoginMember loginMember) {
+        Member member = findMember(loginMember.getId());
+        return AccountInfoResponse.of(member.getAccount());
+    }
 }
