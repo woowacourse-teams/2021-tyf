@@ -3,11 +3,16 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.member.exception.AccountRegisteredException;
+import com.example.tyfserver.member.exception.AccountRequestingException;
 import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.ERROR_CODE_NOT_PAID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class MemberTest {
 
@@ -61,5 +66,28 @@ public class MemberTest {
 
         //then
         assertThat(member.getNickname()).isEqualTo(nickName);
+    }
+
+    @Test
+    @DisplayName("계좌정보를 등록한다.")
+    public void registerAccount() {
+        //given
+        Member member = testMember();
+        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png");
+        member.registerAccount(account);
+
+        assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.REQUESTING);
+    }
+
+    @Test
+    @DisplayName("계좌정보가 등록요청 상태이면 새로 계좌를 등록하지 못한다.")
+    public void registerAccountWhenRequesting() {
+        //given
+        Member member = testMember();
+        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png");
+        member.registerAccount(account);
+
+        assertThatThrownBy(() -> member.registerAccount(account))
+                .isExactlyInstanceOf(AccountRequestingException.class);
     }
 }
