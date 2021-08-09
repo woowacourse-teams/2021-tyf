@@ -308,6 +308,21 @@ include::{snippets}/createPaymentMemberNotFoundFailed/http-response.adoc[]
 include::{snippets}/createPaymentRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createPaymentRequestFailed/http-response.adoc[]
+=== 환불 인증메일 발송 요청 - 성공
+==== Request
+include::{snippets}/refundVerificationReady/http-request.adoc[]
+==== Response
+include::{snippets}/refundVerificationReady/http-response.adoc[]
+=== 환불 인증번호 인증 요청 - 성공
+==== Request
+include::{snippets}/refundVerification/http-request.adoc[]
+==== Response
+include::{snippets}/refundVerification/http-response.adoc[]
+=== 환불 결제정보 조회 요청 - 성공
+==== Request
+include::{snippets}/refundInfo/http-request.adoc[]
+==== Response
+include::{snippets}/refundInfo/http-response.adoc[]
 === 환불 요청 - 성공
 ==== Request
 include::{snippets}/refundPayment/http-request.adoc[]

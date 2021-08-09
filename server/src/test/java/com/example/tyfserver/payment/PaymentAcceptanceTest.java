@@ -81,7 +81,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("페이먼트를 생성하는데 존재하지 않는 창작자인 경우")
     public void paymentCreatorNotFound() {
-        ErrorResponse errorResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(ErrorResponse.class);
+        ErrorResponse errorResponse = 페이먼트_생성(1000L, "donator@gmail.com", "not exists pagename").as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(MemberNotFoundException.ERROR_CODE);
     }
