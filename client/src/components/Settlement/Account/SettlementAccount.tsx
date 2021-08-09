@@ -42,10 +42,11 @@ const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
     }
   };
 
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    registerBankAccount(form);
+    await registerBankAccount(form);
+    onClose();
   };
 
   return (
