@@ -34,7 +34,7 @@ public class VerificationCode {
     }
 
     public VerificationCode(String merchantUid, String code) {
-        this(merchantUid, code, null);
+        this(merchantUid, code, DEFAULT_TTL);
     }
 
     public static VerificationCode newCode(String merchantUid) {

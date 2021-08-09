@@ -21,7 +21,12 @@ public class CodeResendCoolTime {
     @TimeToLive
     private Integer timeout = DEFAULT_TTL;
 
-    public CodeResendCoolTime(String merchantUid) {
+    public CodeResendCoolTime(String merchantUid, Integer timeout) {
         this.merchantUid = merchantUid;
+        this.timeout = timeout;
+    }
+
+    public CodeResendCoolTime(String merchantUid) {
+        this(merchantUid, DEFAULT_TTL);
     }
 }
