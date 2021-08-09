@@ -7,6 +7,7 @@ import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.exception.S3FileNotFoundException;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
@@ -707,6 +708,26 @@ class MemberControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
                 .andDo(document("updateNickNameInvalidNickNameValueRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("Get - /members/me/account - success")
+    void getAccountInfo() throws Exception {
+        //givn
+        AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(new Account("","","",""));
+
+        //when
+        when(memberService.accountInfo(Mockito.any())).thenReturn(accountInfoResponse);
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(post("/members/me/account"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("미등록"))
+                .andDo(document("accountInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

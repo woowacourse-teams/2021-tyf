@@ -4,6 +4,7 @@ import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
@@ -55,19 +56,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         return get("/members/curations").extract();
     }
 
-    public static ExtractableResponse<Response> 계좌등록요청(MultiPartSpecification multiPartSpecification, String name, String account, String token) {
-        return RestAssured
-                .given().log().all()
-                .auth().oauth2(token)
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .param("name", name)
-                .param("account", account)
-                .multiPart(multiPartSpecification)
-                .post("/members/me/account")
-                .then().extract()
-                ;
-    }
-
     public static ExtractableResponse<Response> 프로필_수정(MultiPartSpecification multiPartSpecification, String token) {
         return RestAssured
                 .given().log().all()
@@ -90,6 +78,24 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public static ExtractableResponse<Response> 닉네임_수정(String token, String nickname) {
         return authPut("/members/me/nickname", token, new NicknameRequest(nickname)).extract();
     }
+
+    public static ExtractableResponse<Response> 계좌_조회(String token) {
+        return authGet("/members/me/account", token).extract();
+    }
+
+    public static ExtractableResponse<Response> 계좌_등록(MultiPartSpecification multiPartSpecification, String name, String account, String token) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(token)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .param("name", name)
+                .param("account", account)
+                .multiPart(multiPartSpecification)
+                .post("/members/me/account")
+                .then().extract()
+                ;
+    }
+
 
     @Test
     @DisplayName("유효한 페이지네임 검사의 경우")
@@ -276,6 +282,16 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(curations.get(2).getPageName()).isEqualTo("pagename2");
     }
 
+    @Test
+    @DisplayName("계좌 정보 조회 요청")
+    public void getAccountInfo() {
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
+        ExtractableResponse<Response> response = 계좌_조회(signUpResponse.getToken());
+        AccountInfoResponse accountInfoResponse = response.as(AccountInfoResponse.class);
+
+        assertThat(accountInfoResponse).usingRecursiveComparison()
+                .isEqualTo(AccountInfoResponse.of(new Account()));
+    }
 
     @Test
     @DisplayName("계좌 등록 요청")
@@ -288,7 +304,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .fileName("bankbook.jpg")
                 .build();
 
-        ExtractableResponse<Response> response = 계좌등록요청(multiPartSpecification, "실명",
+        ExtractableResponse<Response> response = 계좌_등록(multiPartSpecification, "실명",
                 "1234-5678-1234", signUpResponse.getToken());
 
         assertThat(response.statusCode()).isEqualTo(200);
