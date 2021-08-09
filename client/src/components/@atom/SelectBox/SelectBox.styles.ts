@@ -37,9 +37,7 @@ export const SelectBoxHeader = styled.div`
   height: 100%;
 `;
 
-export const OptionModal = styled(Modal)`
-  min-width: 0;
-`;
+export const OptionModal = styled(Modal)``;
 
 export const ModalTransition = styled(Transition)`
   width: 100vw;
@@ -51,15 +49,20 @@ export const ModalTransition = styled(Transition)`
 export const DropDownList = styled.ul`
   position: fixed;
   width: 100vw;
+  left: 0;
   bottom: 0;
   border-radius: 0.625rem 0.625rem 0 0;
-  height: 9rem;
+  height: 12rem;
   overflow-y: auto;
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
+  backface-visibility: hidden;
 
   @media ${DEVICE.DESKTOP_LARGE} {
     position: absolute;
     top: 100%;
     width: 100%;
+    box-shadow: 0;
+    height: 9rem;
   }
 `;
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SIZE } from '../../../constants/device';
+import useScrollLock from '../../../utils/useScrollLock';
 import { useWindowResize } from '../../../utils/useWindowResize';
 
 import {
@@ -21,6 +22,8 @@ const SelectBox = ({ selectHeader, selectOptions, selected, setSelected }: Selec
   const { windowWidth } = useWindowResize();
   const [isOpen, setIsOpen] = useState(false);
 
+  useScrollLock();
+
   const toggleOptions = () => {
     setIsOpen(!isOpen);
   };
@@ -35,31 +38,33 @@ const SelectBox = ({ selectHeader, selectOptions, selected, setSelected }: Selec
   const isDesktop = windowWidth > SIZE.DESKTOP_LARGE;
 
   return (
-    <StyledSelectBox onClick={toggleOptions}>
-      {selected ?? selectHeader}
-      {isOpen &&
-        (isDesktop ? (
-          <DropDownList>
-            {selectOptions.map((option, index) => (
-              <ListItem onClick={() => onOptionClicked(option)} key={index}>
-                {option}
-              </ListItem>
-            ))}
-          </DropDownList>
-        ) : (
-          <OptionModal onClose={onClose}>
-            <ModalTransition>
-              <DropDownList>
-                {selectOptions.map((option, index) => (
-                  <ListItem onClick={() => onOptionClicked(option)} key={index}>
-                    {option}
-                  </ListItem>
-                ))}
-              </DropDownList>
-            </ModalTransition>
-          </OptionModal>
-        ))}
-    </StyledSelectBox>
+    <>
+      <StyledSelectBox onClick={toggleOptions}>
+        {selected ?? selectHeader}
+        {isOpen &&
+          (isDesktop ? (
+            <DropDownList>
+              {selectOptions.map((option, index) => (
+                <ListItem onClick={() => onOptionClicked(option)} key={index}>
+                  {option}
+                </ListItem>
+              ))}
+            </DropDownList>
+          ) : (
+            <OptionModal onClose={onClose}>
+              <ModalTransition>
+                <DropDownList>
+                  {selectOptions.map((option, index) => (
+                    <ListItem onClick={() => onOptionClicked(option)} key={index}>
+                      {option}
+                    </ListItem>
+                  ))}
+                </DropDownList>
+              </ModalTransition>
+            </OptionModal>
+          ))}
+      </StyledSelectBox>
+    </>
   );
 };
 

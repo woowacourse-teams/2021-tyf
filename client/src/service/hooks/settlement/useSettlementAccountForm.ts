@@ -24,6 +24,9 @@ const useSettlementAccountForm = () => {
   };
 
   const setAccountNumber = (accountNumber: string) => {
+    const lastIndex = accountNumber.slice(-1)[0];
+    if (lastIndex !== '-' && isNaN(Number(lastIndex))) return;
+
     setForm({ ...form, accountNumber });
   };
 

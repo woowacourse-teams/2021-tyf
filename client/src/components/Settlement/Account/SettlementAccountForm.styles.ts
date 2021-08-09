@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { DEVICE } from '../../../constants/device';
-import { Z_INDEX } from '../../../constants/style';
+
 import Modal from '../../@atom/Modal/Modal';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
@@ -16,7 +16,7 @@ export const StyledModal = styled(Modal)`
   padding: 0;
   overflow-y: auto;
 
-  @media ${DEVICE.DESKTOP} {
+  @media ${DEVICE.DESKTOP_LARGE} {
     width: 37rem;
     max-height: 39rem;
     border-radius: 0.625rem;
