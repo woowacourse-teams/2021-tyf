@@ -12,6 +12,16 @@ spring:
     hibernate:
       ddl-auto: create
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   profiles:
     include: oauth2, aws
 

@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
@@ -29,19 +30,21 @@ public class Donation extends BaseTimeEntity {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
+    @Enumerated(value = EnumType.STRING)
+    private DonationStatus status = DonationStatus.REFUNDABLE;
+
     public Donation(Long id, Payment payment, Message message) {
         this.id = id;
         this.payment = payment;
         this.message = message;
     }
 
-    public Donation(Payment payment) {
-        this(payment, Message.defaultMessage());
+    public Donation(Payment payment, Message message) {
+        this(null, payment, message);
     }
 
-    public Donation(Payment payment, Message message) {
-        this.payment = payment;
-        this.message = message;
+    public Donation(Payment payment) {
+        this(payment, Message.defaultMessage());
     }
 
     public void to(final Member member) {
@@ -66,5 +69,15 @@ public class Donation extends BaseTimeEntity {
 
     public Long getAmount() {
         return payment.getAmount();
+    }
+
+    public void cancel() {
+        status = DonationStatus.CANCELLED;
+    }
+
+    public void validateIsNotCancelled() {
+        if (status == DonationStatus.CANCELLED) {
+            throw new DonationAlreadyCancelledException();
+        }
     }
 }

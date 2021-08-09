@@ -2,6 +2,7 @@ package com.example.tyfserver.auth.service;
 
 import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
 import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,18 @@ public class AuthenticationService {
         return jwtTokenProvider.createToken(member.getId(), member.getEmail());
     }
 
+    public String createRefundToken(String merchantUid) {
+        return jwtTokenProvider.createRefundToken(merchantUid);
+    }
+
     public LoginMember createLoginMemberByToken(String token) {
         IdAndEmail idAndEmail = jwtTokenProvider.findIdAndEmailFromToken(token);
         return new LoginMember(idAndEmail.getId(), idAndEmail.getEmail());
+    }
+
+    public VerifiedRefundRequest createVerifiedRefundRequestByToken(String token) {
+        String merchantUid = jwtTokenProvider.findMerchantUidFromToken(token);
+        return new VerifiedRefundRequest(merchantUid);
     }
 
     public void validateToken(String token) {

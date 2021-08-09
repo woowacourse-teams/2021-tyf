@@ -126,7 +126,7 @@ class PaymentTest {
         Payment payment = testPayment();
 
         //when
-        payment.cancel(paymentInfo);
+        payment.refund(paymentInfo);
 
         //then
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.CANCELLED);
@@ -142,7 +142,7 @@ class PaymentTest {
 
         //when
         //then
-        assertThatThrownBy(() -> payment.cancel(paymentInfo))
+        assertThatThrownBy(() -> payment.refund(paymentInfo))
                 .isExactlyInstanceOf(IllegalPaymentInfoException.class);
 
         assertThat(payment.getStatus()).isEqualTo(status);
