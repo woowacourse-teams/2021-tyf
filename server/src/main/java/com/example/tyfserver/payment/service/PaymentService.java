@@ -71,11 +71,10 @@ public class PaymentService {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
         //todo: 해당 Payment가 환불가능(결제된지 7일 이전)인지 확인해야함.
 
+        Payment payment = findPayment(merchantUid);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
-
         VerificationCode verificationCode = verificationCodeRepository
                 .save(VerificationCode.newCode(merchantUid));
-        Payment payment = findPayment(verificationCode.getMerchantUid());
 
         smtpMailConnector.sendVerificationCode(payment.getEmail().getEmail(), verificationCode.getCode());
 
