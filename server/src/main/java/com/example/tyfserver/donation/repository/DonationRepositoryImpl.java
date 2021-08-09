@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.example.tyfserver.donation.domain.QDonation.donation;
 import static com.example.tyfserver.payment.domain.QPayment.payment;
@@ -35,11 +34,11 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     }
 
     public Long exchangeablePoint(Long memberId, LocalDateTime now, long exchangeableDayLimit) {
-        Long result =  queryFactory
+        Long result = queryFactory
                 .select(payment.amount.sum())
                 .from(donation)
                 .join(donation.payment, payment)
-                .where(validateStatus(memberId), donation.createdAt.after(now.minusDays(exchangeableDayLimit)))
+                .where(validateStatus(memberId), donation.createdAt.before(now.minusDays(exchangeableDayLimit)))
                 .groupBy(donation.member)
                 .fetchOne();
 

@@ -147,19 +147,19 @@ class DonationRepositoryTest {
         donation3.updateStatus(DonationStatus.CANCELLED);
         donation4.updateStatus(DonationStatus.CANCELLED);
 
-        Long member1NotRefundable =
-            donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now().plusDays(2), 1);
-        Long member2NotRefundable =
-                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now().plusDays(2), 1);
-        Long member1Refundable =
-                donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now().plusDays(2), 3);
-        Long member2Refundable =
-                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now().plusDays(2), 3);
+        Long member1NotExchangeable =
+            donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now(), 1);
+        Long member2NotExchangeable =
+                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now(), 1);
+        Long member1Exchangeable =
+                donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now().plusDays(8), 7);
+        Long member2Exchangeable =
+                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now().plusDays(8), 7);
 
-        assertThat(member1NotRefundable).isEqualTo(0L);
-        assertThat(member2NotRefundable).isEqualTo(0L);
-        assertThat(member1Refundable).isEqualTo(18000L);
-        assertThat(member2Refundable).isEqualTo(0L);
+        assertThat(member1NotExchangeable).isEqualTo(0L);
+        assertThat(member2NotExchangeable).isEqualTo(0L);
+        assertThat(member1Exchangeable).isEqualTo(18000L);
+        assertThat(member2Exchangeable).isEqualTo(0L);
     }
     
     @Test
