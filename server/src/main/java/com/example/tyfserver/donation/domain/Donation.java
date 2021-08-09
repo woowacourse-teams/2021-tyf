@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
@@ -74,9 +75,9 @@ public class Donation extends BaseTimeEntity {
         status = DonationStatus.CANCELLED;
     }
 
-    public void validateIsValid() {
+    public void validateIsNotCancelled() {
         if (status == DonationStatus.CANCELLED) {
-            throw new RuntimeException();
+            throw new DonationAlreadyCancelledException();
         }
     }
 }

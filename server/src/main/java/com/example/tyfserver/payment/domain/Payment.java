@@ -1,7 +1,10 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
+import com.example.tyfserver.payment.exception.PaymentAlreadyCancelledException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -102,6 +105,7 @@ public class Payment extends BaseTimeEntity {
     private void validatePaymentCancel(PaymentInfo paymentInfo) {
         if (!PaymentStatus.isCancelled(paymentInfo.getStatus())) {
             updateStatus(paymentInfo.getStatus());
+            // todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외! 모킹
             throw IllegalPaymentInfoException.from(ERROR_CODE_NOT_CANCELLED, paymentInfo.getModule());
         }
 
@@ -141,5 +145,11 @@ public class Payment extends BaseTimeEntity {
 
     public int getRemainTryCount() {
         return refundFailure.getRemainTryCount();
+    }
+
+    public void validateIsNotCancelled() {
+        if (status == PaymentStatus.CANCELLED) {
+            throw new PaymentAlreadyCancelledException();
+        }
     }
 }

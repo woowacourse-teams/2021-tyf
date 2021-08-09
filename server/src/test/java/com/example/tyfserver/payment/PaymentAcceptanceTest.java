@@ -11,6 +11,7 @@ import com.example.tyfserver.auth.exception.VerificationFailedException;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
+import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
@@ -287,8 +288,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         ErrorResponse errorResponse = 환불_요청(token, merchantUid).as(ErrorResponse.class);
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo("error-000");
-        assertThat(errorResponse.getMessage()).isEqualTo("예상하지 못한 에러가 발생했습니다."); //todo: 예외 2: 이미 취소된 donation이라면 예외! (커스텀 예외 만들어줘야 할 듯)
+        assertThat(errorResponse.getErrorCode()).isEqualTo(DonationAlreadyCancelledException.ERROR_CODE);
     }
 
     @DisplayName("환불을 서버의 환불정보와 결제 서버의 정보와 일치하지 않은 경우")

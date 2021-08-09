@@ -142,10 +142,12 @@ public class PaymentService {
         Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        donation.validateIsValid();
+        donation.validateIsNotCancelled();
+        payment.validateIsNotCancelled();
 
         PaymentInfo refundInfo = paymentServiceConnector.requestPaymentRefund(payment.getMerchantUid());
-        payment.refund(refundInfo);  // todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외! 모킹
+
+        payment.refund(refundInfo);
         donation.cancel();
         member.reducePoint(donation.getAmount());
     }
