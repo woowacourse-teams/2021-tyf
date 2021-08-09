@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export interface SettlementAccount {
+export interface SettlementAccountForm {
   name: string;
   bank: string | null;
   accountNumber: string;
@@ -8,7 +8,7 @@ export interface SettlementAccount {
 }
 
 const useSettlementAccountForm = () => {
-  const [form, setForm] = useState<SettlementAccount>({
+  const [form, setForm] = useState<SettlementAccountForm>({
     name: '',
     bank: null,
     accountNumber: '',

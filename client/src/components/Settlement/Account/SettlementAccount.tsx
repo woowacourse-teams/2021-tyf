@@ -1,7 +1,8 @@
 import { ChangeEvent } from 'react';
+import { BANK_LIST } from '../../../constants/bank';
 
 import useSettlementAccountForm, {
-  SettlementAccount,
+  SettlementAccountForm,
 } from '../../../service/hooks/settlement/useSettlementAccountForm';
 import { requestRegisterBankAccount } from '../../../service/request/settlement';
 import Button from '../../@atom/Button/Button.styles';
@@ -16,9 +17,13 @@ import {
   UploadLabel,
   FileName,
   UploadLabelButton,
-} from './SettlementAccountForm.styles';
+} from './SettlementAccount.styles';
 
-const SettlementAccountForm = () => {
+export interface SettlementAccountProps {
+  onClose: () => void;
+}
+
+const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
   const { form, setName, setBank, setAccountNumber, setBankAccountImage, isValid } =
     useSettlementAccountForm();
 
@@ -27,7 +32,7 @@ const SettlementAccountForm = () => {
     setBankAccountImage(target.files[0]);
   };
 
-  const registerBankAccount = async (form: SettlementAccount) => {
+  const registerBankAccount = async (form: SettlementAccountForm) => {
     try {
       await requestRegisterBankAccount(form);
 
@@ -43,10 +48,8 @@ const SettlementAccountForm = () => {
     registerBankAccount(form);
   };
 
-  const banks = ['국민', '신한', '우리', '하나'];
-
   return (
-    <StyledModal>
+    <StyledModal onClose={onClose}>
       <StyledSettlementAccountForm onSubmit={onSubmit}>
         <SettlementAccountTitle>정산 받을 계좌 인증하기</SettlementAccountTitle>
 
@@ -62,7 +65,7 @@ const SettlementAccountForm = () => {
           <StyledSubTitle>은행</StyledSubTitle>
           <SelectBox
             selectHeader="은행을 선택해주세요"
-            selectOptions={banks}
+            selectOptions={BANK_LIST}
             selected={form.bank}
             setSelected={setBank}
           />
@@ -95,4 +98,4 @@ const SettlementAccountForm = () => {
   );
 };
 
-export default SettlementAccountForm;
+export default SettlementAccount;

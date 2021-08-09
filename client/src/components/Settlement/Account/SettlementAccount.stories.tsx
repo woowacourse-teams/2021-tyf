@@ -1,12 +1,18 @@
 import { Meta, Story } from '@storybook/react';
 
-import SettlementAccountForm from './SettlementAccountForm';
+import SettlementAccount, { SettlementAccountProps } from './SettlementAccount';
 
 export default {
-  title: 'components/settlement/SettlementAccountForm',
-  component: SettlementAccountForm,
+  title: 'components/settlement/SettlementAccount',
+  component: SettlementAccount,
 } as Meta;
 
-const Template: Story = (args) => <SettlementAccountForm {...args} />;
+const Template: Story<SettlementAccountProps> = (args) => <SettlementAccount {...args} />;
 
 export const Default = Template.bind({});
+
+Default.args = {
+  onClose: () => {
+    alert('모달 닫기');
+  },
+};
