@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { requestIdState } from '../../state/request';
 
 import { userStatisticsQuery, userStatisticsQueryKey } from '../../state/statistics';
 
 const useStatistics = () => {
   const { point: totalAmount } = useRecoilValue(userStatisticsQuery);
-  const [requestId, setRequestId] = useRecoilState(requestIdState(userStatisticsQueryKey));
+  const setRequestId = useSetRecoilState(requestIdState(userStatisticsQueryKey));
 
   useEffect(() => {
-    setRequestId(requestId + 1);
+    setRequestId((prev) => prev + 1);
   }, []);
 
   return { totalAmount };

@@ -10,6 +10,7 @@ export const List = styled.ul`
   justify-content: center;
   align-items: center;
   position: relative;
+
   overflow-x: scroll;
   -ms-overflow-style: none; // ms
   scrollbar-width: none; // firefox
