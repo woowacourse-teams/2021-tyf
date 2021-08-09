@@ -3,7 +3,7 @@ package com.example.tyfserver.payment.service;
 import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.domain.VerificationCode;
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
@@ -265,7 +265,7 @@ class PaymentServiceTest {
     void refundInfo() {
         // given
         String merchantUid = UUID.randomUUID().toString();
-        VerifiedRefundRequest request = new VerifiedRefundRequest(merchantUid);
+        VerifiedRefunder request = new VerifiedRefunder(merchantUid);
 
         // when
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
@@ -296,7 +296,7 @@ class PaymentServiceTest {
     void refundPayment() {
         // given
         String merchantUid = UUID.randomUUID().toString();
-        VerifiedRefundRequest request = new VerifiedRefundRequest(merchantUid);
+        VerifiedRefunder request = new VerifiedRefunder(merchantUid);
         Payment payment = new Payment(1L, 10000L, "joy@naver.com", "joy", UUID.fromString(merchantUid));
 
         // when

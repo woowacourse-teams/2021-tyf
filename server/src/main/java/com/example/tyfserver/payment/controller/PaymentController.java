@@ -1,6 +1,6 @@
 package com.example.tyfserver.payment.controller;
 
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.exception.RefundVerificationException;
@@ -51,14 +51,14 @@ public class PaymentController {
     }
 
     @GetMapping("/refund/info")
-    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefundRequest refundInfoRequest) {
+    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder refundInfoRequest) {
         RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refund")
-    public ResponseEntity<Void> refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
-        paymentService.refundPayment(verifiedRefundRequest);
+    public ResponseEntity<Void> refundPayment(VerifiedRefunder verifiedRefunder) {
+        paymentService.refundPayment(verifiedRefunder);
         return ResponseEntity.ok().build();
     }
 }

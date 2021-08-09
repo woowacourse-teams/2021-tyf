@@ -1,6 +1,6 @@
 package com.example.tyfserver.auth.config;
 
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.auth.util.AuthorizationExtractor;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class RefundAuthenticationArgumentResolver implements HandlerMethodArgume
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(VerifiedRefundRequest.class);
+        return parameter.getParameterType().equals(VerifiedRefunder.class);
     }
 
     @Override
