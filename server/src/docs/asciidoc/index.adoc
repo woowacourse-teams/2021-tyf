@@ -87,6 +87,16 @@ include::{snippets}/memberPointHeaderNotFoundFailed/http-response.adoc[]
 include::{snippets}/memberPointInvalidTokenFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/memberPointInvalidTokenFailed/http-response.adoc[]
+=== 창작자 상세 포인트 조회 - 성공
+==== Request
+include::{snippets}/detailedPoint/http-request.adoc[]
+==== Response
+include::{snippets}/detailedPoint/http-response.adoc[]
+=== 창작자 상세 포인트 조회 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/detailedPointInvalidTokenFailed/http-request.adoc[]
+==== Response
+include::{snippets}/detailedPointInvalidTokenFailed/http-response.adoc[]
 === 창작자 큐레이션 리스트 - 성공
 ==== Request
 include::{snippets}/curations/http-request.adoc[]
