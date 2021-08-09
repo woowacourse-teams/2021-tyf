@@ -7,7 +7,6 @@ import Title from '../../@atom/Title/Title.styles';
 import StyledOutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const StyledModal = styled(Modal)`
-  //TODO: 실제 적용해보고 수정 필요. 전체화면이면 닫기 버튼도 있어야될듯?
   align-self: flex-end;
   width: 100vw;
   max-height: 100vh;

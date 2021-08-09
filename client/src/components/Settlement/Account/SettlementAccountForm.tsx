@@ -1,6 +1,9 @@
 import { ChangeEvent } from 'react';
 
-import useSettlementAccountForm from '../../../service/hooks/settlement/useSettlementAccountForm';
+import useSettlementAccountForm, {
+  SettlementAccount,
+} from '../../../service/hooks/settlement/useSettlementAccountForm';
+import { requestRegisterBankAccount } from '../../../service/request/settlement';
 import Button from '../../@atom/Button/Button.styles';
 import Input from '../../@atom/Input/Input.styles';
 import SelectBox from '../../@atom/SelectBox/SelectBox';
@@ -24,11 +27,27 @@ const SettlementAccountForm = () => {
     setBankAccountImage(target.files[0]);
   };
 
+  const registerBankAccount = async (form: SettlementAccount) => {
+    try {
+      await requestRegisterBankAccount(form);
+
+      alert('계정정보 등록에 성공했습니다!');
+    } catch (error) {
+      alert('계좌정보를 등록하는데 실패했습니다.');
+    }
+  };
+
+  const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    registerBankAccount(form);
+  };
+
   const banks = ['국민', '신한', '우리', '하나'];
 
   return (
     <StyledModal>
-      <StyledSettlementAccountForm>
+      <StyledSettlementAccountForm onSubmit={onSubmit}>
         <SettlementAccountTitle>정산 받을 계좌 인증하기</SettlementAccountTitle>
 
         <InputContainer>
