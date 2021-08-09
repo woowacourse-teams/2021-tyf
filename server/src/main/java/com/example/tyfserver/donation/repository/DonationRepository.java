@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface DonationRepository extends JpaRepository<Donation, Long> {
+public interface DonationRepository extends JpaRepository<Donation, Long>, DonationQueryRepository {
 
     @Query("select d from Donation d where d.member =:member and d.message.secret =:secret")
     List<Donation> findPublicDonations(
