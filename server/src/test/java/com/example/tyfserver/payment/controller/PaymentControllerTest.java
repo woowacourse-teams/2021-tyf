@@ -118,13 +118,17 @@ public class PaymentControllerTest {
     @DisplayName("/payments/refund/verification/ready - success")
     public void refundVerificationReady() throws Exception {
         //given
+        String merchantUid = UUID.randomUUID().toString();
+        RefundVerificationReadyRequest request = new RefundVerificationReadyRequest(merchantUid);
+
         //when
         when(paymentService.refundVerificationReady(any(RefundVerificationReadyRequest.class)))
                 .thenReturn(new RefundVerificationReadyResponse("test@test.com"));
 
         //then
         mockMvc.perform(post("/payments/refund/verification/ready")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("refundVerificationReady",
                         preprocessRequest(prettyPrint()),
@@ -136,13 +140,18 @@ public class PaymentControllerTest {
     @DisplayName("/payments/refund/verification - success")
     public void refundVerification() throws Exception {
         //given
+        String verificationCode = "123456";
+        String merchantUid = UUID.randomUUID().toString();
+        RefundVerificationRequest request = new RefundVerificationRequest(merchantUid, verificationCode);
+
         //when
         when(paymentService.refundVerification(any(RefundVerificationRequest.class)))
-                .thenReturn(new RefundVerificationResponse("refund access token"));
+                .thenReturn(new RefundVerificationResponse("refundAccessToken"));
 
         //then
         mockMvc.perform(post("/payments/refund/verification")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("refundVerification",
                         preprocessRequest(prettyPrint()),

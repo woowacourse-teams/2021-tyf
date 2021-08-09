@@ -2,10 +2,7 @@ package com.example.tyfserver.auth.util;
 
 import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -68,8 +65,12 @@ public class JwtTokenProvider {
     }
 
     private Claims claims(String token) {
-        return Jwts.parser()
-                .setSigningKey(secreteKey).parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parser()
+                    .setSigningKey(secreteKey).parseClaimsJws(token)
+                    .getBody();
+        } catch (JwtException e) {
+            throw new InvalidTokenException();
+        }
     }
 }

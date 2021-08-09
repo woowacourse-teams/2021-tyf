@@ -22,6 +22,7 @@ import com.example.tyfserver.payment.domain.RefundFailure;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
 import com.example.tyfserver.payment.exception.PaymentNotFoundException;
+import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.payment.repository.RefundFailureRepository;
 import lombok.RequiredArgsConstructor;
@@ -94,6 +95,7 @@ public class PaymentService {
         return resendCoolTime.getTimeout();
     }
 
+    @Transactional(noRollbackFor={VerificationFailedException.class, RefundVerificationBlockedException.class})
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
         String merChantUid = verificationRequest.getMerchantUid();
         Payment payment = paymentRepository.findByMerchantUidWithRefundFailure(UUID.fromString(merChantUid))
@@ -121,9 +123,6 @@ public class PaymentService {
             payment.updateRefundFailure(refundFailure);
         }
         payment.reduceTryCount();
-        // todo: refundVerification() 로직에서 payment.checkRemainTryCount() 가 2번 호출하고 있다.
-        //  1. 인증요청시 tryCount가 1에서 0이 될 때 예외발생 -> 2번 호출하도록 그대로 둠
-        //  2. 1번 상황에선 예외발생 X, 인증요청시 tryCount가 이미 0일 때만 예외발생 -> 아래의 payment.checkRemainTryCount() 제거
         payment.checkRemainTryCount();
     }
 
@@ -143,11 +142,10 @@ public class PaymentService {
         Member member = memberRepository.findByPageName(payment.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        member.validatePointIsEnough(donation.getAmount()); // todo: 예외 1: Member가 가진 Point가 donation 금액보다 적으면 예외!
         donation.validateIsValid();
 
-        PaymentInfo paymentCancelInfo = paymentServiceConnector.requestPaymentCancel(payment.getMerchantUid());
-        payment.refund(paymentCancelInfo);  // todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외!
+        PaymentInfo refundInfo = paymentServiceConnector.requestPaymentRefund(payment.getMerchantUid());
+        payment.refund(refundInfo);  // todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외! 모킹
         donation.cancel();
         member.reducePoint(donation.getAmount());
     }

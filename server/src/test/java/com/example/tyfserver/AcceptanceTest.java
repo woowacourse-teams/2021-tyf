@@ -2,6 +2,7 @@ package com.example.tyfserver;
 
 import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
@@ -26,18 +27,35 @@ import static org.mockito.Mockito.*;
 public class AcceptanceTest {
 
     @LocalServerPort
-    int port;
+    private int port;
 
     @MockBean
     private Oauth2ServiceConnector oauth2ServiceConnector;
     @MockBean
     private S3Connector s3Connector;
     @MockBean
-    private PaymentServiceConnector paymentServiceConnector;
+    protected PaymentServiceConnector paymentServiceConnector;
+    @MockBean
+    private SmtpMailConnector smtpMailConnector;
 
     public static final String DEFAULT_EMAIL = "thankyou@gmail.com";
     public static final String DEFAULT_PROFILE_IMAGE = "profileImage";
 
+    @BeforeEach
+    protected void setUp() {
+        RestAssured.port = port;
+        when(oauth2ServiceConnector.getEmailFromOauth2(any(), any()))
+                .thenReturn(DEFAULT_EMAIL);
+        when(s3Connector.upload(any(), any()))
+                .thenReturn(DEFAULT_PROFILE_IMAGE);
+        doNothing().when(s3Connector).delete(anyString());
+        when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 1000L,
+                        "pagename", "impUid", "module"));
+        when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, 1000L,
+                        "pagename", "impUid", "module"));
+    }
 
     protected static RequestSpecification apiTemplate() {
         return RestAssured
@@ -100,21 +118,5 @@ public class AcceptanceTest {
         return authTemplate(token)
                 .delete(url)
                 .then().log().all();
-    }
-
-    @BeforeEach
-    protected void setUp() {
-        RestAssured.port = port;
-        when(oauth2ServiceConnector.getEmailFromOauth2(any(), any()))
-                .thenReturn(DEFAULT_EMAIL);
-        when(s3Connector.upload(any(), any()))
-                .thenReturn(DEFAULT_PROFILE_IMAGE);
-        doNothing().when(s3Connector).delete(anyString());
-        when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 1000L,
-                        "pagename", "impUid", "module"));
-        when(paymentServiceConnector.requestPaymentCancel(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, 1000L,
-                        "pagename", "impUid", "module"));
     }
 }

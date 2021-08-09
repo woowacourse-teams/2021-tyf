@@ -102,7 +102,6 @@ class MemberServiceTest {
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
-    //todo 0원도 나오게끔 변경 후 테스트 수정해야함
     @Test
     @DisplayName("findCurations")
     public void findCurationsTest() {

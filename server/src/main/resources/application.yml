@@ -23,7 +23,7 @@ spring:
             enable: true
 
   profiles:
-    include: oauth2, aws, dev-secret
+    include: oauth2, aws
 
 logging:
   config: classpath:logback-spring.xml

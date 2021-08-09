@@ -1,9 +1,11 @@
 package com.example.tyfserver.payment;
 
 import com.example.tyfserver.AcceptanceTest;
+import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.VerificationCode;
 import com.example.tyfserver.auth.dto.VerificationFailedErrorResponse;
 import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.exception.VerificationCodeNotFoundException;
 import com.example.tyfserver.auth.exception.VerificationFailedException;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
@@ -39,7 +41,7 @@ import static org.mockito.Mockito.when;
 public class PaymentAcceptanceTest extends AcceptanceTest {
 
     @MockBean
-    private VerificationCodeRepository verificationCodeRepository;
+    private VerificationCodeRepository verificationCodeRepository; // todo 레디스 모킹 지우고, 스태틱모킹으로 하기
 
     public static ExtractableResponse<Response> 페이먼트_생성(Long amount, String email, String pageName) {
         return post("/payments", new PaymentPendingRequest(amount, email, pageName)).extract();
@@ -96,8 +98,8 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         assertAll(
                 () -> assertThat(result.getEmail()).isEqualTo("do***or@gmail.com"),
-                () -> assertThat(result.getResendCoolTime()).isEqualTo(1 * 60),
-                () -> assertThat(result.getTimeout()).isEqualTo(5 * 60)
+                () -> assertThat(result.getResendCoolTime()).isEqualTo(CodeResendCoolTime.DEFAULT_TTL),
+                () -> assertThat(result.getTimeout()).isEqualTo(VerificationCode.DEFAULT_TTL)
         );
     }
 
@@ -154,11 +156,12 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         환불_인증코드_생성(merchantUid, verificationCode);
 
         String unverificationCode = "000000";
-        for (int i = 0; i < 10; i++) { // todo: 이것도 어떻게 해야할까?  10번의 시도횟수를 차감시켜서 0으로 만드는 방법 (이 방식도 적용이 안됌, refundFailure가 매번 초기화되는 것 같음..)
+        for (int i = 0; i < 10; i++) {
             환불_인증코드_실패(merchantUid, verificationCode, unverificationCode);
         }
 
-        VerificationFailedException verificationFailedException = 환불_인증코드_인증(merchantUid, unverificationCode).as(VerificationFailedException.class);
+        VerificationFailedErrorResponse verificationFailedException = 환불_인증코드_인증(merchantUid, unverificationCode)
+                .as(VerificationFailedErrorResponse.class);
 
         assertThat(verificationFailedException).isNotNull();
     }
@@ -247,8 +250,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         ErrorResponse errorResponse = 환불정보_조회(token).as(ErrorResponse.class);
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo("error-000");
-        assertThat(errorResponse.getMessage()).isEqualTo("예상하지 못한 에러가 발생했습니다."); //todo: 토큰 유효성 검증 실패시 예외 커스텀해서 던져주는 것이 좋을 것 같음!
+        assertThat(errorResponse.getErrorCode()).isEqualTo(InvalidTokenException.ERROR_CODE);
     }
 
     @DisplayName("환불을 성공적으로 진행하는 경우")
@@ -267,13 +269,6 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 환불_요청(token, merchantUid);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @DisplayName("환불을 창작자의 포인트가 충분하지 않을 때, 진행하는 경우")
-    @Test
-    void refundPaymentCreatorNotHaveEnoughPoint() {
-        // todo: paymentService#refundPayment의 예외1 부분, 이 경우를 테스트하려면 어떻게 해야할까 ?
-        // member의 point를 차감시킬 방법이 없을까?
     }
 
     @DisplayName("환불을 이미 환불된 도네이션을 대상으로 진행하는 경우")
@@ -302,6 +297,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         //todo: 예외 3: 아임포트에서 조회한 결제 정보와 우리 서버에 저장된 정보가 일치하지 않은 경우 예외!
         // 현재 AcceptanceTest에서 @BeforeEach로 mocking을 통해 아임포트에서 조회한 정보를 가져오고있음. (부분 모킹을 하려면 해당 부분에서 진행해야한다)
         // 이 상황을 테스트할 수 있는 방법이 없을까?
+
     }
 
     private ExtractableResponse<Response> 환불_인증코드_생성(String merchantUid, String verificationCode) {

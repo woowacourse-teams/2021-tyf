@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class RefundFailure extends BaseTimeEntity {
 
-    public static final int DEFAULT_TRY_COUNT = 10; //todo: 생성시점에 바로 감소를 시켜야해서 9부터시작해야한다!
+    public static final int DEFAULT_TRY_COUNT = 10;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

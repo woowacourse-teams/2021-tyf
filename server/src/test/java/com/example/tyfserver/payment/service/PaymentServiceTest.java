@@ -247,7 +247,7 @@ class PaymentServiceTest {
         when(authenticationService.createRefundToken(Mockito.anyString()))
                 .thenReturn(refundAccessToken);
 
-        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+        when(paymentRepository.findByMerchantUidWithRefundFailure(Mockito.any(UUID.class)))
                 .thenReturn(
                         Optional.of(new Payment(10000L, "joy@naver.com", "joy")));
 
@@ -310,7 +310,7 @@ class PaymentServiceTest {
                 .thenReturn(
                         Optional.of(new Member("joy@naver.com", "joy", "joy", Oauth2Type.NAVER, null, new Point(10000L))));
 
-        when(paymentServiceConnector.requestPaymentCancel(Mockito.any(UUID.class)))
+        when(paymentServiceConnector.requestPaymentRefund(Mockito.any(UUID.class)))
                 .thenReturn(new PaymentInfo(UUID.fromString(merchantUid), PaymentStatus.CANCELLED, 10000L, "joy", "impUid", "testModule"));
 
         // then
