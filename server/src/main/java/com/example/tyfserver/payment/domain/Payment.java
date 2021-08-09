@@ -2,6 +2,8 @@ package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
+import com.example.tyfserver.payment.exception.PaymentAlreadyCancelledException;
+import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,8 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private Long amount;
 
-    private String email;
+    @Embedded
+    private Email email;
 
     @Column(nullable = false)
     private String pageName;
@@ -36,12 +39,20 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private UUID merchantUid;
 
-    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "refund_failure_id")
+    private RefundFailure refundFailure;
+
+    public Payment(Long id, Long amount, Email email, String pageName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
         this.email = email;
         this.pageName = pageName;
         this.merchantUid = merchantUid;
+    }
+
+    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
+        this(id, amount, new Email(email), pageName, merchantUid);
     }
 
     public Payment(Long amount, String email, String pageName, UUID merchantUid) {
@@ -56,6 +67,10 @@ public class Payment extends BaseTimeEntity {
         this(null, amount, email, pageName, UUID.randomUUID());
     }
 
+    public String getMaskedEmail() {
+        return email.maskedEmail();
+    }
+
     public void updateStatus(PaymentStatus paymentStatus) {
         this.status = paymentStatus;
     }
@@ -64,6 +79,10 @@ public class Payment extends BaseTimeEntity {
         validatePaymentComplete(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
+    }
+
+    public void updateRefundFailure(RefundFailure refundFailure) {
+        this.refundFailure = refundFailure;
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
@@ -75,7 +94,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentInfo(paymentInfo);
     }
 
-    public void cancel(PaymentInfo paymentInfo) {
+    public void refund(PaymentInfo paymentInfo) {
         validatePaymentCancel(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.CANCELLED;
@@ -104,6 +123,30 @@ public class Payment extends BaseTimeEntity {
         if (!pageName.equals(paymentInfo.getPageName())) {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
+        }
+    }
+
+    public void checkRemainTryCount() {
+        if (refundFailure != null && refundFailure.getRemainTryCount() == 0) {
+            throw new RefundVerificationBlockedException();
+        }
+    }
+
+    public void reduceTryCount() {
+        refundFailure.reduceTryCount();
+    }
+
+    public boolean hasNoRefundFailure() {
+        return refundFailure == null;
+    }
+
+    public int getRemainTryCount() {
+        return refundFailure.getRemainTryCount();
+    }
+
+    public void validateIsNotCancelled() {
+        if (status == PaymentStatus.CANCELLED) {
+            throw new PaymentAlreadyCancelledException();
         }
     }
 }

@@ -186,7 +186,7 @@ class MemberControllerTest {
     public void memberInfo() throws Exception {
         //given
         MemberResponse response = new MemberResponse("email", "nickname",
-                "pagename", "I am test","profile.png");
+                "pagename", "I am test", "profile.png");
         //when
         when(memberService.findMember(Mockito.anyString())).thenReturn(response);
         //then
