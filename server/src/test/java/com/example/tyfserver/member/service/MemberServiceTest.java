@@ -168,7 +168,7 @@ class MemberServiceTest {
     public void registerAccountInfo() {
         //given
         LoginMember loginMember = new LoginMember(member.getId(), member.getEmail());
-        final AccountRegisterRequest test = new AccountRegisterRequest("test", "1234-5678-1234", null);
+        final AccountRegisterRequest test = new AccountRegisterRequest("test", "1234-5678-1234", null, "하나");
 
         //when
         memberService.registerAccount(loginMember, test);

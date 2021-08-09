@@ -99,6 +99,6 @@ public class MemberService {
 
         String uploadedFile = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
         member.registerAccount(new Account(accountRegisterRequest.getName(),
-                accountRegisterRequest.getAccount(), uploadedFile));
+                accountRegisterRequest.getAccount(), uploadedFile, accountRegisterRequest.getBank()));
     }
 }

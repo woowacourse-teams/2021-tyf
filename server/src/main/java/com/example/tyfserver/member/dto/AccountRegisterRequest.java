@@ -11,11 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class AccountRegisterRequest {
     private String name;
     private String account;
+    private String bank;
     private MultipartFile bankbook;
 
-    public AccountRegisterRequest(String name, String account, MultipartFile bankbook) {
+    public AccountRegisterRequest(String name, String account, MultipartFile bankbook, String bank) {
         this.name = name;
         this.account = account;
         this.bankbook = bankbook;
+        this.bank = bank;
     }
 }

@@ -21,12 +21,14 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String accountNumber;
 
+    private String bank;
+
     private String bankbookUrl;
 
     @Enumerated(value = EnumType.STRING)
     private AccountStatus status = AccountStatus.UNREGISTERED;
 
-    public Account(String name, String accountNumber, String bankbookUrl) {
+    public Account(String name, String accountNumber, String bankbookUrl, String bank) {
         this.name = name;
         this.accountNumber = accountNumber;
         this.bankbookUrl = bankbookUrl;
@@ -36,6 +38,7 @@ public class Account extends BaseTimeEntity {
         validateRegisterAccount();
         this.accountNumber = account.accountNumber;
         this.name = account.name;
+        this.bank = account.bank;
         this.bankbookUrl = bankbookUrl;
         this.status = AccountStatus.REQUESTING;
     }

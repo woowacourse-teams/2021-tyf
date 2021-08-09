@@ -74,7 +74,7 @@ public class MemberTest {
         //given
         Member member = testMember();
         member.addInitialAccount(new Account());
-        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png");
+        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png", "하나");
         member.registerAccount(account);
 
         assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.REQUESTING);
@@ -86,7 +86,7 @@ public class MemberTest {
         //given
         Member member = testMember();
         member.addInitialAccount(new Account());
-        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png");
+        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png", "하나");
         member.registerAccount(account);
 
         assertThatThrownBy(() -> member.registerAccount(account))
