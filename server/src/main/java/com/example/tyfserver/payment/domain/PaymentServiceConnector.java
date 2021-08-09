@@ -6,5 +6,5 @@ public interface PaymentServiceConnector {
 
     PaymentInfo requestPaymentInfo(UUID merchantUid);
 
-    PaymentInfo requestPaymentCancel(UUID merchantUid);
+    PaymentInfo requestPaymentRefund(UUID merchantUid);
 }

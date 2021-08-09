@@ -21,4 +21,11 @@ public class Point {
     public void add(final long donationAmount) {
         this.point += donationAmount;
     }
+
+    public void reduce(final long amount) {
+        if (amount > point) {
+            throw new RuntimeException();
+        }
+        this.point -= amount;
+    }
 }

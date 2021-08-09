@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
+import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationMessageRequestException;
@@ -50,6 +51,8 @@ class DonationControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private AuthenticationService authenticationService;
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean

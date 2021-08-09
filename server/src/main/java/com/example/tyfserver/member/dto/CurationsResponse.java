@@ -1,8 +1,6 @@
 package com.example.tyfserver.member.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.StringPath;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
