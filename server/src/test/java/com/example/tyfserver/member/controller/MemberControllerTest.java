@@ -716,7 +716,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("Get - /members/me/account - success")
     void getAccountInfo() throws Exception {
-        //givn
+        //given
         AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(new Account("","","",""));
 
         //when
@@ -724,9 +724,9 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
 
         //then
-        mockMvc.perform(post("/members/me/account"))
+        mockMvc.perform(get("/members/me/account"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("status").value("미등록"))
+                .andExpect(jsonPath("status").value("UNREGISTERED"))
                 .andDo(document("accountInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
