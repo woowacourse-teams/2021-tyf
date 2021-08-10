@@ -1,7 +1,13 @@
 package com.example.tyfserver.member.repository;
 
+import com.example.tyfserver.admin.dto.QRequestingAccountResponse;
+import com.example.tyfserver.admin.dto.RequestingAccountResponse;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.dto.CurationsResponse;
 import com.example.tyfserver.member.dto.QCurationsResponse;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
@@ -9,6 +15,7 @@ import java.util.List;
 
 import static com.example.tyfserver.donation.domain.QDonation.donation;
 import static com.example.tyfserver.member.domain.QMember.member;
+import static com.example.tyfserver.member.domain.QAccount.account;
 import static com.example.tyfserver.payment.domain.QPayment.payment;
 
 public class MemberRepositoryImpl implements MemberQueryRepository {
@@ -30,6 +37,17 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
                 .orderBy(payment.amount.sum().desc())
                 .offset(0)
                 .limit(10)
+                .fetch();
+    }
+
+    @Override
+    public List<RequestingAccountResponse> findRequestingAccounts() {
+        return queryFactory.select(
+                new QRequestingAccountResponse(member.id, member.nickname, member.pageName, member.account.accountHolder,
+                        member.account.accountNumber, member.account.bank, member.account.bankbookUrl))
+                .from(member)
+                .innerJoin(member.account, account)
+                .where(account.status.eq(AccountStatus.REQUESTING))
                 .fetch();
     }
 }

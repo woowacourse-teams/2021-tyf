@@ -1,5 +1,6 @@
 package com.example.tyfserver.member.service;
 
+import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
@@ -112,7 +113,8 @@ public class MemberService {
         return AccountInfoResponse.of(member.getAccount());
     }
 
-    public void findRequestingAccounts() {
+    public List<RequestingAccountResponse> findRequestingAccounts() {
+        return memberRepository.findRequestingAccounts();
     }
 
     private Member findMember(Long id) {
