@@ -5,6 +5,8 @@ import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.service.AuthenticationService;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 
 import static java.util.Collections.singletonList;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -67,8 +71,43 @@ class AdminControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("정산 승인")
+    public void exchangeApprove() throws Exception {
+        String pageName = "pagename";
+        doNothing().when(adminService).approveExchange(anyString());
+
+        mockMvc.perform(post("/admin/exchange/approve")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pageName)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("exchangeApprove",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("정산 승인 회원을 찾을 수 없음")
+    public void exchangeApproveMemberNotFound() throws Exception {
+        doThrow(new MemberNotFoundException()).when(adminService).approveExchange(anyString());
+        String pageName = "pagename";
+
+        mockMvc.perform(post("/admin/exchange/approve")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pageName)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(print())
+                .andDo(document("exchangeApprove",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
     private void validInterceptorAndArgumentResolverMocking() {
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(any())).thenReturn(true);
     }
 }
