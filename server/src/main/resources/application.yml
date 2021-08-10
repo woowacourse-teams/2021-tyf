@@ -9,8 +9,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    hibernate:
-      ddl-auto: create
 
   profiles:
     include: oauth2, aws

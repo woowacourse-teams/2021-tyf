@@ -65,7 +65,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/pageName - success")
     public void validatePageName() throws Exception {
         //given
-        PageNameRequest request = new PageNameRequest("pagename");
+        PageNameValidationRequest request = new PageNameValidationRequest("pagename");
 
         //when
         doNothing().when(memberService).validatePageName(Mockito.any());
@@ -85,7 +85,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/pageName - 유효하지 않은 request")
     public void validatePageNameRequestFailed() throws Exception {
         //given
-        PageNameRequest request = new PageNameRequest("INVALID");
+        PageNameValidationRequest request = new PageNameValidationRequest("INVALID");
 
         //when
         doNothing().when(memberService).validatePageName(Mockito.any());
@@ -106,7 +106,7 @@ class MemberControllerTest {
     @DisplayName("/members/validate/pageName - 중복된 pageName")
     public void validatePageNameDuplicatedFailed() throws Exception {
         //given
-        PageNameRequest request = new PageNameRequest("pagename");
+        PageNameValidationRequest request = new PageNameValidationRequest("pagename");
 
         //when
         doThrow(new DuplicatedPageNameException()).when(memberService).validatePageName(Mockito.any());

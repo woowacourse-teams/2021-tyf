@@ -10,14 +10,14 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PageNameRequest {
+public class NicknameValidationRequest {
 
-    @Length(min = 3, max = 20)
     @NotBlank
-    @Pattern(regexp = "^[a-z0-9][a-z0-9_-]+[a-z0-9]$")
-    private String pageName;
+    @Length(min = 3, max = 20)
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$") //todo: 정규표현식 수정 필요
+    private String nickname;
 
-    public PageNameRequest(String pageName) {
-        this.pageName = pageName;
+    public NicknameValidationRequest(String nickname) {
+        this.nickname = nickname;
     }
 }

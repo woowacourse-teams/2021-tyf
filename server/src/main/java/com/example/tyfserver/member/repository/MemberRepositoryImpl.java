@@ -1,35 +1,29 @@
 package com.example.tyfserver.member.repository;
 
 import com.example.tyfserver.member.dto.CurationsResponse;
-import com.example.tyfserver.member.dto.QCurationsResponse;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.example.tyfserver.donation.domain.QDonation.donation;
-import static com.example.tyfserver.member.domain.QMember.member;
-import static com.example.tyfserver.payment.domain.QPayment.payment;
-
+@RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberQueryRepository {
 
-    private final JPAQueryFactory queryFactory;
+    private final EntityManager em;
 
-    public MemberRepositoryImpl(EntityManager em) {
-        queryFactory = new JPAQueryFactory(em);
-    }
-
+    @Override
     public List<CurationsResponse> findCurations() {
-        return queryFactory
-                .select(
-                        new QCurationsResponse(member.nickname, payment.amount.sum(), member.pageName, member.profileImage, member.bio))
-                .from(member)
-                .leftJoin(member.donations, donation)
-                .leftJoin(donation.payment, payment)
-                .groupBy(member.nickname)
-                .orderBy(payment.amount.sum().desc())
-                .offset(0)
-                .limit(10)
-                .fetch();
+        return em.createQuery(
+                "select new com.example.tyfserver.member.dto.CurationsResponse(" +
+                        "           d.member.nickname, sum(d.payment.amount), d.member.pageName, d.member.profileImage, d.member.bio) " +
+                        "from Donation d " +
+                        "join d.member " +
+                        "group by d.member " +
+                        "order by sum(d.payment.amount) desc ",
+                CurationsResponse.class
+        )
+                .setFirstResult(0)
+                .setMaxResults(10)
+                .getResultList();
     }
 }
