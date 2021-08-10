@@ -955,4 +955,109 @@ class MemberControllerTest {
                         preprocessResponse(prettyPrint())))
         ;
     }
+
+    @Test
+    @DisplayName("POST - /me/exchange - success")
+    public void requestExchange() throws Exception {
+        //when
+        doNothing().when(memberService).exchange(anyLong());
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(post("/members/me/exchange")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("requestExchange",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /me/exchange - member not found")
+    public void requestExchangeMemberNotFound() throws Exception {
+        //when
+        doThrow(new MemberNotFoundException()).when(memberService).exchange(anyLong());
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(post("/members/me/exchange")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("requestExchangeMemberNotFound",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /me/exchange - already request exchange")
+    public void requestExchangeAlreadyRequestExchange() throws Exception {
+        //when
+        doThrow(new AlreadyRequestExchangeException()).when(memberService).exchange(anyLong());
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(post("/members/me/exchange")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AlreadyRequestExchangeException.ERROR_CODE))
+                .andDo(document("requestExchangeAlreadyRequestExchange",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /me/exchange - exchange amount less than 10k")
+    public void requestExchangeExchangeAmountLess() throws Exception {
+        //when
+        doThrow(new ExchangeAmountException()).when(memberService).exchange(anyLong());
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(post("/members/me/exchange")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(ExchangeAmountException.ERROR_CODE))
+                .andDo(document("requestExchangeExchangeAmountLess",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /me/exchange - authorization header not found")
+    public void requestExchangeAuthorizationNotFound() throws Exception {
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(post("/members/me/exchange")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("requestExchangeAuthorizationNotFound",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("POST - /me/exchange - invalid token")
+    public void requestExchangeInvalidToken() throws Exception {
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(post("/members/me/exchange")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("requestExchangeInvalidToken",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
 }
