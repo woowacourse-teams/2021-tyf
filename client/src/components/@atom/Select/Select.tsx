@@ -12,34 +12,27 @@ import {
 } from './Select.styles';
 
 export interface SelectProps {
-  selectHeader: string;
+  placeholder: string;
   selectOptions: string[];
   value: string | null;
   onChange: (account: string) => void;
 }
 
-const Select = ({ selectHeader, selectOptions, value, onChange }: SelectProps) => {
+const Select = ({ placeholder, selectOptions, value, onChange }: SelectProps) => {
   const { windowWidth } = useWindowResize();
   const [isOpen, setIsOpen] = useState(false);
 
-  useScrollLock();
+  const toggleOptions = () => setIsOpen(!isOpen);
+  const onOptionClicked = (optionValue: string) => onChange(optionValue);
+  const onClose = () => setIsOpen(false);
 
-  const toggleOptions = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const onOptionClicked = (optionValue: string) => {
-    onChange(optionValue);
-  };
-
-  const onClose = () => {
-    setIsOpen(false);
-  };
   const isDesktop = windowWidth > SIZE.DESKTOP_LARGE;
+
+  useScrollLock();
 
   return (
     <StyledSelectBox onClick={toggleOptions}>
-      {value ?? selectHeader}
+      {value ?? placeholder}
       {isOpen &&
         (isDesktop ? (
           <DropDownList>

@@ -1,10 +1,9 @@
 import { ChangeEvent } from 'react';
 import { BANK_LIST } from '../../../constants/bank';
 
-import useSettlementAccountForm, {
-  SettlementAccountForm,
-} from '../../../service/hooks/settlement/useSettlementAccountForm';
+import useSettlementAccountForm from '../../../service/hooks/settlement/useSettlementAccountForm';
 import { requestRegisterBankAccount } from '../../../service/request/settlement';
+import { SettlementAccountForm } from '../../../types';
 import Button from '../../@atom/Button/Button.styles';
 import Input from '../../@atom/Input/Input.styles';
 import SelectBox from '../../@atom/Select/Select';
@@ -24,7 +23,7 @@ export interface SettlementAccountProps {
 }
 
 const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
-  const { form, setName, setBank, setAccountNumber, setBankAccountImage, isValid } =
+  const { form, setName, setBank, setAccountNumber, setBankAccountImage, isFormValid } =
     useSettlementAccountForm();
 
   const onChangeBankAccountImg = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +64,7 @@ const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
         <InputContainer>
           <StyledSubTitle>은행</StyledSubTitle>
           <SelectBox
-            selectHeader="은행을 선택해주세요"
+            placeholder="은행을 선택해주세요"
             selectOptions={BANK_LIST}
             value={form.bank}
             onChange={setBank}
@@ -93,7 +92,7 @@ const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
           </UploadLabel>
         </InputContainer>
 
-        <Button disabled={!isValid}>제출하기</Button>
+        <Button disabled={!isFormValid}>제출하기</Button>
       </StyledSettlementAccountForm>
     </StyledModal>
   );

@@ -1,11 +1,6 @@
 import { useState } from 'react';
 
-export interface SettlementAccountForm {
-  name: string;
-  bank: string | null;
-  accountNumber: string;
-  bankAccountImage: File | null;
-}
+import { SettlementAccountForm } from '../../../types';
 
 const useSettlementAccountForm = () => {
   const [form, setForm] = useState<SettlementAccountForm>({
@@ -34,9 +29,9 @@ const useSettlementAccountForm = () => {
     setForm({ ...form, bankAccountImage });
   };
 
-  const isValid = form.name && form.bank && form.accountNumber && form.bankAccountImage;
+  const isFormValid = form.name && form.bank && form.accountNumber && form.bankAccountImage;
 
-  return { form, setName, setBank, setAccountNumber, setBankAccountImage, isValid };
+  return { form, setName, setBank, setAccountNumber, setBankAccountImage, isFormValid };
 };
 
 export default useSettlementAccountForm;

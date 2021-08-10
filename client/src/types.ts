@@ -69,3 +69,12 @@ export interface refundOrderDetail {
   creator: Pick<Creator, 'nickname' | 'pageName'>;
   donation: Pick<Donation, 'name' | 'amount' | 'message' | 'createdAt'>;
 }
+
+// SETTLEMENT
+
+export interface SettlementAccountForm {
+  name: string;
+  bank: string | null;
+  accountNumber: string;
+  bankAccountImage: File | null;
+}
