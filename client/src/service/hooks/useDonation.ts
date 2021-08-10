@@ -18,7 +18,10 @@ const useDonation = (creatorId: CreatorId) => {
     const { merchantUid } = await requestPayment({ amount, email, pageName });
     const { IMP } = window;
 
-    const accountId = 'imp61348931';
+    const prodAccountId = 'imp52497817';
+    const devAccountId = 'imp61348931';
+
+    const accountId = process.env.NODE_ENV === 'development' ? devAccountId : prodAccountId;
 
     IMP.init(accountId);
 
@@ -29,10 +32,6 @@ const useDonation = (creatorId: CreatorId) => {
       name: pageName,
       amount,
       buyer_email: email,
-      // buyer_name: '홍길동',
-      // buyer_tel: '010-4242-4242',
-      // buyer_addr: '서울특별시 강남구 신사동',
-      // buyer_postcode: '01181',
     };
 
     const IMPResponseHandler = async (response: IamportResponse) => {
