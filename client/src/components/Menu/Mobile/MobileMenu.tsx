@@ -33,9 +33,9 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
       <StyledAnchor to={`/creator/${userInfo?.pageName}`} onClick={onClose}>
         마이페이지
       </StyledAnchor>
-      <StyledAnchor to={`/creator/${userInfo?.pageName}/settlement`} onClick={onClose}>
+      {/* <StyledAnchor to={`/creator/${userInfo?.pageName}/settlement`} onClick={onClose}>
         정산 관리
-      </StyledAnchor>
+      </StyledAnchor> */}
       <StyledAnchor to={`/creator/${userInfo?.pageName}/setting`} onClick={onClose}>
         설정
       </StyledAnchor>
