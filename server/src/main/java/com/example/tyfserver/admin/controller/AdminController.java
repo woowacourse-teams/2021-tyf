@@ -32,7 +32,7 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/admin/list/account/")
+    @GetMapping("/admin/list/account")
     public ResponseEntity<List<RequestingAccountResponse>> requestingAccounts() {
         return ResponseEntity.ok(adminService.findRequestingAccounts());
     }
