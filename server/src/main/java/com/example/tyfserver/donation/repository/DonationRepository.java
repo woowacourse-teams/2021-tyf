@@ -11,15 +11,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface DonationRepository extends JpaRepository<Donation, Long> {
+public interface DonationRepository extends JpaRepository<Donation, Long>, DonationQueryRepository {
 
     @Query("select d from Donation d where d.member =:member and d.message.secret =:secret")
     List<Donation> findPublicDonations(
             @Param("member") Member member, @Param("secret") boolean secret, Pageable pageable);
 
-    List<Donation> findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(Member member, DonationStatus status);
+    List<Donation> findFirst5ByMemberOrderByCreatedAtDesc(Member member);
 
-    List<Donation> findDonationByMemberAndStatusNotOrderByCreatedAtDesc(Member member, DonationStatus status, Pageable pageable);
+    List<Donation> findDonationByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
 
     Optional<Donation> findByPaymentId(Long id);
 }

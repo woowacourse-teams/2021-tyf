@@ -1,7 +1,7 @@
 package com.example.tyfserver.payment.controller;
 
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.*;
@@ -164,14 +164,14 @@ public class PaymentControllerTest {
     public void refundInfo() throws Exception {
         //given
         //when
-        when(paymentService.refundInfo(any(VerifiedRefundRequest.class)))
+        when(paymentService.refundInfo(any(VerifiedRefunder.class)))
                 .thenReturn(new RefundInfoResponse(
                         new RefundInfoResponse.CreatorInfoResponse("joy", "joy"),
                         new RefundInfoResponse.DonationInfoResponse("후원자이름", 10000L, "화이팅", null)
                 ));
 
         when(authenticationService.createVerifiedRefundRequestByToken(anyString()))
-                .thenReturn(new VerifiedRefundRequest("merchant uid"));
+                .thenReturn(new VerifiedRefunder("merchant uid"));
 
         //then
         mockMvc.perform(get("/payments/refund/info")
@@ -189,7 +189,7 @@ public class PaymentControllerTest {
     public void refundPayment() throws Exception {
         //given
         //when
-        doNothing().when(paymentService).refundPayment(any(VerifiedRefundRequest.class));
+        doNothing().when(paymentService).refundPayment(any(VerifiedRefunder.class));
 
         //then
         mockMvc.perform(post("/payments/refund")

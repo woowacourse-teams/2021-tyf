@@ -2,6 +2,8 @@ package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
@@ -10,10 +12,12 @@ import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.hql.internal.ast.DetailedSemanticException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,6 +26,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final DonationRepository donationRepository;
     private final AccountRepository accountRepository;
     private final S3Connector s3Connector;
 
@@ -87,6 +92,13 @@ public class MemberService {
 
         s3Connector.delete(member.getProfileImage());
         member.deleteProfile();
+    }
+
+    public DetailedPointResponse detailedPoint(Long id) {
+        Long currentPoint = findMember(id).getPoint();
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.exchangeableDayLimit);
+        Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
+        return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
     }
 
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {

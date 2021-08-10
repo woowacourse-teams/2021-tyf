@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +36,8 @@ class DonationRepositoryTest {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    private Member member;
+    private Member member1;
+    private Member member2;
     private Donation donation1;
     private Donation donation2;
     private Donation donation3;
@@ -46,8 +48,10 @@ class DonationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = MemberTest.testMember();
-        memberRepository.save(member);
+        member1 = MemberTest.testMember();
+        member2 = MemberTest.testMember2();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
         //when
         donation1 = new Donation(
                 paymentRepository.save(new Payment(1000L, "test@test.com", "test")),
@@ -73,15 +77,15 @@ class DonationRepositoryTest {
                 new Message("name6", "message6", false));
         donation7 = new Donation(
                 paymentRepository.save(new Payment(7000L, "test@test.com", "test")),
-                new Message("name1", "message7", false));
+                new Message("name7", "message7", false));
 
-        donation1.to(member);
-        donation2.to(member);
-        donation3.to(member);
-        donation4.to(member);
-        donation5.to(member);
-        donation6.to(member);
-        donation7.to(member);
+        donation1.to(member1);
+        donation2.to(member1);
+        donation3.to(member1);
+        donation4.to(member1);
+        donation5.to(member1);
+        donation6.to(member1);
+        donation7.to(member1);
         donationRepository.save(donation1);
         donationRepository.save(donation2);
         donationRepository.save(donation3);
@@ -95,7 +99,7 @@ class DonationRepositoryTest {
     @DisplayName("해당 Member가 받은 secret false인 최신 5개의 도네이션을 가져온다.")
     public void findPublicDonations() {
 
-        List<Donation> donations = donationRepository.findPublicDonations(member, false, PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdAt")));
+        List<Donation> donations = donationRepository.findPublicDonations(member1, false, PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdAt")));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation2, donation3, donation4, donation6
         );
@@ -104,8 +108,7 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
     public void findTop5ByMember() {
-//        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusOrderByCreatedAtDesc(member, DonationStatus.VALID);
-        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(member, DonationStatus.CANCELLED);
+        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(member1);
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation6, donation5, donation4, donation3
         );
@@ -114,10 +117,46 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
     public void findDonationByMemberOrderByCreatedAtDesc() {
-//        List<Donation> donations = donationRepository.findDonationByMemberAndStatusOrderByCreatedAtDesc(member, DonationStatus.VALID, PageRequest.of(1, 3));
-        List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(member, DonationStatus.CANCELLED, PageRequest.of(1, 3));
+        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(
+                member1, PageRequest.of(1, 3));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation4, donation3, donation2
         );
+    }
+
+    @Test
+    @DisplayName("정산 가능 포인트를 조회한다.")
+    public void exchangeablePoint() {
+        donation1.updateStatus(DonationStatus.CANCELLED);
+        donation2.updateStatus(DonationStatus.EXCHANGED);
+        donation3.updateStatus(DonationStatus.CANCELLED);
+        donation4.updateStatus(DonationStatus.CANCELLED);
+
+        Long member1NotExchangeable =
+            donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now(), 1);
+        Long member2NotExchangeable =
+                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now(), 1);
+        Long member1Exchangeable =
+                donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now().plusDays(8), 7);
+        Long member2Exchangeable =
+                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now().plusDays(8), 7);
+
+        assertThat(member1NotExchangeable).isEqualTo(0L);
+        assertThat(member2NotExchangeable).isEqualTo(0L);
+        assertThat(member1Exchangeable).isEqualTo(18000L);
+        assertThat(member2Exchangeable).isEqualTo(0L);
+    }
+    
+    @Test
+    @DisplayName("정산 완료 총 포인트를 조회한다.")
+    public void exchangedTotalPoint() {
+        donation1.updateStatus(DonationStatus.CANCELLED);
+        donation2.updateStatus(DonationStatus.EXCHANGED);
+        donation3.updateStatus(DonationStatus.CANCELLED);
+        donation4.updateStatus(DonationStatus.CANCELLED);
+
+        Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
+
+        assertThat(exchangedTotalPoint).isEqualTo(2000L);
     }
 }
