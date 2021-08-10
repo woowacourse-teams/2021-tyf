@@ -40,7 +40,7 @@ public class Account extends BaseTimeEntity {
         this.accountNumber = account.accountNumber;
         this.name = account.name;
         this.bank = account.bank;
-        this.bankbookUrl = bankbookUrl;
+        this.bankbookUrl = account.bankbookUrl;
         this.status = AccountStatus.REQUESTING;
     }
 
