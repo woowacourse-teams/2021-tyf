@@ -101,7 +101,7 @@ public class MemberService {
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());
 
-        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(),
+        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbookImage(),
                 "users/" + loginMember.getId() + "/bankbook/");
         member.registerAccount(accountRegisterRequest.getAccountHolder(),
                 accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
@@ -110,6 +110,9 @@ public class MemberService {
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
         Member member = findMember(loginMember.getId());
         return AccountInfoResponse.of(member.getAccount());
+    }
+
+    public void findRequestingAccounts() {
     }
 
     private Member findMember(Long id) {

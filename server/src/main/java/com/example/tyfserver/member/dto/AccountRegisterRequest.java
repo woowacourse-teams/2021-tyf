@@ -11,12 +11,12 @@ public class AccountRegisterRequest {
     private String accountHolder;
     private String account;
     private String bank;
-    private MultipartFile bankbook;
+    private MultipartFile bankbookImage;
 
     public AccountRegisterRequest(String accountHolder, String account, MultipartFile bankbookImage, String bank) {
         this.accountHolder = accountHolder;
         this.account = account;
-        this.bankbook = bankbookImage;
+        this.bankbookImage = bankbookImage;
         this.bank = bank;
     }
 }
