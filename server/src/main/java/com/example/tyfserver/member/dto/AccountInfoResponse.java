@@ -1,7 +1,6 @@
 package com.example.tyfserver.member.dto;
 
 import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +21,6 @@ public class AccountInfoResponse {
     }
 
     public static AccountInfoResponse of(Account account) {
-        return new AccountInfoResponse(account.getStatus().name(), account.getName(), account.getBank(), account.getAccountNumber());
+        return new AccountInfoResponse(account.getStatus().name(), account.getAccountHolder(), account.getBank(), account.getAccountNumber());
     }
 }

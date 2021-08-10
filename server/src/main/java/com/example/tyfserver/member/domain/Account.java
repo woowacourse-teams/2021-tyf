@@ -16,7 +16,7 @@ public class Account extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String accountHolder;
 
     @Column(unique = true)
     private String accountNumber;
@@ -28,8 +28,8 @@ public class Account extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private AccountStatus status = AccountStatus.UNREGISTERED;
 
-    public Account(String name, String accountNumber, String bankbookUrl, String bank) {
-        this.name = name;
+    public Account(String accountHolder, String accountNumber, String bankbookUrl, String bank) {
+        this.accountHolder = accountHolder;
         this.accountNumber = accountNumber;
         this.bankbookUrl = bankbookUrl;
         this.bank = bank;
@@ -38,7 +38,7 @@ public class Account extends BaseTimeEntity {
     public void register(Account account) {
         validateRegisterAccount();
         this.accountNumber = account.accountNumber;
-        this.name = account.name;
+        this.accountHolder = account.accountHolder;
         this.bank = account.bank;
         this.bankbookUrl = account.bankbookUrl;
         this.status = AccountStatus.REQUESTING;
