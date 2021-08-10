@@ -1,5 +1,6 @@
 package com.example.tyfserver.admin.controller;
 
+import com.example.tyfserver.admin.dto.AccountCancelRequest;
 import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.common.util.S3Connector;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     private final AdminService adminService;
-    private final S3Connector s3Connector;
 
     @PostMapping("/admin/approve/{member_id}/account")
     public ResponseEntity<Void> approveAccount(@PathVariable("member_id") Long member_id) {
         adminService.approveAccount(member_id);;
-        return null;
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/admin/cancel/{member_id}/account")
-    public ResponseEntity<Void> cancelAccount() {
-        return null;
+    public ResponseEntity<Void> cancelAccount(@PathVariable("member_id") Long member_id,
+                                              AccountCancelRequest accountCancelRequest) {
+        adminService.cancelAccount(member_id, accountCancelRequest);
+        return ResponseEntity.ok().build();
     }
 }

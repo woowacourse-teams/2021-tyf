@@ -28,4 +28,14 @@ public class SmtpMailConnector {
 
         javaMailSender.send(message);
     }
+
+    public void sendAccountCancel(String mailAddress, String cancelReason) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mailAddress);
+        message.setSubject(PREFIX_SUBJECT + "정산 계좌 승인 반려");
+        message.setText("정산계좌 신청이 반려되었습니다. \n " +
+                "반려사유 : " + cancelReason);
+
+        javaMailSender.send(message);
+    }
 }

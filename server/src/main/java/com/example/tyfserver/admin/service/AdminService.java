@@ -1,5 +1,6 @@
 package com.example.tyfserver.admin.service;
 
+import com.example.tyfserver.admin.dto.AccountCancelRequest;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.member.domain.Member;
@@ -25,8 +26,15 @@ public class AdminService {
         smtpMailConnector.sendAccountApprove(member.getEmail());
     }
 
+    public void cancelAccount(Long member_id, AccountCancelRequest accountCancelRequest) {
+        Member member = findMember(member_id);
+        member.cancelAccount();
+        smtpMailConnector.sendAccountCancel(member.getEmail(), accountCancelRequest.getCancelReason());
+    }
+
     private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
     }
+
 }
