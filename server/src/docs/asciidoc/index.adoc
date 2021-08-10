@@ -432,3 +432,20 @@ include::{snippets}/signUpRequestFailed/http-response.adoc[]
 include::{snippets}/signUpInvalidOauth2TypeFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/signUpInvalidOauth2TypeFailed/http-response.adoc[]
+
+== Admin (관리자)
+=== 계좌 등록 요청 승인
+==== Request
+include::{snippets}/approveAccount/http-request.adoc[]
+==== Response
+include::{snippets}/approveAccount/http-response.adoc[]
+=== 계좌 등록 요청 반려
+==== Request
+include::{snippets}/cancelAccount/http-request.adoc[]
+==== Response
+include::{snippets}/cancelAccount/http-response.adoc[]
+=== 계좌 등록 요청 조회
+==== Request
+include::{snippets}/requestingAccounts/http-request.adoc[]
+==== Response
+include::{snippets}/requestingAccounts/http-response.adoc[]

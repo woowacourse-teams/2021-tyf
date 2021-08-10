@@ -92,15 +92,13 @@ class AdminControllerTest {
         List<RequestingAccountResponse> responses = new ArrayList<>();
         responses.add(new RequestingAccountResponse(1L, "nickname1", "pagename1", "accountholder1",
                 "1234-1234-12341", "bank", "https://test.test.png"));
-        responses.add(new RequestingAccountResponse(1L, "nickname2", "pagename2", "accountholder2",
+        responses.add(new RequestingAccountResponse(2L, "nickname2", "pagename2", "accountholder2",
                 "1234-1234-12342", "bank", "https://test.test.png"));
 
         //when
         when(adminService.findRequestingAccounts()).thenReturn(responses);
         //then
-        mockMvc.perform(get("/admin/list/account")
-                .content(objectMapper.writeValueAsString(responses))
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/admin/list/account"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..memberId").exists())
                 .andExpect(jsonPath("$..nickname").exists())
