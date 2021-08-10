@@ -148,7 +148,6 @@ public class PaymentService {
 
         payment.refund(refundInfo);
         donation.cancel();
-        member.reducePoint(donation.getAmount());
     }
 
     private Payment findPayment(String merchantUid) {

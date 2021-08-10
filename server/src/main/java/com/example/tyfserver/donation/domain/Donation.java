@@ -79,6 +79,12 @@ public class Donation extends BaseTimeEntity {
 
     public void cancel() {
         status = DonationStatus.CANCELLED;
+        member.reducePoint(this.getAmount());
+    }
+
+    public void exchanged() {
+        status = DonationStatus.EXCHANGED;
+        member.reducePoint(this.getAmount());
     }
 
     public void validateIsNotCancelled() {
