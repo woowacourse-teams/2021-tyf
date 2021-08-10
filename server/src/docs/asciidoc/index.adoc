@@ -97,6 +97,11 @@ include::{snippets}/detailedPoint/http-response.adoc[]
 include::{snippets}/detailedPointInvalidTokenFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/detailedPointInvalidTokenFailed/http-response.adoc[]
+=== 창작자 상세 포인트 조회 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/detailedPointAuthorizationHeaderNotFoundFailed/http-request.adoc[]
+==== Response
+include::{snippets}/detailedPointAuthorizationHeaderNotFoundFailed/http-response.adoc[]
 === 창작자 큐레이션 리스트 - 성공
 ==== Request
 include::{snippets}/curations/http-request.adoc[]

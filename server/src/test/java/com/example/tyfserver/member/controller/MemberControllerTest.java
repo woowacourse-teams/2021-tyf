@@ -750,6 +750,23 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("GET - /me/detailedPoint - authorization not found")
+    public void detailedPointAuthorizationHeaderNotFoundFailed() throws Exception {
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(get("/members/me/detailedPoint")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("detailedPointAuthorizationHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
