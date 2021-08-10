@@ -88,13 +88,14 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         return authGet("/members/me/account", token).extract();
     }
 
-    public static ExtractableResponse<Response> 계좌_등록(MultiPartSpecification multiPartSpecification, String name, String account, String token) {
+    public static ExtractableResponse<Response> 계좌_등록(MultiPartSpecification multiPartSpecification, String name, String account, String bank, String token) {
         return RestAssured
                 .given().log().all()
                 .auth().oauth2(token)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .param("name", name)
-                .param("account", account)
+                .param("accountHolder", name)
+                .param("accountNumber", account)
+                .param("bank", bank)
                 .multiPart(multiPartSpecification)
                 .post("/members/me/account")
                 .then().extract()
@@ -325,12 +326,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
                 .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
-                .controlName("accountRegisterRequest")
+                .controlName("bankbookImage")
                 .fileName("bankbook.jpg")
                 .build();
 
         ExtractableResponse<Response> response = 계좌_등록(multiPartSpecification, "실명",
-                "1234-5678-1234", signUpResponse.getToken());
+                "1234-5678-1234", "은행", signUpResponse.getToken());
 
         assertThat(response.statusCode()).isEqualTo(200);
     }

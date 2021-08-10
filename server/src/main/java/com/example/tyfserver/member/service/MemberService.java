@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.service;
 
-import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
@@ -105,7 +104,7 @@ public class MemberService {
         String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbookImage(),
                 "users/" + loginMember.getId() + "/bankbook/");
         member.registerAccount(accountRegisterRequest.getAccountHolder(),
-                accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
+                accountRegisterRequest.getAccountNumber(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
