@@ -9,7 +9,6 @@ import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -104,7 +103,7 @@ public class MemberService {
 
         String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(),
                 "users/" + loginMember.getId() + "/bankbook/");
-        member.registerAccount(accountRegisterRequest.getName(),
+        member.registerAccount(accountRegisterRequest.getAccountHolder(),
                 accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
 
