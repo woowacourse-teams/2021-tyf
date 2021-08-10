@@ -1,0 +1,12 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "outDir": "./build",
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "sourceMap": true /* Generates corresponding '.map' file. */,
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
