@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 import { SIZE } from '../../constants/device';
 
+export const StyledLogin = styled.div`
+  min-height: calc(100vh - 10rem);
+  display: flex;
+  justify-items: center;
+  align-items: center;
+`;
+
 export const StyledLoginForm = styled.form`
   max-width: ${SIZE.MOBILE_MAX}px;
   width: 100%;
   margin: 0 auto;
-  height: 100%;
 `;
 
 export const LoginTitle = styled.h2`

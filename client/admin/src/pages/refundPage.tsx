@@ -1,3 +1,10 @@
+import Template from '../components/@atom/Template/Template';
+import { Refund } from '../components/Refund/Refund';
+
 export const refundPage = () => {
-  return <div>refund</div>;
+  return (
+    <Template>
+      <Refund />
+    </Template>
+  );
 };
