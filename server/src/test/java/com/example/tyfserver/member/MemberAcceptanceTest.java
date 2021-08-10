@@ -19,7 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.util.MimeTypeUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
@@ -89,13 +91,16 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 계좌_등록(MultiPartSpecification multiPartSpecification, String name, String account, String bank, String token) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("accountHolder", name);
+        requestBody.put("accountNumber", account);
+        requestBody.put("bank", bank);
+
         return RestAssured
                 .given().log().all()
                 .auth().oauth2(token)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .param("accountHolder", name)
-                .param("accountNumber", account)
-                .param("bank", bank)
+                .formParams(requestBody)
                 .multiPart(multiPartSpecification)
                 .post("/members/me/account")
                 .then().extract()
