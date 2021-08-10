@@ -4,15 +4,14 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.member.exception.DuplicatedNicknameException;
+import com.example.tyfserver.member.exception.DuplicatedPageNameException;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.hql.internal.ast.DetailedSemanticException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +26,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DonationRepository donationRepository;
-    private final AccountRepository accountRepository;
     private final S3Connector s3Connector;
 
     public void validatePageName(PageNameRequest request) {
@@ -65,7 +63,7 @@ public class MemberService {
     public ProfileResponse uploadProfile(MultipartFile multipartFile, LoginMember loginMember) {
         Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
-        String uploadedFile = s3Connector.upload(multipartFile, loginMember.getId());
+        String uploadedFile = s3Connector.upload(multipartFile, "users/" + loginMember.getId() + "/profiles/");
         findMember.uploadProfileImage(uploadedFile);
         return new ProfileResponse(uploadedFile);
     }
@@ -104,7 +102,8 @@ public class MemberService {
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());
 
-        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
+        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(),
+                "users/" + loginMember.getId() + "/bankbook/");
         member.registerAccount(accountRegisterRequest.getName(),
                 accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
