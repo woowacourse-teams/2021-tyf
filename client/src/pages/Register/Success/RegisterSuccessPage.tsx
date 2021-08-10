@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Anchor from '../../../components/@atom/Anchor/Anchor';
 import Transition from '../../../components/@atom/Transition/Transition.styles';
-import useRegister from '../../../service/hooks/auth/useRegister';
+import useRegister from '../../../service/auth/useRegister';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { REGISTER_PAGE_KEY } from '../Auth/RegisterAuthPage';
 import {

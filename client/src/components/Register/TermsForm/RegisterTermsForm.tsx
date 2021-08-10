@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom';
-import useRegisterOauthEffect from '../../../service/hooks/auth/useRegisterOauthEffect';
+import useRegisterOauthEffect from '../../../service/auth/useRegisterOauthEffect';
 
-import useTerms from '../../../service/hooks/auth/useTerms';
-import { popupTerms } from '../../../service/popup';
+import useTerms from '../../../service/auth/useTerms';
+import { popupTerms } from '../../../service/@utils/popupTerms';
 import Button from '../../@atom/Button/Button.styles';
 import {
   Divider,

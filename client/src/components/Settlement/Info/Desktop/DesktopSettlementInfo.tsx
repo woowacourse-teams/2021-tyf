@@ -1,5 +1,5 @@
-import useSettlement from '../../../../service/hooks/user/useSettlement';
-import useUserInfo from '../../../../service/hooks/user/useUserInfo';
+import useSettlement from '../../../../service//user/useSettlement';
+import useUserInfo from '../../../../service//user/useUserInfo';
 import { toCommaSeparatedString } from '../../../../utils/format';
 import Button from '../../../@atom/Button/Button.styles';
 import {

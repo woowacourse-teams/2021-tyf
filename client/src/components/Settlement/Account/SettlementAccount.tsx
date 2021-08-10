@@ -1,8 +1,8 @@
 import { ChangeEvent } from 'react';
 import { BANK_LIST } from '../../../constants/bank';
 
-import useSettlementAccountForm from '../../../service/hooks/settlement/useSettlementAccountForm';
-import { requestRegisterBankAccount } from '../../../service/request/settlement';
+import useSettlementAccountForm from '../../../service//settlement/useSettlementAccountForm';
+import { requestRegisterBankAccount } from '../../../service/@request/settlement';
 import { SettlementAccountForm } from '../../../types';
 import Button from '../../@atom/Button/Button.styles';
 import Input from '../../@atom/Input/Input.styles';

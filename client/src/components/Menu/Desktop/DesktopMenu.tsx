@@ -6,8 +6,8 @@ import User from '../../../assets/icons/user.svg';
 import Setting from '../../../assets/icons/setting.svg';
 import Logout from '../../../assets/icons/logout.svg';
 import { useHistory } from 'react-router-dom';
-import useUserInfo from '../../../service/hooks/user/useUserInfo';
-import useLogout from '../../../service/hooks/auth/useLogout';
+import useUserInfo from '../../../service//user/useUserInfo';
+import useLogout from '../../../service/auth/useLogout';
 
 export interface DesktopMenuProps {
   onClose: () => void;

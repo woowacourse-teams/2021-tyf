@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
-const useInitScrollTopEffect = (...dependancies: unknown[]) => {
+const useInitScrollTopEffect = (...dependencies: unknown[]) => {
   useEffect(() => {
     window.scroll({ top: 0 });
-  }, dependancies);
+  }, dependencies);
 };
 
 export default useInitScrollTopEffect;

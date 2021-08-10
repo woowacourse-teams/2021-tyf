@@ -1,4 +1,4 @@
-import useCreatorList from '../../../../service/hooks/creator/useCreatorList';
+import useCreatorList from '../../../../service//creator/useCreatorList';
 import Anchor from '../../../@atom/Anchor/Anchor';
 import CreatorCard from '../../CreatorCard/CreatorCard';
 import {

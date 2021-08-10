@@ -1,13 +1,13 @@
 import IconOutlineBarButton from '../../../components/@molecule/IconOutlineBarButton/IconOutlineBarButton';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
-import { popupWindow } from '../../../service/popup';
+import { popupWindow } from '../../../utils/popup';
 import {
   PaymentButtonContainer,
   DonationPaymentPageTemplate,
   StyledSubTitle,
 } from './DonationPaymentPage.styles';
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
-import useDonation from '../../../service/hooks/donation/useDonation';
+import useDonation from '../../../service//donation/useDonation';
 import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';

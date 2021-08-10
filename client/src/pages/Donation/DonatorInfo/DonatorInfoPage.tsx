@@ -4,7 +4,7 @@ import { ParamTypes } from '../../../App';
 import Transition from '../../../components/@atom/Transition/Transition.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import DonatorForm from '../../../components/Donation/DonatorForm/DonatorForm';
-import { popupWindow } from '../../../service/popup';
+import { popupWindow } from '../../../utils/popup';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { DonatorInfoPageTemplate } from './DonatorInfoPage.styles';
 
