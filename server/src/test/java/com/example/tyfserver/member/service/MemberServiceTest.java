@@ -179,12 +179,12 @@ class MemberServiceTest {
         Donation donation2 = new Donation(payment2);
         Donation donation3 = new Donation(payment3);
         Donation donation4 = new Donation(payment4);
-        donation1.updateStatus(DonationStatus.EXCHANGED);
-        donation4.updateStatus(DonationStatus.CANCELLED);
-        donation1.to(member);
-        donation2.to(member);
-        donation3.to(member);
-        donation4.to(member);
+        member.addDonation(donation1);
+        member.addDonation(donation2);
+        member.addDonation(donation3);
+        member.addDonation(donation4);
+        donation1.exchanged();
+        donation4.cancel();
 
         donationRepository.save(donation1);
         donationRepository.save(donation2);
@@ -193,7 +193,7 @@ class MemberServiceTest {
 
         //then
         DetailedPointResponse response = memberService.detailedPoint(member.getId());
-        assertThat(response.getPossessedPoint()).isEqualTo(5000);
+        assertThat(response.getCurrentPoint()).isEqualTo(5000);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
     }

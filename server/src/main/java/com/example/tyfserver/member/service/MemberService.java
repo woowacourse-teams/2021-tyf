@@ -98,9 +98,9 @@ public class MemberService {
     }
 
     public DetailedPointResponse detailedPoint(Long id) {
-        Long possessPoint = donationRepository.possessedPoint(id);
+        Long currentPoint = findMember(id).getPoint();
         Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.exchangeableDayLimit);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
-        return new DetailedPointResponse(possessPoint, exchangeablePoint, exchangedTotalPoint);
+        return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
     }
 }

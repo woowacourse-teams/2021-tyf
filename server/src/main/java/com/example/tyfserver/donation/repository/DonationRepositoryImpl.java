@@ -18,21 +18,6 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         queryFactory = new JPAQueryFactory(em);
     }
 
-    public Long possessedPoint(Long memberId) {
-        Long result = queryFactory
-                .select(payment.amount.sum())
-                .from(donation)
-                .join(donation.payment, payment)
-                .where(validateStatus(memberId))
-                .groupBy(donation.member)
-                .fetchOne();
-
-        if (result == null) {
-            return 0L;
-        }
-        return result;
-    }
-
     public Long exchangeablePoint(Long memberId, LocalDateTime now, long exchangeableDayLimit) {
         Long result = queryFactory
                 .select(payment.amount.sum())

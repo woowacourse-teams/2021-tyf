@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DetailedPointResponse {
 
-    private Long possessedPoint;
+    private Long currentPoint;
     private Long exchangeablePoint;
     private Long exchangedTotalPoint;
 
-    public DetailedPointResponse(Long possessedPoint, Long exchangeablePoint, Long exchangedTotalPoint) {
-        this.possessedPoint = possessedPoint;
+    public DetailedPointResponse(Long currentPoint, Long exchangeablePoint, Long exchangedTotalPoint) {
+        this.currentPoint = currentPoint;
         this.exchangeablePoint = exchangeablePoint;
         this.exchangedTotalPoint = exchangedTotalPoint;
     }

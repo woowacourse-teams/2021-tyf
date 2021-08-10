@@ -284,7 +284,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         DetailedPointResponse response = 상세_포인트_조회(signUpResponse.getToken()).as(DetailedPointResponse.class);
 
         //then
-        assertThat(response.getPossessedPoint()).isEqualTo(3000L);
+        assertThat(response.getCurrentPoint()).isEqualTo(3000L);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }

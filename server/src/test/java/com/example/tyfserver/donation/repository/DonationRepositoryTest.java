@@ -123,21 +123,6 @@ class DonationRepositoryTest {
                 donation4, donation3, donation2
         );
     }
-    
-    @Test
-    @DisplayName("현재 보유 포인트를 조회한다.")
-    public void possessedPoint() {
-        donation1.updateStatus(DonationStatus.CANCELLED);
-        donation2.updateStatus(DonationStatus.EXCHANGED);
-        donation3.updateStatus(DonationStatus.CANCELLED);
-        donation4.updateStatus(DonationStatus.CANCELLED);
-
-        Long member1PossessedPoint = donationRepository.possessedPoint(member1.getId());
-        Long member2PossessedPoint = donationRepository.possessedPoint(member2.getId());
-
-        assertThat(member1PossessedPoint).isEqualTo(18000L);
-        assertThat(member2PossessedPoint).isEqualTo(0L);
-    }
 
     @Test
     @DisplayName("정산 가능 포인트를 조회한다.")
