@@ -3,6 +3,7 @@ import { DEVICE, SIZE } from '../../../constants/device';
 
 export const StyledTemplate = styled.main`
   width: 100vw;
+  margin-top: 5rem;
 `;
 
 export const InnerTemplate = styled.section`

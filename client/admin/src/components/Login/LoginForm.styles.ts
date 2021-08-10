@@ -10,6 +10,7 @@ export const StyledLoginForm = styled.form`
 
 export const LoginTitle = styled.h2`
   text-align: center;
+  margin-bottom: 5rem;
 `;
 
 export const LoginContainer = styled.div`
@@ -19,6 +20,6 @@ export const LoginContainer = styled.div`
   align-items: center;
 
   input {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 `;
