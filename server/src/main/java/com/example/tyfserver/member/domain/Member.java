@@ -113,8 +113,8 @@ public class Member extends BaseTimeEntity {
         this.account = account;
     }
 
-    public void registerAccount(Account account) {
-        this.account.register(account);
+    public void registerAccount(String accountHolder, String accountNumber, String bank, String bankBookUrl) {
+        this.account.register(accountHolder, accountNumber, bank, bankBookUrl);
     }
 
     public AccountStatus getAccountStatus() {

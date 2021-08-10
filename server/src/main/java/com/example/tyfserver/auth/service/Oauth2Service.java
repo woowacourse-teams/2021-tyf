@@ -49,8 +49,7 @@ public class Oauth2Service {
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
         Member savedMember = memberRepository.save(member);
-        Account save = accountRepository.save(new Account());
-        savedMember.addInitialAccount(save);
+        savedMember.addInitialAccount(accountRepository.save(new Account()));
 
         return new SignUpResponse(authenticationService.createToken(savedMember), savedMember.getPageName());
     }

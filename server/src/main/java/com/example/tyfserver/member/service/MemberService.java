@@ -80,11 +80,6 @@ public class MemberService {
         member.updateNickName(nickName);
     }
 
-    private Member findMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
     private void deleteProfile(Member member) {
         if (member.getProfileImage() == null) {
             return;
@@ -97,13 +92,18 @@ public class MemberService {
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());
 
-        String uploadedFile = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
-        member.registerAccount(new Account(accountRegisterRequest.getName(),
-                accountRegisterRequest.getAccount(), uploadedFile, accountRegisterRequest.getBank()));
+        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
+        member.registerAccount(accountRegisterRequest.getName(),
+                accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
         Member member = findMember(loginMember.getId());
         return AccountInfoResponse.of(member.getAccount());
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

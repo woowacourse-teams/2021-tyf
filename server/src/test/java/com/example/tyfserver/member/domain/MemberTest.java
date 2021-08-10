@@ -71,14 +71,14 @@ public class MemberTest {
         //given
         Member member = testMember();
         member.addInitialAccount(new Account());
-        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png", "하나");
-        member.registerAccount(account);
+        member.registerAccount("테스트", "1234-5678-1234", "하나", "https://test.com/test.png");
 
         Account memberAccount = member.getAccount();
         assertThat(memberAccount.getStatus()).isEqualTo(AccountStatus.REQUESTING);
-        assertThat(memberAccount.getAccountHolder()).isEqualTo(account.getAccountHolder());
-        assertThat(memberAccount.getBank()).isEqualTo(account.getBank());
-        assertThat(memberAccount.getBankbookUrl()).isEqualTo(account.getBankbookUrl());
+        assertThat(memberAccount.getAccountHolder()).isEqualTo("테스트");
+        assertThat(memberAccount.getAccountNumber()).isEqualTo("1234-5678-1234");
+        assertThat(memberAccount.getBank()).isEqualTo("하나");
+        assertThat(memberAccount.getBankbookUrl()).isEqualTo("https://test.com/test.png");
 
     }
 
@@ -88,10 +88,10 @@ public class MemberTest {
         //given
         Member member = testMember();
         member.addInitialAccount(new Account());
-        Account account = new Account("테스트", "1234-5678-1234", "https://test.com/test.png", "하나");
-        member.registerAccount(account);
+        member.registerAccount("테스트", "1234-5678-1234", "https://test.com/test.png", "하나");
 
-        assertThatThrownBy(() -> member.registerAccount(account))
+        assertThatThrownBy(() -> member.registerAccount("테스트", "1234-5678-1234",
+                "하나", "https://test.com/test.png"))
                 .isExactlyInstanceOf(AccountRequestingException.class);
     }
 }

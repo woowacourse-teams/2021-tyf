@@ -35,12 +35,12 @@ public class Account extends BaseTimeEntity {
         this.bank = bank;
     }
 
-    public void register(Account account) {
+    public void register(String accountHolder, String accountNumber, String bank, String bankbookUrl) {
         validateRegisterAccount();
-        this.accountNumber = account.accountNumber;
-        this.accountHolder = account.accountHolder;
-        this.bank = account.bank;
-        this.bankbookUrl = account.bankbookUrl;
+        this.accountHolder = accountHolder;
+        this.accountNumber = accountNumber;
+        this.bank = bank;
+        this.bankbookUrl = bankbookUrl;
         this.status = AccountStatus.REQUESTING;
     }
 
