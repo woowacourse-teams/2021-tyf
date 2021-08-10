@@ -173,7 +173,11 @@ class MemberServiceTest {
         memberService.registerAccount(loginMember, test);
 
         //then
-        assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.REQUESTING);
+        Account account = member.getAccount();
+        assertThat(account.getStatus()).isEqualTo(AccountStatus.REQUESTING);
+        assertThat(account.getAccountHolder()).isEqualTo("test");
+        assertThat(account.getBank()).isEqualTo("하나");
+        assertThat(account.getAccountNumber()).isEqualTo("1234-5678-1234");
     }
 
 }
