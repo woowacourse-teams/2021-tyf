@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { SIZE } from '../../../constants/device';
+import useModal from '../../../utils/useModal';
 import useScrollLock from '../../../utils/useScrollLock';
 import { useWindowResize } from '../../../utils/useWindowResize';
-
 import {
   DropDownList,
   ListItem,
@@ -20,18 +19,16 @@ export interface SelectProps {
 
 const Select = ({ placeholder, selectOptions, value, onChange }: SelectProps) => {
   const { windowWidth } = useWindowResize();
-  const [isOpen, setIsOpen] = useState(false);
+  const { closeModal, isOpen, toggleModal } = useModal();
 
-  const toggleOptions = () => setIsOpen(!isOpen);
   const onOptionClicked = (optionValue: string) => onChange(optionValue);
-  const onClose = () => setIsOpen(false);
 
   const isDesktop = windowWidth > SIZE.DESKTOP_LARGE;
 
   useScrollLock();
 
   return (
-    <StyledSelectBox onClick={toggleOptions}>
+    <StyledSelectBox onClick={toggleModal}>
       {value ?? placeholder}
       {isOpen &&
         (isDesktop ? (
@@ -43,7 +40,7 @@ const Select = ({ placeholder, selectOptions, value, onChange }: SelectProps) =>
             ))}
           </DropDownList>
         ) : (
-          <OptionModal onClose={onClose}>
+          <OptionModal onClose={closeModal}>
             <ModalTransition>
               <DropDownList>
                 {selectOptions.map((option, index) => (

@@ -2,8 +2,7 @@ import { ChangeEvent } from 'react';
 import { BANK_LIST } from '../../../constants/bank';
 
 import useSettlementAccountForm from '../../../service//settlement/useSettlementAccountForm';
-import { requestRegisterBankAccount } from '../../../service/@request/settlement';
-import { SettlementAccountForm } from '../../../types';
+import { registerBankAccount } from '../../../service/settlement/registerBankAccount';
 import Button from '../../@atom/Button/Button.styles';
 import Input from '../../@atom/Input/Input.styles';
 import SelectBox from '../../@atom/Select/Select';
@@ -28,21 +27,12 @@ const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
 
   const onChangeBankAccountImg = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (!target.files) return;
+
     setBankAccountImage(target.files[0]);
   };
 
-  const registerBankAccount = async (form: SettlementAccountForm) => {
-    try {
-      await requestRegisterBankAccount(form);
-
-      alert('계정정보 등록에 성공했습니다!');
-    } catch (error) {
-      alert('계좌정보를 등록하는데 실패했습니다.');
-    }
-  };
-
-  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     await registerBankAccount(form);
     onClose();
