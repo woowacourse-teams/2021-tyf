@@ -42,6 +42,18 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String createAdminToken() { // todo: 그래서 페이로드 뭐 넣지...?
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .claim("admin", "tyf-admin") // todo: 이 값으로 아무것도 하는게 없다...
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secreteKey)
+                .compact();
+    }
+
     public void validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secreteKey).parseClaimsJws(token);
@@ -62,6 +74,12 @@ public class JwtTokenProvider {
         Claims claims = claims(token);
 
         return claims.get("merchantUid", String.class);
+    }
+
+    public String findAdminFromToken(String token) {
+        Claims claims = claims(token);
+
+        return claims.get("admin", String.class);
     }
 
     private Claims claims(String token) {

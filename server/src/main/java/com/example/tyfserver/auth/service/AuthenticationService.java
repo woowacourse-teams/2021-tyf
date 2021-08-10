@@ -1,5 +1,6 @@
 package com.example.tyfserver.auth.service;
 
+import com.example.tyfserver.admin.dto.AdminMember;
 import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.VerifiedRefunder;
@@ -22,6 +23,10 @@ public class AuthenticationService {
         return jwtTokenProvider.createRefundToken(merchantUid);
     }
 
+    public String createAdminToken() {
+        return jwtTokenProvider.createAdminToken();
+    }
+
     public LoginMember createLoginMemberByToken(String token) {
         IdAndEmail idAndEmail = jwtTokenProvider.findIdAndEmailFromToken(token);
         return new LoginMember(idAndEmail.getId(), idAndEmail.getEmail());
@@ -30,6 +35,11 @@ public class AuthenticationService {
     public VerifiedRefunder createVerifiedRefundRequestByToken(String token) {
         String merchantUid = jwtTokenProvider.findMerchantUidFromToken(token);
         return new VerifiedRefunder(merchantUid);
+    }
+
+    public AdminMember createAdminMemberByToken(String token) {
+        String admin = jwtTokenProvider.findAdminFromToken(token);
+        return new AdminMember(admin);
     }
 
     public void validateToken(String token) {
