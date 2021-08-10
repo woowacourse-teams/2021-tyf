@@ -17,7 +17,7 @@ const useDonation = (creatorId: CreatorId) => {
     const { merchantUid } = await requestPayment({ amount, email, pageName });
     const { IMP } = window;
 
-    const accountId = 'imp52497817';
+    const accountId = process.env.NODE_ENV === 'production' ? 'imp52497817' : 'imp61348931';
 
     IMP.init(accountId);
 
@@ -39,6 +39,8 @@ const useDonation = (creatorId: CreatorId) => {
 
       try {
         const donationResult = await requestPaymentComplete(response);
+
+        console.log(donationResult);
 
         setDonation(donationResult);
         alert('결제에 성공했습니다.');

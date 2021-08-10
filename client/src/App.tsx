@@ -25,6 +25,8 @@ import { CreatorId, OAuthProvider } from './types';
 import RefundCertificationPage from './pages/Refund/Certification/RefundCertificationPage';
 import RefundApplyPage from './pages/Refund/Apply/RefundApplyPage';
 import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
+import { useWindowResize } from './utils/useWindowResize';
+import SettlementPage from './pages/Settlement/SettlementPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -34,8 +36,10 @@ export interface ParamTypes {
 const App = () => {
   const { pathname } = useLocation();
   const accessToken = useRecoilValue(accessTokenState);
+  const { useWindowResizeInitEffect } = useWindowResize();
 
   useInitScrollTopEffect(pathname);
+  useWindowResizeInitEffect();
 
   return (
     <>
@@ -87,6 +91,13 @@ const App = () => {
         <PrivateRoute
           path="/creator/:creatorId/statistic"
           component={StatisticsPage}
+          isAuthed={!!accessToken}
+          redirectTo="/login"
+        />
+
+        <PrivateRoute
+          path="/creator/:creatorId/settlement"
+          component={SettlementPage}
           isAuthed={!!accessToken}
           redirectTo="/login"
         />

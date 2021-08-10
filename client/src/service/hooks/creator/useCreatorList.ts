@@ -29,7 +29,7 @@ const useCreatorList = () => {
     if (!listRef.current) return;
 
     listRef.current.scroll({
-      left: currentPage * 720,
+      left: currentPage * listRef.current.clientWidth,
       behavior: 'smooth',
     });
   }, [currentPage]);
