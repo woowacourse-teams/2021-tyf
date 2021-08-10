@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountRegisterRequest {
-    @NotNull
+    @NotBlank
     private String accountHolder;
-    @NotNull
+    @NotBlank
     private String accountNumber;
-    @NotNull
+    @NotBlank
     private String bank;
     @NotNull
     private MultipartFile bankbookImage;
