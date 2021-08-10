@@ -116,18 +116,21 @@ public class MemberService {
 
     public void exchange(Long id) {
         Member member = findMember(id);
-        if (exchangeRepository.existsByPageName(member.getPageName())) {
-            //todo: 이미 정산신청을 한 상태입니다.
-            throw new RuntimeException();
-        }
         Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.EXCHANGEABLE_DAY_LIMIT);
-        if (exchangeablePoint <= 10000) {
-            //todo: 만원 이하는 정산신청을 할 수 없습니다.
-            throw new RuntimeException();
-        }
+        validateExchangeable(member, exchangeablePoint);
+        
         Exchange exchange =
                 new Exchange(exchangeablePoint, member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
         exchangeRepository.save(exchange);
+    }
+
+    private void validateExchangeable(Member member, Long exchangeablePoint) {
+        if (exchangeRepository.existsByPageName(member.getPageName())) {
+            throw new AlreadyRequestExchangeException();
+        }
+        if (exchangeablePoint <= 10000) {
+            throw new ExchangeAmountException();
+        }
     }
 
     private Member findMember(Long id) {
