@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountInfoResponse {
     private String status;
-    private String name;
+    private String accountHolder;
     private String bank;
-    private String account;
+    private String accountNumber;
 
-    private AccountInfoResponse(String status, String name, String bank, String account) {
+    private AccountInfoResponse(String status, String accountHolder, String bank, String accountNumber) {
         this.status = status;
-        this.name = name;
+        this.accountHolder = accountHolder;
         this.bank = bank;
-        this.account = account;
+        this.accountNumber = accountNumber;
     }
 
     public static AccountInfoResponse of(Account account) {
