@@ -7,6 +7,7 @@ import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.exception.S3FileNotFoundException;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.service.MemberService;
@@ -27,7 +28,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.Arrays;
@@ -37,8 +37,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -713,6 +712,174 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("Get - /members/me/account - success")
+    void getAccountInfo() throws Exception {
+        //given
+        AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(new Account("","","",""));
+
+        //when
+        when(memberService.accountInfo(Mockito.any())).thenReturn(accountInfoResponse);
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(get("/members/me/account"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("status").value("UNREGISTERED"))
+                .andDo(document("accountInfo",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("Get - /members/me/account - fail - authorization header not found")
+    void getAccountInfoHeaderNotFoundFailed() throws Exception {
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(get("/members/me/account"))
+                .andExpect(status().isBadRequest())
+                .andDo(document("accountInfoHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("Get - /members/me/account - success")
+    void getAccountInfoInvalidTokenFailed() throws Exception {
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(get("/members/me/account"))
+                .andExpect(status().isBadRequest())
+                .andDo(document("accountInfoInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("Post - /members/me/account - success")
+    void registerAccount() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("name", "test")
+                .param("account", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isOk())
+                .andDo(document("registerAccount",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+    }
+
+    @Test
+    @DisplayName("Post - /members/me/account - fail - account registered")
+    void registerAccountFailWhenAccountRegistered() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new AccountAlreadyRegisteredException()).when(memberService).registerAccount(Mockito.any(), Mockito.any());
+
+        //when
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("name", "test")
+                .param("account", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AccountAlreadyRegisteredException.ERROR_CODE))
+                .andDo(document("registerAccountFailRegistered",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+    }
+
+    @Test
+    @DisplayName("Post - /members/me/account - fail - account requesting")
+    void registerAccountFailWhenAccountRequesting() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new AccountRequestingException()).when(memberService).registerAccount(Mockito.any(), Mockito.any());
+
+        //when
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("name", "test")
+                .param("account", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AccountRequestingException.ERROR_CODE))
+                .andDo(document("registerAccountFailRequesting",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+    }
+
+    @Test
+    @DisplayName("Post - /members/me/account - fail - authorization header not found")
+    public void registerAccountHeaderNotFoundFailed() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        //when
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("name", "test")
+                .param("account", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
+                .andDo(document("registerAccountHeaderNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+
+    @Test
+    @DisplayName("Post - /members/me/account - fail invalid token")
+    public void registerAccountInvalidTokenFailed() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        //when
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //then
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("name", "test")
+                .param("account", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
+                .andDo(document("registerAccountInvalidTokenFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+
     private void validInterceptorAndArgumentResolverMocking() {
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
@@ -721,7 +888,7 @@ class MemberControllerTest {
     }
 
     private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
-        MockMultipartHttpServletRequestBuilder putRequest = MockMvcRequestBuilders.multipart(url);
+        MockMultipartHttpServletRequestBuilder putRequest = multipart(url);
 
         putRequest.with(new RequestPostProcessor() {
             @Override

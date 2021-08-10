@@ -1,6 +1,7 @@
 package com.example.tyfserver.member.dto;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
