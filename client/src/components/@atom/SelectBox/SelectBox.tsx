@@ -14,11 +14,11 @@ import {
 export interface SelectBoxProps {
   selectHeader: string;
   selectOptions: string[];
-  selected: string | null;
-  setSelected: (account: string) => void;
+  value: string | null;
+  onChange: (account: string) => void;
 }
 
-const SelectBox = ({ selectHeader, selectOptions, selected, setSelected }: SelectBoxProps) => {
+const SelectBox = ({ selectHeader, selectOptions, value, onChange }: SelectBoxProps) => {
   const { windowWidth } = useWindowResize();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,8 +28,8 @@ const SelectBox = ({ selectHeader, selectOptions, selected, setSelected }: Selec
     setIsOpen(!isOpen);
   };
 
-  const onOptionClicked = (value: string) => {
-    setSelected(value);
+  const onOptionClicked = (optionValue: string) => {
+    onChange(optionValue);
   };
 
   const onClose = () => {
@@ -38,33 +38,31 @@ const SelectBox = ({ selectHeader, selectOptions, selected, setSelected }: Selec
   const isDesktop = windowWidth > SIZE.DESKTOP_LARGE;
 
   return (
-    <>
-      <StyledSelectBox onClick={toggleOptions}>
-        {selected ?? selectHeader}
-        {isOpen &&
-          (isDesktop ? (
-            <DropDownList>
-              {selectOptions.map((option, index) => (
-                <ListItem onClick={() => onOptionClicked(option)} key={index}>
-                  {option}
-                </ListItem>
-              ))}
-            </DropDownList>
-          ) : (
-            <OptionModal onClose={onClose}>
-              <ModalTransition>
-                <DropDownList>
-                  {selectOptions.map((option, index) => (
-                    <ListItem onClick={() => onOptionClicked(option)} key={index}>
-                      {option}
-                    </ListItem>
-                  ))}
-                </DropDownList>
-              </ModalTransition>
-            </OptionModal>
-          ))}
-      </StyledSelectBox>
-    </>
+    <StyledSelectBox onClick={toggleOptions}>
+      {value ?? selectHeader}
+      {isOpen &&
+        (isDesktop ? (
+          <DropDownList>
+            {selectOptions.map((option, index) => (
+              <ListItem onClick={() => onOptionClicked(option)} key={index}>
+                {option}
+              </ListItem>
+            ))}
+          </DropDownList>
+        ) : (
+          <OptionModal onClose={onClose}>
+            <ModalTransition>
+              <DropDownList>
+                {selectOptions.map((option, index) => (
+                  <ListItem onClick={() => onOptionClicked(option)} key={index}>
+                    {option}
+                  </ListItem>
+                ))}
+              </DropDownList>
+            </ModalTransition>
+          </OptionModal>
+        ))}
+    </StyledSelectBox>
   );
 };
 

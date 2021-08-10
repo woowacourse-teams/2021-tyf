@@ -67,8 +67,8 @@ const SettlementAccount = ({ onClose }: SettlementAccountProps) => {
           <SelectBox
             selectHeader="은행을 선택해주세요"
             selectOptions={BANK_LIST}
-            selected={form.bank}
-            setSelected={setBank}
+            value={form.bank}
+            onChange={setBank}
           />
         </InputContainer>
         <InputContainer>

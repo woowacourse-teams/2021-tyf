@@ -25,7 +25,7 @@ const DesktopSettlementInfo = () => {
           </span>
           <Caution>Thank You For 에서 정산받은 총 금액입니다</Caution>
         </AmountContainer>
-        <Button disabled>정산 내역확인하기</Button>
+        <Button disabled>정산 내역 확인하기</Button>
       </InfoContainer>
       <InfoContainer>
         <StyledSubTitle>현재 도네이션 받은 금액은</StyledSubTitle>

@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import PALETTE from '../../../constants/palette';
+import { Z_INDEX } from '../../../constants/style';
 
 const MenuOpen = keyframes`
   0% {
@@ -20,6 +21,7 @@ export const StyledDesktopMenu = styled.div`
   background-color: ${PALETTE.WHITE_400};
 
   animation: ${MenuOpen} 0.5s ease-in-out;
+  z-index: ${Z_INDEX.FOREGROUND};
 `;
 
 export const MenuButton = styled.button`
