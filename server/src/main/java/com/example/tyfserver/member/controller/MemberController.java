@@ -128,4 +128,10 @@ public class MemberController {
         memberService.registerAccount(loginMember, accountRegisterRequest);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/me/exchange")
+    public ResponseEntity<Void> requestExchange(LoginMember loginMember) {
+        memberService.exchange(loginMember.getId());
+        return ResponseEntity.ok().build();
+    }
 }

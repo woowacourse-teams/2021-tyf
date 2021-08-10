@@ -4,15 +4,14 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.AccountStatus;
+import com.example.tyfserver.member.domain.Exchange;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.AccountRepository;
+import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.hql.internal.ast.DetailedSemanticException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +27,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final DonationRepository donationRepository;
     private final AccountRepository accountRepository;
+    private final ExchangeRepository exchangeRepository;
     private final S3Connector s3Connector;
 
     public void validatePageName(PageNameRequest request) {
@@ -96,7 +96,7 @@ public class MemberService {
 
     public DetailedPointResponse detailedPoint(Long id) {
         Long currentPoint = findMember(id).getPoint();
-        Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.exchangeableDayLimit);
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.EXCHANGEABLE_DAY_LIMIT);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
         return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
     }
@@ -112,6 +112,22 @@ public class MemberService {
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
         Member member = findMember(loginMember.getId());
         return AccountInfoResponse.of(member.getAccount());
+    }
+
+    public void exchange(Long id) {
+        Member member = findMember(id);
+        if (exchangeRepository.existsByPageName(member.getPageName())) {
+            //todo: 이미 정산신청을 한 상태입니다.
+            throw new RuntimeException();
+        }
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.EXCHANGEABLE_DAY_LIMIT);
+        if (exchangeablePoint <= 10000) {
+            //todo: 만원 이하는 정산신청을 할 수 없습니다.
+            throw new RuntimeException();
+        }
+        Exchange exchange =
+                new Exchange(exchangeablePoint, member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
+        exchangeRepository.save(exchange);
     }
 
     private Member findMember(Long id) {
