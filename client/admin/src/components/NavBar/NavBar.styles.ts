@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { SIZE } from '../../constants/device';
 import PALETTE from '../../constants/palette';
 
 export const StyledNavBar = styled.nav`
@@ -12,6 +13,7 @@ export const StyledNavBar = styled.nav`
   align-items: center;
   background-color: ${PALETTE.WHITE_400};
   height: 5rem;
+  min-width: ${SIZE.DESKTOP_LARGE}px;
 `;
 
 export const StyledTitle = styled.h3``;

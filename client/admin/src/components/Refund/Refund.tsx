@@ -21,6 +21,8 @@ export const Refund = () => {
             <br />
             <Bold>후원자명</Bold> | 인치
             <br />
+            <Bold>후원자 이메일</Bold> | hchayan196@gmail.com
+            <br />
             <Bold>후원금액</Bold> | 12,000원
             <br />
             <Bold>후원일자</Bold> | 2021.08.09 (2일전)
