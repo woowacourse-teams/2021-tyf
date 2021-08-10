@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.dto;
 
-import com.example.tyfserver.member.domain.Account;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
