@@ -227,7 +227,36 @@ include::{snippets}/registerAccountHeaderNotFoundFailed/http-response.adoc[]
 include::{snippets}/registerAccountInvalidTokenFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/registerAccountInvalidTokenFailed/http-response.adoc[]
-
+=== 정산 신청 - 성공
+==== Request
+include::{snippets}/requestExchange/http-request.adoc[]
+==== Response
+include::{snippets}/requestExchange/http-response.adoc[]
+=== 정산 신청 - 회원을 찾을 수 없는 경우
+==== Request
+include::{snippets}/requestExchangeMemberNotFound/http-request.adoc[]
+==== Response
+include::{snippets}/requestExchangeMemberNotFound/http-response.adoc[]
+=== 정산 신청 - 이미 정산을 신청해둔 경우
+==== Request
+include::{snippets}/requestExchangeAlreadyRequestExchange/http-request.adoc[]
+==== Response
+include::{snippets}/requestExchangeAlreadyRequestExchange/http-response.adoc[]
+=== 정산 신청 - 정산 금액이 10000원 이하인 경우
+==== Request
+include::{snippets}/requestExchangeExchangeAmountLess/http-request.adoc[]
+==== Response
+include::{snippets}/requestExchangeExchangeAmountLess/http-response.adoc[]
+=== 정산 신청 - Authorization 헤더를 찾을 수 없음
+==== Request
+include::{snippets}/requestExchangeAuthorizationNotFound/http-request.adoc[]
+==== Response
+include::{snippets}/requestExchangeAuthorizationNotFound/http-response.adoc[]
+=== 정산 신청 - 유효하지 않은 토큰
+==== Request
+include::{snippets}/requestExchangeInvalidToken/http-request.adoc[]
+==== Response
+include::{snippets}/requestExchangeInvalidToken/http-response.adoc[]
 
 
 == Banners (배너)
