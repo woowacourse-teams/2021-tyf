@@ -4,11 +4,12 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.DuplicatedNicknameException;
-import com.example.tyfserver.member.exception.DuplicatedPageNameException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.hql.internal.ast.DetailedSemanticException;
@@ -26,6 +27,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DonationRepository donationRepository;
+    private final AccountRepository accountRepository;
     private final S3Connector s3Connector;
 
     public void validatePageName(PageNameRequest request) {
@@ -83,11 +85,6 @@ public class MemberService {
         member.updateNickName(nickName);
     }
 
-    private Member findMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
     private void deleteProfile(Member member) {
         if (member.getProfileImage() == null) {
             return;
@@ -102,5 +99,22 @@ public class MemberService {
         Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.exchangeableDayLimit);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
         return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
+
+    public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
+        Member member = findMember(loginMember.getId());
+
+        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
+        member.registerAccount(accountRegisterRequest.getName(),
+                accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
+    }
+
+    public AccountInfoResponse accountInfo(LoginMember loginMember) {
+        Member member = findMember(loginMember.getId());
+        return AccountInfoResponse.of(member.getAccount());
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

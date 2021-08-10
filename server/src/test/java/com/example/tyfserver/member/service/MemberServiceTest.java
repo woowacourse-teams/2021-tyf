@@ -6,11 +6,14 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.DuplicatedNicknameException;
 import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.repository.PaymentRepository;
@@ -38,6 +41,9 @@ import static org.mockito.Mockito.when;
 class MemberServiceTest {
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
@@ -56,7 +62,8 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+        savedMember.addInitialAccount(accountRepository.save(new Account()));
     }
 
     @Test
@@ -196,5 +203,22 @@ class MemberServiceTest {
         assertThat(response.getCurrentPoint()).isEqualTo(5000);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
+    }
+  
+    @DisplayName("계좌정보를 등록한다.")
+    public void registerAccountInfo() {
+        //given
+        LoginMember loginMember = new LoginMember(member.getId(), member.getEmail());
+        final AccountRegisterRequest test = new AccountRegisterRequest("test", "1234-5678-1234", null, "하나");
+
+        //when
+        memberService.registerAccount(loginMember, test);
+
+        //then
+        Account account = member.getAccount();
+        assertThat(account.getStatus()).isEqualTo(AccountStatus.REQUESTING);
+        assertThat(account.getAccountHolder()).isEqualTo("test");
+        assertThat(account.getBank()).isEqualTo("하나");
+        assertThat(account.getAccountNumber()).isEqualTo("1234-5678-1234");
     }
 }
