@@ -45,7 +45,7 @@ public class AdminService {
     public void rejectExchange(String pageName, String rejectReason) {
         Member member = findMember(pageName);
         exchangeRepository.deleteByPageName(pageName);
-        mailConnector.sendExchangeResult(member.getEmail(), "승인되었습니다.");
+        mailConnector.sendExchangeResult(member.getEmail(), rejectReason);
     }
 
     private Member findMember(String pageName) {

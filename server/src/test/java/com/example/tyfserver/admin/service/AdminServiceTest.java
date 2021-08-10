@@ -64,7 +64,7 @@ class AdminServiceTest {
 
     @Test
     @DisplayName("정산 승인")
-    public void exchangeApprove() {
+    public void approveExchange() {
         //given
         Member member = new Member("tyf@gmail.com", "nickname", "pagename", Oauth2Type.KAKAO);
         memberRepository.save(member);
@@ -88,8 +88,39 @@ class AdminServiceTest {
 
     @Test
     @DisplayName("정산 승인 - 회원을 찾을 수 없는 경우")
-    public void exchangeApproveMemberNotFound() {
+    public void approveExchangeMemberNotFound() {
         assertThatThrownBy(() -> adminService.approveExchange("any"))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("정산 거절")
+    public void rejectExchange() {
+        //given
+        Member member = new Member("tyf@gmail.com", "nickname", "pagename", Oauth2Type.KAKAO);
+        memberRepository.save(member);
+        Payment payment = paymentRepository.save(new Payment(13000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Donation donation = new Donation(payment);
+        member.addDonation(donation);
+        donation.exchangeable();
+        donationRepository.save(donation);
+
+        Exchange exchange = new Exchange(13000L, "123-123", "nickname", "pagename");
+        exchangeRepository.save(exchange);
+
+        //when
+        doNothing().when(mailConnector).sendExchangeResult(anyString(), anyString());
+        adminService.rejectExchange(member.getPageName(), "그냥 거절하겠다. 토 달지 말아라");
+
+        //then
+        assertThat(exchangeRepository.existsByPageName(member.getPageName())).isFalse();
+        assertThat(donation.getStatus()).isEqualTo(DonationStatus.EXCHANGEABLE);
+    }
+
+    @Test
+    @DisplayName("정산 거절 - 회원을 찾을 수 없는 경우")
+    public void rejectExchangeMemberNotFound() {
+        assertThatThrownBy(() -> adminService.rejectExchange("any", "just denied"))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 }
