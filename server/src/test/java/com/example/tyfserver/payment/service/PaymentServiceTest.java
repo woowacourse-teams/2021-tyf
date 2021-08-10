@@ -3,7 +3,7 @@ package com.example.tyfserver.payment.service;
 import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.domain.VerificationCode;
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
@@ -265,7 +265,7 @@ class PaymentServiceTest {
     void refundInfo() {
         // given
         String merchantUid = UUID.randomUUID().toString();
-        VerifiedRefundRequest request = new VerifiedRefundRequest(merchantUid);
+        VerifiedRefunder request = new VerifiedRefunder(merchantUid);
 
         // when
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
@@ -296,8 +296,12 @@ class PaymentServiceTest {
     void refundPayment() {
         // given
         String merchantUid = UUID.randomUUID().toString();
-        VerifiedRefundRequest request = new VerifiedRefundRequest(merchantUid);
+        VerifiedRefunder request = new VerifiedRefunder(merchantUid);
         Payment payment = new Payment(1L, 10000L, "joy@naver.com", "joy", UUID.fromString(merchantUid));
+
+        Member member = new Member("joy@naver.com", "joy", "joy", Oauth2Type.NAVER, null, new Point(10000L));
+        Donation donation = new Donation(payment, new Message("후원자이름", "화이팅", false));
+        donation.to(member);
 
         // when
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
@@ -306,11 +310,8 @@ class PaymentServiceTest {
 
         when(donationRepository.findByPaymentId(Mockito.anyLong()))
                 .thenReturn(
-                        Optional.of(new Donation(payment, new Message("후원자이름", "화이팅", false))));
+                        Optional.of(donation));
 
-        when(memberRepository.findByPageName(Mockito.anyString()))
-                .thenReturn(
-                        Optional.of(new Member("joy@naver.com", "joy", "joy", Oauth2Type.NAVER, null, new Point(10000L))));
 
         when(paymentServiceConnector.requestPaymentRefund(Mockito.any(UUID.class)))
                 .thenReturn(new PaymentInfo(UUID.fromString(merchantUid), PaymentStatus.CANCELLED, 10000L, "joy", "impUid", "testModule"));

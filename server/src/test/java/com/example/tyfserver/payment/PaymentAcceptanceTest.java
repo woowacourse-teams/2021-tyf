@@ -4,7 +4,7 @@ import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.VerificationCode;
 import com.example.tyfserver.auth.dto.VerificationFailedErrorResponse;
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.exception.VerificationCodeNotFoundException;
 import com.example.tyfserver.auth.exception.VerificationFailedException;
@@ -336,14 +336,14 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
                 .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, 1000L,
                         "pagename", "impUid", "module"));
-        return authPost("/payments/refund", token, new VerifiedRefundRequest(merchantUid)).extract();
+        return authPost("/payments/refund", token, new VerifiedRefunder(merchantUid)).extract();
     }
 
     private ExtractableResponse<Response> 환불_요청_실패(String token, String merchantUid, long amount, String pageName, PaymentStatus paymentStatus) {
         when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
                 .thenReturn(new PaymentInfo(UUID.fromString(merchantUid), paymentStatus, amount,
                         pageName, "impUid", "module"));
-        return authPost("/payments/refund", token, new VerifiedRefundRequest(merchantUid)).extract();
+        return authPost("/payments/refund", token, new VerifiedRefunder(merchantUid)).extract();
     }
 
 

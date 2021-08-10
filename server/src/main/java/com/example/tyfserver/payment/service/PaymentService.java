@@ -2,7 +2,7 @@ package com.example.tyfserver.payment.service;
 
 import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.VerificationCode;
-import com.example.tyfserver.auth.dto.VerifiedRefundRequest;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.exception.VerificationCodeNotFoundException;
 import com.example.tyfserver.auth.exception.VerificationFailedException;
 import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
@@ -125,7 +125,7 @@ public class PaymentService {
         payment.checkRemainTryCount();
     }
 
-    public RefundInfoResponse refundInfo(VerifiedRefundRequest refundInfoRequest) {
+    public RefundInfoResponse refundInfo(VerifiedRefunder refundInfoRequest) {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
@@ -134,12 +134,10 @@ public class PaymentService {
         return new RefundInfoResponse(payment, donation, member);
     }
 
-    public void refundPayment(VerifiedRefundRequest verifiedRefundRequest) {
-        Payment payment = findPayment(verifiedRefundRequest.getMerchantUid());
+    public void refundPayment(VerifiedRefunder verifiedRefunder) {
+        Payment payment = findPayment(verifiedRefunder.getMerchantUid());
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
-        Member member = memberRepository.findByPageName(payment.getPageName())
-                .orElseThrow(MemberNotFoundException::new);
 
         donation.validateIsNotCancelled();
         payment.validateIsNotCancelled();
@@ -148,7 +146,6 @@ public class PaymentService {
 
         payment.refund(refundInfo);
         donation.cancel();
-        member.reducePoint(donation.getAmount());
     }
 
     private Payment findPayment(String merchantUid) {

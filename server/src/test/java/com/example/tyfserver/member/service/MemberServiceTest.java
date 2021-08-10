@@ -3,6 +3,9 @@ package com.example.tyfserver.member.service;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
@@ -12,6 +15,8 @@ import com.example.tyfserver.member.exception.DuplicatedPageNameException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +29,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -42,6 +48,12 @@ class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @Autowired
+    private DonationRepository donationRepository;
 
     @MockBean
     private S3Connector s3Connector;
@@ -163,6 +175,36 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("detailedPoint")
+    public void detailedPointTest() {
+        //given & when
+        Payment payment1 = paymentRepository.save(new Payment(1000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Payment payment2 = paymentRepository.save(new Payment(2000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Payment payment3 = paymentRepository.save(new Payment(3000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Payment payment4 = paymentRepository.save(new Payment(4000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Donation donation1 = new Donation(payment1);
+        Donation donation2 = new Donation(payment2);
+        Donation donation3 = new Donation(payment3);
+        Donation donation4 = new Donation(payment4);
+        member.addDonation(donation1);
+        member.addDonation(donation2);
+        member.addDonation(donation3);
+        member.addDonation(donation4);
+        donation1.exchanged();
+        donation4.cancel();
+
+        donationRepository.save(donation1);
+        donationRepository.save(donation2);
+        donationRepository.save(donation3);
+        donationRepository.save(donation4);
+
+        //then
+        DetailedPointResponse response = memberService.detailedPoint(member.getId());
+        assertThat(response.getCurrentPoint()).isEqualTo(5000);
+        assertThat(response.getExchangeablePoint()).isEqualTo(0L);
+        assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
+    }
+  
     @DisplayName("계좌정보를 등록한다.")
     public void registerAccountInfo() {
         //given
@@ -179,5 +221,4 @@ class MemberServiceTest {
         assertThat(account.getBank()).isEqualTo("하나");
         assertThat(account.getAccountNumber()).isEqualTo("1234-5678-1234");
     }
-
 }

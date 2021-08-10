@@ -4,6 +4,7 @@ import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
+import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
@@ -79,6 +80,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         return authPut("/members/me/nickname", token, new NicknameRequest(nickname)).extract();
     }
 
+    public static ExtractableResponse<Response> 상세_포인트_조회(String token) {
+        return authGet("/members/me/detailedPoint", token).extract();
+    }
+
     public static ExtractableResponse<Response> 계좌_조회(String token) {
         return authGet("/members/me/account", token).extract();
     }
@@ -95,7 +100,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .then().extract()
                 ;
     }
-
 
     @Test
     @DisplayName("유효한 페이지네임 검사의 경우")
@@ -280,6 +284,27 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(curations.get(0).getPageName()).isEqualTo("pagename");
         assertThat(curations.get(1).getPageName()).isEqualTo("pagename3");
         assertThat(curations.get(2).getPageName()).isEqualTo("pagename2");
+    }
+
+    @Test
+    @DisplayName("상세 포인트를 조회하는 경우")
+    public void detailedPoint() {
+        //given
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("tyf@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        후원_생성("impUid", pendingResponse1.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        후원_생성("impUid", pendingResponse2.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        후원_생성("impUid", pendingResponse3.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+
+        //when
+        DetailedPointResponse response = 상세_포인트_조회(signUpResponse.getToken()).as(DetailedPointResponse.class);
+
+        //then
+        assertThat(response.getCurrentPoint()).isEqualTo(3000L);
+        assertThat(response.getExchangeablePoint()).isEqualTo(0L);
+        assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }
 
     @Test
