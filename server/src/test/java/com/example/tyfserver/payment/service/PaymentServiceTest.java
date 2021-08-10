@@ -11,6 +11,7 @@ import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.domain.Point;
@@ -80,9 +81,12 @@ class PaymentServiceTest {
     void createPayment() {
         //given
         PaymentPendingRequest pendingRequest = new PaymentPendingRequest(AMOUNT, EMAIL, PAGE_NAME);
+        Member refundableMember = MemberTest.testMember();
+//        refundableMember.addInitialAccount(new Account());
+//        refundableMember.approveAccount(); //todo: 정산가능계정 등록여부 validation 추가된다면, 주석처리된 부분을 활성화해야한다.
         when(memberRepository.findByPageName(Mockito.anyString()))
                 .thenReturn(
-                        Optional.of(MemberTest.testMember()));
+                        Optional.of(refundableMember));
 
         when(paymentRepository.save(Mockito.any(Payment.class)))
                 .thenReturn(
@@ -97,7 +101,6 @@ class PaymentServiceTest {
         //then
         assertThat(paymentSaveResponse.getMerchantUid()).isEqualTo(MERCHANT_UID);
     }
-
 
     @DisplayName("결제정보 승인이 완료된다")
     @Test

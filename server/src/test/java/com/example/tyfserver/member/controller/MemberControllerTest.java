@@ -185,7 +185,7 @@ class MemberControllerTest {
     public void memberInfo() throws Exception {
         //given
         MemberResponse response = new MemberResponse("email", "nickname",
-                "pagename", "I am test", "profile.png");
+                "pagename", "I am test", "profile.png", false);
         //when
         when(memberService.findMember(Mockito.anyString())).thenReturn(response);
         //then
@@ -196,6 +196,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("nickname").value("nickname"))
                 .andExpect(jsonPath("pageName").value("pagename"))
                 .andExpect(jsonPath("bio").value("I am test"))
+                .andExpect(jsonPath("bankRegistered").value(false))
                 .andDo(document("memberInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -224,7 +225,7 @@ class MemberControllerTest {
     public void memberDetail() throws Exception {
         //given
         MemberResponse response = new MemberResponse("email", "nickname", "pagename",
-                "I am test", "profile.png");
+                "I am test", "profile.png", false);
         //when
         when(memberService.findMemberDetail(Mockito.anyLong())).thenReturn(response);
         validInterceptorAndArgumentResolverMocking();

@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.exception.AccountRequestingException;
+import com.example.tyfserver.member.exception.NotRefundableMember;
 import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -93,5 +94,16 @@ public class MemberTest {
         assertThatThrownBy(() -> member.registerAccount("테스트", "1234-5678-1234",
                 "하나", "https://test.com/test.png"))
                 .isExactlyInstanceOf(AccountRequestingException.class);
+    }
+
+    @DisplayName("계좌정보가 등록되어있지 않다면 예외를 발생시킨다.")
+    @Test
+    void validateRefundable() {
+        //given
+        Member member = testMember();
+
+        //when //then
+        assertThatThrownBy(() -> member.validateRefundable())
+                .isExactlyInstanceOf(NotRefundableMember.class);
     }
 }

@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -36,6 +37,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
@@ -89,7 +91,7 @@ class MemberServiceTest {
         MemberResponse response = memberService.findMember("pagename");
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile"));
+                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile", false));
 
         assertThatThrownBy(() -> memberService.findMember("asdf"))
                 .isInstanceOf(MemberNotFoundException.class);
@@ -102,7 +104,7 @@ class MemberServiceTest {
         MemberResponse response = memberService.findMemberDetail(member.getId());
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile"));
+                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile", false));
 
         assertThatThrownBy(() -> memberService.findMemberDetail(1000L))
                 .isInstanceOf(MemberNotFoundException.class);
@@ -204,7 +206,7 @@ class MemberServiceTest {
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
     }
-  
+
     @DisplayName("계좌정보를 등록한다.")
     public void registerAccountInfo() {
         //given

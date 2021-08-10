@@ -4,7 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.member.exception.NotRefundableMember;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +43,8 @@ public class Member extends BaseTimeEntity {
 
     @Column(unique = true)
     private String pageName;
+
+    private boolean bankRegistered = false;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
@@ -123,5 +125,16 @@ public class Member extends BaseTimeEntity {
 
     public void reducePoint(long amount) {
         point.reduce(amount);
+    }
+
+    public void validateRefundable() {
+        if (!bankRegistered) {
+            throw new NotRefundableMember();
+        }
+    }
+
+    public void approveAccount() { // todo: member 입장에서도 `bankRegistered` 상태를 변경해줘야하기 때문에, 메서드가 필요할 듯
+        this.bankRegistered = true;
+        this.account.approve();
     }
 }

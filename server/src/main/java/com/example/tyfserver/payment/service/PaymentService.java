@@ -52,6 +52,7 @@ public class PaymentService {
         Member creator = memberRepository
                 .findByPageName(pendingRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
+//        creator.validateRefundable(); todo: 해당 기능을 지금 넣기에는... 계좌 등록 승인(?) API가 필요하다. 많은 AcceptanceTest를 수정해야한다.
 
         Payment payment = new Payment(pendingRequest.getAmount(), pendingRequest.getEmail(), creator.getPageName());
         Payment savedPayment = paymentRepository.save(payment);
