@@ -4,14 +4,10 @@ import { DEVICE, SIZE } from '../../../constants/device';
 export const StyledTemplate = styled.main``;
 
 export const InnerTemplate = styled.section`
-  min-width: ${SIZE.MOBILE_MIN}px;
+  min-width: ${SIZE.DESKTOP_LARGE}px;
   padding: 5rem 3rem;
   width: calc(100% - 6rem);
-  max-width: ${SIZE.MOBILE_MAX}px;
-  min-height: calc(100vh);
+  max-width: ${SIZE.DESKTOP_LARGE}px;
+  min-height: 100vh;
   margin: 0 auto;
-
-  @media ${DEVICE.DESKTOP} {
-    max-width: ${SIZE.DESKTOP_LARGE}px;
-  }
 `;
