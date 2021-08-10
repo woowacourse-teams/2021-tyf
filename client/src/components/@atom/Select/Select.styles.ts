@@ -16,7 +16,7 @@ export const StyledSelectBox = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 1.5rem;
-  white-space: nowrap; // 줄바꿈 차단
+  white-space: nowrap;
 
   &::after {
     content: '';

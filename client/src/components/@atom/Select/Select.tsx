@@ -9,16 +9,16 @@ import {
   ModalTransition,
   OptionModal,
   StyledSelectBox,
-} from './SelectBox.styles';
+} from './Select.styles';
 
-export interface SelectBoxProps {
+export interface SelectProps {
   selectHeader: string;
   selectOptions: string[];
   value: string | null;
   onChange: (account: string) => void;
 }
 
-const SelectBox = ({ selectHeader, selectOptions, value, onChange }: SelectBoxProps) => {
+const Select = ({ selectHeader, selectOptions, value, onChange }: SelectProps) => {
   const { windowWidth } = useWindowResize();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -66,4 +66,4 @@ const SelectBox = ({ selectHeader, selectOptions, value, onChange }: SelectBoxPr
   );
 };
 
-export default SelectBox;
+export default Select;

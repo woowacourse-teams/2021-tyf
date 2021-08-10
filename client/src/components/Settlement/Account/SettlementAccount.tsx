@@ -7,7 +7,7 @@ import useSettlementAccountForm, {
 import { requestRegisterBankAccount } from '../../../service/request/settlement';
 import Button from '../../@atom/Button/Button.styles';
 import Input from '../../@atom/Input/Input.styles';
-import SelectBox from '../../@atom/SelectBox/SelectBox';
+import SelectBox from '../../@atom/Select/Select';
 import {
   StyledSettlementAccountForm,
   InputContainer,
