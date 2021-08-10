@@ -94,7 +94,7 @@ public class PaymentService {
         return resendCoolTime.getTimeout();
     }
 
-    @Transactional(noRollbackFor={VerificationFailedException.class, RefundVerificationBlockedException.class})
+    @Transactional(noRollbackFor = {VerificationFailedException.class, RefundVerificationBlockedException.class})
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
         String merChantUid = verificationRequest.getMerchantUid();
         Payment payment = paymentRepository.findByMerchantUidWithRefundFailure(UUID.fromString(merChantUid))
