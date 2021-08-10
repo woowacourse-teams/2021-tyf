@@ -305,7 +305,9 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(response.getCurrentPoint()).isEqualTo(3000L);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
+    }
 
+    @Test
     @DisplayName("계좌 정보 조회 요청")
     public void getAccountInfo() {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");

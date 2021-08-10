@@ -138,8 +138,6 @@ public class PaymentService {
         Payment payment = findPayment(verifiedRefunder.getMerchantUid());
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
-        Member member = memberRepository.findByPageName(payment.getPageName())
-                .orElseThrow(MemberNotFoundException::new);
 
         donation.validateIsNotCancelled();
         payment.validateIsNotCancelled();

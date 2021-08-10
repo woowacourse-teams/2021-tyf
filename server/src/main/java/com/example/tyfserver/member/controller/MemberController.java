@@ -110,6 +110,7 @@ public class MemberController {
     public ResponseEntity<DetailedPointResponse> detailedPoint(LoginMember loginMember) {
         DetailedPointResponse response = memberService.detailedPoint(loginMember.getId());
         return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/me/account")
     public ResponseEntity<AccountInfoResponse> accountInfo(LoginMember loginMember) {

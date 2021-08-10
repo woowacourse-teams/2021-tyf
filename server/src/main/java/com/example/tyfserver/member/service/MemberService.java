@@ -99,6 +99,7 @@ public class MemberService {
         Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.exchangeableDayLimit);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
         return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
+    }
 
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());

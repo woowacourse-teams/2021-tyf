@@ -51,7 +51,6 @@ public class PaymentController {
     }
 
     @GetMapping("/refund/info")
-
     public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder refundInfoRequest) {
         RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
         return ResponseEntity.ok(response);
