@@ -19,15 +19,15 @@ public class AdminService {
     private final S3Connector s3Connector;
     private final SmtpMailConnector smtpMailConnector;
 
-    public void approveAccount(Long member_id) {
-        Member member = findMember(member_id);
+    public void approveAccount(Long memberId) {
+        Member member = findMember(memberId);
         member.approveAccount();
         s3Connector.delete(member.getBankBookUrl());
         smtpMailConnector.sendAccountApprove(member.getEmail());
     }
 
-    public void cancelAccount(Long member_id, AccountCancelRequest accountCancelRequest) {
-        Member member = findMember(member_id);
+    public void cancelAccount(Long memberId, AccountCancelRequest accountCancelRequest) {
+        Member member = findMember(memberId);
         member.cancelAccount();
         smtpMailConnector.sendAccountCancel(member.getEmail(), accountCancelRequest.getCancelReason());
     }
@@ -36,5 +36,4 @@ public class AdminService {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
     }
-
 }
