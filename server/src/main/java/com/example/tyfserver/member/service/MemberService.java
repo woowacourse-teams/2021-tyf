@@ -96,7 +96,7 @@ public class MemberService {
 
     public DetailedPointResponse detailedPoint(Long id) {
         Long currentPoint = findMember(id).getPoint();
-        Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.EXCHANGEABLE_DAY_LIMIT);
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
         return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
     }
@@ -116,9 +116,9 @@ public class MemberService {
 
     public void exchange(Long id) {
         Member member = findMember(id);
-        Long exchangeablePoint = donationRepository.exchangeablePoint(id, LocalDateTime.now(), Donation.EXCHANGEABLE_DAY_LIMIT);
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id);
         validateExchangeable(member, exchangeablePoint);
-        
+
         Exchange exchange =
                 new Exchange(exchangeablePoint, member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
         exchangeRepository.save(exchange);

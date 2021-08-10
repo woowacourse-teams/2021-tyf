@@ -5,7 +5,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 
 import static com.example.tyfserver.donation.domain.QDonation.donation;
 import static com.example.tyfserver.payment.domain.QPayment.payment;
@@ -18,12 +17,12 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         queryFactory = new JPAQueryFactory(em);
     }
 
-    public Long exchangeablePoint(Long memberId, LocalDateTime now, long exchangeableDayLimit) {
+    public Long exchangeablePoint(Long memberId) {
         Long result = queryFactory
                 .select(payment.amount.sum())
                 .from(donation)
                 .join(donation.payment, payment)
-                .where(validateStatus(memberId), donation.createdAt.before(now.minusDays(exchangeableDayLimit)))
+                .where(exchangeableStatus(memberId))
                 .groupBy(donation.member)
                 .fetchOne();
 
@@ -48,10 +47,9 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         return result;
     }
 
-    private BooleanExpression validateStatus(Long memberId) {
+    private BooleanExpression exchangeableStatus(Long memberId) {
         return donation.member.id.eq(memberId)
-                .and(donation.status.ne(DonationStatus.EXCHANGED))
-                .and(donation.status.ne(DonationStatus.CANCELLED));
+                .and(donation.status.eq(DonationStatus.EXCHANGEABLE));
     }
 
     private BooleanExpression exchangedStatus(Long memberId) {
