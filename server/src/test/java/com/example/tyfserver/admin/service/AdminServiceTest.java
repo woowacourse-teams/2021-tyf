@@ -1,6 +1,7 @@
 package com.example.tyfserver.admin.service;
 
 import com.example.tyfserver.admin.dto.AccountCancelRequest;
+import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
 
@@ -91,5 +94,35 @@ class AdminServiceTest {
         Assertions.assertThat(member.getAccount().getAccountNumber()).isEqualTo("1234-1234-1234");
         Assertions.assertThat(member.getAccount().getBank()).isEqualTo("하나");
         Assertions.assertThat(member.getAccount().getBankbookUrl()).isEqualTo("https://test.test.png");
+    }
+
+    @Test
+    @DisplayName("계좌 승인 요청중 목록을 반환한다.")
+    public void requestingAccounts() {
+        //given
+        member.registerAccount("테스트유저", "1234-1234-1234", "하나", "https://test.test.png");
+
+        Member member2 = new Member("email2", "nickname2", "pagename2", Oauth2Type.GOOGLE, "profile2");
+        member2.addInitialAccount(accountRepository.save(new Account()));
+        memberRepository.save(member2);
+
+        //when
+        doNothing().when(s3Connector).delete(Mockito.anyString());
+        doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
+        List<RequestingAccountResponse> requestingAccounts = adminService.findRequestingAccounts();
+
+        //then
+        List<Member> allMembers = memberRepository.findAll();
+        Assertions.assertThat(allMembers).hasSize(2);
+        Assertions.assertThat(requestingAccounts).hasSize(1);
+
+        RequestingAccountResponse response = requestingAccounts.get(0);
+        Assertions.assertThat(response.getMemberId()).isEqualTo(member.getId());
+        Assertions.assertThat(response.getNickname()).isEqualTo(member.getNickname());
+        Assertions.assertThat(response.getPageName()).isEqualTo(member.getPageName());
+        Assertions.assertThat(response.getAccountHolder()).isEqualTo(member.getAccount().getAccountHolder());
+        Assertions.assertThat(response.getAccountNumber()).isEqualTo(member.getAccount().getAccountNumber());
+        Assertions.assertThat(response.getBank()).isEqualTo(member.getAccount().getBank());
+        Assertions.assertThat(response.getBankbookImageUrl()).isEqualTo(member.getAccount().getBankbookUrl());
     }
 }
