@@ -1,6 +1,7 @@
 package com.example.tyfserver.admin.service;
 
 import com.example.tyfserver.admin.dto.AccountCancelRequest;
+import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.member.domain.Member;
@@ -9,6 +10,8 @@ import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -36,4 +39,9 @@ public class AdminService {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
     }
+
+    public List<RequestingAccountResponse> findRequestingAccounts() {
+        return memberRepository.findRequestingAccounts();
+    }
+
 }

@@ -18,7 +18,6 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
-    private final MemberService memberService;
 
     @PostMapping("/admin/approve/{member_id}/account")
     public ResponseEntity<Void> approveAccount(@PathVariable("member_id") Long member_id) {
@@ -35,6 +34,6 @@ public class AdminController {
 
     @GetMapping("/admin/list/account/")
     public ResponseEntity<List<RequestingAccountResponse>> requestingAccounts() {
-        return ResponseEntity.ok(memberService.findRequestingAccounts());
+        return ResponseEntity.ok(adminService.findRequestingAccounts());
     }
 }

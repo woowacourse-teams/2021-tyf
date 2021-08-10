@@ -112,11 +112,7 @@ public class MemberService {
         Member member = findMember(loginMember.getId());
         return AccountInfoResponse.of(member.getAccount());
     }
-
-    public List<RequestingAccountResponse> findRequestingAccounts() {
-        return memberRepository.findRequestingAccounts();
-    }
-
+    
     private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
