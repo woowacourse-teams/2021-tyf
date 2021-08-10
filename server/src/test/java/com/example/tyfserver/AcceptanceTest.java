@@ -98,6 +98,12 @@ public class AcceptanceTest {
                 .then().log().all();
     }
 
+    protected static ValidatableResponse authPost(String url, String token) {
+        return authTemplate(token)
+                .post(url)
+                .then().log().all();
+    }
+
     protected static ValidatableResponse authPut(String url, String token, Object body) {
         return authTemplate(token)
                 .body(body)

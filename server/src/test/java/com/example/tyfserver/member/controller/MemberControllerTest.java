@@ -1011,7 +1011,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("POST - /me/exchange - exchange amount less than 10k")
-    public void requestExchangeExchangeAmountLess() throws Exception {
+    public void requestExchangeAmountLess() throws Exception {
         //when
         doThrow(new ExchangeAmountException()).when(memberService).exchange(anyLong());
         validInterceptorAndArgumentResolverMocking();
@@ -1021,7 +1021,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(ExchangeAmountException.ERROR_CODE))
-                .andDo(document("requestExchangeExchangeAmountLess",
+                .andDo(document("requestExchangeAmountLess",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
