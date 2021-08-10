@@ -275,7 +275,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
         회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
         회원생성을_요청("user1@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse.getMerchantUid().toString());
 
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
@@ -291,18 +291,18 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void detailedPoint() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("tyf@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse1.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse2.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse3.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
 
         //when
         DetailedPointResponse response = 상세_포인트_조회(signUpResponse.getToken()).as(DetailedPointResponse.class);
 
         //then
-        assertThat(response.getCurrentPoint()).isEqualTo(3000L);
+        assertThat(response.getCurrentPoint()).isEqualTo(30000L);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }

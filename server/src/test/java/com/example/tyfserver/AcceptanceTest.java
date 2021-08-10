@@ -50,7 +50,7 @@ public class AcceptanceTest {
                 .thenReturn(DEFAULT_PROFILE_IMAGE);
         doNothing().when(s3Connector).delete(anyString());
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 1000L,
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 10000L,
                         "pagename", "impUid", "module"));
     }
 
