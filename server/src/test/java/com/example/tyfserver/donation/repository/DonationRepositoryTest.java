@@ -133,7 +133,7 @@ class DonationRepositoryTest {
         donation4.updateStatus(DonationStatus.CANCELLED);
 
         Long member1NotExchangeable =
-            donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now(), 1);
+                donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now(), 1);
         Long member2NotExchangeable =
                 donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now(), 1);
         Long member1Exchangeable =
@@ -146,7 +146,7 @@ class DonationRepositoryTest {
         assertThat(member1Exchangeable).isEqualTo(18000L);
         assertThat(member2Exchangeable).isEqualTo(0L);
     }
-    
+
     @Test
     @DisplayName("정산 완료 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {

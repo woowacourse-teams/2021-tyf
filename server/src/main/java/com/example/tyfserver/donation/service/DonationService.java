@@ -1,7 +1,6 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;

@@ -2,10 +2,7 @@ package com.example.tyfserver.common.util;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-
-import java.nio.charset.StandardCharsets;
 
 public class ApiSender {
 
