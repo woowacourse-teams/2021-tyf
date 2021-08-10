@@ -1,5 +1,6 @@
 package com.example.tyfserver.admin.controller;
 
+import com.example.tyfserver.admin.dto.ExchangeRejectRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
@@ -73,7 +74,7 @@ class AdminControllerTest {
 
     @Test
     @DisplayName("정산 승인")
-    public void exchangeApprove() throws Exception {
+    public void approveExchange() throws Exception {
         String pageName = "pagename";
         doNothing().when(adminService).approveExchange(anyString());
 
@@ -82,7 +83,7 @@ class AdminControllerTest {
                 .content(objectMapper.writeValueAsString(pageName)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("exchangeApprove",
+                .andDo(document("approveExchange",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
@@ -90,7 +91,7 @@ class AdminControllerTest {
 
     @Test
     @DisplayName("정산 승인 회원을 찾을 수 없음")
-    public void exchangeApproveMemberNotFound() throws Exception {
+    public void approveExchangeMemberNotFound() throws Exception {
         doThrow(new MemberNotFoundException()).when(adminService).approveExchange(anyString());
         String pageName = "pagename";
 
@@ -100,7 +101,42 @@ class AdminControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(print())
-                .andDo(document("exchangeApprove",
+                .andDo(document("approveExchangeMemberNotFound",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("정산 거절")
+    public void rejectExchange() throws Exception {
+        ExchangeRejectRequest request = new ExchangeRejectRequest("pagename", "no reason just fun");
+        doNothing().when(adminService).approveExchange(anyString());
+
+        mockMvc.perform(post("/admin/exchange/reject")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("rejectExchange",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("정산 승인 회원을 찾을 수 없음")
+    public void rejectExchangeMemberNotFound() throws Exception {
+        ExchangeRejectRequest request = new ExchangeRejectRequest("pagename", "no reason just fun");
+        doThrow(new MemberNotFoundException()).when(adminService).approveExchange(anyString());
+
+        mockMvc.perform(post("/admin/exchange/approve")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(print())
+                .andDo(document("rejectExchangeMemberNotFound",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
