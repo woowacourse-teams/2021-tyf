@@ -1,7 +1,7 @@
 package com.example.tyfserver.member.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
-import com.example.tyfserver.member.exception.AccountRegisteredException;
+import com.example.tyfserver.member.exception.AccountAlreadyRegisteredException;
 import com.example.tyfserver.member.exception.AccountRequestingException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,7 +54,7 @@ public class Account extends BaseTimeEntity {
 
     private void validateRegisterAccount() {
         if (this.status == AccountStatus.REGISTERED) {
-            throw new AccountRegisteredException();
+            throw new AccountAlreadyRegisteredException();
         }
 
         if (this.status == AccountStatus.REQUESTING) {

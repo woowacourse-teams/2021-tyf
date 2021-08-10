@@ -28,7 +28,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.Arrays;
@@ -793,7 +792,7 @@ class MemberControllerTest {
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
 
         validInterceptorAndArgumentResolverMocking();
-        doThrow(new AccountRegisteredException()).when(memberService).registerAccount(Mockito.any(), Mockito.any());
+        doThrow(new AccountAlreadyRegisteredException()).when(memberService).registerAccount(Mockito.any(), Mockito.any());
 
         //when
         mockMvc.perform(multipart("/members/me/account")
@@ -802,7 +801,7 @@ class MemberControllerTest {
                 .param("account", "1234-5678-1234")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(AccountRegisteredException.ERROR_CODE))
+                .andExpect(jsonPath("errorCode").value(AccountAlreadyRegisteredException.ERROR_CODE))
                 .andDo(document("registerAccountFailRegistered",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())));
