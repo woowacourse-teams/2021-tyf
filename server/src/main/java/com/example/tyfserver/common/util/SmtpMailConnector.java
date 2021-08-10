@@ -19,4 +19,13 @@ public class SmtpMailConnector {
 
         javaMailSender.send(message);
     }
+
+    public void sendExchangeResult(String mailAddress, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mailAddress);
+        message.setSubject("[Thank You For] 정산 계정 요청 결과");
+        message.setText(text);
+
+        javaMailSender.send(message);
+    }
 }

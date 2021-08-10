@@ -4,6 +4,7 @@ import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.member.domain.Member;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long>, Donat
     List<Donation> findDonationByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
 
     Optional<Donation> findByPaymentId(Long id);
+
+    @EntityGraph(attributePaths = "member")
+    List<Donation> findDonationByStatusAndMember(DonationStatus status, Member member);
 }
