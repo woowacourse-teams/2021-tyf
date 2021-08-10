@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class RequestingAccountResponse {
 
     private Long memberId;
+    private String email;
     private String nickname;
     private String pageName;
     private String accountHolder;
@@ -19,9 +20,10 @@ public class RequestingAccountResponse {
 
 
     @QueryProjection
-    public RequestingAccountResponse(Long memberId, String nickname, String pageName, String accountHolder,
+    public RequestingAccountResponse(Long memberId, String email, String nickname, String pageName, String accountHolder,
                                      String accountNumber, String bank, String bankbookImageUrl) {
         this.memberId = memberId;
+        this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.accountHolder = accountHolder;

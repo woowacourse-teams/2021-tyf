@@ -40,7 +40,7 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
     @Override
     public List<RequestingAccountResponse> findRequestingAccounts() {
         return queryFactory.select(
-                new QRequestingAccountResponse(member.id, member.nickname, member.pageName, member.account.accountHolder,
+                new QRequestingAccountResponse(member.id, member.email, member.nickname, member.pageName, member.account.accountHolder,
                         account.accountNumber, account.bank, account.bankbookUrl))
                 .from(member)
                 .innerJoin(member.account, account)

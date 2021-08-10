@@ -273,14 +273,15 @@ class MemberRepositoryImplTest {
         em.persist(member5);
         em.persist(member6);
 
-        em.persist(member1);
-        em.persist(member2);
-        em.persist(member3);
-        em.persist(member4);
-        em.persist(member5);
-        em.persist(member6);
-
         List<RequestingAccountResponse> requestingAccounts = memberRepository.findRequestingAccounts();
         assertThat(requestingAccounts).hasSize(3);
+        RequestingAccountResponse data = requestingAccounts.get(0);
+        assertThat(data.getEmail()).isEqualTo(member1.getEmail());
+        assertThat(data.getNickname()).isEqualTo(member1.getNickname());
+        assertThat(data.getPageName()).isEqualTo(member1.getPageName());
+        assertThat(data.getAccountHolder()).isEqualTo(member1.getAccount().getAccountHolder());
+        assertThat(data.getAccountNumber()).isEqualTo(member1.getAccount().getAccountNumber());
+        assertThat(data.getBank()).isEqualTo(member1.getAccount().getBank());
+        assertThat(data.getBankbookImageUrl()).isEqualTo(member1.getAccount().getBankbookUrl());
     }
 }

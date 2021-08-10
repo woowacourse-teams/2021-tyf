@@ -90,9 +90,9 @@ class AdminControllerTest {
     public void requestingAccounts() throws Exception {
         //given
         List<RequestingAccountResponse> responses = new ArrayList<>();
-        responses.add(new RequestingAccountResponse(1L, "nickname1", "pagename1", "accountholder1",
+        responses.add(new RequestingAccountResponse(1L, "test1@test.com", "nickname1", "pagename1", "accountholder1",
                 "1234-1234-12341", "bank", "https://test.test.png"));
-        responses.add(new RequestingAccountResponse(2L, "nickname2", "pagename2", "accountholder2",
+        responses.add(new RequestingAccountResponse(2L, "test2@test.com", "nickname2", "pagename2", "accountholder2",
                 "1234-1234-12342", "bank", "https://test.test.png"));
 
         //when
