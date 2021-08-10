@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Donation extends BaseTimeEntity {
 
-    public final static long exchangeableDayLimit = 7;
+    public final static long EXCHANGEABLE_DAY_LIMIT = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +85,10 @@ public class Donation extends BaseTimeEntity {
     public void exchanged() {
         status = DonationStatus.EXCHANGED;
         member.reducePoint(this.getAmount());
+    }
+
+    public void exchangeable() {
+        status = DonationStatus.EXCHANGEABLE;
     }
 
     public void validateIsNotCancelled() {
