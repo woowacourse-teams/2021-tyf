@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -47,6 +51,9 @@ class DonationServiceTest {
     @MockBean
     private PaymentService paymentService;
 
+    @MockBean
+    private SmtpMailConnector mailConnector;
+
     private UUID uuid = UUID.randomUUID();
     private Member member = new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE, "profile");
     private Payment payment = new Payment(1000L, "email", "pagename", uuid);
@@ -57,6 +64,7 @@ class DonationServiceTest {
         paymentRepository.save(payment);
         memberRepository.save(member);
         donationRepository.save(donation);
+        doNothing().when(mailConnector).sendDonationComplete(anyString(), any());
     }
 
     @AfterEach

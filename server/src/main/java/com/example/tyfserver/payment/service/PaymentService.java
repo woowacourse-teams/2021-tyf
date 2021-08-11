@@ -76,7 +76,7 @@ public class PaymentService {
         VerificationCode verificationCode = verificationCodeRepository
                 .save(VerificationCode.newCode(merchantUid));
 
-        smtpMailConnector.sendVerificationCode(payment.getEmail().getEmail(), verificationCode.getCode());
+        smtpMailConnector.sendVerificationCode(payment.getEmail(), verificationCode.getCode());
 
         return new RefundVerificationReadyResponse(
                 payment.getMaskedEmail(),

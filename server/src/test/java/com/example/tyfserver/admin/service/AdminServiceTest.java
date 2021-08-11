@@ -107,7 +107,7 @@ class AdminServiceTest {
         exchangeRepository.save(exchange);
 
         //when
-        doNothing().when(mailConnector).sendExchangeResult(anyString(), anyString());
+        doNothing().when(mailConnector).sendExchangeApprove(anyString());
         adminService.approveExchange(member.getPageName());
 
         //then
@@ -137,7 +137,7 @@ class AdminServiceTest {
         exchangeRepository.save(exchange);
 
         //when
-        doNothing().when(mailConnector).sendExchangeResult(anyString(), anyString());
+        doNothing().when(mailConnector).sendExchangeReject(anyString(), anyString());
         adminService.rejectExchange(member.getPageName(), "그냥 거절하겠다. 토 달지 말아라");
 
         //then
