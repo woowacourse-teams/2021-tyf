@@ -1,6 +1,6 @@
 package com.example.tyfserver.admin.service;
 
-import com.example.tyfserver.admin.dto.AccountCancelRequest;
+import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
@@ -29,10 +29,10 @@ public class AdminService {
         smtpMailConnector.sendAccountApprove(member.getEmail());
     }
 
-    public void rejectAccount(Long memberId, AccountCancelRequest accountCancelRequest) {
+    public void rejectAccount(Long memberId, AccountRejectRequest accountRejectRequest) {
         Member member = findMember(memberId);
         member.rejectAccount();
-        smtpMailConnector.sendAccountCancel(member.getEmail(), accountCancelRequest.getCancelReason());
+        smtpMailConnector.sendAccountCancel(member.getEmail(), accountRejectRequest.getRejectReason());
     }
 
     private Member findMember(Long id) {
@@ -41,7 +41,7 @@ public class AdminService {
     }
 
     public List<RequestingAccountResponse> findRequestingAccounts() {
-        return memberRepository.findRequestingAccounts();
+        return RequestingAccountResponse.toList(memberRepository.findRequestingAccounts());
     }
 
 }

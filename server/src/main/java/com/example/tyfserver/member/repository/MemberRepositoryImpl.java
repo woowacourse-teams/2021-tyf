@@ -1,8 +1,7 @@
 package com.example.tyfserver.member.repository;
 
-import com.example.tyfserver.admin.dto.QRequestingAccountResponse;
-import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.member.domain.AccountStatus;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.CurationsResponse;
 import com.example.tyfserver.member.dto.QCurationsResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -38,13 +37,12 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
     }
 
     @Override
-    public List<RequestingAccountResponse> findRequestingAccounts() {
-        return queryFactory.select(
-                new QRequestingAccountResponse(member.id, member.email, member.nickname, member.pageName, member.account.accountHolder,
-                        account.accountNumber, account.bank, account.bankbookUrl))
-                .from(member)
+    public List<Member> findRequestingAccounts() {
+        return queryFactory
+                .selectFrom(member)
                 .innerJoin(member.account, account)
                 .where(account.status.eq(AccountStatus.REQUESTING))
+                .fetchJoin()
                 .fetch();
 
     }

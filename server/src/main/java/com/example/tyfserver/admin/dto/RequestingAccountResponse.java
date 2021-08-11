@@ -1,9 +1,12 @@
 package com.example.tyfserver.admin.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
+import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,8 +21,6 @@ public class RequestingAccountResponse {
     private String bank;
     private String bankbookImageUrl;
 
-
-    @QueryProjection
     public RequestingAccountResponse(Long memberId, String email, String nickname, String pageName, String accountHolder,
                                      String accountNumber, String bank, String bankbookImageUrl) {
         this.memberId = memberId;
@@ -30,5 +31,13 @@ public class RequestingAccountResponse {
         this.accountNumber = accountNumber;
         this.bank = bank;
         this.bankbookImageUrl = bankbookImageUrl;
+    }
+
+    public static List<RequestingAccountResponse> toList(List<Member> members) {
+        return members.stream()
+                .map(member -> new RequestingAccountResponse(member.getId(), member.getEmail(),
+                        member.getNickname(), member.getPageName(), member.getAccount().getAccountHolder(),
+                        member.getAccount().getAccountNumber(), member.getAccount().getBank(), member.getBankBookUrl()))
+                .collect(Collectors.toList());
     }
 }

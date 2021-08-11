@@ -273,15 +273,15 @@ class MemberRepositoryImplTest {
         em.persist(member5);
         em.persist(member6);
 
-        List<RequestingAccountResponse> requestingAccounts = memberRepository.findRequestingAccounts();
+        List<Member> requestingAccounts = memberRepository.findRequestingAccounts();
         assertThat(requestingAccounts).hasSize(3);
-        RequestingAccountResponse data = requestingAccounts.get(0);
-        assertThat(data.getEmail()).isEqualTo(member1.getEmail());
-        assertThat(data.getNickname()).isEqualTo(member1.getNickname());
-        assertThat(data.getPageName()).isEqualTo(member1.getPageName());
-        assertThat(data.getAccountHolder()).isEqualTo(member1.getAccount().getAccountHolder());
-        assertThat(data.getAccountNumber()).isEqualTo(member1.getAccount().getAccountNumber());
-        assertThat(data.getBank()).isEqualTo(member1.getAccount().getBank());
-        assertThat(data.getBankbookImageUrl()).isEqualTo(member1.getAccount().getBankbookUrl());
+        Member selectedMember = requestingAccounts.get(0);
+        assertThat(selectedMember.getEmail()).isEqualTo(member1.getEmail());
+        assertThat(selectedMember.getNickname()).isEqualTo(member1.getNickname());
+        assertThat(selectedMember.getPageName()).isEqualTo(member1.getPageName());
+        assertThat(selectedMember.getAccount().getAccountHolder()).isEqualTo(member1.getAccount().getAccountHolder());
+        assertThat(selectedMember.getAccount().getAccountNumber()).isEqualTo(member1.getAccount().getAccountNumber());
+        assertThat(selectedMember.getAccount().getBank()).isEqualTo(member1.getAccount().getBank());
+        assertThat(selectedMember.getAccount().getBankbookUrl()).isEqualTo(member1.getAccount().getBankbookUrl());
     }
 }
