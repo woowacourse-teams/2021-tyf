@@ -1,6 +1,6 @@
 import Transition from '../../components/@atom/Transition/Transition.styles';
-import useStatistics from '../../service/hooks/user/useStatistics';
-import useUserInfo from '../../service/hooks/user/useUserInfo';
+import useStatistics from '../../service/user/useStatistics';
+import useUserInfo from '../../service/user/useUserInfo';
 import { toCommaSeparatedString } from '../../utils/format';
 import { StyledTemplate, InfoTitle, MoneyInfo } from './StatisticsPage.styles';
 

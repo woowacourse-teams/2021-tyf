@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import Transition from '../../../components/@atom/Transition/Transition.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
-import useCreator from '../../../service/hooks/creator/useCreator';
-import useDonation from '../../../service/hooks/donation/useDonation';
-import { popupWindow } from '../../../service/popup';
-import { INVALID_DONATION_ID } from '../../../service/state/donation';
+import useCreator from '../../../service//creator/useCreator';
+import useDonation from '../../../service//donation/useDonation';
+import { popupWindow } from '../../../utils/popup';
+import { INVALID_DONATION_ID } from '../../../service/@state/donation';
 import { toCommaSeparatedString } from '../../../utils/format';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import {

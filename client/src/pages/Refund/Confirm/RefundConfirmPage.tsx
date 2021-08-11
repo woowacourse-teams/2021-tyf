@@ -1,7 +1,7 @@
 import Button from '../../../components/@atom/Button/Button.styles';
 import TextButton from '../../../components/@atom/TextButton/TextButton.styles';
 import RefundInfo from '../../../components/Refund/RefundInfo/RefundInfo';
-import useRefund from '../../../service/hooks/refund/useRefund';
+import useRefund from '../../../service/refund/useRefund';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { REFUND_PAGE_KEY } from '../Apply/RefundApplyPage';
 import { RefundConfirmPageTemplate, ButtonContainer } from './RefundConfirmPage.styles';

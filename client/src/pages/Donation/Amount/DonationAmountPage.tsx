@@ -5,7 +5,7 @@ import Transition from '../../../components/@atom/Transition/Transition.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import Profile from '../../../components/Creator/Profile/Profile';
 import DonationAmountForm from '../../../components/Donation/AmountForm/DonationAmountForm';
-import { popupWindow } from '../../../service/popup';
+import { popupWindow } from '../../../utils/popup';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { DonationAmountPageTemplate } from './DonationAmountPage.styles';
 

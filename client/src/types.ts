@@ -69,3 +69,27 @@ export interface refundOrderDetail {
   creator: Pick<Creator, 'nickname' | 'pageName'>;
   donation: Pick<Donation, 'name' | 'amount' | 'message' | 'createdAt'>;
 }
+
+// SETTLEMENT
+
+export type SettlementAccountStatus = 'REGISTERED' | 'REGISTERED' | 'REQUESTING' | 'CANCELLED';
+
+export interface SettlementAccount {
+  status: SettlementAccountStatus;
+  accountHolder: string;
+  bank: string;
+  accountNumber: string;
+}
+
+export interface SettlementAccountForm {
+  accountHolder: string;
+  bank: string | null;
+  bankbookImage: File | null;
+  accountNumber: string;
+}
+
+export interface Point {
+  possessedPoint: number;
+  exchangeablePoint: number;
+  exchangedTotalPoint: number;
+}

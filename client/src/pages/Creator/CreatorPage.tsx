@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
-import useUserInfo from '../../service/hooks/user/useUserInfo';
+import useUserInfo from '../../service/user/useUserInfo';
 import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';

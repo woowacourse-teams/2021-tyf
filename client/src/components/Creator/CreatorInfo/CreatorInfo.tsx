@@ -1,8 +1,8 @@
 import { SIZE } from '../../../constants/device';
 import { DONATION_POPUP } from '../../../constants/popup';
-import useCreator from '../../../service/hooks/creator/useCreator';
-import { popupWindow } from '../../../service/popup';
-import { donationUrlShare } from '../../../service/share';
+import useCreator from '../../../service//creator/useCreator';
+import { popupWindow } from '../../../utils/popup';
+import { donationUrlShare } from '../../../service/creator/donationURLShare';
 import { useWindowResize } from '../../../utils/useWindowResize';
 import DesktopCreatorInfo from './Desktop/DesktopCreatorInfo';
 import MobileCreatorInfo from './Mobile/MobileCreatorInfo';

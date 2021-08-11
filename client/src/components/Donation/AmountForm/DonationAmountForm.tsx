@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import useDonationAmountForm from '../../../service/hooks/donation/useDonationAmountForm';
+import useDonationAmountForm from '../../../service//donation/useDonationAmountForm';
 import { CreatorId } from '../../../types';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Button from '../../@atom/Button/Button.styles';

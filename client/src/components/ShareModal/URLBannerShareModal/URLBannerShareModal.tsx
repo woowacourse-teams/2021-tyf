@@ -14,7 +14,7 @@ import {
   StyledModal,
   StyledSubTitle,
 } from './URLBannerShareModal.styles';
-import useURLBanner from '../../../service/hooks/user/useURLBanner';
+import useURLBanner from '../../../service//user/useURLBanner';
 
 export interface URLBannerShareModalProps {
   userInfo: UserInfo;

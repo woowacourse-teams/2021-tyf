@@ -1,6 +1,6 @@
-import useLogout from '../../../service/hooks/auth/useLogout';
-import useUserInfo from '../../../service/hooks/user/useUserInfo';
-import { donationUrlShare } from '../../../service/share';
+import useLogout from '../../../service/auth/useLogout';
+import useUserInfo from '../../../service//user/useUserInfo';
+import { donationUrlShare } from '../../../service/creator/donationURLShare';
 import { ProfileContainer, StyledModal, StyledAnchor, URLCopyButton } from './MobileMenu.styles';
 
 export interface MobileMenuProps {

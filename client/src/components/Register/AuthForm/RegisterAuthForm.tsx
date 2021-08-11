@@ -2,7 +2,7 @@ import Anchor from '../../@atom/Anchor/Anchor';
 import GoogleBarButton from '../../@molecule/GoogleBarButton/GoogleBarButton.styles';
 import NaverBarButton from '../../@molecule/NaverBarButton/NaverBarButton.styles';
 import KakaoBarButton from '../../@molecule/KakaoBarButton/KaKaoBarButton.styles';
-import { routeToOAuthPage } from '../../../service/auth';
+import { routeToOAuthPage } from '../../../service/auth/routeToOauthPage';
 import {
   RegisterAnchorContainer,
   RegisterButtonContainer,

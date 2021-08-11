@@ -1,4 +1,4 @@
-import { donationUrlShare } from '../../../service/share';
+import { donationUrlShare } from '../../../service/creator/donationURLShare';
 import { UserInfo } from '../../../types';
 import LinkIcon from '../../../assets/icons/link.svg';
 import {
@@ -8,7 +8,7 @@ import {
   StyledContainerButton,
   StyledModal,
 } from './URLShareSelectModal.styles';
-import useURLBanner from '../../../service/hooks/user/useURLBanner';
+import useURLBanner from '../../../service/user/useURLBanner';
 
 export interface URLShareSelectModalProps {
   userInfo: UserInfo;

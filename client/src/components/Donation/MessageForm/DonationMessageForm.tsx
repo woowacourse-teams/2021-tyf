@@ -1,8 +1,8 @@
 import { FormEvent } from 'react';
 
 import { MAX_MESSAGE_LENGTH } from '../../../constants/donation';
-import useDonationMessage from '../../../service/hooks/donation/useDonationMessage';
-import useDonationMessageForm from '../../../service/hooks/donation/useDonationMessageForm';
+import useDonationMessage from '../../../service//donation/useDonationMessage';
+import useDonationMessageForm from '../../../service//donation/useDonationMessageForm';
 import { CreatorId } from '../../../types';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Textarea from '../../@atom/Textarea/Textarea';
