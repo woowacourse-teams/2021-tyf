@@ -25,10 +25,20 @@ public class S3Connector {
     @Value("${s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile, Long memberId) {
+    public String uploadProfile(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
         String fileName = "users/"
                 + memberId + "/profiles/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
+        awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
+        file.delete();
+
+        return cloudfrontUrl + fileName;
+    }
+
+    public String uploadBankBook(MultipartFile multipartFile, Long memberId) {
+        File file = convertToFile(multipartFile);
+        String fileName = "users/"
+                + memberId + "/bankbook/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 

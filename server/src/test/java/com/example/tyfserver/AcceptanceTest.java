@@ -46,7 +46,7 @@ public class AcceptanceTest {
         RestAssured.port = port;
         when(oauth2ServiceConnector.getEmailFromOauth2(any(), any()))
                 .thenReturn(DEFAULT_EMAIL);
-        when(s3Connector.upload(any(), any()))
+        when(s3Connector.uploadBankBook(any(), any()))
                 .thenReturn(DEFAULT_PROFILE_IMAGE);
         doNothing().when(s3Connector).delete(anyString());
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))

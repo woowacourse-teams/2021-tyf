@@ -123,4 +123,16 @@ public class Member extends BaseTimeEntity {
     public void reducePoint(long amount) {
         point.reduce(amount);
     }
+
+    public void approveAccount() {
+        this.account.approve();
+    }
+
+    public void rejectAccount() {
+        this.account.reject();
+    }
+
+    public String getBankBookUrl() {
+        return this.account.getBankbookUrl();
+    }
 }
