@@ -6,10 +6,7 @@ import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Exchange;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.DuplicatedNicknameException;
-import com.example.tyfserver.member.exception.DuplicatedPageNameException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.example.tyfserver.member.repository.AccountRepository;
+import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DonationRepository donationRepository;
-    private final AccountRepository accountRepository;
     private final ExchangeRepository exchangeRepository;
     private final S3Connector s3Connector;
 
