@@ -138,7 +138,7 @@ class MemberServiceTest {
 
         //when
         doNothing().when(s3Connector).delete(Mockito.anyString());
-        when(s3Connector.upload(file, "users/" + loginMember.getId() + "/profiles/")).thenReturn(uploadedImage);
+        when(s3Connector.uploadBankBook(file, loginMember.getId())).thenReturn(uploadedImage);
 
         //then
         assertThat(memberService.uploadProfile(file, loginMember)).usingRecursiveComparison()
