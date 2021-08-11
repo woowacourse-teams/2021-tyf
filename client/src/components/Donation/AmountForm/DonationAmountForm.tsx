@@ -2,6 +2,7 @@ import { FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import useDonationAmountForm from '../../../service//donation/useDonationAmountForm';
+import useDonationAmount from '../../../service//donation/useDonationAmount';
 import { CreatorId } from '../../../types';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Button from '../../@atom/Button/Button.styles';
@@ -23,15 +24,18 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
   const history = useHistory();
   const { donationAmount, addDonationAmount, setDonationAmount, isDonationAmountInValidRange } =
     useDonationAmountForm();
+  const { setDonationAmount: setGlobalDonationAmount } = useDonationAmount();
 
-  const onDonate = (event: FormEvent<HTMLFormElement>) => {
+  const onSetDonationAmount = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setGlobalDonationAmount(Number(donationAmount));
 
     history.push(`/donation/${creatorId}/donatorInfo`);
   };
 
   return (
-    <StyledDonationAmountForm onSubmit={onDonate}>
+    <StyledDonationAmountForm onSubmit={onSetDonationAmount}>
       <SubTitle>후원할 금액을 입력해주세요! 🎉</SubTitle>
       <MoneyInputContainer>
         <InputLabel>

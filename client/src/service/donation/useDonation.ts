@@ -40,8 +40,6 @@ const useDonation = (creatorId: CreatorId) => {
       try {
         const donationResult = await requestPaymentComplete(response);
 
-        console.log(donationResult);
-
         setDonation(donationResult);
         alert('결제에 성공했습니다.');
         history.push(`/donation/${pageName}/message`);
