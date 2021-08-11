@@ -9,3 +9,14 @@ export interface Exchange {
 export interface LoginResponse {
   token: string;
 }
+
+export interface BankAccount {
+  memberId: number;
+  email: string;
+  nickname: string;
+  pageName: string;
+  accountHolder: string;
+  accountNumber: string;
+  bank: string;
+  bankbookImageUrl: string;
+}

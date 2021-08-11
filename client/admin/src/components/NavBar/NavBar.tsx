@@ -8,6 +8,7 @@ export const NavBar = () => {
     <StyledNavBar>
       <StyledTitle>ThankyouFor Admin</StyledTitle>
       <Menu>
+        <MenuItem onClick={() => history.push('/bankAccount')}>계좌신청목록</MenuItem>
         <MenuItem onClick={() => history.push('/settlement')}>정산신청목록</MenuItem>
       </Menu>
     </StyledNavBar>
