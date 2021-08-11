@@ -17,5 +17,5 @@ export const requestRefundOrderInfo = (refundAccessToken: string): Promise<refun
 };
 
 export const requestRefund = (refundAccessToken: string) => {
-  return apiClient.post('/payments/refund', authorizationHeader(refundAccessToken));
+  return apiClient.post('/payments/refund', {}, authorizationHeader(refundAccessToken));
 };
