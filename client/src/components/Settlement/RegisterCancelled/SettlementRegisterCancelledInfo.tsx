@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router';
 import useSettlement from '../../../service/settlement/useSettlement';
+import useUserInfo from '../../../service/user/useUserInfo';
 import {
   CancelDetail,
   StyledButton,
@@ -9,6 +10,7 @@ import {
 
 const SettlementRegisterCancelledInfo = () => {
   const history = useHistory();
+  const { userInfo } = useUserInfo();
 
   return (
     <StyledSettlementRegisterCancelledInfo>
@@ -19,7 +21,7 @@ const SettlementRegisterCancelledInfo = () => {
       {/* <CancelDetail>반려사유: {account}</CancelDetail> */}
       <StyledButton
         onClick={() => {
-          history.push('/settlement/register');
+          history.push(`/creator/${userInfo?.pageName}/settlement/register`);
         }}
       >
         정산 계좌 인증하기

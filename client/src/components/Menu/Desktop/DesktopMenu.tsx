@@ -38,10 +38,10 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
         <MenuIcon src={User} />
         <span>마이페이지</span>
       </MenuButton>
-      {/* <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}/settlement`)}>
+      <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}/settlement`)}>
         <MenuIcon src={Graph} />
         <span>정산 관리</span>
-      </MenuButton> */}
+      </MenuButton>
       <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}/setting`)}>
         <MenuIcon src={Setting} />
         <span>설정</span>

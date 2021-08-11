@@ -17,7 +17,7 @@ export const settlementPointQuery = selector({
 });
 
 export const settlementAccountQuery = selector({
-  key: settlementQueryKey,
+  key: 'settlementAccountQueryKey',
   get: ({ get }) => {
     get(requestIdState(settlementQueryKey));
 

@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { useHistory } from 'react-router-dom';
+import Transition from '../../components/@atom/Transition/Transition.styles';
 
 import SettlementInfo from '../../components/Settlement/Info/SettlementInfo';
 import SettlementRegisterForm from '../../components/Settlement/Register/SettlementRegisterForm';
@@ -8,24 +8,25 @@ import SettlementRegisterCancelledInfo from '../../components/Settlement/Registe
 import SettlementRegisterPendingInfo from '../../components/Settlement/RegisterPending/SettlementRegisterPendingInfo';
 import Spinner from '../../components/Spinner/Spinner';
 import useSettlement from '../../service/settlement/useSettlement';
+import { SettlementAccountStatus } from '../../types';
 import { StyledTemplate, StyledTitle } from './SettlementPage.styles';
 
 const SettlementPage = () => {
   const { account } = useSettlement();
   const history = useHistory();
 
-  const component: Record<string, () => JSX.Element> = {
+  const component: Record<SettlementAccountStatus, () => JSX.Element> = {
     UNREGISTERED: SettlementRegisterForm,
     REGISTERED: SettlementInfo,
     REQUESTING: SettlementRegisterPendingInfo,
-    CANCELLED: SettlementRegisterCancelledInfo,
+    REJECTED: SettlementRegisterCancelledInfo,
   };
 
   const Settlement = component[account.status] ?? SettlementRegisterForm;
 
   useEffect(() => {
     if (!Settlement) {
-      history.push('/settlement/register');
+      history.push('/');
     }
   }, [Settlement]);
 
@@ -34,7 +35,9 @@ const SettlementPage = () => {
       <StyledTitle>정산 관리</StyledTitle>
       <section>
         <Suspense fallback={Spinner}>
-          <Settlement />
+          <Transition>
+            <Settlement />
+          </Transition>
         </Suspense>
       </section>
     </StyledTemplate>

@@ -14,7 +14,7 @@ import useAccessToken from '../@shared/useAccessToken';
 
 const useSettlement = () => {
   const { accessToken } = useAccessToken();
-  const { possessedPoint, exchangeablePoint, exchangedTotalPoint } =
+  const { currentPoint, exchangeablePoint, exchangedTotalPoint } =
     useRecoilValue(settlementPointQuery);
   const account = useRecoilValue(settlementAccountQuery);
   const setRequestId = useSetRecoilState(requestIdState(settlementQueryKey));
@@ -45,7 +45,7 @@ const useSettlement = () => {
 
   return {
     account,
-    possessedPoint,
+    currentPoint,
     exchangeablePoint,
     exchangedTotalPoint,
     applySettlement,

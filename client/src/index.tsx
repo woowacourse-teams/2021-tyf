@@ -11,8 +11,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 import Spinner from './components/Spinner/Spinner';
 import ErrorFallback from './components/ErrorFallback/ErrorFallback';
 
-// TODO: APP감싸는 에러바운더리 화면 마크업 작업 필요
-
 ReactDOM.render(
   <>
     <RecoilRoot>

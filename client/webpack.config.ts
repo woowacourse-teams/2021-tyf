@@ -57,7 +57,7 @@ const config: WebpackConfig = {
       analyzerMode: 'disabled',
       generateStatsFile: true,
       statsFilename: 'docs/bundle_stats.json',
-      // reportFilename: 'docs/bundle_size.html',
+      // reportFilename: 'docs/bundle_size.html', // output: html
     }) as unknown as webpack.WebpackPluginInstance,
   ],
   devServer: {

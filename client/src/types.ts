@@ -72,7 +72,7 @@ export interface refundOrderDetail {
 
 // SETTLEMENT
 
-export type SettlementAccountStatus = 'REGISTERED' | 'REGISTERED' | 'REQUESTING' | 'CANCELLED';
+export type SettlementAccountStatus = 'REGISTERED' | 'UNREGISTERED' | 'REQUESTING' | 'REJECTED';
 
 export interface SettlementAccount {
   status: SettlementAccountStatus;
@@ -89,7 +89,7 @@ export interface SettlementAccountForm {
 }
 
 export interface Point {
-  possessedPoint: number;
+  currentPoint: number;
   exchangeablePoint: number;
   exchangedTotalPoint: number;
 }
