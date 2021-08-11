@@ -1,6 +1,6 @@
 package com.example.tyfserver.admin.controller;
 
-import com.example.tyfserver.admin.dto.AccountCancelRequest;
+import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +17,15 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/approve/{memberId}/account")
-    public ResponseEntity<Void> approveAccount(Long memberId) {
+    public ResponseEntity<Void> approveAccount(@PathVariable Long memberId) {
         adminService.approveAccount(memberId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/reject/{memberId}/account")
-    public ResponseEntity<Void> rejectAccount(Long memberId,
-                                              AccountCancelRequest accountCancelRequest) {
-        adminService.rejectAccount(memberId, accountCancelRequest);
+    public ResponseEntity<Void> rejectAccount(@PathVariable Long memberId,
+                                              AccountRejectRequest accountRejectRequest) {
+        adminService.rejectAccount(memberId, accountRejectRequest);
         return ResponseEntity.ok().build();
     }
 

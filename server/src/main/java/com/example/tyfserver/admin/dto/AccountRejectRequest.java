@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AccountCancelRequest {
-    private String cancelReason;
+public class AccountRejectRequest {
+    private String rejectReason;
 
-    public AccountCancelRequest(String cancelReason) {
-        this.cancelReason = cancelReason;
+    public AccountRejectRequest(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
 }

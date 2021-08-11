@@ -25,7 +25,7 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 요청_계좌_반려(Long memberId) {
-        return post("/admin/cancel/" + memberId + "/account", "").extract();
+        return post("/admin/reject/" + memberId + "/account", "").extract();
     }
 
     public static ExtractableResponse<Response> 요청_계좌_목록_조회() {

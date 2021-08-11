@@ -1,6 +1,6 @@
 package com.example.tyfserver.admin.service;
 
-import com.example.tyfserver.admin.dto.AccountCancelRequest;
+import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.util.S3Connector;
@@ -86,7 +86,7 @@ class AdminServiceTest {
         //when
         doNothing().when(s3Connector).delete(Mockito.anyString());
         doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
-        adminService.rejectAccount(member.getId(), new AccountCancelRequest("테스트취소사유"));
+        adminService.rejectAccount(member.getId(), new AccountRejectRequest("테스트취소사유"));
 
         //then
         Assertions.assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.REJECTED);
