@@ -72,7 +72,7 @@ public class MemberTest {
         Member member = generateMemberWithAccount();
 
         //when
-        member.registerAccount("테스트", "1234-5678-1234","하나", "https://test.com/test.png");
+        member.registerAccount("테스트", "1234-5678-1234", "하나", "https://test.com/test.png");
 
         //then
         Account memberAccount = member.getAccount();
@@ -89,7 +89,7 @@ public class MemberTest {
     public void registerAccountWhenRequesting() {
         //given
         Member member = generateMemberWithAccount();
-        member.registerAccount("테스트", "1234-5678-1234","하나", "https://test.com/test.png");
+        member.registerAccount("테스트", "1234-5678-1234", "하나", "https://test.com/test.png");
 
         assertThatThrownBy(() -> member.registerAccount("테스트", "1234-5678-1234",
                 "하나", "https://test.com/test.png"))
@@ -102,7 +102,7 @@ public class MemberTest {
     public void approveAccount() {
         //given
         Member member = generateMemberWithAccount();
-        member.registerAccount("테스트", "1234-5678-1234","하나", "https://test.com/test.png");
+        member.registerAccount("테스트", "1234-5678-1234", "하나", "https://test.com/test.png");
 
         //when
         member.approveAccount();
@@ -118,7 +118,7 @@ public class MemberTest {
     public void cancelAccount() {
         //given
         Member member = generateMemberWithAccount();
-        member.registerAccount("테스트", "1234-5678-1234","하나", "https://test.com/test.png");
+        member.registerAccount("테스트", "1234-5678-1234", "하나", "https://test.com/test.png");
 
         //when
         member.rejectAccount();

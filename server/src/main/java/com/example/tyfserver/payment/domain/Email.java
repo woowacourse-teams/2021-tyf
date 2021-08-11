@@ -11,7 +11,6 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Email {
 
-    // todo 멤버 도메인의 이메일도 얘로 바꿔줘야 하나???
     private String email;
 
     public Email(String email) {

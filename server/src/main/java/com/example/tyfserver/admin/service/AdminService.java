@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private static final String EXCHANGE_APPROVE = "승인되었습니다.";
+
     private final ExchangeRepository exchangeRepository;
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;

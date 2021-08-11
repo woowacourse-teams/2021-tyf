@@ -88,9 +88,11 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         //given
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", pageName).as(PaymentPendingResponse.class);
+        UUID merchantUid = 페이먼트_생성(10000L, "donator@gmail.com", pageName)
+                .as(PaymentPendingResponse.class).getMerchantUid();
+        후원_생성("impUid", merchantUid.toString()).as(DonationResponse.class);
 
-        RefundVerificationReadyResponse result = 환불_인증코드_생성(paymentPendingResponse.getMerchantUid().toString(), "code")
+        RefundVerificationReadyResponse result = 환불_인증코드_생성(merchantUid.toString(), "code")
                 .as(RefundVerificationReadyResponse.class);
 
         assertAll(
@@ -116,10 +118,13 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     public void refundVerificationReadyResendCoolTimeIsAlive() {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", pageName).as(PaymentPendingResponse.class);
+        String merchantUid = 페이먼트_생성(10000L, "donator@gmail.com", pageName)
+                .as(PaymentPendingResponse.class).getMerchantUid().toString();
 
-        환불_인증코드_생성(paymentPendingResponse.getMerchantUid().toString(), "code");
-        ErrorResponse errorResponse = 환불_인증코드_생성(paymentPendingResponse.getMerchantUid().toString(), "code2").as(ErrorResponse.class);
+        후원_생성("impUid", merchantUid).as(DonationResponse.class);
+
+        환불_인증코드_생성(merchantUid, "code");
+        ErrorResponse errorResponse = 환불_인증코드_생성(merchantUid, "code2").as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(CodeResendCoolTimeException.ERROR_CODE);
     }
@@ -260,7 +265,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
 
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
-        환불_인증코드_생성(merchantUid, "123456");
+        환불_인증코드_생성(merchantUid, "123456").as(RefundVerificationReadyResponse.class);
         String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
 
         ExtractableResponse<Response> response = 환불_요청_성공(token, merchantUid);
