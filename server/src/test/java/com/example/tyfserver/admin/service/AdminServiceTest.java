@@ -86,10 +86,10 @@ class AdminServiceTest {
         //when
         doNothing().when(s3Connector).delete(Mockito.anyString());
         doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
-        adminService.cancelAccount(member.getId(), new AccountCancelRequest("테스트취소사유"));
+        adminService.rejectAccount(member.getId(), new AccountCancelRequest("테스트취소사유"));
 
         //then
-        Assertions.assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.CANCELLED);
+        Assertions.assertThat(member.getAccountStatus()).isEqualTo(AccountStatus.REJECTED);
         Assertions.assertThat(member.getAccount().getAccountHolder()).isEqualTo("테스트유저");
         Assertions.assertThat(member.getAccount().getAccountNumber()).isEqualTo("1234-1234-1234");
         Assertions.assertThat(member.getAccount().getBank()).isEqualTo("하나");

@@ -128,8 +128,8 @@ public class Member extends BaseTimeEntity {
         this.account.approve();
     }
 
-    public void cancelAccount() {
-        this.account.cancel();
+    public void rejectAccount() {
+        this.account.reject();
     }
 
     public String getBankBookUrl() {

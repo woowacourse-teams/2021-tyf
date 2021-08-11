@@ -73,7 +73,7 @@ class AdminControllerTest {
         //given
         AccountCancelRequest accountCancelRequest = new AccountCancelRequest("테스트취소사유");
         //when
-        doNothing().when(adminService).cancelAccount(Mockito.anyLong(), Mockito.any());
+        doNothing().when(adminService).rejectAccount(Mockito.anyLong(), Mockito.any());
         //then
         mockMvc.perform(post("/admin/cancel/1/account")
                 .content(objectMapper.writeValueAsString(accountCancelRequest))

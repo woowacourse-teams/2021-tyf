@@ -3,7 +3,6 @@ package com.example.tyfserver.admin.controller;
 import com.example.tyfserver.admin.dto.AccountCancelRequest;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.admin.service.AdminService;
-import com.example.tyfserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +22,10 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cancel/{memberId}/account")
-    public ResponseEntity<Void> cancelAccount(Long memberId,
+    @PostMapping("/reject/{memberId}/account")
+    public ResponseEntity<Void> rejectAccount(Long memberId,
                                               AccountCancelRequest accountCancelRequest) {
-        adminService.cancelAccount(memberId, accountCancelRequest);
+        adminService.rejectAccount(memberId, accountCancelRequest);
         return ResponseEntity.ok().build();
     }
 

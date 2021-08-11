@@ -29,9 +29,9 @@ public class AdminService {
         smtpMailConnector.sendAccountApprove(member.getEmail());
     }
 
-    public void cancelAccount(Long memberId, AccountCancelRequest accountCancelRequest) {
+    public void rejectAccount(Long memberId, AccountCancelRequest accountCancelRequest) {
         Member member = findMember(memberId);
-        member.cancelAccount();
+        member.rejectAccount();
         smtpMailConnector.sendAccountCancel(member.getEmail(), accountCancelRequest.getCancelReason());
     }
 

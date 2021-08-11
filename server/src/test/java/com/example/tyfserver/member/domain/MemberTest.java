@@ -121,11 +121,11 @@ public class MemberTest {
         member.registerAccount("테스트", "1234-5678-1234","하나", "https://test.com/test.png");
 
         //when
-        member.cancelAccount();
+        member.rejectAccount();
 
         //then
         Account memberAccount = member.getAccount();
-        assertThat(memberAccount.getStatus()).isEqualTo(AccountStatus.CANCELLED);
+        assertThat(memberAccount.getStatus()).isEqualTo(AccountStatus.REJECTED);
     }
 
     private Member generateMemberWithAccount() {
