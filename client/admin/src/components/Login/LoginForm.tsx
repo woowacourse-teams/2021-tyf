@@ -1,29 +1,16 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-import { isStyledComponent } from 'styled-components';
-import { BASE_URL } from '../../constants/api';
+
+import useLoginForm from '../../service/useLoginForm';
+import { LoginResponse } from '../../type';
 import { Button } from '../@atom/Button/Button.styles';
 import { Input } from '../@atom/Input/Input.styles';
 import { requestLogin } from '../request/request';
 import { LoginContainer, LoginTitle, StyledLogin, StyledLoginForm } from './LoginForm.styles';
 
-interface LoginResponse {
-  data?: {
-    token: string;
-  };
-  errors?: Array<{ message: string }>;
-}
-
 const LoginForm = () => {
   const history = useHistory();
-  const [form, setForm] = useState({
-    id: '',
-    pwd: '',
-  });
-
-  const onChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [target.name]: target.value });
-  };
+  const { form, onChange, isValidForm } = useLoginForm();
 
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +39,7 @@ const LoginForm = () => {
             placeholder="비밀번호"
             onChange={onChange}
           />
-          <Button>로그인</Button>
+          <Button disabled={!isValidForm}>로그인</Button>
         </LoginContainer>
       </StyledLoginForm>
     </StyledLogin>
