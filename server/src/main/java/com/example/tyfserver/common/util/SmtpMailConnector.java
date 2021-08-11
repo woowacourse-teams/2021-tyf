@@ -22,6 +22,7 @@ public class SmtpMailConnector {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
 
+
     public void sendVerificationCode(String mailAddress, String verificationCode) {
         Context context = new Context();
         context.setVariable("code", verificationCode);
