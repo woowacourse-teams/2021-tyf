@@ -47,7 +47,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("성공적인 후원 생성의 경우")
     public void createDonation() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
 
         ExtractableResponse<Response> response = 후원_생성("impUid", pendingResponse.getMerchantUid().toString());
         assertThat(response.statusCode()).isEqualTo(201);
@@ -65,7 +65,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않는 페이먼트에 대한 후원 생성의 경우")
     public void createDonationCreatorNotFound() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "tyfpagename");
-        페이먼트_생성(1000L, "donator@gmail.com", "tyfpagename");
+        페이먼트_생성(10000L, "donator@gmail.com", "tyfpagename");
         ErrorResponse errorResponse = 후원_생성("impUid", UUID.randomUUID().toString()).as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(PaymentNotFoundException.ERROR_CODE);
@@ -75,7 +75,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("성공적인 후원 메세지 전송")
     public void addDonationMessage() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         Long donationId = 후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
 
         ExtractableResponse<Response> response = 후원_메세지_생성(donationId, "bepoz", "positive", false);
@@ -93,7 +93,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("존재하지 않은 후원에 대한 후원 메세지 전송")
     public void addDonationMessageDonationNotFound() {
-        ErrorResponse errorResponse = 후원_메세지_생성(1000L, "bepoz", "positive", false).as(ErrorResponse.class);
+        ErrorResponse errorResponse = 후원_메세지_생성(10000L, "bepoz", "positive", false).as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(DonationNotFoundException.ERROR_CODE);
     }
@@ -102,7 +102,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("나의 후원목록 조회")
     public void totalDonations() {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         Long donationId = 후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
         후원_메세지_생성(donationId, "donator", "thisismessage", true);
 
@@ -117,7 +117,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("공개 후원목록 조회")
     public void publicDonations() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         Long donationId = 후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
         후원_메세지_생성(donationId, "donator", "thisismessage", true);
 

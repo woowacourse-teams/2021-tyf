@@ -79,13 +79,13 @@ class DonationRepositoryTest {
                 paymentRepository.save(new Payment(7000L, "test@test.com", "test")),
                 new Message("name7", "message7", false));
 
-        donation1.to(member1);
-        donation2.to(member1);
-        donation3.to(member1);
-        donation4.to(member1);
-        donation5.to(member1);
-        donation6.to(member1);
-        donation7.to(member1);
+        member1.addDonation(donation1);
+        member1.addDonation(donation2);
+        member1.addDonation(donation3);
+        member1.addDonation(donation4);
+        member1.addDonation(donation5);
+        member1.addDonation(donation6);
+        member1.addDonation(donation7);
         donationRepository.save(donation1);
         donationRepository.save(donation2);
         donationRepository.save(donation3);
@@ -127,33 +127,27 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("정산 가능 포인트를 조회한다.")
     public void exchangeablePoint() {
-        donation1.updateStatus(DonationStatus.CANCELLED);
-        donation2.updateStatus(DonationStatus.EXCHANGED);
-        donation3.updateStatus(DonationStatus.CANCELLED);
-        donation4.updateStatus(DonationStatus.CANCELLED);
+        donation1.toCancelled();
+        donation2.toExchanged();
+        donation3.toCancelled();
+        donation4.toCancelled();
+        donation5.toExchangeable();
+        donation6.toExchangeable();
 
-        Long member1NotExchangeable =
-                donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now(), 1);
-        Long member2NotExchangeable =
-                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now(), 1);
-        Long member1Exchangeable =
-                donationRepository.exchangeablePoint(member1.getId(), LocalDateTime.now().plusDays(8), 7);
-        Long member2Exchangeable =
-                donationRepository.exchangeablePoint(member2.getId(), LocalDateTime.now().plusDays(8), 7);
+        Long member1ExchangeablePoint = donationRepository.exchangeablePoint(member1.getId());
+        Long member2ExchangeablePoint = donationRepository.exchangeablePoint(member2.getId());
 
-        assertThat(member1NotExchangeable).isEqualTo(0L);
-        assertThat(member2NotExchangeable).isEqualTo(0L);
-        assertThat(member1Exchangeable).isEqualTo(18000L);
-        assertThat(member2Exchangeable).isEqualTo(0L);
+        assertThat(member1ExchangeablePoint).isEqualTo(11000L);
+        assertThat(member2ExchangeablePoint).isEqualTo(0L);
     }
 
     @Test
     @DisplayName("정산 완료 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {
-        donation1.updateStatus(DonationStatus.CANCELLED);
-        donation2.updateStatus(DonationStatus.EXCHANGED);
-        donation3.updateStatus(DonationStatus.CANCELLED);
-        donation4.updateStatus(DonationStatus.CANCELLED);
+        donation1.toCancelled();
+        donation2.toExchanged();
+        donation3.toCancelled();
+        donation4.toCancelled();
 
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
 

@@ -107,6 +107,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 ;
     }
 
+    public static ExtractableResponse<Response> 정산_요청(String token) {
+        return authPost("/members/me/exchange", token).extract();
+    }
+
     @Test
     @DisplayName("유효한 페이지네임 검사의 경우")
     public void validatePageName() {
@@ -182,7 +186,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null)
+                        "제 페이지에 와주셔서 감사합니다!", null, false)
                 );
     }
 
@@ -202,7 +206,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null)
+                        "제 페이지에 와주셔서 감사합니다!", null, false)
                 );
     }
 
@@ -281,7 +285,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
         회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
         회원생성을_요청("user1@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse.getMerchantUid().toString());
 
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
@@ -297,18 +301,18 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void detailedPoint() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("tyf@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse1.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse2.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(1000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
         후원_생성("impUid", pendingResponse3.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
 
         //when
         DetailedPointResponse response = 상세_포인트_조회(signUpResponse.getToken()).as(DetailedPointResponse.class);
 
         //then
-        assertThat(response.getCurrentPoint()).isEqualTo(3000L);
+        assertThat(response.getCurrentPoint()).isEqualTo(30000L);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }
@@ -339,5 +343,20 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 "1234-5678-1234", "은행", signUpResponse.getToken());
 
         assertThat(response.statusCode()).isEqualTo(200);
+    }
+
+    @Test
+    @DisplayName("정산 요청 - 정산 금액이 만원 이하인 경우")
+    public void requestExchangeAmountLessThanLimit() {
+        //given
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+
+        //when
+        ErrorResponse errorResponse = 정산_요청(signUpResponse.getToken()).as(ErrorResponse.class);
+
+        //then
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ExchangeAmountException.ERROR_CODE);
     }
 }
