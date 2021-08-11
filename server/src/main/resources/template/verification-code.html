@@ -36,20 +36,20 @@
           padding: 2rem;
       }
 
-      .donation-detail {
+      .verification-code {
           display: block;
           border-collapse: collapse;
           margin: 3rem 0;
       }
 
-      .donation-detail td,
-      .donation-detail th {
+      .verification-code td,
+      .verification-code th {
           border: 1px solid rgb(184, 140, 140);
           padding: 0.5rem 1rem;
           text-align: center;
       }
 
-      .donation-detail th {
+      .verification-code th {
           background-color: rgb(252, 241, 241);
       }
 
@@ -70,19 +70,13 @@
       </a>
     </header>
     <main>
-      <h1 class="title">결제 내역</h1>
-      <table class="donation-detail">
+      <h1 class="title">인증 번호</h1>
+      <table class="verification-code">
         <tr>
-          <th>결제 번호</th>
-          <th>도네이션 받은 창작자</th>
-          <th>결제 금액</th>
-          <th>결제 날짜</th>
+          <th>해당 인증번호를 입력해주세요</th>
         </tr>
         <tr>
-          <td role="merchant-id"><span th:text = "${merchant_id}"></span></td>
-          <td role="creator-name"><span th:text = "${creator_name}"></span></td>
-          <td role="donation-amount"><span th:text = "${donation_amount}"></span></td>
-          <td role="date"><span th:text = "${date}"></span></td>
+          <td role="code"><span th:text = "${code}"></span></td>
         </tr>
       </table>
     </main>
