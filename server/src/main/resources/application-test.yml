@@ -12,6 +12,10 @@ spring:
     hibernate:
       ddl-auto: create
 
+  redis:
+    host: localhost
+    port: 16379
+
   profiles:
     include: oauth2, aws
 
