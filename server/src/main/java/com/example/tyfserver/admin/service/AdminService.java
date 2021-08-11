@@ -39,7 +39,7 @@ public class AdminService {
         for (Donation donation : donations) {
             donation.toExchanged();
         }
-        mailConnector.sendExchangeResult(member.getEmail(), EXCHANGE_APPROVE;
+        mailConnector.sendExchangeResult(member.getEmail(), EXCHANGE_APPROVE);
         exchangeRepository.deleteByPageName(pageName);
     }
 
