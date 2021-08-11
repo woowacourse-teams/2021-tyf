@@ -1,20 +1,13 @@
 package com.example.tyfserver.admin.controller;
 
 import com.example.tyfserver.admin.dto.AccountRejectRequest;
-import com.example.tyfserver.admin.dto.RequestingAccountResponse;
-import com.example.tyfserver.admin.service.AdminService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
+import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,7 +35,6 @@ public class AdminController {
     public ResponseEntity<List<RequestingAccountResponse>> requestingAccounts() {
         return ResponseEntity.ok(adminService.findRequestingAccounts());
     }
-    private final AdminService adminService;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody AdminLoginRequest adminLoginRequest) {
