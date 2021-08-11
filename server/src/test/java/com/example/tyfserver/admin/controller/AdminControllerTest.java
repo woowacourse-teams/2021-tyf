@@ -8,7 +8,6 @@ import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.config.RefundAuthenticationArgumentResolver;
-import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -151,7 +151,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     public boolean isRefundBlocked() {
-        return refundFailure.isBlocked();
+        return refundFailure != null && refundFailure.isBlocked();
     }
 
     public boolean isNotPaid() {

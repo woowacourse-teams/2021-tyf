@@ -10,7 +10,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.MultiPartSpecification;
 import org.assertj.core.api.Assertions;
-import org.hibernate.validator.internal.engine.messageinterpolation.parser.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.MimeTypeUtils;
@@ -32,7 +31,7 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 요청_계좌_반려(Long memberId, String token) {
-        return authPost("/admin/account/reject/" + memberId , token, "").extract();
+        return authPost("/admin/account/reject/" + memberId, token, "").extract();
     }
 
     public static ExtractableResponse<Response> 요청_계좌_목록_조회(String token) {
