@@ -18,13 +18,13 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/approve/{memberId}/account")
+    @PostMapping("/account/approve/{memberId}")
     public ResponseEntity<Void> approveAccount(@PathVariable Long memberId) {
         adminService.approveAccount(memberId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/reject/{memberId}/account")
+    @PostMapping("/account/reject/{memberId}")
     public ResponseEntity<Void> rejectAccount(@PathVariable Long memberId,
                                               AccountRejectRequest accountRejectRequest) {
         adminService.rejectAccount(memberId, accountRejectRequest);
