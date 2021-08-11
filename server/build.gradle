@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation group: 'org.json', name: 'json', version: '20210307'
+    implementation 'org.json:json:20210307'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compileOnly 'org.projectlombok:lombok'
     implementation 'mysql:mysql-connector-java:8.0.22'
@@ -50,23 +50,24 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws',
-            version: '2.2.1.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'commons-io:commons-io:2.6'
 
     // logback-access
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
     // aws cloudwatch log
-    implementation group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.4.0'
+    implementation 'ca.pjer:logback-awslogs-appender:1.4.0'
 
     //static method mocking 가능하게해줌
-    testImplementation('org.mockito:mockito-inline:3.4.0')
+    testImplementation 'org.mockito:mockito-inline:3.4.0'
     //queryDsl
     implementation 'com.querydsl:querydsl-jpa'
 
+    // embedded-redis
+    implementation 'it.ozimov:embedded-redis:0.7.2'
 }
 
 test {
