@@ -20,6 +20,7 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.RefundFailure;
 import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.exception.CannotRefundException;
 import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
 import com.example.tyfserver.payment.exception.PaymentNotFoundException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
@@ -89,11 +90,10 @@ public class PaymentService {
 
     private void validateStatus(Payment payment, Donation donation) {
         if (!payment.getStatus().isPaid()) {
-            throw new RuntimeException();
+            throw new CannotRefundException(payment.getStatus());
         }
-
         if (!donation.getStatus().isRefundable()) {
-            throw new RuntimeException();
+            throw new CannotRefundException(donation.getStatus());
         }
     }
 
