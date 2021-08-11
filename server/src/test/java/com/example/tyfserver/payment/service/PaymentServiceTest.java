@@ -234,6 +234,36 @@ class PaymentServiceTest {
         assertThat(response.getResendCoolTime()).isEqualTo(CodeResendCoolTime.DEFAULT_TTL);
     }
 
+    @DisplayName("환불 불가한 결제건(결제완료되지 않음, 환불됨 등)은 인증메일을 보낼 수 없다.")
+    @Test
+    void refundVerificationReadyFail() {
+        // given
+        String merchantUid = UUID.randomUUID().toString();
+        RefundVerificationReadyRequest request = new RefundVerificationReadyRequest(merchantUid);
+
+        // when
+        when(codeResendCoolTimeRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        when(codeResendCoolTimeRepository.save(Mockito.any(CodeResendCoolTime.class)))
+                .thenReturn(new CodeResendCoolTime(merchantUid));
+
+        when(verificationCodeRepository.save(Mockito.any(VerificationCode.class)))
+                .thenReturn(new VerificationCode(merchantUid, "123456", VerificationCode.DEFAULT_TTL));
+
+        when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
+                .thenReturn(
+                        Optional.of(new Payment(1000L, "joy@naver.com", "joy")));
+
+        doNothing().when(smtpMailConnector).sendVerificationCode(Mockito.anyString(), Mockito.anyString());
+
+        // then
+        RefundVerificationReadyResponse response = paymentService.refundVerificationReady(request);
+        assertThat(response.getEmail()).isEqualTo("j*y@naver.com");
+        assertThat(response.getTimeout()).isEqualTo(VerificationCode.DEFAULT_TTL);
+        assertThat(response.getResendCoolTime()).isEqualTo(CodeResendCoolTime.DEFAULT_TTL);
+    }
+
     @DisplayName("인증번호를 받아 확인되면 환불 엑세스 토큰이 응답된다")
     @Test
     void refundVerification() {

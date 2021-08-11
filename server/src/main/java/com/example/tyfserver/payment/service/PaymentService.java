@@ -69,9 +69,11 @@ public class PaymentService {
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
-        //todo: 해당 Payment가 환불가능(결제된지 7일 이전)인지 확인해야함.
-
         Payment payment = findPayment(merchantUid);
+        Donation donation = donationRepository.findByPaymentId(payment.getId())
+                .orElseThrow(DonationNotFoundException::new);
+
+        validateStatus(payment, donation);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
         VerificationCode verificationCode = verificationCodeRepository
                 .save(VerificationCode.newCode(merchantUid));
@@ -83,6 +85,16 @@ public class PaymentService {
                 verificationCode.getTimeout(),
                 resendCoolTime
         );
+    }
+
+    private void validateStatus(Payment payment, Donation donation) {
+        if (!payment.getStatus().isPaid()) {
+            throw new RuntimeException();
+        }
+
+        if (!donation.getStatus().isRefundable()) {
+            throw new RuntimeException();
+        }
     }
 
     private Integer checkResendCoolTime(String merchantUid) {
