@@ -90,7 +90,7 @@ class MemberServiceTest {
         MemberResponse response = memberService.findMember("pagename");
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile"));
+                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile", false));
 
         assertThatThrownBy(() -> memberService.findMember("asdf"))
                 .isInstanceOf(MemberNotFoundException.class);
@@ -103,7 +103,7 @@ class MemberServiceTest {
         MemberResponse response = memberService.findMemberDetail(member.getId());
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile"));
+                .isEqualTo(new MemberResponse("email", "nickname", "pagename", "제 페이지에 와주셔서 감사합니다!", "profile", false));
 
         assertThatThrownBy(() -> memberService.findMemberDetail(1000L))
                 .isInstanceOf(MemberNotFoundException.class);
