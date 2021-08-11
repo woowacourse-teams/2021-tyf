@@ -50,8 +50,8 @@ class AdminControllerTest {
 
         //when //then
         mockMvc.perform(post("/admin/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new AdminLoginRequest("id", "password"))))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new AdminLoginRequest("id", "password"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("token"))
                 .andDo(print())
@@ -70,8 +70,8 @@ class AdminControllerTest {
 
         //when //then
         mockMvc.perform(post("/admin/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new AdminLoginRequest("id", "password"))))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new AdminLoginRequest("id", "password"))))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidAdminException.ERROR_CODE))
                 .andDo(print())

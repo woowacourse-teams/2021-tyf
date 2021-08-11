@@ -3,7 +3,6 @@ package com.example.tyfserver.admin.service;
 import com.example.tyfserver.admin.domain.AdminAccount;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.exception.InvalidAdminException;
-import com.example.tyfserver.auth.dto.Oauth2Request;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @Transactional
