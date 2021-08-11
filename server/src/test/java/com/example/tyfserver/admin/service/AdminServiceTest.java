@@ -1,7 +1,11 @@
 package com.example.tyfserver.admin.service;
 
+import com.example.tyfserver.admin.domain.AdminAccount;
+import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
+import com.example.tyfserver.admin.exception.InvalidAdminException;
 import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
@@ -15,6 +19,7 @@ import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,8 +31,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
@@ -45,6 +49,8 @@ class AdminServiceTest {
     private DonationRepository donationRepository;
     @MockBean
     private SmtpMailConnector mailConnector;
+    @MockBean
+    private AdminAccount adminAccount;
 
     @Test
     @DisplayName("정산 목록 조회")
@@ -122,5 +128,30 @@ class AdminServiceTest {
     public void rejectExchangeMemberNotFound() {
         assertThatThrownBy(() -> adminService.rejectExchange("any", "just denied"))
                 .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @DisplayName("유효하지 않은 관리자 계정으로 로그인 요청을 한 경우")
+    @Test
+    void adminLogin() {
+        //given
+        doNothing().when(adminAccount).validateLogin(Mockito.anyString(), Mockito.anyString());
+
+        //when
+        TokenResponse tokenResponse = adminService.login(new AdminLoginRequest("tyf-id", "tyf-password"));
+
+        //then
+        assertThat(tokenResponse).isNotNull();
+    }
+
+    @DisplayName("유효하지 않은 관리자 계정으로 로그인 요청을 한 경우")
+    @Test
+    void adminLoginInvalidAdminAccount() {
+        //given
+        doThrow(InvalidAdminException.class)
+                .when(adminAccount).validateLogin(Mockito.anyString(), Mockito.anyString());
+
+        //when //then
+        assertThatThrownBy(() -> adminService.login(new AdminLoginRequest("tyf-id", "tyf-password")))
+                .isExactlyInstanceOf(InvalidAdminException.class);
     }
 }

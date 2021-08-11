@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-
     private final JwtTokenProvider jwtTokenProvider;
 
     public String createToken(Member member) {
@@ -20,6 +19,10 @@ public class AuthenticationService {
 
     public String createRefundToken(String merchantUid) {
         return jwtTokenProvider.createRefundToken(merchantUid);
+    }
+
+    public String createAdminToken(String id) {
+        return jwtTokenProvider.createAdminToken(id);
     }
 
     public LoginMember createLoginMemberByToken(String token) {

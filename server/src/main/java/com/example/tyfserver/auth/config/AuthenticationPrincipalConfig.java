@@ -20,9 +20,12 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/banners", "/banners/me", "/donations/me", "/members/me", "/members/me/point",
-                        "/members/profile", "/members/me/bio", "/members/me/nickname", "/members/me/detailedPoint",
-                        "/members/me/account", "/members/me/exchange");
+                .excludePathPatterns("/admin/login")
+                .addPathPatterns("/members/me", "/members/me/point", "/members/profile", "/members/me/bio",
+                        "/members/me/nickname", "/members/me/detailedPoint", "/members/me/account")
+                .addPathPatterns("/donations/me")
+                .addPathPatterns("/banners", "/banners/me")
+                .addPathPatterns("/admin", "/admin/**");
     }
 
     @Override

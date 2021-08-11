@@ -6,8 +6,13 @@ import com.example.tyfserver.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import com.example.tyfserver.admin.dto.AdminLoginRequest;
+import com.example.tyfserver.auth.dto.TokenResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
@@ -31,5 +36,10 @@ public class AdminController {
     public ResponseEntity<Void> rejectExchange(@RequestBody ExchangeRejectRequest request) {
         adminService.rejectExchange(request.getPageName(), request.getReason());
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> login(@RequestBody AdminLoginRequest adminLoginRequest) {
+        return ResponseEntity.ok(adminService.login(adminLoginRequest));
     }
 }

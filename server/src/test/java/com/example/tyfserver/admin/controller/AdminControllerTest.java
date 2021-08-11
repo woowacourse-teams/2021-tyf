@@ -1,13 +1,15 @@
 package com.example.tyfserver.admin.controller;
 
+import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeRejectRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
+import com.example.tyfserver.admin.exception.InvalidAdminException;
 import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
+import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,6 @@ import java.time.LocalDateTime;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -137,6 +138,44 @@ class AdminControllerTest {
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(print())
                 .andDo(document("rejectExchangeMemberNotFound",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @DisplayName("/admin/login - success")
+    public void login() throws Exception {
+        //given
+        when(adminService.login(Mockito.any()))
+                .thenReturn(new TokenResponse("token"));
+
+        //when //then
+        mockMvc.perform(post("/admin/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new AdminLoginRequest("id", "password"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value("token"))
+                .andDo(print())
+                .andDo(document("adminLogin",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @DisplayName("/admin/login - UnregisteredAdminMember Failed")
+    public void loginUnregisteredMemberFailed() throws Exception {
+        //given
+        doThrow(new InvalidAdminException())
+                .when(adminService).login(Mockito.any());
+
+        //when //then
+        mockMvc.perform(post("/admin/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new AdminLoginRequest("id", "password"))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(InvalidAdminException.ERROR_CODE))
+                .andDo(print())
+                .andDo(document("adminLoginUnregisteredMemberFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
