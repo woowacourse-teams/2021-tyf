@@ -1,18 +1,13 @@
 package com.example.tyfserver.admin.controller;
 
-import com.example.tyfserver.admin.dto.ExchangeRejectRequest;
-import com.example.tyfserver.admin.dto.ExchangeResponse;
+import com.example.tyfserver.admin.dto.*;
 import com.example.tyfserver.admin.service.AdminService;
+import com.example.tyfserver.auth.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import com.example.tyfserver.admin.dto.AdminLoginRequest;
-import com.example.tyfserver.auth.dto.TokenResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
@@ -35,6 +30,24 @@ public class AdminController {
     @PostMapping("/exchange/reject")
     public ResponseEntity<Void> rejectExchange(@RequestBody ExchangeRejectRequest request) {
         adminService.rejectExchange(request.getPageName(), request.getReason());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/list/account")
+    public ResponseEntity<List<RequestingAccountResponse>> requestingAccounts() {
+        return ResponseEntity.ok(adminService.findRequestingAccounts());
+    }
+
+    @PostMapping("/account/approve/{memberId}")
+    public ResponseEntity<Void> approveAccount(@PathVariable Long memberId) {
+        adminService.approveAccount(memberId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/account/reject/{memberId}")
+    public ResponseEntity<Void> rejectAccount(@PathVariable Long memberId,
+                                              AccountRejectRequest accountRejectRequest) {
+        adminService.rejectAccount(memberId, accountRejectRequest);
         return ResponseEntity.ok().build();
     }
 

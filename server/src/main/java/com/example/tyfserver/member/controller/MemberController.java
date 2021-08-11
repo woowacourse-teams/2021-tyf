@@ -3,6 +3,7 @@ package com.example.tyfserver.member.controller;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.dto.*;
+import com.example.tyfserver.member.exception.AccountRegisterValidationRequestException;
 import com.example.tyfserver.member.exception.BioValidationRequestException;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
@@ -122,7 +123,7 @@ public class MemberController {
                                                 @Valid @ModelAttribute AccountRegisterRequest accountRegisterRequest,
                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
+            throw new AccountRegisterValidationRequestException();
         }
 
         memberService.registerAccount(loginMember, accountRegisterRequest);

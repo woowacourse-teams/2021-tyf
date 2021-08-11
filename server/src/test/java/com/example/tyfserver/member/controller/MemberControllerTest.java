@@ -766,7 +766,7 @@ class MemberControllerTest {
     @DisplayName("Post - /members/me/account - success")
     void registerAccount() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
 
         //when
@@ -775,8 +775,9 @@ class MemberControllerTest {
         //then
         mockMvc.perform(multipart("/members/me/account")
                 .file(file)
-                .param("name", "test")
-                .param("account", "1234-5678-1234")
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andDo(document("registerAccount",
@@ -785,10 +786,10 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Post - /members/me/account - fail - account registered")
-    void registerAccountFailWhenAccountRegistered() throws Exception {
+    @DisplayName("Post - /members/me/account - fail - validation")
+    void registerAccountFailWhenInvalidValue() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
 
         validInterceptorAndArgumentResolverMocking();
@@ -797,8 +798,33 @@ class MemberControllerTest {
         //when
         mockMvc.perform(multipart("/members/me/account")
                 .file(file)
-                .param("name", "test")
-                .param("account", "1234-5678-1234")
+                .param("accountHolder", "")
+                .param("accountNumber", "")
+                .param("bank", "")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AccountRegisterValidationRequestException.ERROR_CODE))
+                .andDo(document("registerAccountFailWhenInvalidValue",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+    }
+
+    @Test
+    @DisplayName("Post - /members/me/account - fail - account registered")
+    void registerAccountFailWhenAccountRegistered() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new AccountAlreadyRegisteredException()).when(memberService).registerAccount(Mockito.any(), Mockito.any());
+
+        //when
+        mockMvc.perform(multipart("/members/me/account")
+                .file(file)
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AccountAlreadyRegisteredException.ERROR_CODE))
@@ -811,7 +837,7 @@ class MemberControllerTest {
     @DisplayName("Post - /members/me/account - fail - account requesting")
     void registerAccountFailWhenAccountRequesting() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
 
         validInterceptorAndArgumentResolverMocking();
@@ -820,8 +846,9 @@ class MemberControllerTest {
         //when
         mockMvc.perform(multipart("/members/me/account")
                 .file(file)
-                .param("name", "test")
-                .param("account", "1234-5678-1234")
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AccountRequestingException.ERROR_CODE))
@@ -834,7 +861,7 @@ class MemberControllerTest {
     @DisplayName("Post - /members/me/account - fail - authorization header not found")
     public void registerAccountHeaderNotFoundFailed() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
 
         //when
@@ -843,8 +870,8 @@ class MemberControllerTest {
         //then
         mockMvc.perform(multipart("/members/me/account")
                 .file(file)
-                .param("name", "test")
-                .param("account", "1234-5678-1234")
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
@@ -859,7 +886,7 @@ class MemberControllerTest {
     @DisplayName("Post - /members/me/account - fail invalid token")
     public void registerAccountInvalidTokenFailed() throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("accountRegisterRequest", "testImage1.jpg",
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
 
         //when
@@ -868,8 +895,9 @@ class MemberControllerTest {
         //then
         mockMvc.perform(multipart("/members/me/account")
                 .file(file)
-                .param("name", "test")
-                .param("account", "1234-5678-1234")
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))

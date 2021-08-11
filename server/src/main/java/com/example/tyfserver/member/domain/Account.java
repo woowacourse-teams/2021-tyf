@@ -48,8 +48,8 @@ public class Account extends BaseTimeEntity {
         this.status = AccountStatus.REGISTERED;
     }
 
-    public void cancel() {
-        this.status = AccountStatus.CANCELLED;
+    public void reject() {
+        this.status = AccountStatus.REJECTED;
     }
 
     private void validateRegisterAccount() {

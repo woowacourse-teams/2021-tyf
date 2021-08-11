@@ -19,7 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.util.MimeTypeUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
@@ -88,13 +90,17 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         return authGet("/members/me/account", token).extract();
     }
 
-    public static ExtractableResponse<Response> 계좌_등록(MultiPartSpecification multiPartSpecification, String name, String account, String token) {
+    public static ExtractableResponse<Response> 계좌_등록(MultiPartSpecification multiPartSpecification, String name, String account, String bank, String token) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("accountHolder", name);
+        requestBody.put("accountNumber", account);
+        requestBody.put("bank", bank);
+
         return RestAssured
                 .given().log().all()
                 .auth().oauth2(token)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .param("name", name)
-                .param("account", account)
+                .formParams(requestBody)
                 .multiPart(multiPartSpecification)
                 .post("/members/me/account")
                 .then().extract()
@@ -329,12 +335,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
                 .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
-                .controlName("accountRegisterRequest")
+                .controlName("bankbookImage")
                 .fileName("bankbook.jpg")
                 .build();
 
         ExtractableResponse<Response> response = 계좌_등록(multiPartSpecification, "실명",
-                "1234-5678-1234", signUpResponse.getToken());
+                "1234-5678-1234", "은행", signUpResponse.getToken());
 
         assertThat(response.statusCode()).isEqualTo(200);
     }
