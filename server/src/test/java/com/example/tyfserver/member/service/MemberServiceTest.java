@@ -4,7 +4,6 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.AccountStatus;
@@ -204,7 +203,7 @@ class MemberServiceTest {
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
     }
-  
+
     @DisplayName("계좌정보를 등록한다.")
     public void registerAccountInfo() {
         //given

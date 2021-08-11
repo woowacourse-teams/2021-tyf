@@ -716,7 +716,7 @@ class MemberControllerTest {
     @DisplayName("Get - /members/me/account - success")
     void getAccountInfo() throws Exception {
         //given
-        AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(new Account("","","",""));
+        AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(new Account("", "", "", ""));
 
         //when
         when(memberService.accountInfo(Mockito.any())).thenReturn(accountInfoResponse);

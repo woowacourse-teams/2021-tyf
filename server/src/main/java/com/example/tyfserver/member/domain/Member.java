@@ -4,7 +4,6 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
