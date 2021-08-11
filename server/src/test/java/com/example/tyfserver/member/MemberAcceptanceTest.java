@@ -186,7 +186,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null)
+                        "제 페이지에 와주셔서 감사합니다!", null, false)
                 );
     }
 
@@ -206,7 +206,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null)
+                        "제 페이지에 와주셔서 감사합니다!", null, false)
                 );
     }
 
