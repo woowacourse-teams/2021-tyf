@@ -76,9 +76,9 @@ public class MemberService {
         member.updateBio(bio);
     }
 
-    public void updateNickName(LoginMember loginMember, String nickName) {
+    public void updateNickname(LoginMember loginMember, String nickname) {
         Member member = findMember(loginMember.getId());
-        member.updateNickName(nickName);
+        member.updateNickname(nickname);
     }
 
     private void deleteProfile(Member member) {

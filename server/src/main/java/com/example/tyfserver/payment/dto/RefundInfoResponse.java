@@ -30,11 +30,11 @@ public class RefundInfoResponse {
     @Getter
     public static class CreatorInfoResponse {
 
-        private String nickName;
+        private String nickname;
         private String pageName;
 
-        public CreatorInfoResponse(String nickName, String pageName) {
-            this.nickName = nickName;
+        public CreatorInfoResponse(String nickname, String pageName) {
+            this.nickname = nickname;
             this.pageName = pageName;
         }
 

@@ -29,7 +29,7 @@ public class EmbeddedRedisConfig {
         }
 
         redisServer = new RedisServer(port);
-        redisServer.start();
+//        redisServer.start();
     }
 
     @PreDestroy

@@ -669,9 +669,9 @@ class MemberControllerTest {
             "로키", "로키1", "로1키", "1로키"
     })
     @DisplayName("PUT - /me/nick-name - success")
-    void updateNickName(String validNickName) throws Exception {
+    void updateNickname(String validNickname) throws Exception {
         //given
-        NicknameRequest request = new NicknameRequest(validNickName);
+        NicknameRequest request = new NicknameRequest(validNickname);
 
         //when
         validInterceptorAndArgumentResolverMocking();
@@ -681,7 +681,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(document("updateNickName",
+                .andDo(document("updateNickname",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
@@ -692,10 +692,10 @@ class MemberControllerTest {
     @ValueSource(strings = {
             "로", "_로키", "로키_", "_로키_", "-로키", "로키-", " 로키", "로키 ", " 로키 ", "   "
     })
-    @DisplayName("PUT - /me/nick-name - invalid nickName")
-    void updateNickNameInvalidNickNameValueRequestFailed(String invalidNickName) throws Exception {
+    @DisplayName("PUT - /me/nick-name - invalid nickname")
+    void updateNicknameInvalidNicknameValueRequestFailed(String invalidNickname) throws Exception {
         //given
-        NicknameRequest request = new NicknameRequest(invalidNickName);
+        NicknameRequest request = new NicknameRequest(invalidNickname);
 
         //when
         validInterceptorAndArgumentResolverMocking();
@@ -706,7 +706,7 @@ class MemberControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
-                .andDo(document("updateNickNameInvalidNickNameValueRequestFailed",
+                .andDo(document("updateNicknameInvalidNicknameValueRequestFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;

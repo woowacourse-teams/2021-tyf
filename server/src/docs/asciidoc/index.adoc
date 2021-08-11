@@ -179,14 +179,14 @@ include::{snippets}/updateBioInvalidBioValueRequestFailed/http-request.adoc[]
 include::{snippets}/updateBioInvalidBioValueRequestFailed/http-response.adoc[]
 === 닉네임 수정 - 성공
 ==== Request
-include::{snippets}/updateNickName/http-request.adoc[]
+include::{snippets}/updateNickname/http-request.adoc[]
 ==== Response
-include::{snippets}/updateNickName/http-response.adoc[]
+include::{snippets}/updateNickname/http-response.adoc[]
 === 닉네임 수정 - 유효하지 않은 Request
 ==== Request
-include::{snippets}/updateNickNameInvalidNickNameValueRequestFailed/http-request.adoc[]
+include::{snippets}/updateNicknameInvalidNicknameValueRequestFailed/http-request.adoc[]
 ==== Response
-include::{snippets}/updateNickNameInvalidNickNameValueRequestFailed/http-response.adoc[]
+include::{snippets}/updateNicknameInvalidNicknameValueRequestFailed/http-response.adoc[]
 === 정산 계좌 조회
 ==== Request
 include::{snippets}/accountInfo/http-request.adoc[]

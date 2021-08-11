@@ -4,37 +4,29 @@ import com.example.tyfserver.admin.domain.AdminAccount;
 import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
-import com.example.tyfserver.admin.exception.InvalidAdminException;
-import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.auth.dto.TokenResponse;
-import com.example.tyfserver.common.util.SmtpMailConnector;
-import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
-import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.Exchange;
-import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
-import com.example.tyfserver.member.repository.ExchangeRepository;
-import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.domain.Payment;
-import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.admin.exception.InvalidAdminException;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.AccountStatus;
+import com.example.tyfserver.member.domain.Exchange;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.AccountRepository;
+import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -46,8 +38,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
@@ -169,7 +160,7 @@ class AdminServiceTest {
     @Test
     void adminLogin() {
         //given
-        doNothing().when(adminAccount).validateLogin(Mockito.anyString(), Mockito.anyString());
+        doNothing().when(adminAccount).validateLogin(anyString(), anyString());
 
         //when
         TokenResponse tokenResponse = adminService.login(new AdminLoginRequest("tyf-id", "tyf-password"));
@@ -183,7 +174,7 @@ class AdminServiceTest {
     void adminLoginInvalidAdminAccount() {
         //given
         doThrow(InvalidAdminException.class)
-                .when(adminAccount).validateLogin(Mockito.anyString(), Mockito.anyString());
+                .when(adminAccount).validateLogin(anyString(), anyString());
 
         //when //then
         assertThatThrownBy(() -> adminService.login(new AdminLoginRequest("tyf-id", "tyf-password")))
@@ -197,7 +188,7 @@ class AdminServiceTest {
         member.registerAccount("테스트유저", "1234-1234-1234", "하나", "https://test.test.png");
 
         //when
-        doNothing().when(s3Connector).delete(Mockito.anyString());
+        doNothing().when(s3Connector).delete(anyString());
         doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
         adminService.approveAccount(member.getId());
 
@@ -216,7 +207,7 @@ class AdminServiceTest {
         member.registerAccount("테스트유저", "1234-1234-1234", "하나", "https://test.test.png");
 
         //when
-        doNothing().when(s3Connector).delete(Mockito.anyString());
+        doNothing().when(s3Connector).delete(anyString());
         doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
         adminService.rejectAccount(member.getId(), new AccountRejectRequest("테스트취소사유"));
 
@@ -239,7 +230,7 @@ class AdminServiceTest {
         memberRepository.save(member2);
 
         //when
-        doNothing().when(s3Connector).delete(Mockito.anyString());
+        doNothing().when(s3Connector).delete(anyString());
         doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
         List<RequestingAccountResponse> requestingAccounts = adminService.findRequestingAccounts();
 

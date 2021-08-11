@@ -103,7 +103,7 @@ public class MemberController {
             throw new NicknameValidationRequestException();
         }
 
-        memberService.updateNickName(loginMember, nicknameRequest.getNickname());
+        memberService.updateNickname(loginMember, nicknameRequest.getNickname());
         return ResponseEntity.ok().build();
     }
 

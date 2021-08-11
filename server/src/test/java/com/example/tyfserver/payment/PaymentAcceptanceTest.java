@@ -232,7 +232,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         assertAll(
                 () -> assertThat(refundInfoResponse.getCreator().getPageName()).isEqualTo("pagename"),
-                () -> assertThat(refundInfoResponse.getCreator().getNickName()).isEqualTo("nickname"),
+                () -> assertThat(refundInfoResponse.getCreator().getNickname()).isEqualTo("nickname"),
                 () -> assertThat(refundInfoResponse.getDonation().getAmount()).isEqualTo(10_000L),
                 () -> assertThat(refundInfoResponse.getDonation().getMessage()).isEqualTo("늘 응원합니다!"),
                 () -> assertThat(refundInfoResponse.getDonation().getName()).isEqualTo("roki"),

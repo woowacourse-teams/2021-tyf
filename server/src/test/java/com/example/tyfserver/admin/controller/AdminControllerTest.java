@@ -26,6 +26,7 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -46,12 +47,6 @@ class AdminControllerTest {
     private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
     private AuthenticationInterceptor authenticationInterceptor;
-    @MockBean
-    private AuthenticationArgumentResolver authenticationArgumentResolver;
-
-    @MockBean
-    private AuthenticationInterceptor authenticationInterceptor;
-
     @MockBean
     private RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
 
