@@ -45,12 +45,9 @@ import static org.mockito.Mockito.*;
 class AdminServiceTest {
 
     @Autowired
-    private AccountRepository accountRepository;
-    private Member member;
-    @MockBean
-    private S3Connector s3Connector;
-    @Autowired
     private AdminService adminService;
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private ExchangeRepository exchangeRepository;
     @Autowired
@@ -59,10 +56,15 @@ class AdminServiceTest {
     private PaymentRepository paymentRepository;
     @Autowired
     private DonationRepository donationRepository;
+
+    @MockBean
+    private S3Connector s3Connector;
     @MockBean
     private SmtpMailConnector mailConnector;
     @MockBean
     private AdminAccount adminAccount;
+
+    private Member member;
 
     @BeforeEach
     void setUp() {

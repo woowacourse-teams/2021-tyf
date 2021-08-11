@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.repository;
 
-import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;

@@ -20,6 +20,7 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.RefundFailure;
 import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.exception.CannotRefundException;
 import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
 import com.example.tyfserver.payment.exception.PaymentNotFoundException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
@@ -69,9 +70,11 @@ public class PaymentService {
 
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
-        //todo: 해당 Payment가 환불가능(결제된지 7일 이전)인지 확인해야함.
-
         Payment payment = findPayment(merchantUid);
+        Donation donation = donationRepository.findByPaymentId(payment.getId())
+                .orElseThrow(DonationNotFoundException::new);
+
+        validateCanRefund(payment, donation);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
         VerificationCode verificationCode = verificationCodeRepository
                 .save(VerificationCode.newCode(merchantUid));
@@ -83,6 +86,18 @@ public class PaymentService {
                 verificationCode.getTimeout(),
                 resendCoolTime
         );
+    }
+
+    private void validateCanRefund(Payment payment, Donation donation) {
+        if (payment.isRefundBlocked()) {
+            throw new RefundVerificationBlockedException();
+        }
+        if (payment.isNotPaid()) {
+            throw new CannotRefundException(payment.getStatus());
+        }
+        if (donation.isNotRefundable()) {
+            throw new CannotRefundException(donation.getStatus());
+        }
     }
 
     private Integer checkResendCoolTime(String merchantUid) {

@@ -46,7 +46,7 @@ public class AdminController {
 
     @PostMapping("/account/reject/{memberId}")
     public ResponseEntity<Void> rejectAccount(@PathVariable Long memberId,
-                                              AccountRejectRequest accountRejectRequest) {
+                                              @RequestBody AccountRejectRequest accountRejectRequest) {
         adminService.rejectAccount(memberId, accountRejectRequest);
         return ResponseEntity.ok().build();
     }
