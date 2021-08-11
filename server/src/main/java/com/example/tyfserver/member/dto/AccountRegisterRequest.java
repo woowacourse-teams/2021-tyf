@@ -5,18 +5,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountRegisterRequest {
-    private String name;
-    private String account;
+    @NotBlank
+    private String accountHolder;
+    @NotBlank
+    private String accountNumber;
+    @NotBlank
     private String bank;
-    private MultipartFile bankbook;
+    @NotNull
+    private MultipartFile bankbookImage;
 
-    public AccountRegisterRequest(String name, String account, MultipartFile bankbook, String bank) {
-        this.name = name;
-        this.account = account;
-        this.bankbook = bankbook;
+    public AccountRegisterRequest(String accountHolder, String accountNumber, MultipartFile bankbookImage, String bank) {
+        this.accountHolder = accountHolder;
+        this.accountNumber = accountNumber;
+        this.bankbookImage = bankbookImage;
         this.bank = bank;
     }
 }

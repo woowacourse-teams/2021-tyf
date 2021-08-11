@@ -26,7 +26,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DonationRepository donationRepository;
-    private final AccountRepository accountRepository;
     private final S3Connector s3Connector;
 
     public void validatePageName(PageNameRequest request) {
@@ -64,7 +63,7 @@ public class MemberService {
     public ProfileResponse uploadProfile(MultipartFile multipartFile, LoginMember loginMember) {
         Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
-        String uploadedFile = s3Connector.upload(multipartFile, loginMember.getId());
+        String uploadedFile = s3Connector.uploadProfile(multipartFile, loginMember.getId());
         findMember.uploadProfileImage(uploadedFile);
         return new ProfileResponse(uploadedFile);
     }
@@ -103,9 +102,10 @@ public class MemberService {
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());
 
-        String uploadedBankBookUrl = s3Connector.upload(accountRegisterRequest.getBankbook(), loginMember.getId());
-        member.registerAccount(accountRegisterRequest.getName(),
-                accountRegisterRequest.getAccount(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
+        String uploadedBankBookUrl = s3Connector.uploadBankBook(accountRegisterRequest.getBankbookImage(),
+                loginMember.getId());
+        member.registerAccount(accountRegisterRequest.getAccountHolder(),
+                accountRegisterRequest.getAccountNumber(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {

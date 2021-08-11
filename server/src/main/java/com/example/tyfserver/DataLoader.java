@@ -6,7 +6,9 @@ import com.example.tyfserver.banner.repository.BannerRepository;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.repository.PaymentRepository;
@@ -24,6 +26,7 @@ public class DataLoader implements CommandLineRunner {
     private final BannerRepository bannerRepository;
     private final DonationRepository donationRepository;
     private final PaymentRepository paymentRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public void run(String... args) {
@@ -31,18 +34,41 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
+        Account account1 = accountRepository.save(new Account());
+        Member member1 = new Member("Rok93@naver.com", "로키", "rokiMountain", Oauth2Type.NAVER);
+        member1.addInitialAccount(account1);
         Member roki = memberRepository
-                .save(new Member("Rok93@naver.com", "로키", "rokiMountain", Oauth2Type.NAVER));
+                .save(member1);
+
+        Account account2 = accountRepository.save(new Account());
+        Member member2 = new Member("DWL5@kakao.com", "수리", "soorisooriMahaSoori", Oauth2Type.KAKAO);
+        member2.addInitialAccount(account2);
         Member soori = memberRepository
-                .save(new Member("DWL5@kakao.com", "수리", "soorisooriMahaSoori", Oauth2Type.KAKAO));
+                .save(member2);
+
+        Account account3 = accountRepository.save(new Account());
+        Member member3 = new Member("Be-poz@google.com", "파즈", "allIsBePozzible", Oauth2Type.GOOGLE);
+        member3.addInitialAccount(account3);
         Member bePoz = memberRepository
-                .save(new Member("Be-poz@google.com", "파즈", "allIsBePozzible", Oauth2Type.GOOGLE));
+                .save(member3);
+
+        Account account4 = accountRepository.save(new Account());
+        Member member4 = new Member("Joykim@naver.com", "조이", "enjoyLife", Oauth2Type.NAVER);
+        member4.addInitialAccount(account4);
         Member joy = memberRepository
-                .save(new Member("Joykim@naver.com", "조이", "enjoyLife", Oauth2Type.NAVER));
+                .save(member4);
+
+        Account account5 = accountRepository.save(new Account());
+        Member member5 = new Member("jho2301@kakao.com", "파노", "hwanorama", Oauth2Type.KAKAO);
+        member5.addInitialAccount(account5);
         Member hwano = memberRepository
-                .save(new Member("jho2301@kakao.com", "파노", "hwanorama", Oauth2Type.KAKAO));
+                .save(member5);
+
+        Account account6 = accountRepository.save(new Account());
+        Member member6 = new Member("hchayan@google.com", "인치", "1inch", Oauth2Type.GOOGLE);
+        member6.addInitialAccount(account6);
         Member inch = memberRepository
-                .save(new Member("hchayan@google.com", "인치", "1inch", Oauth2Type.GOOGLE));
+                .save(member6);
 
         bannerRepository.save(new Banner(roki, "roki-image.png"));
         bannerRepository.save(new Banner(soori, "soori-image.png"));
