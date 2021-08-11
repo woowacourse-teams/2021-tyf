@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
 import useDonatorForm from '../../../service//donation/useDonatorForm';
-import { popupTerms } from '../../../service/@utils/popupTerms';
+import { popupTerms } from '../../../service/@shared/popupTerms';
 import { CreatorId } from '../../../types';
 import Button from '../../@atom/Button/Button.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
