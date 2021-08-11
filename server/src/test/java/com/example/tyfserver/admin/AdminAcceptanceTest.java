@@ -1,6 +1,7 @@
 package com.example.tyfserver.admin;
 
 import com.example.tyfserver.AcceptanceTest;
+import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
@@ -36,7 +37,7 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 요청_계좌_반려(Long memberId, String token) {
-        return authPost("/admin/account/reject/" + memberId, token, "").extract();
+        return authPost("/admin/account/reject/" + memberId, token, new AccountRejectRequest("거절")).extract();
     }
 
     public static ExtractableResponse<Response> 요청_계좌_목록_조회(String token) {
