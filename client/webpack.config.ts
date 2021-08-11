@@ -3,6 +3,7 @@ import webpackDevServer from 'webpack-dev-server';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 interface WebpackConfig extends webpack.Configuration {
   devServer?: webpackDevServer.Configuration;
@@ -52,6 +53,12 @@ const config: WebpackConfig = {
         },
       },
     }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+      generateStatsFile: true,
+      statsFilename: 'docs/bundle_stats.json',
+      // reportFilename: 'docs/bundle_size.html',
+    }) as unknown as webpack.WebpackPluginInstance,
   ],
   devServer: {
     contentBase: path.resolve('public'),
