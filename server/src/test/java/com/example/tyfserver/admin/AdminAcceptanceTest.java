@@ -1,16 +1,11 @@
 package com.example.tyfserver.admin;
 
 import com.example.tyfserver.AcceptanceTest;
+import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.dto.SignUpResponse;
+import com.example.tyfserver.auth.dto.TokenResponse;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -44,13 +39,22 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         return post("/admin/approve/" + memberId + "/account", "").extract();
     }
 
-    public static ExtractableResponse<Response> 요청_계좌_반려(Long memberId) {
-        return post("/admin/reject/" + memberId + "/account", "").extract();
+    public static TokenResponse 관리자_로그인(String id, String password) {
+        return post("/admin/login", new AdminLoginRequest(id, password)).extract().as(TokenResponse.class);
     }
 
-    public static ExtractableResponse<Response> 요청_계좌_목록_조회() {
-        return get("/admin/list/account").extract();
+    public static ExtractableResponse<Response> 요청_계좌_승인(Long memberId, String token) {
+        return authPost("/admin/account/approve/" + memberId, token, "").extract();
     }
+
+    public static ExtractableResponse<Response> 요청_계좌_반려(Long memberId, String token) {
+        return authPost("/admin/account/reject/" + memberId, token, "").extract();
+    }
+
+    public static ExtractableResponse<Response> 요청_계좌_목록_조회(String token) {
+        return authGet("/admin/list/account", token).extract();
+    }
+
 
     @Test
     @DisplayName("승인 요청된 계좌목록을 조회 한다.")
@@ -58,9 +62,11 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
         계좌_등록(generateMultiPartSpecification(), "test", "1234-1234-1234", "bank", signUpResponse.getToken());
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+
 
         //when
-        List<RequestingAccountResponse> result = 요청_계좌_목록_조회().body().jsonPath().getList(".", RequestingAccountResponse.class);
+        List<RequestingAccountResponse> result = 요청_계좌_목록_조회(token).body().jsonPath().getList(".", RequestingAccountResponse.class);
 
         RequestingAccountResponse data = result.get(0);
         Assertions.assertThat(data.getEmail()).isEqualTo(DEFAULT_EMAIL);
@@ -77,12 +83,14 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
         계좌_등록(generateMultiPartSpecification(), "test", "1234-1234-1234", "bank", signUpResponse.getToken());
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+
 
         List<RequestingAccountResponse> requestingAccounts =
-                요청_계좌_목록_조회().body().jsonPath().getList(".", RequestingAccountResponse.class);
+                요청_계좌_목록_조회(token).body().jsonPath().getList(".", RequestingAccountResponse.class);
 
         //when
-        assertThat(요청_계좌_승인(requestingAccounts.get(0).getMemberId()).statusCode()).isEqualTo(200);
+        assertThat(요청_계좌_승인(requestingAccounts.get(0).getMemberId(), token).statusCode()).isEqualTo(200);
     }
 
     @Test
@@ -91,12 +99,13 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
         계좌_등록(generateMultiPartSpecification(), "test", "1234-1234-1234", "bank", signUpResponse.getToken());
+        String token = 관리자_로그인("test-id", "test-password").getToken();
 
         List<RequestingAccountResponse> requestingAccounts =
-                요청_계좌_목록_조회().body().jsonPath().getList(".", RequestingAccountResponse.class);
+                요청_계좌_목록_조회(token).body().jsonPath().getList(".", RequestingAccountResponse.class);
 
         //when
-        assertThat(요청_계좌_반려(requestingAccounts.get(0).getMemberId()).statusCode()).isEqualTo(200);
+        assertThat(요청_계좌_반려(requestingAccounts.get(0).getMemberId(), token).statusCode()).isEqualTo(200);
     }
 
 
