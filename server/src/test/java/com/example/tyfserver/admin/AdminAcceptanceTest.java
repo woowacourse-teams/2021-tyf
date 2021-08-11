@@ -23,20 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdminAcceptanceTest extends AcceptanceTest {
 
-    public static ExtractableResponse<Response> 정산_신청_목록_조회() {
-        return get("/admin/list/exchange").extract();
-    }
-
-    @Test
-    @DisplayName("정산신청 목록 조회")
-    public void exchangeList() {
-        List<ExchangeResponse> list = 정산_신청_목록_조회().body().jsonPath().getList(".", ExchangeResponse.class);
-
-        assertThat(list).hasSize(0);
-    }
-
-    public static ExtractableResponse<Response> 요청_계좌_승인(Long memberId) {
-        return post("/admin/approve/" + memberId + "/account", "").extract();
+    public static ExtractableResponse<Response> 정산_신청_목록_조회(String token) {
+        return authGet("/admin/list/exchange", token).extract();
     }
 
     public static TokenResponse 관리자_로그인(String id, String password) {
@@ -53,6 +41,15 @@ public class AdminAcceptanceTest extends AcceptanceTest {
 
     public static ExtractableResponse<Response> 요청_계좌_목록_조회(String token) {
         return authGet("/admin/list/account", token).extract();
+    }
+
+    @Test
+    @DisplayName("정산신청 목록 조회")
+    public void exchangeList() {
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+        List<ExchangeResponse> list = 정산_신청_목록_조회(token).body().jsonPath().getList(".", ExchangeResponse.class);
+
+        assertThat(list).hasSize(0);
     }
 
 

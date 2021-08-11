@@ -6,7 +6,6 @@ import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.config.RefundAuthenticationArgumentResolver;
-import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//todo: 토큰을 통한 Admin 생성이 이루어지면 해당 케이스들 추가해야함
 @WebMvcTest(controllers = AdminController.class)
 @AutoConfigureRestDocs
 class AdminControllerTest {
@@ -152,6 +150,7 @@ class AdminControllerTest {
     @Test
     @DisplayName("정산 신청 목록 조회")
     public void exchangeList() throws Exception {
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
         when(adminService.exchangeList())
                 .thenReturn(singletonList(
                         new ExchangeResponse(10000L, "123-123", "nickname", "pagename", LocalDateTime.now())
@@ -174,12 +173,11 @@ class AdminControllerTest {
     @Test
     @DisplayName("정산 승인")
     public void approveExchange() throws Exception {
-        String pageName = "pagename";
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
         doNothing().when(adminService).approveExchange(anyString());
 
-        mockMvc.perform(post("/admin/exchange/approve")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pageName)))
+        mockMvc.perform(post("/admin/exchange/approve/pagename")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("approveExchange",
@@ -189,14 +187,13 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("정산 승인 회원을 찾을 수 없음")
+    @DisplayName("정산 승인 - 회원을 찾을 수 없음")
     public void approveExchangeMemberNotFound() throws Exception {
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
         doThrow(new MemberNotFoundException()).when(adminService).approveExchange(anyString());
-        String pageName = "pagename";
 
-        mockMvc.perform(post("/admin/exchange/approve")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pageName)))
+        mockMvc.perform(post("/admin/exchange/approve/pagename")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(print())
@@ -210,7 +207,8 @@ class AdminControllerTest {
     @DisplayName("정산 거절")
     public void rejectExchange() throws Exception {
         ExchangeRejectRequest request = new ExchangeRejectRequest("pagename", "no reason just fun");
-        doNothing().when(adminService).approveExchange(anyString());
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
+        doNothing().when(adminService).rejectExchange(anyString(), anyString());
 
         mockMvc.perform(post("/admin/exchange/reject")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -224,12 +222,13 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("정산 승인 회원을 찾을 수 없음")
+    @DisplayName("정산 거절 - 회원을 찾을 수 없음")
     public void rejectExchangeMemberNotFound() throws Exception {
         ExchangeRejectRequest request = new ExchangeRejectRequest("pagename", "no reason just fun");
-        doThrow(new MemberNotFoundException()).when(adminService).approveExchange(anyString());
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
+        doThrow(new MemberNotFoundException()).when(adminService).rejectExchange(anyString(), anyString());
 
-        mockMvc.perform(post("/admin/exchange/approve")
+        mockMvc.perform(post("/admin/exchange/reject")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
@@ -277,10 +276,5 @@ class AdminControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
-    }
-
-    private void validInterceptorAndArgumentResolverMocking() {
-        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(any())).thenReturn(true);
     }
 }

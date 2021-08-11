@@ -49,8 +49,6 @@ class AdminServiceTest {
     private Member member;
     @MockBean
     private S3Connector s3Connector;
-    @MockBean
-    private SmtpMailConnector smtpMailConnector;
     @Autowired
     private AdminService adminService;
     @Autowired
@@ -98,7 +96,6 @@ class AdminServiceTest {
     @DisplayName("정산 승인")
     public void approveExchange() {
         //given
-        Member member = new Member("tyf@gmail.com", "nickname", "pagename", Oauth2Type.KAKAO);
         memberRepository.save(member);
         Payment payment = paymentRepository.save(new Payment(13000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
         Donation donation = new Donation(payment);
@@ -129,7 +126,6 @@ class AdminServiceTest {
     @DisplayName("정산 거절")
     public void rejectExchange() {
         //given
-        Member member = new Member("tyf@gmail.com", "nickname", "pagename", Oauth2Type.KAKAO);
         memberRepository.save(member);
         Payment payment = paymentRepository.save(new Payment(13000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
         Donation donation = new Donation(payment);
@@ -189,7 +185,7 @@ class AdminServiceTest {
 
         //when
         doNothing().when(s3Connector).delete(anyString());
-        doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
+        doNothing().when(mailConnector).sendAccountApprove(member.getEmail());
         adminService.approveAccount(member.getId());
 
         //then
@@ -208,7 +204,7 @@ class AdminServiceTest {
 
         //when
         doNothing().when(s3Connector).delete(anyString());
-        doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
+        doNothing().when(mailConnector).sendAccountApprove(member.getEmail());
         adminService.rejectAccount(member.getId(), new AccountRejectRequest("테스트취소사유"));
 
         //then
@@ -231,7 +227,7 @@ class AdminServiceTest {
 
         //when
         doNothing().when(s3Connector).delete(anyString());
-        doNothing().when(smtpMailConnector).sendAccountApprove(member.getEmail());
+        doNothing().when(mailConnector).sendAccountApprove(member.getEmail());
         List<RequestingAccountResponse> requestingAccounts = adminService.findRequestingAccounts();
 
         //then

@@ -1,9 +1,6 @@
 package com.example.tyfserver.admin.controller;
 
-import com.example.tyfserver.admin.dto.AccountRejectRequest;
-import com.example.tyfserver.admin.dto.AdminLoginRequest;
-import com.example.tyfserver.admin.dto.ExchangeRejectRequest;
-import com.example.tyfserver.admin.dto.ExchangeResponse;
+import com.example.tyfserver.admin.dto.*;
 import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,11 @@ public class AdminController {
     public ResponseEntity<Void> rejectExchange(@RequestBody ExchangeRejectRequest request) {
         adminService.rejectExchange(request.getPageName(), request.getReason());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/list/account")
+    public ResponseEntity<List<RequestingAccountResponse>> requestingAccounts() {
+        return ResponseEntity.ok(adminService.findRequestingAccounts());
     }
 
     @PostMapping("/account/approve/{memberId}")

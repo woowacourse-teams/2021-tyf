@@ -79,13 +79,13 @@ class DonationRepositoryTest {
                 paymentRepository.save(new Payment(7000L, "test@test.com", "test")),
                 new Message("name7", "message7", false));
 
-        donation1.to(member1);
-        donation2.to(member1);
-        donation3.to(member1);
-        donation4.to(member1);
-        donation5.to(member1);
-        donation6.to(member1);
-        donation7.to(member1);
+        member1.addDonation(donation1);
+        member1.addDonation(donation2);
+        member1.addDonation(donation3);
+        member1.addDonation(donation4);
+        member1.addDonation(donation5);
+        member1.addDonation(donation6);
+        member1.addDonation(donation7);
         donationRepository.save(donation1);
         donationRepository.save(donation2);
         donationRepository.save(donation3);
