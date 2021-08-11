@@ -25,6 +25,7 @@ const RegisterSuccessPage = () => {
 
   useEffect(() => {
     return () => {
+      console.log('init');
       resetRegister();
     };
   }, []);
