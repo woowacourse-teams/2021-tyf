@@ -6,3 +6,4 @@ if [ -z "$1" ]; then
 fi
 
 sudo docker build -t jho2301/tyf-client:$1 .
+sudo docker build -t jho2301/tyf-client .

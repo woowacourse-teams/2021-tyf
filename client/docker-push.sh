@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
 fi
 
 # specified semver tag
-sudo docker push jho2301/tyf-client:$1 .
+sudo docker push jho2301/tyf-client:$1
 
 # push latest
 sudo docker push jho2301/tyf-client
