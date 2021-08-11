@@ -52,17 +52,17 @@ public class MemberTest {
     }
 
     @Test
-    @DisplayName("updateNickName 메서드 테스트")
-    public void updateNickNameTest() {
+    @DisplayName("updateNickname 메서드 테스트")
+    public void updateNicknameTest() {
         //given
         Member member = testMember();
-        String nickName = "로키";
+        String nickname = "로키";
 
         //when
-        member.updateNickName(nickName);
+        member.updateNickname(nickname);
 
         //then
-        assertThat(member.getNickname()).isEqualTo(nickName);
+        assertThat(member.getNickname()).isEqualTo(nickname);
     }
 
     @Test

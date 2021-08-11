@@ -443,22 +443,11 @@ include::{snippets}/signUpInvalidOauth2TypeFailed/http-response.adoc[]
 include::{snippets}/approveAccount/http-request.adoc[]
 ==== Response
 include::{snippets}/approveAccount/http-response.adoc[]
-== Admin (관리자)
-=== 계좌 등록 요청 승인 - 회원을 찾을 수 없음
-==== Request
-include::{snippets}/approveAccountFailWhenMemberNotFound/http-request.adoc[]
-==== Response
-include::{snippets}/approveAccountFailWhenMemberNotFound/http-response.adoc[]
 === 계좌 등록 요청 반려
 ==== Request
-include::{snippets}/rejectAccount/http-request.adoc[]
+include::{snippets}/cancelAccount/http-request.adoc[]
 ==== Response
-include::{snippets}/registerAccount/http-response.adoc[]
-=== 계좌 등록 요청 반려 - 회원을 찾을 수 없음
-==== Request
-include::{snippets}/rejectAccountFailWhenMemberNotFound/http-request.adoc[]
-==== Response
-include::{snippets}/rejectAccountFailWhenMemberNotFound/http-response.adoc[]
+include::{snippets}/cancelAccount/http-response.adoc[]
 === 계좌 등록 요청 조회
 ==== Request
 include::{snippets}/requestingAccounts/http-request.adoc[]

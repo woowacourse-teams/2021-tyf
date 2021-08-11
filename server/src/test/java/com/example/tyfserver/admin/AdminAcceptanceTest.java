@@ -2,6 +2,7 @@ package com.example.tyfserver.admin;
 
 import com.example.tyfserver.AcceptanceTest;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
+import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.dto.TokenResponse;
@@ -10,7 +11,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.MultiPartSpecification;
 import org.assertj.core.api.Assertions;
-import org.hibernate.validator.internal.engine.messageinterpolation.parser.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.MimeTypeUtils;
@@ -23,6 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdminAcceptanceTest extends AcceptanceTest {
 
+    public static ExtractableResponse<Response> 정산_신청_목록_조회(String token) {
+        return authGet("/admin/list/exchange", token).extract();
+    }
+
     public static TokenResponse 관리자_로그인(String id, String password) {
         return post("/admin/login", new AdminLoginRequest(id, password)).extract().as(TokenResponse.class);
     }
@@ -32,11 +36,20 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 요청_계좌_반려(Long memberId, String token) {
-        return authPost("/admin/account/reject/" + memberId , token, "").extract();
+        return authPost("/admin/account/reject/" + memberId, token, "").extract();
     }
 
     public static ExtractableResponse<Response> 요청_계좌_목록_조회(String token) {
         return authGet("/admin/list/account", token).extract();
+    }
+
+    @Test
+    @DisplayName("정산신청 목록 조회")
+    public void exchangeList() {
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+        List<ExchangeResponse> list = 정산_신청_목록_조회(token).body().jsonPath().getList(".", ExchangeResponse.class);
+
+        assertThat(list).hasSize(0);
     }
 
 

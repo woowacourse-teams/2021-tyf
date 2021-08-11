@@ -103,7 +103,7 @@ public class MemberController {
             throw new NicknameValidationRequestException();
         }
 
-        memberService.updateNickName(loginMember, nicknameRequest.getNickname());
+        memberService.updateNickname(loginMember, nicknameRequest.getNickname());
         return ResponseEntity.ok().build();
     }
 
@@ -127,6 +127,12 @@ public class MemberController {
         }
 
         memberService.registerAccount(loginMember, accountRegisterRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/me/exchange")
+    public ResponseEntity<Void> requestExchange(LoginMember loginMember) {
+        memberService.exchange(loginMember.getId());
         return ResponseEntity.ok().build();
     }
 }

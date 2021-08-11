@@ -9,10 +9,9 @@ import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.DuplicatedNicknameException;
-import com.example.tyfserver.member.exception.DuplicatedPageNameException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.AccountRepository;
+import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.repository.PaymentRepository;
@@ -53,6 +52,9 @@ class MemberServiceTest {
 
     @Autowired
     private DonationRepository donationRepository;
+
+    @Autowired
+    private ExchangeRepository exchangeRepository;
 
     @MockBean
     private S3Connector s3Connector;
@@ -189,8 +191,8 @@ class MemberServiceTest {
         member.addDonation(donation2);
         member.addDonation(donation3);
         member.addDonation(donation4);
-        donation1.exchanged();
-        donation4.cancel();
+        donation1.toExchanged();
+        donation4.toCancelled();
 
         donationRepository.save(donation1);
         donationRepository.save(donation2);
@@ -204,6 +206,7 @@ class MemberServiceTest {
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
     }
 
+    @Test
     @DisplayName("계좌정보를 등록한다.")
     public void registerAccountInfo() {
         //given
@@ -219,5 +222,53 @@ class MemberServiceTest {
         assertThat(account.getAccountHolder()).isEqualTo("test");
         assertThat(account.getBank()).isEqualTo("하나");
         assertThat(account.getAccountNumber()).isEqualTo("1234-5678-1234");
+    }
+
+    @Test
+    @DisplayName("정산을 신청한다")
+    public void exchange() {
+        Payment payment = paymentRepository.save(new Payment(20000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Donation donation = new Donation(payment);
+        member.addDonation(donation);
+        donation.toExchangeable();
+        donationRepository.save(donation);
+
+        memberService.exchange(member.getId());
+        boolean result = exchangeRepository.existsByPageName(member.getPageName());
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("정산을 신청한다 - 이미 신청해놓은 경우")
+    public void exchangeAlreadyRequest() {
+        Payment payment = paymentRepository.save(new Payment(11000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Donation donation = new Donation(payment);
+        member.addDonation(donation);
+        donation.toExchangeable();
+        donationRepository.save(donation);
+
+        memberService.exchange(member.getId());
+
+        assertThatThrownBy(() -> memberService.exchange(member.getId()))
+                .isInstanceOf(AlreadyRequestExchangeException.class);
+    }
+
+    @Test
+    @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 이하인 경우")
+    public void exchangeLessThanLimitAmount() {
+        Payment payment1 = paymentRepository.save(new Payment(10000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Payment payment2 = paymentRepository.save(new Payment(11000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
+        Donation donation1 = new Donation(payment1);
+        Donation donation2 = new Donation(payment2);
+        member.addDonation(donation1);
+        member.addDonation(donation2);
+        donation1.toExchangeable();
+
+        donationRepository.save(donation1);
+        donationRepository.save(donation2);
+
+        assertThatThrownBy(() -> memberService.exchange(member.getId()))
+                .isInstanceOf(ExchangeAmountException.class);
     }
 }

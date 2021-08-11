@@ -30,11 +30,11 @@ public class RefundInfoResponse {
     @Getter
     public static class CreatorInfoResponse {
 
-        private String nickName;
+        private String nickname;
         private String pageName;
 
-        public CreatorInfoResponse(String nickName, String pageName) {
-            this.nickName = nickName;
+        public CreatorInfoResponse(String nickname, String pageName) {
+            this.nickname = nickname;
             this.pageName = pageName;
         }
 
@@ -52,13 +52,13 @@ public class RefundInfoResponse {
         private String message;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy'/'MM'/'dd'/' HH:mm:ss", timezone = "Asia/Seoul")
-        private LocalDateTime date;
+        private LocalDateTime createdAt;
 
-        public DonationInfoResponse(String name, Long amount, String message, LocalDateTime date) {
+        public DonationInfoResponse(String name, Long amount, String message, LocalDateTime createdAt) {
             this.name = name;
             this.amount = amount;
             this.message = message;
-            this.date = date;
+            this.createdAt = createdAt;
         }
 
         public DonationInfoResponse(Donation donation, Payment payment) {

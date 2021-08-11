@@ -24,7 +24,7 @@ public class Point {
 
     public void reduce(final long amount) {
         if (amount > point) {
-            throw new RuntimeException();
+            throw new RuntimeException("포인트가 총액보다 적게 있습니다.");
         }
         this.point -= amount;
     }

@@ -4,6 +4,12 @@
 
 - 누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 모듈 서비스
 
+## 🥰 Members
+
+|              [파노](https://github.com/jho2301)              |              [인치](https://github.com/hchayan)              |               [수리](https://github.com/DWL5)                |              [파즈](https://github.com/Be-poz)               |              [조이](https://github.com/Joyykim)              |               [로키](https://github.com/Rok93)               |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/44419181?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/11311739?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/18106839?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/45073750?v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/56679885?v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/47850258?v=4" width=200px alt="_"> |
+
 ### 💻 커밋 메세지 컨벤션
 
 - 앵귤러 커밋 컨벤션을 따릅니다.

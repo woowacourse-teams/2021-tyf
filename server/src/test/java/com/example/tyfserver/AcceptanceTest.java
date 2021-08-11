@@ -50,7 +50,7 @@ public class AcceptanceTest {
                 .thenReturn(DEFAULT_PROFILE_IMAGE);
         doNothing().when(s3Connector).delete(anyString());
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 1000L,
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 10000L,
                         "pagename", "impUid", "module"));
     }
 
@@ -94,6 +94,12 @@ public class AcceptanceTest {
     protected static ValidatableResponse authPost(String url, String token, Object body) {
         return authTemplate(token)
                 .body(body)
+                .post(url)
+                .then().log().all();
+    }
+
+    protected static ValidatableResponse authPost(String url, String token) {
+        return authTemplate(token)
                 .post(url)
                 .then().log().all();
     }
