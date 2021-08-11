@@ -18,7 +18,7 @@ public class AdminService {
 
     public TokenResponse login(AdminLoginRequest adminLoginRequest) {
         adminAccount.validateLogin(adminLoginRequest.getId(), adminLoginRequest.getPassword());
-        String token = authenticationService.createAdminToken();// todo: adminPage  accessToken의 payload는 뭘 줘야할까....?
+        String token = authenticationService.createAdminToken(adminLoginRequest.getId());
         return new TokenResponse(token);
     }
 }

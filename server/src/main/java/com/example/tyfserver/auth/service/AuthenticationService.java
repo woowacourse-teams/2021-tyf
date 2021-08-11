@@ -21,8 +21,8 @@ public class AuthenticationService {
         return jwtTokenProvider.createRefundToken(merchantUid);
     }
 
-    public String createAdminToken() {
-        return jwtTokenProvider.createAdminToken();
+    public String createAdminToken(String id) {
+        return jwtTokenProvider.createAdminToken(id);
     }
 
     public LoginMember createLoginMemberByToken(String token) {

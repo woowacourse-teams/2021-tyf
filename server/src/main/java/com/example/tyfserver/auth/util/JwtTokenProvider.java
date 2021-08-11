@@ -42,12 +42,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createAdminToken() { // todo: 그래서 페이로드 뭐 넣지...?
+    public String createAdminToken(String id) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .claim("admin", "tyf-admin") // todo: 이 값으로 아무것도 하는게 없다...
+                .claim("id", id)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secreteKey)
