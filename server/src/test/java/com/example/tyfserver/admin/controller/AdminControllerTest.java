@@ -1,11 +1,12 @@
 package com.example.tyfserver.admin.controller;
 
-import com.example.tyfserver.admin.dto.AccountCancelRequest;
+import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.config.RefundAuthenticationArgumentResolver;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -68,18 +68,48 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("/admin/cancel/{memberId}/account- success")
-    public void cancelAccount() throws Exception {
+    @DisplayName("/admin/approve/{memberId}/account- fail - member not found")
+    public void approveAccountFailWhenMemberNotFound() throws Exception {
+        //when
+        doThrow(new MemberNotFoundException()).when(adminService).approveAccount(anyLong());
+        //then
+        mockMvc.perform(post("/admin/approve/1/account")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(document("approveAccountFailWhenMemberNotFound",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/admin/reject/{memberId}/account- success")
+    public void rejectAccount() throws Exception {
         //given
-        AccountCancelRequest accountCancelRequest = new AccountCancelRequest("테스트취소사유");
+        AccountRejectRequest accountRejectRequest = new AccountRejectRequest("테스트취소사유");
         //when
         doNothing().when(adminService).rejectAccount(Mockito.anyLong(), Mockito.any());
         //then
-        mockMvc.perform(post("/admin/cancel/1/account")
-                .content(objectMapper.writeValueAsString(accountCancelRequest))
+        mockMvc.perform(post("/admin/reject/1/account")
+                .content(objectMapper.writeValueAsString(accountRejectRequest))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("cancelAccount",
+                .andDo(document("rejectAccount",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/admin/reject/{memberId}/account- fail - member not found")
+    public void approveRejectFailWhenMemberNotFound() throws Exception {
+        //when
+        doThrow(new MemberNotFoundException()).when(adminService).rejectAccount(anyLong(), any());
+        //then
+        mockMvc.perform(post("/admin/reject/1/account")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(document("rejectAccountFailWhenMemberNotFound",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
