@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ExchangeResponse {
 
+    private String name;
+
+    private String email;
+
     private Long exchangeAmount;
 
     private String accountNumber;
@@ -21,11 +25,13 @@ public class ExchangeResponse {
     private LocalDateTime createdAt;
 
     public ExchangeResponse(Exchange exchange) {
-        this(exchange.getExchangeAmount(), exchange.getAccountNumber(),
+        this(exchange.getName(), exchange.getEmail(), exchange.getExchangeAmount(), exchange.getAccountNumber(),
                 exchange.getNickname(), exchange.getPageName(), exchange.getCreatedAt());
     }
 
-    public ExchangeResponse(Long exchangeAmount, String accountNumber, String nickname, String pageName, LocalDateTime createdAt) {
+    public ExchangeResponse(String name, String email, Long exchangeAmount, String accountNumber, String nickname, String pageName, LocalDateTime createdAt) {
+        this.name = name;
+        this.email = email;
         this.exchangeAmount = exchangeAmount;
         this.accountNumber = accountNumber;
         this.nickname = nickname;

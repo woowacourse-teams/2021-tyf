@@ -79,9 +79,9 @@ class AdminServiceTest {
     @Test
     @DisplayName("정산 목록 조회")
     public void exchangeList() {
-        Exchange exchange1 = new Exchange(12000L, "123-123-123", "nickname1", "pagename1");
-        Exchange exchange2 = new Exchange(21000L, "456-456-456", "nickname2", "pagename2");
-        Exchange exchange3 = new Exchange(31000L, "789-789-789", "nickname3", "pagename3");
+        Exchange exchange1 = new Exchange("승윤", "tyf@gmail.com", 12000L, "123-123-123", "nickname1", "pagename1");
+        Exchange exchange2 = new Exchange("승윤", "tyf@gmail.com", 21000L, "456-456-456", "nickname2", "pagename2");
+        Exchange exchange3 = new Exchange("승윤", "tyf@gmail.com", 31000L, "789-789-789", "nickname3", "pagename3");
         exchangeRepository.save(exchange1);
         exchangeRepository.save(exchange2);
         exchangeRepository.save(exchange3);
@@ -89,7 +89,7 @@ class AdminServiceTest {
         List<ExchangeResponse> responses = adminService.exchangeList();
         assertThat(responses.get(0)).usingRecursiveComparison()
                 .ignoringFields("createdAt")
-                .isEqualTo(new ExchangeResponse(12000L, "123-123-123", "nickname1", "pagename1", LocalDateTime.now()));
+                .isEqualTo(new ExchangeResponse("승윤", "tyf@gmail.com", 12000L, "123-123-123", "nickname1", "pagename1", LocalDateTime.now()));
     }
 
     @Test
@@ -103,7 +103,7 @@ class AdminServiceTest {
         donation.toExchangeable();
         donationRepository.save(donation);
 
-        Exchange exchange = new Exchange(13000L, "123-123", "nickname", "pagename");
+        Exchange exchange = new Exchange("승윤", "tyf@gmail.com", 13000L, "123-123", "nickname", "pagename");
         exchangeRepository.save(exchange);
 
         //when
@@ -133,7 +133,7 @@ class AdminServiceTest {
         donation.toExchangeable();
         donationRepository.save(donation);
 
-        Exchange exchange = new Exchange(13000L, "123-123", "nickname", "pagename");
+        Exchange exchange = new Exchange("승윤", "tyf@gmail.com", 13000L, "123-123", "nickname", "pagename");
         exchangeRepository.save(exchange);
 
         //when

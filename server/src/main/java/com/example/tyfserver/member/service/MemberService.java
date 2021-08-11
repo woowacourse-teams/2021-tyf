@@ -117,7 +117,8 @@ public class MemberService {
         validateExchangeable(member, exchangeablePoint);
 
         Exchange exchange =
-                new Exchange(exchangeablePoint, member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
+                new Exchange(member.getAccount().getAccountHolder(), member.getEmail(), exchangeablePoint,
+                        member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
         exchangeRepository.save(exchange);
     }
 

@@ -19,6 +19,10 @@ public class Exchange extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String email;
+
     private Long exchangeAmount;
 
     private String accountNumber;
@@ -27,7 +31,9 @@ public class Exchange extends BaseTimeEntity {
 
     private String pageName;
 
-    public Exchange(Long exchangeAmount, String accountNumber, String nickname, String pageName) {
+    public Exchange(String name, String email, Long exchangeAmount, String accountNumber, String nickname, String pageName) {
+        this.name = name;
+        this.email = email;
         this.exchangeAmount = exchangeAmount;
         this.accountNumber = accountNumber;
         this.nickname = nickname;
