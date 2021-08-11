@@ -74,12 +74,6 @@ public class JwtTokenProvider {
         return claims.get("merchantUid", String.class);
     }
 
-    public String findAdminFromToken(String token) {
-        Claims claims = claims(token);
-
-        return claims.get("admin", String.class);
-    }
-
     private Claims claims(String token) {
         try {
             return Jwts.parser()
