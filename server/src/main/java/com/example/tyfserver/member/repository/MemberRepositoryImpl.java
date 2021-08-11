@@ -40,10 +40,8 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
     public List<Member> findRequestingAccounts() {
         return queryFactory
                 .selectFrom(member)
-                .innerJoin(member.account, account)
+                .join(member.account, account).fetchJoin()
                 .where(account.status.eq(AccountStatus.REQUESTING))
-                .fetchJoin()
                 .fetch();
-
     }
 }
