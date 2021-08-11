@@ -21,8 +21,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.exchangeList());
     }
 
-    @PostMapping("/exchange/approve")
-    public ResponseEntity<Void> approveExchange(@RequestBody String pageName) {
+    @PostMapping("/exchange/approve/{pageName}")
+    public ResponseEntity<Void> approveExchange(@PathVariable String pageName) {
         adminService.approveExchange(pageName);
         return ResponseEntity.ok().build();
     }
