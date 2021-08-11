@@ -1,7 +1,6 @@
 package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.member.domain.Member;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

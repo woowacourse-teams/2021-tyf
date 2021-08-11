@@ -140,7 +140,7 @@ class DonationRepositoryTest {
         assertThat(member1ExchangeablePoint).isEqualTo(11000L);
         assertThat(member2ExchangeablePoint).isEqualTo(0L);
     }
-    
+
     @Test
     @DisplayName("정산 완료 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {
