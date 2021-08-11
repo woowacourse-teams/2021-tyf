@@ -150,6 +150,10 @@ public class Payment extends BaseTimeEntity {
         }
     }
 
+    public String getEmail() {
+        return email.getEmail();
+    }
+
     public boolean isRefundBlocked() {
         return refundFailure != null && refundFailure.isBlocked();
     }
