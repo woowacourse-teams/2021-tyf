@@ -23,6 +23,7 @@ const useRefund = () => {
       const result = await requestVerifyMerchantUid(merchantUid);
 
       setRefundInfo({ ...refundInfo, ...result, merchantUid });
+      alert('이메일이 전송되었습니다.');
       history.push('/refund/cert');
     } catch (error) {
       alert('유효하지 않은 주문번호입니다.');
