@@ -8,6 +8,7 @@ import com.example.tyfserver.admin.service.AdminService;
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.config.RefundAuthenticationArgumentResolver;
+import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,13 +57,14 @@ class AdminControllerTest {
     private RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
 
     @Test
-    @DisplayName("/admin/approve/{memberId}/account- success")
+    @DisplayName("/admin/account/approve/{memberId} - success")
     public void approveAccount() throws Exception {
         //given
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         doNothing().when(adminService).approveAccount(Mockito.anyLong());
         //when
         //then
-        mockMvc.perform(post("/admin/approve/1/account")
+        mockMvc.perform(post("/admin/account/approve/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("approveAccount",
@@ -72,12 +74,13 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("/admin/approve/{memberId}/account- fail - member not found")
+    @DisplayName("/admin/account/approve/{memberId} - fail - member not found")
     public void approveAccountFailWhenMemberNotFound() throws Exception {
         //when
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         doThrow(new MemberNotFoundException()).when(adminService).approveAccount(anyLong());
         //then
-        mockMvc.perform(post("/admin/approve/1/account")
+        mockMvc.perform(post("/admin/account/approve/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andDo(document("approveAccountFailWhenMemberNotFound",
@@ -87,14 +90,15 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("/admin/reject/{memberId}/account- success")
+    @DisplayName("/admin/account/reject/{memberId} - success")
     public void rejectAccount() throws Exception {
         //given
         AccountRejectRequest accountRejectRequest = new AccountRejectRequest("테스트취소사유");
         //when
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         doNothing().when(adminService).rejectAccount(Mockito.anyLong(), Mockito.any());
         //then
-        mockMvc.perform(post("/admin/reject/1/account")
+        mockMvc.perform(post("/admin/account/reject/1")
                 .content(objectMapper.writeValueAsString(accountRejectRequest))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -105,12 +109,14 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("/admin/reject/{memberId}/account- fail - member not found")
+    @DisplayName("/admin/account/reject/{memberId}- fail - member not found")
     public void approveRejectFailWhenMemberNotFound() throws Exception {
         //when
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         doThrow(new MemberNotFoundException()).when(adminService).rejectAccount(anyLong(), any());
+
         //then
-        mockMvc.perform(post("/admin/reject/1/account")
+        mockMvc.perform(post("/admin/account/reject/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andDo(document("rejectAccountFailWhenMemberNotFound",
@@ -130,6 +136,7 @@ class AdminControllerTest {
                 "1234-1234-12342", "bank", "https://test.test.png"));
 
         //when
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(adminService.findRequestingAccounts()).thenReturn(responses);
         //then
         mockMvc.perform(get("/admin/list/account"))
