@@ -71,7 +71,7 @@ class AdminServiceTest {
         Payment payment = paymentRepository.save(new Payment(13000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
         Donation donation = new Donation(payment);
         member.addDonation(donation);
-        donation.exchangeable();
+        donation.toExchangeable();
         donationRepository.save(donation);
 
         Exchange exchange = new Exchange(13000L, "123-123", "nickname", "pagename");
@@ -102,7 +102,7 @@ class AdminServiceTest {
         Payment payment = paymentRepository.save(new Payment(13000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
         Donation donation = new Donation(payment);
         member.addDonation(donation);
-        donation.exchangeable();
+        donation.toExchangeable();
         donationRepository.save(donation);
 
         Exchange exchange = new Exchange(13000L, "123-123", "nickname", "pagename");

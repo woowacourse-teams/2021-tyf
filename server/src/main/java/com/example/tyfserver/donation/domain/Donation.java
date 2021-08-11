@@ -72,22 +72,18 @@ public class Donation extends BaseTimeEntity {
     public Long getAmount() {
         return payment.getAmount();
     }
-
-    public void updateStatus(DonationStatus updatedStatus) {
-        this.status = updatedStatus;
-    }
-
-    public void cancel() {
+    
+    public void toCancelled() {
         status = DonationStatus.CANCELLED;
         member.reducePoint(this.getAmount());
     }
 
-    public void exchanged() {
+    public void toExchanged() {
         status = DonationStatus.EXCHANGED;
         member.reducePoint(this.getAmount());
     }
 
-    public void exchangeable() {
+    public void toExchangeable() {
         status = DonationStatus.EXCHANGEABLE;
     }
 

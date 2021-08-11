@@ -127,12 +127,12 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("정산 가능 포인트를 조회한다.")
     public void exchangeablePoint() {
-        donation1.updateStatus(DonationStatus.CANCELLED);
-        donation2.updateStatus(DonationStatus.EXCHANGED);
-        donation3.updateStatus(DonationStatus.CANCELLED);
-        donation4.updateStatus(DonationStatus.CANCELLED);
-        donation5.updateStatus(DonationStatus.EXCHANGEABLE);
-        donation6.updateStatus(DonationStatus.EXCHANGEABLE);
+        donation1.toCancelled();
+        donation2.toExchanged();
+        donation3.toCancelled();
+        donation4.toCancelled();
+        donation5.toExchangeable();
+        donation6.toExchangeable();
 
         Long member1ExchangeablePoint = donationRepository.exchangeablePoint(member1.getId());
         Long member2ExchangeablePoint = donationRepository.exchangeablePoint(member2.getId());
@@ -144,10 +144,10 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("정산 완료 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {
-        donation1.updateStatus(DonationStatus.CANCELLED);
-        donation2.updateStatus(DonationStatus.EXCHANGED);
-        donation3.updateStatus(DonationStatus.CANCELLED);
-        donation4.updateStatus(DonationStatus.CANCELLED);
+        donation1.toCancelled();
+        donation2.toExchanged();
+        donation3.toCancelled();
+        donation4.toCancelled();
 
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
 

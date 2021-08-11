@@ -191,8 +191,8 @@ class MemberServiceTest {
         member.addDonation(donation2);
         member.addDonation(donation3);
         member.addDonation(donation4);
-        donation1.exchanged();
-        donation4.cancel();
+        donation1.toExchanged();
+        donation4.toCancelled();
 
         donationRepository.save(donation1);
         donationRepository.save(donation2);
@@ -230,7 +230,7 @@ class MemberServiceTest {
         Payment payment = paymentRepository.save(new Payment(20000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
         Donation donation = new Donation(payment);
         member.addDonation(donation);
-        donation.exchangeable();
+        donation.toExchangeable();
         donationRepository.save(donation);
 
         memberService.exchange(member.getId());
@@ -245,7 +245,7 @@ class MemberServiceTest {
         Payment payment = paymentRepository.save(new Payment(11000L, "tyf@gmail.com", "pagename", UUID.randomUUID()));
         Donation donation = new Donation(payment);
         member.addDonation(donation);
-        donation.exchangeable();
+        donation.toExchangeable();
         donationRepository.save(donation);
 
         memberService.exchange(member.getId());
@@ -263,7 +263,7 @@ class MemberServiceTest {
         Donation donation2 = new Donation(payment2);
         member.addDonation(donation1);
         member.addDonation(donation2);
-        donation1.exchangeable();
+        donation1.toExchangeable();
 
         donationRepository.save(donation1);
         donationRepository.save(donation2);

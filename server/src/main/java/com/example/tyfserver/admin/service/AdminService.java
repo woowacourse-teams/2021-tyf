@@ -36,7 +36,7 @@ public class AdminService {
         Member member = findMember(pageName);
         List<Donation> donations = donationRepository.findDonationByStatusAndMember(DonationStatus.EXCHANGEABLE, member);
         for (Donation donation : donations) {
-            donation.exchanged();
+            donation.toExchanged();
         }
         mailConnector.sendExchangeResult(member.getEmail(), "승인되었습니다.");
         exchangeRepository.deleteByPageName(pageName);

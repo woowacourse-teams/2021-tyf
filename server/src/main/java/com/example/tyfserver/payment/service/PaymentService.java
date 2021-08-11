@@ -145,7 +145,7 @@ public class PaymentService {
         PaymentInfo refundInfo = paymentServiceConnector.requestPaymentRefund(payment.getMerchantUid());
 
         payment.refund(refundInfo);
-        donation.cancel();
+        donation.toCancelled();
     }
 
     private Payment findPayment(String merchantUid) {
