@@ -149,4 +149,8 @@ public class Payment extends BaseTimeEntity {
             throw new PaymentAlreadyCancelledException();
         }
     }
+
+    public String getEmail() {
+        return email.getEmail();
+    }
 }

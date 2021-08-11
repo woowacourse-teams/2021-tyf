@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminService {
 
-    private static final String EXCHANGE_APPROVE = "승인되었습니다.";
     private final ExchangeRepository exchangeRepository;
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
@@ -48,7 +47,7 @@ public class AdminService {
     public void rejectAccount(Long memberId, AccountRejectRequest accountRejectRequest) {
         Member member = findMember(memberId);
         member.rejectAccount();
-        smtpMailConnector.sendAccountCancel(member.getEmail(), accountRejectRequest.getRejectReason());
+        smtpMailConnector.sendAccountReject(member.getEmail(), accountRejectRequest.getRejectReason());
     }
 
     private Member findMember(Long id) {
@@ -72,14 +71,14 @@ public class AdminService {
         for (Donation donation : donations) {
             donation.toExchanged();
         }
-        mailConnector.sendExchangeResult(member.getEmail(), EXCHANGE_APPROVE);
+        mailConnector.sendExchangeApprove(member.getEmail());
         exchangeRepository.deleteByPageName(pageName);
     }
 
     public void rejectExchange(String pageName, String rejectReason) {
         Member member = findMember(pageName);
         exchangeRepository.deleteByPageName(pageName);
-        mailConnector.sendExchangeResult(member.getEmail(), rejectReason);
+        mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
     }
 
     private Member findMember(String pageName) {
