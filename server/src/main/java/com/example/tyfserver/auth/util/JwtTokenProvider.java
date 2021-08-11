@@ -2,7 +2,10 @@ package com.example.tyfserver.auth.util;
 
 import com.example.tyfserver.auth.dto.IdAndEmail;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +16,12 @@ public class JwtTokenProvider {
 
     @Value("${jwt.secreteKey}")
     private String secreteKey;
-
     @Value("${jwt.expire-length}")
     private long validityInMilliseconds;
 
     public String createToken(long id, String email) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-
         return Jwts.builder()
                 .claim("id", id)
                 .claim("email", email)
@@ -33,9 +34,20 @@ public class JwtTokenProvider {
     public String createRefundToken(String merchantUid) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-
         return Jwts.builder()
                 .claim("merchantUid", merchantUid)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secreteKey)
+                .compact();
+    }
+
+    public String createAdminToken() { // todo: 그래서 페이로드 뭐 넣지...?
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .claim("admin", "tyf-admin") // todo: 이 값으로 아무것도 하는게 없다...
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secreteKey)
@@ -52,7 +64,6 @@ public class JwtTokenProvider {
 
     public IdAndEmail findIdAndEmailFromToken(String token) {
         Claims claims = claims(token);
-
         return new IdAndEmail(
                 claims.get("id", Long.class),
                 claims.get("email", String.class));
@@ -60,8 +71,13 @@ public class JwtTokenProvider {
 
     public String findMerchantUidFromToken(String token) {
         Claims claims = claims(token);
-
         return claims.get("merchantUid", String.class);
+    }
+
+    public String findAdminFromToken(String token) {
+        Claims claims = claims(token);
+
+        return claims.get("admin", String.class);
     }
 
     private Claims claims(String token) {
