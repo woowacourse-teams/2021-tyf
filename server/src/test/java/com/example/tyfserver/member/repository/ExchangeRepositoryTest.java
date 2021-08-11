@@ -23,7 +23,7 @@ class ExchangeRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        exchange = new Exchange(1000L, "123-123-123", "nickname", "pagename");
+        exchange = new Exchange("승윤", "tyf@gmail.com", 1000L, "123-123-123", "nickname", "pagename");
         exchangeRepository.save(exchange);
     }
 
