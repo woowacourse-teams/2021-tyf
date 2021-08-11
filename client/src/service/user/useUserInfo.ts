@@ -2,7 +2,7 @@ import { useRecoilValueLoadable } from 'recoil';
 
 import { UserInfo } from '../../types';
 import { loginUserInfoQuery } from '../../service/@state/login';
-import useAccessToken from '../auth/useAccessToken';
+import useAccessToken from '../@shared/useAccessToken';
 
 interface useUserInfoReturnType {
   userInfo: UserInfo | null;

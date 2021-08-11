@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { newUserState } from '../@state/register';
 import { requestRegister } from '../@request/register';
-import useAccessToken from './useAccessToken';
+import useAccessToken from '../@shared/useAccessToken';
 
 const useRegister = () => {
   const history = useHistory();

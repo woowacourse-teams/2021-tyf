@@ -4,14 +4,14 @@ import { SettlementAccountForm } from '../../types';
 
 const useSettlementAccountForm = () => {
   const [form, setForm] = useState<SettlementAccountForm>({
-    name: '',
-    bank: null,
+    accountHolder: '',
     accountNumber: '',
-    bankAccountImage: null,
+    bank: null,
+    bankbookImage: null,
   });
 
-  const setName = (name: string) => {
-    setForm({ ...form, name });
+  const setAccountHolder = (accountHolder: string) => {
+    setForm({ ...form, accountHolder });
   };
 
   const setBank = (bank: string) => {
@@ -19,19 +19,18 @@ const useSettlementAccountForm = () => {
   };
 
   const setAccountNumber = (accountNumber: string) => {
-    const lastIndex = accountNumber.slice(-1)[0];
-    if (lastIndex !== '-' && isNaN(Number(lastIndex))) return;
+    if (isNaN(Number(accountNumber))) return;
 
     setForm({ ...form, accountNumber });
   };
 
-  const setBankAccountImage = (bankAccountImage: File) => {
-    setForm({ ...form, bankAccountImage });
+  const setBankbookImage = (bankbookImage: File) => {
+    setForm({ ...form, bankbookImage });
   };
 
-  const isFormValid = form.name && form.bank && form.accountNumber && form.bankAccountImage;
+  const isFormValid = form.accountHolder && form.bank && form.accountNumber && form.bankbookImage;
 
-  return { form, setName, setBank, setAccountNumber, setBankAccountImage, isFormValid };
+  return { form, setAccountHolder, setBank, setAccountNumber, setBankbookImage, isFormValid };
 };
 
 export default useSettlementAccountForm;

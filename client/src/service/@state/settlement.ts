@@ -1,20 +1,28 @@
 import { selector } from 'recoil';
+import { requestPointDetail, requestSettlementAccount } from '../@request/settlement';
 import { accessTokenState } from './login';
 import { requestIdState } from './request';
 
-export const settlementQueryKey = 'settlementQuery';
+export const settlementQueryKey = 'settlementPointQuery';
 
-export const settlementQuery = selector({
+export const settlementPointQuery = selector({
   key: settlementQueryKey,
   get: ({ get }) => {
-    get(accessTokenState);
     get(requestIdState(settlementQueryKey));
 
-    // TODO: api 스키마 확정되면 api request함수 작성
-    return Promise.resolve({
-      donationAmount: 52000,
-      settlableAmount: 90000,
-      settledAmount: 800000,
-    });
+    const accessToken = get(accessTokenState);
+
+    return requestPointDetail(accessToken);
+  },
+});
+
+export const settlementAccountQuery = selector({
+  key: settlementQueryKey,
+  get: ({ get }) => {
+    get(requestIdState(settlementQueryKey));
+
+    const accessToken = get(accessTokenState);
+
+    return requestSettlementAccount(accessToken);
   },
 });

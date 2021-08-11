@@ -1,7 +1,21 @@
-import { apiClient } from '../../API';
-import { SettlementAccountForm } from '../../types';
+import { apiClient, authorizationHeader } from '../../API';
+import { Point, SettlementAccount, SettlementAccountForm } from '../../types';
 
-export const requestRegisterBankAccount = (form: SettlementAccountForm) => {
-  // 미구현
-  //   apiClient.post('/settlement/', { form });
+export const requestSettlementAccount = (accessToken: string): Promise<SettlementAccount> => {
+  return apiClient.get('/members/me/account', authorizationHeader(accessToken));
+};
+
+export const requestRegisterSettlementAccount = (
+  form: NonNullable<SettlementAccountForm>,
+  accessToken: string
+) => {
+  return apiClient.post('/members/me/account', { form }, authorizationHeader(accessToken));
+};
+
+export const requestPointDetail = (accessToken: string): Promise<Point> => {
+  return apiClient.get('/members/me/detailedPoint', authorizationHeader(accessToken));
+};
+
+export const requestSettlement = (accessToken: string) => {
+  return apiClient.post('/members/me/exchange', authorizationHeader(accessToken));
 };

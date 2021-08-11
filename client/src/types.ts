@@ -72,9 +72,24 @@ export interface refundOrderDetail {
 
 // SETTLEMENT
 
-export interface SettlementAccountForm {
-  name: string;
-  bank: string | null;
+export type SettlementAccountStatus = 'REGISTERED' | 'REGISTERED' | 'REQUESTING' | 'CANCELLED';
+
+export interface SettlementAccount {
+  status: SettlementAccountStatus;
+  accountHolder: string;
+  bank: string;
   accountNumber: string;
-  bankAccountImage: File | null;
+}
+
+export interface SettlementAccountForm {
+  accountHolder: string;
+  bank: string | null;
+  bankbookImage: File | null;
+  accountNumber: string;
+}
+
+export interface Point {
+  possessedPoint: number;
+  exchangeablePoint: number;
+  exchangedTotalPoint: number;
 }

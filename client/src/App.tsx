@@ -27,6 +27,7 @@ import RefundApplyPage from './pages/Refund/Apply/RefundApplyPage';
 import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
 import { useWindowResize } from './utils/useWindowResize';
 import SettlementPage from './pages/Settlement/SettlementPage';
+import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -98,6 +99,13 @@ const App = () => {
         <PrivateRoute
           path="/creator/:creatorId/settlement"
           component={SettlementPage}
+          isAuthed={!!accessToken}
+          redirectTo="/login"
+          exact
+        />
+        <PrivateRoute
+          path="/creator/:creatorId/settlement/register"
+          component={SettlementRegisterPage}
           isAuthed={!!accessToken}
           redirectTo="/login"
         />

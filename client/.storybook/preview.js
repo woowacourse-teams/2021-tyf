@@ -23,7 +23,7 @@ export const decorators = [
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <BrowserRouter>
-            <div style={{ height: '100vh' }}>
+            <div style={{ minHeight: '100vh' }}>
               <Suspense fallback={true}>
                 <Story />
               </Suspense>

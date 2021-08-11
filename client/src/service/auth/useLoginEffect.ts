@@ -6,7 +6,7 @@ import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth'
 import { OAuthProvider } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';
 import { requestLogin } from '../@request/auth';
-import useAccessToken from './useAccessToken';
+import useAccessToken from '../@shared/useAccessToken';
 
 const useLoginEffect = (oauthProvider?: OAuthProvider) => {
   const history = useHistory();

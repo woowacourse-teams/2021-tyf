@@ -1,31 +1,12 @@
 import styled from 'styled-components';
-import { DEVICE } from '../../../constants/device';
 
-import Modal from '../../@atom/Modal/Modal';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
 import StyledOutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
-export const StyledModal = styled(Modal)`
-  align-self: flex-end;
-  width: 100vw;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow-y: auto;
-
-  @media ${DEVICE.DESKTOP_LARGE} {
-    width: 37rem;
-    max-height: 39rem;
-    border-radius: 0.625rem;
-    overflow-y: auto;
-    align-self: center;
-  }
-`;
-
 export const StyledSettlementAccountForm = styled.form`
   padding: 3rem;
+  width: 37rem;
 `;
 
 export const SettlementAccountTitle = styled(Title)`

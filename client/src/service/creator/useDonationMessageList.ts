@@ -6,7 +6,7 @@ import {
   requestCreatorPrivateDonationList,
   requestCreatorPublicDonationList,
 } from '../@request/creator';
-import useAccessToken from '../auth/useAccessToken';
+import useAccessToken from '../@shared/useAccessToken';
 import { AUTH_ERROR } from '../../constants/error';
 
 const useDonationMessageList = (isAdmin: boolean, creatorId: CreatorId) => {
