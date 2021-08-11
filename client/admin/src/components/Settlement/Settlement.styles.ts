@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import PALETTE from '../../constants/palette';
+import { Button } from '../@atom/Button/Button.styles';
 
 export const StyledSettlement = styled.div`
   display: flex;
@@ -38,3 +39,22 @@ export const Bold = styled.span`
   min-width: 7.5rem;
   text-align: end;
 `;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 7rem;
+`;
+
+export const AgreeButton = styled(Button)`
+  background-color: ${PALETTE.GREEN_700};
+
+  &:hover,
+  &:focus {
+    background-color: ${PALETTE.GREEN_900};
+  }
+`;
+
+export const DeclineButton = styled(Button)``;
