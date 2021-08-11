@@ -14,6 +14,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     private final AuthenticationArgumentResolver authenticationArgumentResolver;
     private final RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
+    private final AdminArgumentResolver adminArgumentResolver;
     private final AuthenticationInterceptor authenticationInterceptor;
     private final AdminInterceptor adminInterceptor;
 
@@ -33,6 +34,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authenticationArgumentResolver);
         resolvers.add(refundAuthenticationArgumentResolver);
+        resolvers.add(adminArgumentResolver);
     }
 
     @Override
