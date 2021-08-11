@@ -17,16 +17,16 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/approve/{member_id}/account")
-    public ResponseEntity<Void> approveAccount(@PathVariable("member_id") Long member_id) {
-        adminService.approveAccount(member_id);;
+    @PostMapping("/approve/{memberId}/account")
+    public ResponseEntity<Void> approveAccount(Long memberId) {
+        adminService.approveAccount(memberId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cancel/{member_id}/account")
-    public ResponseEntity<Void> cancelAccount(@PathVariable("member_id") Long member_id,
+    @PostMapping("/cancel/{memberId}/account")
+    public ResponseEntity<Void> cancelAccount(Long memberId,
                                               AccountCancelRequest accountCancelRequest) {
-        adminService.cancelAccount(member_id, accountCancelRequest);
+        adminService.cancelAccount(memberId, accountCancelRequest);
         return ResponseEntity.ok().build();
     }
 
