@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { requestRefund, requestVerify, requestVerifyMerchantUid } from '../@request/refund';
@@ -5,6 +6,7 @@ import { refundState } from '../@state/refund';
 
 const useRefund = () => {
   const [refundInfo, setRefundInfo] = useRecoilState(refundState);
+  const [isVerificationEmailSending, setIsVerificationEmailSending] = useState(false);
   const history = useHistory();
 
   const verify = async (merchantUid: string, verificationCode: string) => {
@@ -19,6 +21,8 @@ const useRefund = () => {
   };
 
   const sendVerificationEmail = async (merchantUid: string) => {
+    setIsVerificationEmailSending(true);
+
     try {
       const result = await requestVerifyMerchantUid(merchantUid);
 
@@ -28,6 +32,8 @@ const useRefund = () => {
     } catch (error) {
       alert('유효하지 않은 주문번호입니다.');
     }
+
+    setIsVerificationEmailSending(false);
   };
 
   const refund = async () => {
@@ -40,7 +46,7 @@ const useRefund = () => {
     }
   };
 
-  return { refundInfo, refund, verify, sendVerificationEmail };
+  return { refundInfo, refund, verify, sendVerificationEmail, isVerificationEmailSending };
 };
 
 export default useRefund;

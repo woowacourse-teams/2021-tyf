@@ -9,7 +9,7 @@ import { StyledRefundApplyForm } from './RefundApplyForm.styles';
 
 const RefundApplyForm = () => {
   const [merchantUid, setMerchantUid] = useState('');
-  const { sendVerificationEmail } = useRefund();
+  const { sendVerificationEmail, isVerificationEmailSending } = useRefund();
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,7 +26,11 @@ const RefundApplyForm = () => {
         value={merchantUid}
         onChange={({ target }) => setMerchantUid(target.value)}
       />
-      <TextButton>인증 메일 보내기</TextButton>
+      {isVerificationEmailSending ? (
+        <TextButton disabled>보내는 중...</TextButton>
+      ) : (
+        <TextButton>인증 메일 보내기</TextButton>
+      )}
     </StyledRefundApplyForm>
   );
 };

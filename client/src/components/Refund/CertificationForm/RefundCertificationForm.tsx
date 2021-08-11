@@ -19,7 +19,7 @@ import {
 
 const RefundCertificationForm = () => {
   const [verificationCode, setVerificationCode] = useState('');
-  const { refundInfo, verify, sendVerificationEmail } = useRefund();
+  const { refundInfo, verify, sendVerificationEmail, isVerificationEmailSending } = useRefund();
   const { remainTime: timeout, resetTimer: resetTimeout } = useTimer(refundInfo.timeout);
   const { remainTime: resendCoolTime, resetTimer: resetCoolTime } = useTimer(
     refundInfo.resendCoolTime
@@ -64,9 +64,14 @@ const RefundCertificationForm = () => {
       </CertificationInputContainer>
       <ButtonContainer>
         <StyledButton disabled={isDisabled}>확인</StyledButton>
-        <StyledTextButton type="button" onClick={onResend}>
-          인증번호 다시 보내기
-        </StyledTextButton>
+
+        {isVerificationEmailSending ? (
+          <StyledTextButton disabled>보내는 중...</StyledTextButton>
+        ) : (
+          <StyledTextButton type="button" onClick={onResend}>
+            인증번호 다시 보내기
+          </StyledTextButton>
+        )}
       </ButtonContainer>
     </StyledRefundCertificationForm>
   );
