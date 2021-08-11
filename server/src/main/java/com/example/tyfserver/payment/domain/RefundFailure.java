@@ -27,6 +27,10 @@ public class RefundFailure extends BaseTimeEntity {
         this.remainTryCount = remainTryCount;
     }
 
+    public boolean isBlocked() {
+        return remainTryCount == 0;
+    }
+
     public RefundFailure(int remainTryCount) {
         this(null, remainTryCount);
     }

@@ -92,4 +92,8 @@ public class Donation extends BaseTimeEntity {
             throw new DonationAlreadyCancelledException();
         }
     }
+
+    public boolean isNotRefundable() {
+        return status != DonationStatus.REFUNDABLE;
+    }
 }

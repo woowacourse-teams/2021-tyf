@@ -74,7 +74,7 @@ public class PaymentService {
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
 
-        validateStatus(payment, donation);
+        validateCanRefund(payment, donation);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
         VerificationCode verificationCode = verificationCodeRepository
                 .save(VerificationCode.newCode(merchantUid));
@@ -88,11 +88,14 @@ public class PaymentService {
         );
     }
 
-    private void validateStatus(Payment payment, Donation donation) {
-        if (!payment.getStatus().isPaid()) {
+    private void validateCanRefund(Payment payment, Donation donation) {
+        if (payment.isRefundBlocked()) {
+            throw new RefundVerificationBlockedException();
+        }
+        if (payment.isNotPaid()) {
             throw new CannotRefundException(payment.getStatus());
         }
-        if (!donation.getStatus().isRefundable()) {
+        if (donation.isNotRefundable()) {
             throw new CannotRefundException(donation.getStatus());
         }
     }

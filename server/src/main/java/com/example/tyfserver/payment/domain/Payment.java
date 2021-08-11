@@ -86,7 +86,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
-        if (!paymentInfo.getStatus().isPaid()) {
+        if (paymentInfo.getStatus() != PaymentStatus.PAID) {
             updateStatus(paymentInfo.getStatus());
             throw IllegalPaymentInfoException.from(ERROR_CODE_NOT_PAID, paymentInfo.getModule());
         }
@@ -101,7 +101,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     private void validatePaymentCancel(PaymentInfo paymentInfo) {
-        if (paymentInfo.getStatus().isCancelled()) {
+        if (paymentInfo.getStatus() != PaymentStatus.CANCELLED) {
             updateStatus(paymentInfo.getStatus());
             throw IllegalPaymentInfoException.from(ERROR_CODE_NOT_CANCELLED, paymentInfo.getModule());
         }
@@ -148,5 +148,13 @@ public class Payment extends BaseTimeEntity {
         if (status == PaymentStatus.CANCELLED) {
             throw new PaymentAlreadyCancelledException();
         }
+    }
+
+    public boolean isRefundBlocked() {
+        return refundFailure.isBlocked();
+    }
+
+    public boolean isNotPaid() {
+        return status != PaymentStatus.PAID;
     }
 }

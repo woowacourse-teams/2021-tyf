@@ -11,8 +11,4 @@ public enum DonationStatus {
     DonationStatus(String information) {
         this.information = information;
     }
-
-    public boolean isRefundable() {
-        return this == REFUNDABLE;
-    }
 }

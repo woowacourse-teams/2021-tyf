@@ -12,12 +12,4 @@ public enum PaymentStatus {
     PaymentStatus(String info) {
         this.information = info;
     }
-
-    public boolean isPaid() {
-        return this == PAID;
-    }
-
-    public boolean isCancelled() {
-        return this == CANCELLED;
-    }
 }
