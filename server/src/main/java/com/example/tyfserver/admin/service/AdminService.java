@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminService {
 
+    private static final String EXCHANGE_APPROVE = "승인되었습니다.";
     private final ExchangeRepository exchangeRepository;
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
@@ -38,7 +39,7 @@ public class AdminService {
         for (Donation donation : donations) {
             donation.toExchanged();
         }
-        mailConnector.sendExchangeResult(member.getEmail(), "승인되었습니다.");
+        mailConnector.sendExchangeResult(member.getEmail(), EXCHANGE_APPROVE;
         exchangeRepository.deleteByPageName(pageName);
     }
 
