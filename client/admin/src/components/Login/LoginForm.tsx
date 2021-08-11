@@ -17,9 +17,9 @@ const LoginForm = () => {
 
     try {
       const { id, pwd } = form;
-      const { data }: LoginResponse = await requestLogin(id, pwd);
+      const { token }: LoginResponse = await requestLogin(id, pwd);
 
-      sessionStorage.setItem('adminToken', data!.token);
+      sessionStorage.setItem('adminToken', token);
       history.push('/refund');
     } catch (error) {
       alert(error.message ?? error.data.message);

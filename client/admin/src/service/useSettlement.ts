@@ -6,7 +6,7 @@ import {
   requestDeclineExchange,
   requestExchangeList,
 } from '../components/request/request';
-import { Exchange, ExchangeListResponse } from '../type';
+import { Exchange } from '../type';
 
 const useSettlement = () => {
   const history = useHistory();
@@ -26,9 +26,9 @@ const useSettlement = () => {
 
   const getExchangeList = async () => {
     try {
-      const { data }: ExchangeListResponse = await requestExchangeList(accessToken);
+      const data: Exchange[] = await requestExchangeList(accessToken);
 
-      setExchangeList(data!);
+      setExchangeList(data);
     } catch (error) {
       alert(error.message);
     }
@@ -61,8 +61,13 @@ const useSettlement = () => {
 
   useEffect(() => {
     getAccessToken();
-    getExchangeList();
   }, []);
+
+  useEffect(() => {
+    if (!accessToken) return;
+
+    getExchangeList();
+  }, [accessToken]);
 
   return { exchangeList, agreeExchange, declineExchange };
 };

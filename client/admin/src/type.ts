@@ -6,14 +6,6 @@ export interface Exchange {
   createdAt: string;
 }
 
-export interface ExchangeListResponse {
-  data?: Exchange[];
-  errors?: Array<{ message: string }>;
-}
-
 export interface LoginResponse {
-  data?: {
-    token: string;
-  };
-  errors?: Array<{ message: string }>;
+  token: string;
 }
