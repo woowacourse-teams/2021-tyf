@@ -2,21 +2,23 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
-  requestAgreeExchange,
-  requestDeclineExchange,
-  requestExchangeList,
+  requestAgreeBankAccount,
+  requestDeclineBankAccount,
+  requestBankAccountList,
 } from '../components/request/request';
-import { Exchange } from '../type';
+import { BankAccount } from '../type';
 
-const useSettlement = () => {
+const useBankAccount = () => {
   const history = useHistory();
-  const [exchangeList, setExchangeList] = useState<Exchange[]>([]);
+  const [bankAccountList, setBankAccountList] = useState<BankAccount[]>([]);
   const [accessToken, setAccessToken] = useState('');
 
+  // TODO: 분리하기
   const getAccessToken = () => {
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
       alert('로그인 후 접근가능합니다.');
+      sessionStorage.setItem('adminToken', '');
       history.push('/');
       return;
     }
@@ -24,11 +26,11 @@ const useSettlement = () => {
     setAccessToken(token);
   };
 
-  const getExchangeList = async () => {
+  const getBankAccountList = async () => {
     try {
-      const data: Exchange[] = await requestExchangeList(accessToken);
+      const data: BankAccount[] = await requestBankAccountList(accessToken);
 
-      setExchangeList(data);
+      setBankAccountList(data);
     } catch (error) {
       alert(error.message);
       if (error.errorCode === 'auth-002') {
@@ -37,26 +39,26 @@ const useSettlement = () => {
     }
   };
 
-  const agreeExchange = async (pageName: string) => {
+  const agreeBankAccount = async (userId: number) => {
     try {
-      await requestAgreeExchange(pageName, accessToken);
+      await requestAgreeBankAccount(userId, accessToken);
 
-      alert('정산을 수락했습니다.');
+      alert('계좌 신청을 수락했습니다.');
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const declineExchange = async (pageName: string) => {
+  const declineBankAccount = async (userId: number) => {
     try {
       const reason = window.prompt('거절 사유를 적어주세요');
       if (!reason) {
         throw Error('거절 사유가 작성되지 않았습니다.');
       }
 
-      await requestDeclineExchange(pageName, reason, accessToken);
+      await requestDeclineBankAccount(userId, reason, accessToken);
 
-      alert('정산을 거절했습니다.');
+      alert('계좌 신청을 거절했습니다.');
     } catch (error) {
       alert(error.message);
     }
@@ -69,10 +71,10 @@ const useSettlement = () => {
   useEffect(() => {
     if (!accessToken) return;
 
-    getExchangeList();
+    getBankAccountList();
   }, [accessToken]);
 
-  return { exchangeList, agreeExchange, declineExchange };
+  return { bankAccountList, agreeBankAccount, declineBankAccount };
 };
 
-export default useSettlement;
+export default useBankAccount;
