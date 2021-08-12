@@ -87,7 +87,7 @@ public class SmtpMailConnector {
             mimeMessageHelper.setTo(toEmail);
             mimeMessageHelper.setSubject(PREFIX_SUBJECT + subject);
             mimeMessageHelper.setText(htmlText, true);
-            mimeMessageHelper.addInline("tyf-logo", getLogo());
+            //mimeMessageHelper.addInline("tyf-logo", getLogo());
             javaMailSender.send(mail);
         } catch (MessagingException e) {
             throw new SendingMailFailedException();
