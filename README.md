@@ -1,6 +1,6 @@
 # 2021-tyf 
 
-### 🎁 Thank you for _ _ _
+![image](https://user-images.githubusercontent.com/45073750/129145619-fcd8061b-2deb-4e09-9055-fc575a0c6214.png)
 
 - 누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 모듈 서비스
 
