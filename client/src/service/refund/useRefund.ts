@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { PAYMENT_ERROR, PAYMENT_ERROR_MESSAGE } from '../../constants/error';
 import { requestRefund, requestVerify, requestVerifyMerchantUid } from '../@request/refund';
 import { refundState } from '../@state/refund';
 
@@ -16,7 +17,13 @@ const useRefund = () => {
       setRefundInfo({ ...refundInfo, refundAccessToken });
       history.push('/refund/confirm');
     } catch (error) {
-      alert(`잘못된 인증정보입니다. 남은 인증 횟수 (${error.response.data.remainTryCount}/ 10)`);
+      if (error.response.data.errorCode === PAYMENT_ERROR.EXCEED_TRY_COUNT) {
+        alert(PAYMENT_ERROR_MESSAGE[PAYMENT_ERROR.EXCEED_TRY_COUNT]);
+        history.push('/refund');
+        return;
+      }
+
+      alert(`잘못된 인증정보입니다. 남은 인증 횟수 (${error.response.data.remainTryCount} / 10)`);
     }
   };
 
