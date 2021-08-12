@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @Component
 public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
-
     private static final String MODULE_NAME = "아임포트";
     private static final String IAMPORT_API_URL = "https://api.iamport.kr";
 

@@ -209,7 +209,6 @@ include::{snippets}/createBannersHeaderNotFoundFailed/http-response.adoc[]
 include::{snippets}/createBannersInvalidTokenFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createBannersInvalidTokenFailed/http-response.adoc[]
-
 == Donations (후원)
 === 후원 요청 - 성공
 ==== Request
@@ -291,7 +290,6 @@ include::{snippets}/publicDonations/http-response.adoc[]
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
-
 == Payment (결제)
 === 결제 요청 - 성공
 ==== Request
@@ -308,50 +306,3 @@ include::{snippets}/createPaymentMemberNotFoundFailed/http-response.adoc[]
 include::{snippets}/createPaymentRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createPaymentRequestFailed/http-response.adoc[]
-
-== Banners (배너)
-=== Oauth를 이용한 로그인 - 성공
-==== Request
-include::{snippets}/login/http-request.adoc[]
-==== Response
-include::{snippets}/login/http-response.adoc[]
-=== Oauth를 이용한 로그인 - 실패 -  등록되지 않은 회원임
-==== Request
-include::{snippets}/loginUnregisteredMemberFailed/http-request.adoc[]
-==== Response
-include::{snippets}/loginUnregisteredMemberFailed/http-response.adoc[]
-=== 회원가입 준비 - 성공
-==== Request
-include::{snippets}/readySignUp/http-request.adoc[]
-==== Response
-include::{snippets}/readySignUp/http-response.adoc[]
-=== 회원가입 준비 - 실패 - 해당 플랫폼으로 이미 가입되어있음
-==== Request
-include::{snippets}/readySignUpAlreadyRegisteredInSameOauth2TypeFailed/http-request.adoc[]
-==== Response
-include::{snippets}/readySignUpAlreadyRegisteredInSameOauth2TypeFailed/http-response.adoc[]
-=== 회원가입 준비 - 실패 - 다른 플랫폼으로 이미 가입되어있음
-==== Request
-include::{snippets}/readySignUpAlreadyRegisteredFailed/http-request.adoc[]
-==== Response
-include::{snippets}/readySignUpAlreadyRegisteredFailed/http-response.adoc[]
-=== 회원가입 준비 - 실패 - 적절하지 않은 Oauth 타입
-==== Request
-include::{snippets}/readySignUpInvalidOauth2TypeFailed/http-request.adoc[]
-==== Response
-include::{snippets}/readySignUpInvalidOauth2TypeFailed/http-response.adoc[]
-=== 회원가입 - 성공
-==== Request
-include::{snippets}/signUp/http-request.adoc[]
-==== Response
-include::{snippets}/signUp/http-response.adoc[]
-=== 회원가입 - 실패 - 유효하지 않은 Request
-==== Request
-include::{snippets}/signUpRequestFailed/http-request.adoc[]
-==== Response
-include::{snippets}/signUpRequestFailed/http-response.adoc[]
-=== 회원가입 - 실패 - 적절하지 않은 Oauth 타입
-==== Request
-include::{snippets}/signUpInvalidOauth2TypeFailed/http-request.adoc[]
-==== Response
-include::{snippets}/signUpInvalidOauth2TypeFailed/http-response.adoc[]
