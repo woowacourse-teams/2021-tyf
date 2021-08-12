@@ -3,6 +3,7 @@ HELP.md
 build/
 /src/main/resources/application-dev-secret.yml
 /src/main/resources/application-prod-secret.yml
+/src/jacoco
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

@@ -140,9 +140,19 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it,
                     exclude: [
-                            '**/*Request',
-                            '**/*Response',
-                            '**/S3Connector'
+                            '**/TyfServerApplication*',
+                            '**/*Request*',
+                            '**/*Response*',
+                            '**/QA*','**/QB*','**/QC*','**/QD*', '**/QE*',
+                            '**/QF*', '**/QG*', '**/QH*', '**/QI*', '**/QJ*',
+                            '**/QK*', '**/QL*', '**/QM*', '**/QN*', '**/QO*',
+                            '**/QP*', '**/QQ*', '**/QR*', '**/QS*', '**/QT*',
+                            '**/QU*', '**/QV*', '**/QW*', '**/QX*', '**/QY*', '**/QZ*',
+                            '**/*S3*',
+                            '**/RefundFailure',
+                            '**/DataLoader',
+                            '**/LoginMember',
+                            '**/*Connector'
                     ])
         }))
     }
@@ -163,8 +173,22 @@ jacocoTestCoverageVerification {
             }
 
             excludes = [
-                    '**.*Request',
-                    '**.*Response'
+                    '**.*TyfServerApplication*',
+                    '*.Q*',
+                    '**.*Request*',
+                    '**.*Response*',
+                    '**.*LoginMember',
+                    '**.*Interceptor*',
+                    '**.*Exception*',
+                    '**.*S3*',
+                    '**.*DataLoader*',
+                    '**.NaverOauth2',
+                    '**.RefundFailure',
+                    '**.IamPortPayment*',
+                    '**.ApiSender',
+                    '**.*Connector',
+                    '**.Oauth2Token',
+                    '**.AdminAccount'
             ]
         }
     }
