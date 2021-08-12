@@ -87,7 +87,7 @@ class MemberRepositoryImplTest {
 
     @ParameterizedTest
     @CsvSource(value = {"pageName,true", "invalid,false"})
-    @DisplayName("findByEmail Test")
+    @DisplayName("existsByPageName Test")
     public void existsByPageNameTest(String pageName, boolean result) {
         //given & when & then
         assertThat(memberRepository.existsByPageName(pageName)).isEqualTo(result);
@@ -95,7 +95,7 @@ class MemberRepositoryImplTest {
 
     @ParameterizedTest
     @CsvSource(value = {"nickname,true", "invalid,false"})
-    @DisplayName("findByEmail Test")
+    @DisplayName("existsByPageName Test")
     public void existsByNicknameTest(String nickname, boolean result) {
         //given & when & then
         assertThat(memberRepository.existsByNickname(nickname)).isEqualTo(result);
@@ -103,7 +103,7 @@ class MemberRepositoryImplTest {
 
     @ParameterizedTest
     @CsvSource(value = {"pageName,false", "invalid,true"})
-    @DisplayName("findByEmail Test")
+    @DisplayName("findByPageName Test")
     public void findByPageNameTest(String pageName, boolean result) {
         //given & when
         Optional<Member> findMember = memberRepository.findByPageName(pageName);

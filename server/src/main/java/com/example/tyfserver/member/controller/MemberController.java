@@ -27,7 +27,7 @@ public class MemberController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/validate/pageName")
-    public ResponseEntity<Void> validatePageName(@Valid @RequestBody PageNameValidationRequest request,
+    public ResponseEntity<Void> validatePageName(@Valid @RequestBody PageNameRequest request,
                                                  BindingResult result) {
         if (result.hasErrors()) {
             throw new PageNameValidationRequestException();
