@@ -63,6 +63,9 @@ export const Name = styled.h4`
   top: 6.5rem;
   left: 50%;
   transform: translateX(-50%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   @media ${DEVICE.DESKTOP_LARGE} {
     top: 10rem;

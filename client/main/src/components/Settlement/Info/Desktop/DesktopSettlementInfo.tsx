@@ -12,7 +12,7 @@ import {
 
 const DesktopSettlementInfo = () => {
   const { exchangedTotalPoint, currentPoint, exchangeablePoint, applySettlement } = useSettlement();
-  const nextMonth = new Date().getMonth() + 1;
+  const nextMonth = Math.floor(new Date().getMonth() % 12) + 2;
 
   console.log(exchangeablePoint, currentPoint, exchangeablePoint);
 

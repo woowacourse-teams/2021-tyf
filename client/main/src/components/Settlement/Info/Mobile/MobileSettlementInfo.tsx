@@ -16,7 +16,7 @@ import {
 const MobileSettlementInfo = () => {
   const { userInfo } = useUserInfo();
   const { exchangeablePoint, exchangedTotalPoint, currentPoint, applySettlement } = useSettlement();
-  const nextMonth = new Date().getMonth() + 1;
+  const nextMonth = Math.floor(new Date().getMonth() % 12) + 2; // TODO: 달계산 알고리즘 다시 작성
 
   return (
     <StyledSettlementInfo>

@@ -10,6 +10,7 @@ export const StyledUserSettingForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 export const ProfileImgInputLabel = styled.label`
