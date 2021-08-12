@@ -40,7 +40,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:9000",
                         "https://thankyou-for.com",
-                        "https://tyf-admin.netlify.app/"
+                        "https://admin.thankyou-for.com"
                 );
     }
 }
