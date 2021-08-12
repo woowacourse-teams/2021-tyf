@@ -39,7 +39,7 @@ public class DonationService {
         Donation savedDonation = donationRepository.save(donation);
         member.addDonation(savedDonation);
 
-        mailConnector.sendDonationComplete(payment);
+        mailConnector.sendDonationComplete(payment, member);
         return new DonationResponse(savedDonation);
     }
 
