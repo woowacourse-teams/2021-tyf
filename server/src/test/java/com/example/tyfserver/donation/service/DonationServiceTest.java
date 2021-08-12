@@ -64,7 +64,7 @@ class DonationServiceTest {
         paymentRepository.save(payment);
         memberRepository.save(member);
         donationRepository.save(donation);
-        doNothing().when(mailConnector).sendDonationComplete(anyString(), any());
+        doNothing().when(mailConnector).sendDonationComplete(any());
     }
 
     @AfterEach

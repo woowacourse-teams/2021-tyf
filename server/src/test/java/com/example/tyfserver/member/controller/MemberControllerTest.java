@@ -665,6 +665,48 @@ class MemberControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("PUT - /members/me/bio - bio too Long")
+    void updateBioInvalidBioValueRequestFailedWhenTooLongKor() throws Exception {
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest("한글테스트".repeat(100) + "한");
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(BioValidationRequestException.ERROR_CODE))
+                .andDo(document("updateBioInvalidBioValueRequestFailedWhenTooLongKor",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("PUT - /members/me/bio - bio too Long")
+    void updateBioInvalidBioValueRequestFailedWhenTooLongEng() throws Exception {
+        //given
+        MemberBioUpdateRequest request = new MemberBioUpdateRequest("apple".repeat(100) + "a");
+
+        //when
+        validInterceptorAndArgumentResolverMocking();
+
+        //then
+        mockMvc.perform(put("/members/me/bio")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(BioValidationRequestException.ERROR_CODE))
+                .andDo(document("updateBioInvalidBioValueRequestFailedWhenTooLongEng",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "로키", "로키1", "로1키", "1로키"

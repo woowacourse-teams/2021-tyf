@@ -68,6 +68,9 @@ dependencies {
 
     // embedded-redis
     implementation 'it.ozimov:embedded-redis:0.7.2'
+
+    //thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 test {
