@@ -8,17 +8,22 @@ import com.example.tyfserver.auth.exception.AlreadyRegisteredException;
 import com.example.tyfserver.auth.exception.AlreadyRegisteredInSameOauth2TypeException;
 import com.example.tyfserver.auth.exception.UnregisteredMemberException;
 import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.SignUpReadyResponse;
 import com.example.tyfserver.member.dto.SignUpRequest;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class Oauth2Service {
 
+    private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final AuthenticationService authenticationService;
     private final Oauth2ServiceConnector oauth2ServiceConnector;
@@ -44,6 +49,7 @@ public class Oauth2Service {
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
         Member savedMember = memberRepository.save(member);
+        savedMember.addInitialAccount(accountRepository.save(new Account()));
 
         return new SignUpResponse(authenticationService.createToken(savedMember), savedMember.getPageName());
     }

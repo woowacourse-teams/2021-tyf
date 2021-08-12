@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%n###### HTTP Request ######%n%fullRequest%n###### HTTP Response ######%n%fullResponse%n%n</pattern>
+        </encoder>
+    </appender>
+
+    <property name ="home" value="logs/"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <springProfile name="prod">
+        <include resource ="appender/aws-log-appender-debug.xml"/>
+        <root>
+            <appender-ref ref="ASYNC_AWS-D"/>
+        </root>
+
+    </springProfile>
+
+    <springProfile name="dev">
+        <include resource ="appender/aws-log-appender-debug.xml"/>
+        <root>
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_AWS-D"/>
+        </root>
+    </springProfile>
+</configuration>

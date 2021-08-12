@@ -2,11 +2,12 @@ package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.S3Connector;
+import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Exchange;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.DuplicatedNicknameException;
-import com.example.tyfserver.member.exception.DuplicatedPageNameException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final DonationRepository donationRepository;
+    private final ExchangeRepository exchangeRepository;
     private final S3Connector s3Connector;
 
     public void validatePageName(PageNameRequest request) {
@@ -58,7 +61,7 @@ public class MemberService {
     public ProfileResponse uploadProfile(MultipartFile multipartFile, LoginMember loginMember) {
         Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
-        String uploadedFile = s3Connector.upload(multipartFile, loginMember.getId());
+        String uploadedFile = s3Connector.uploadProfile(multipartFile, loginMember.getId());
         findMember.uploadProfileImage(uploadedFile);
         return new ProfileResponse(uploadedFile);
     }
@@ -73,14 +76,9 @@ public class MemberService {
         member.updateBio(bio);
     }
 
-    public void updateNickName(LoginMember loginMember, String nickName) {
+    public void updateNickname(LoginMember loginMember, String nickname) {
         Member member = findMember(loginMember.getId());
-        member.updateNickName(nickName);
-    }
-
-    private Member findMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+        member.updateNickname(nickname);
     }
 
     private void deleteProfile(Member member) {
@@ -90,5 +88,51 @@ public class MemberService {
 
         s3Connector.delete(member.getProfileImage());
         member.deleteProfile();
+    }
+
+    public DetailedPointResponse detailedPoint(Long id) {
+        Long currentPoint = findMember(id).getPoint();
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id);
+        Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
+        return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
+    }
+
+    public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
+        Member member = findMember(loginMember.getId());
+
+        String uploadedBankBookUrl = s3Connector.uploadBankBook(accountRegisterRequest.getBankbookImage(),
+                loginMember.getId());
+        member.registerAccount(accountRegisterRequest.getAccountHolder(),
+                accountRegisterRequest.getAccountNumber(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
+    }
+
+    public AccountInfoResponse accountInfo(LoginMember loginMember) {
+        Member member = findMember(loginMember.getId());
+        return AccountInfoResponse.of(member.getAccount());
+    }
+
+    public void exchange(Long id) {
+        Member member = findMember(id);
+        Long exchangeablePoint = donationRepository.exchangeablePoint(id);
+        validateExchangeable(member, exchangeablePoint);
+
+        Exchange exchange =
+                new Exchange(member.getAccount().getAccountHolder(), member.getEmail(), exchangeablePoint,
+                        member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
+        exchangeRepository.save(exchange);
+    }
+
+    private void validateExchangeable(Member member, Long exchangeablePoint) {
+        if (exchangeRepository.existsByPageName(member.getPageName())) {
+            throw new AlreadyRequestExchangeException();
+        }
+        if (exchangeablePoint <= 10000) {
+            throw new ExchangeAmountException();
+        }
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

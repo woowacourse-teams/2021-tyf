@@ -5,6 +5,7 @@ import com.example.tyfserver.auth.config.AuthenticationInterceptor;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
+import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.banner.dto.BannerRequest;
 import com.example.tyfserver.banner.dto.BannerResponse;
@@ -43,12 +44,19 @@ class BannerControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-    @MockBean
-    private AuthenticationArgumentResolver authenticationArgumentResolver;
-    @MockBean
-    private AuthenticationInterceptor authenticationInterceptor;
+
     @MockBean
     private BannerService bannerService;
+
+    @MockBean
+    private AuthenticationService authenticationService;
+
+    @MockBean
+    private AuthenticationArgumentResolver authenticationArgumentResolver;
+
+    @MockBean
+    private AuthenticationInterceptor authenticationInterceptor;
+
 
     @Test
     @DisplayName("/banners/me - success")
