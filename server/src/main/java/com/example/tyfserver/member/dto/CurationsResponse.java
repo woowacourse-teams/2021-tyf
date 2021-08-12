@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,6 @@ public class CurationsResponse {
     private String profileImage;
     private String bio;
 
-    @QueryProjection
     public CurationsResponse(String nickname, Long donationAmount, String pageName, String profileImage, String bio) {
         this.nickname = nickname;
         this.donationAmount = donationAmount;

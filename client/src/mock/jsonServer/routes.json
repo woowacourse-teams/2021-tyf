@@ -1,0 +1,6 @@
+{
+  "/payments/refund/verification/ready": "/refunds",
+  "/payments/refund/verification": "/refundsVerificiation",
+  "/payments/refund/info": "/refundsInfo",
+  "/payments/refund": "/refundsPost"
+}

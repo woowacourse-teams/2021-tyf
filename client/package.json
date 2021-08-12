@@ -20,12 +20,15 @@
   "private": false,
   "scripts": {
     "start": "webpack serve",
-    "build:dev": "webpack --mode=development --node-env=development",
-    "build": "webpack --mode=production --node-env=production",
+    "mock:server": "json-server --watch src/mock/jsonServer/db.json --routes src/mock/jsonServer/routes.json ",
+    "build": "jest src && webpack --mode=production --node-env=production",
+    "build:dev": "jest src && webpack --mode=development --node-env=development",
     "test": "jest src --watch ",
+    "test:once": "jest src",
     "test:clean": "jest --clearCache && jest src --watch ",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prepare": "cd .. && husky install client/husky && cd client"
   },
   "devDependencies": {
     "@jest/types": "^27.0.6",
@@ -42,6 +45,7 @@
     "@types/react-dom": "^17.0.8",
     "@types/react-router-dom": "^5.1.8",
     "@types/styled-components": "^5.1.11",
+    "@types/webpack-bundle-analyzer": "^4.4.1",
     "@types/webpack-dev-server": "^3.11.5",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
@@ -49,7 +53,9 @@
     "eslint-plugin-react": "^7.24.0",
     "fork-ts-checker-webpack-plugin": "^6.2.12",
     "html-webpack-plugin": "^5.3.2",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
+    "json-server": "^0.16.3",
     "msw": "^0.30.1",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
@@ -57,6 +63,7 @@
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5",
     "webpack": "^5.42.0",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
   },

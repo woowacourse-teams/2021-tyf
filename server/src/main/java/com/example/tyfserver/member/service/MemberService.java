@@ -26,7 +26,7 @@ public class MemberService {
     private final ExchangeRepository exchangeRepository;
     private final S3Connector s3Connector;
 
-    public void validatePageName(PageNameRequest request) {
+    public void validatePageName(PageNameValidationRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
             throw new DuplicatedPageNameException();
         }
