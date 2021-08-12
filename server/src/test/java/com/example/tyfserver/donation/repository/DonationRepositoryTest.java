@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,7 +107,7 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
     public void findTop5ByMember() {
-        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(member1);
+        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(member1, DonationStatus.CANCELLED);
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation6, donation5, donation4, donation3
         );
@@ -117,8 +116,8 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
     public void findDonationByMemberOrderByCreatedAtDesc() {
-        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(
-                member1, PageRequest.of(1, 3));
+        List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(
+                member1, DonationStatus.CANCELLED, PageRequest.of(1, 3));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation4, donation3, donation2
         );
