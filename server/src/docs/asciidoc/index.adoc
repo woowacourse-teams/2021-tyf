@@ -178,6 +178,17 @@ include::{snippets}/updateBio/http-response.adoc[]
 include::{snippets}/updateBioInvalidBioValueRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/updateBioInvalidBioValueRequestFailed/http-response.adoc[]
+=== 자기 소개 수정 - 500자 초과 실패
+==== Request
+include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongKor/http-request.adoc[]
+==== Response
+include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongKor/http-response.adoc[]
+
+==== Request
+include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongEng/http-request.adoc[]
+==== Response
+include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongEng/http-response.adoc[]
+
 === 닉네임 수정 - 성공
 ==== Request
 include::{snippets}/updateNickName/http-request.adoc[]

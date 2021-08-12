@@ -29,7 +29,7 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true)
     private String nickname;
 
-    @Lob
+    @Column(length = 1500)
     private String bio = DEFAULT_BIO;
 
     private String profileImage;

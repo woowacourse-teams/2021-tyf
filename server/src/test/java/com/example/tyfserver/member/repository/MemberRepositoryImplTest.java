@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
@@ -49,6 +50,18 @@ class MemberRepositoryImplTest {
         testMember1 = memberRepository.save(MemberTest.testMember());
         testMember2 = memberRepository.save(MemberTest.testMember2());
     }
+
+
+    @Test
+    @DisplayName("자기소개는 500자 까지만 저장가능하다.")
+    public void InvalidBio() {
+        //when, then
+        assertThatThrownBy(() -> {
+            testMember1.updateBio("테스트".repeat(1000));
+            em.flush();
+        }).isInstanceOf(RuntimeException.class);
+    }
+
 
     @ParameterizedTest
     @CsvSource(value = {"tyf@gmail.com,false", "invalid,true"})
