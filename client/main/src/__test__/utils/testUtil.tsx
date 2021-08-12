@@ -17,3 +17,24 @@ export const myRender = (children: React.ReactNode) =>
       </ThemeProvider>
     </RecoilRoot>
   );
+
+export const mockHistoryPush = () => {
+  const historyPushMock = jest.fn();
+
+  jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+      push: historyPushMock,
+    }),
+  }));
+
+  return historyPushMock;
+};
+
+export const mockAlert = () => {
+  const alertMock = jest.fn();
+
+  window.alert = alertMock;
+
+  return alertMock;
+};

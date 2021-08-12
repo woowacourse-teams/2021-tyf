@@ -3,20 +3,7 @@ import { baseURL } from '../API';
 
 import { creatorListMock, donationMessageListMock, statisticsMock, userInfoMock } from './mockData';
 
-export const Handlers = [
-  rest.get(`${baseURL}/donations/public/:pageName`, (req, res, ctx) => {
-    return res(ctx.json(donationMessageListMock));
-  }),
-
-  rest.get(`${baseURL}/donations/me`, (req, res, ctx) => {
-    const page = Number(req.url.searchParams.get('page'));
-    const size = Number(req.url.searchParams.get('size'));
-
-    return res(ctx.json(donationMessageListMock.slice(page * size, page * size + size)));
-  }),
-];
-
-export const donationHandlers = [
+const donationHandlers = [
   rest.get(`${baseURL}/donations/public/:pageName`, (req, res, ctx) => {
     return res(ctx.json(donationMessageListMock));
   }),
@@ -26,9 +13,13 @@ export const donationHandlers = [
     const size = Number(req.url.searchParams.get('size'));
     return res(ctx.json(donationMessageListMock.slice(page * size, page * size + size)));
   }),
+
+  rest.post(`${baseURL}/donations/:pageName/messages`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
 ];
 
-export const memberHandlers = [
+const memberHandlers = [
   rest.get(`${baseURL}/members/me/point`, (req, res, ctx) => {
     return res(ctx.json(statisticsMock));
   }),
@@ -43,4 +34,12 @@ export const memberHandlers = [
   }),
 ];
 
-export const handlers = [...memberHandlers, ...donationHandlers];
+const refundHandlers = [
+  rest.post(`${baseURL}/payments/refund/verification/ready`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+];
+
+const handlers = [...memberHandlers, ...donationHandlers, ...refundHandlers];
+
+export default handlers;
