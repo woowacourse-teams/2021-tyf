@@ -7,6 +7,7 @@ beforeAll(() => {
 
 afterEach(() => {
   server.resetHandlers();
+  jest.clearAllMocks();
 });
 
 afterAll(() => {

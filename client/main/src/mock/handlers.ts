@@ -1,7 +1,15 @@
 import { rest } from 'msw';
 import { baseURL } from '../API';
 
-import { creatorListMock, donationMessageListMock, statisticsMock, userInfoMock } from './mockData';
+import {
+  creatorListMock,
+  donationMessageListMock,
+  statisticsMock,
+  userInfoMock,
+  refundInfoMock,
+  refundReadyMock,
+  refundVerificationMock,
+} from './mockData';
 
 const donationHandlers = [
   rest.get(`${baseURL}/donations/public/:pageName`, (req, res, ctx) => {
@@ -36,6 +44,18 @@ const memberHandlers = [
 
 const refundHandlers = [
   rest.post(`${baseURL}/payments/refund/verification/ready`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(refundReadyMock));
+  }),
+
+  rest.get(`${baseURL}/payments/refund/info`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(refundInfoMock));
+  }),
+
+  rest.post(`${baseURL}/payments/refund/verification`, (req, res, ctx) => {
+    return res(ctx.json(refundVerificationMock));
+  }),
+
+  rest.post(`${baseURL}/payments/refund`, (req, res, ctx) => {
     return res(ctx.status(200));
   }),
 ];

@@ -102,3 +102,26 @@ export const donationMessageListMock: Donation[] = [
     email: 'jhoasdf@naver.com',
   },
 ];
+
+export const refundInfoMock = {
+  creator: {
+    nickname: '창작자 닉네임',
+    pageName: '창작자 페이지 이름',
+  },
+  donation: {
+    name: '후원자 이름',
+    amount: 10000,
+    message: '후원 메시지',
+    createdAt: 'hi',
+  },
+};
+
+export const refundReadyMock = {
+  email: 't**t@test.com',
+  timeout: 300, // 5분
+  resendCoolTime: 60, // 1분
+};
+
+export const refundVerificationMock = {
+  refundAccessToken: 'refundAccessToken',
+};
