@@ -5,6 +5,7 @@ plugins {
     id 'java'
     //queryDsl
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'jacoco'
 }
 
 group = 'com.example'
@@ -118,3 +119,53 @@ compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 //queryDsl end
+
+jacoco {
+    toolVersion="0.8.5"
+}
+
+jacocoTestReport {
+    dependsOn bootJar
+
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled false
+
+        html.destination file("src/jacoco/jacoco.html")
+        xml.destination file("src/jacoco/jacoco.xml")
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                            '**/*Request',
+                            '**/*Response',
+                            '**/S3Connector'
+                    ])
+        }))
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.6
+            }
+
+            excludes = [
+                    '**.*Request',
+                    '**.*Response'
+            ]
+        }
+    }
+}
