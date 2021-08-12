@@ -1,5 +1,5 @@
 import { InfoContainer, StyledRefundInfo, StyledSubTitle, InfoTitle } from './RefundInfo.styles';
-import useRefundOrderDetail from '../../../service//refund/useRefundOrderDetail';
+import useRefundOrderDetail from '../../../service/refund/useRefundOrderDetail';
 
 interface RefundInfoProps {
   refundAccessToken: string;

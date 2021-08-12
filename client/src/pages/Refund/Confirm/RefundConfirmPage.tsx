@@ -9,7 +9,7 @@ import { RefundConfirmPageTemplate, ButtonContainer } from './RefundConfirmPage.
 
 const RefundConfirmPage = () => {
   const { refundInfo, refund } = useRefund();
-  const history = useHistory()
+  const history = useHistory();
 
   usePageRefreshGuardEffect(REFUND_PAGE_KEY, false, '/refund');
 
