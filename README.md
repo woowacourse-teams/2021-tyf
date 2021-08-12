@@ -38,3 +38,6 @@
 - feature/{feature-name}
 - 본인 fork 레포지토리에 위와 같이 브랜치를 만들어 작업한다.
 - 완료되면 upstream의 develop-server develop-client로 pr 요청
+
+[백엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/server/README.md)  
+[프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/README.md)
