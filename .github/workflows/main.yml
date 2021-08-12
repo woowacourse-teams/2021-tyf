@@ -46,7 +46,7 @@ jobs:
           # Build's context is the set of files located in the specified PATH or URL
           context: ./client/main
           # Path to the Dockerfile
-          file: ./dockerfile
+          file: ./client/main/dockerfile
           # List of target platforms for build
           platforms: linux/amd64 # optional
           # Push is a shorthand for --output=type=registry
