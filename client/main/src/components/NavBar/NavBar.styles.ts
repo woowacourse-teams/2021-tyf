@@ -62,8 +62,13 @@ export const LoginButton = styled(Anchor)`
 
 export const StyledTextButton = styled(TextButton)`
   width: fit-content;
+  max-width: 6rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   @media ${DEVICE.DESKTOP} {
     font-size: 1.125rem;
+    max-width: 8rem;
   }
 `;
