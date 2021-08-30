@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentAlreadyCancelledException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
@@ -38,6 +39,10 @@ public class Payment extends BaseTimeEntity {
 
     @Column(nullable = false)
     private UUID merchantUid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "refund_failure_id")

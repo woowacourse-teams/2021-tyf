@@ -28,25 +28,16 @@ public class Donation extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.REFUNDABLE;
 
-    public Donation(Long id, Payment payment, Message message) {
+    public Donation(Long id, Message message) {
         this.id = id;
-        this.payment = payment;
         this.message = message;
     }
 
-    public Donation(Payment payment, Message message) {
-        this(null, payment, message);
-    }
-
-    public Donation(Payment payment) {
-        this(payment, Message.defaultMessage());
+    public Donation(Message message) {
+        this(null, message);
     }
 
     public void to(final Member member) {
@@ -69,18 +60,12 @@ public class Donation extends BaseTimeEntity {
         return message.isSecret();
     }
 
-    public Long getAmount() {
-        return payment.getAmount();
-    }
-    
     public void toCancelled() {
         status = DonationStatus.CANCELLED;
-        member.reducePoint(this.getAmount());
     }
 
     public void toExchanged() {
         status = DonationStatus.EXCHANGED;
-        member.reducePoint(this.getAmount());
     }
 
     public void toExchangeable() {

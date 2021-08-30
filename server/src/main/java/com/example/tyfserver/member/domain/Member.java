@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +52,9 @@ public class Member extends BaseTimeEntity {
     private final List<Banner> banners = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
+    private final List<Payment> payments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
     private final List<Donation> donations = new ArrayList<>();
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage, Point point) {
@@ -73,7 +77,6 @@ public class Member extends BaseTimeEntity {
     public void addDonation(final Donation donation) {
         this.donations.add(donation);
         donation.to(this);
-        addPoint(donation.getAmount());
     }
 
     private void addPoint(final long amount) {
