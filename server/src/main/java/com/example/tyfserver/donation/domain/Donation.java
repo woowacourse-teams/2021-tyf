@@ -39,13 +39,15 @@ public class Donation extends BaseTimeEntity {
     }
 
     public Donation(long point) {
-        this.id = null;
-        this.message = Message.defaultMessage();
-        this.point = point;
+        this(null, Message.defaultMessage(), point);
     }
 
     public Donation(Message message) {
         this(null, message, 0L);
+    }
+
+    public Donation(Message message, long point) {
+        this(null, message, point);
     }
 
     public void to(final Member member) {

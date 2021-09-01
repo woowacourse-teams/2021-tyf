@@ -1,8 +1,6 @@
 package com.example.tyfserver;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.banner.domain.Banner;
-import com.example.tyfserver.banner.repository.BannerRepository;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.repository.DonationRepository;
@@ -10,7 +8,6 @@ import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +20,6 @@ import org.springframework.stereotype.Component;
 public class DataLoader implements CommandLineRunner {
 
     private final MemberRepository memberRepository;
-    private final BannerRepository bannerRepository;
     private final DonationRepository donationRepository;
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
@@ -69,12 +65,6 @@ public class DataLoader implements CommandLineRunner {
         member6.addInitialAccount(account6);
         Member inch = memberRepository
                 .save(member6);
-
-        bannerRepository.save(new Banner(roki, "roki-image.png"));
-        bannerRepository.save(new Banner(soori, "soori-image.png"));
-        bannerRepository.save(new Banner(joy, "joy-image.png"));
-        bannerRepository.save(new Banner(bePoz, "bePoz-image.png"));
-        bannerRepository.save(new Banner(hwano, "hwano-image.png"));
 
         Donation donation1 = generateDonationDummy(100_000L);
         donation1.addMessage(new Message("포비", "이 친구 코드 잘 짜네", true));
@@ -124,6 +114,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private Donation generateDonationDummy(Long amount) {
-        return new Donation(paymentRepository.save(new Payment(amount, "test@test.com", "test")));
+        return new Donation(Message.defaultMessage(), 0L);
     }
 }

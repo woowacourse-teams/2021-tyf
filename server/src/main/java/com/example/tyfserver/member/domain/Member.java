@@ -1,7 +1,6 @@
 package com.example.tyfserver.member.domain;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.payment.domain.Payment;
@@ -50,9 +49,6 @@ public class Member extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
-
-    @OneToMany(mappedBy = "member")
-    private final List<Banner> banners = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private final List<Payment> payments = new ArrayList<>();
