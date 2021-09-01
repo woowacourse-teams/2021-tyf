@@ -36,7 +36,10 @@ public class Member extends BaseTimeEntity {
     private String profileImage;
 
     @Embedded
-    private Point point;
+    private Point availablePoint;
+
+    @Embedded
+    private Point donatedPoint;
 
     @Enumerated(EnumType.STRING)
     private Oauth2Type oauth2Type;
@@ -57,17 +60,19 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage, Point point) {
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
+                  Point availablePoint, Point donatedPoint) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
         this.profileImage = profileImage;
-        this.point = point;
+        this.availablePoint = availablePoint;
+        this.donatedPoint = donatedPoint;
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
-        this(email, nickname, pageName, oauth2Type, profileImage, new Point(0L));
+        this(email, nickname, pageName, oauth2Type, profileImage, new Point(0L), new Point(0L));
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type) {
@@ -80,7 +85,7 @@ public class Member extends BaseTimeEntity {
     }
 
     private void addPoint(final long amount) {
-        this.point.add(amount);
+        this.donatedPoint.add(amount);
     }
 
     public void updateBio(String bio) {
@@ -91,8 +96,8 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
-    public long getPoint() {
-        return this.point.getPoint();
+    public long getDonatedPoint() {
+        return this.donatedPoint.getPoint();
     }
 
     public boolean isSameOauthType(String type) {
@@ -124,7 +129,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void reducePoint(long amount) {
-        point.reduce(amount);
+        donatedPoint.reduce(amount);
     }
 
     public void approveAccount() {

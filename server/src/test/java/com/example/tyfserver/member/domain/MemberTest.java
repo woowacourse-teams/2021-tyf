@@ -34,7 +34,7 @@ public class MemberTest {
         //when
         member.addDonation(donation);
         //then
-        assertThat(member.getPoint()).isEqualTo(1000L);
+        assertThat(member.getDonatedPoint()).isEqualTo(1000L);
     }
 
     @Test

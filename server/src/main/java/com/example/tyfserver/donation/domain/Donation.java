@@ -3,7 +3,6 @@ package com.example.tyfserver.donation.domain;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,8 @@ public class Donation extends BaseTimeEntity {
     @Embedded
     private Message message;
 
+    private long point;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -31,13 +32,20 @@ public class Donation extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.REFUNDABLE;
 
-    public Donation(Long id, Message message) {
+    public Donation(Long id, Message message, long point) {
         this.id = id;
         this.message = message;
+        this.point = point;
+    }
+
+    public Donation(long point) {
+        this.id = null;
+        this.message = Message.defaultMessage();
+        this.point = point;
     }
 
     public Donation(Message message) {
-        this(null, message);
+        this(null, message, 0L);
     }
 
     public void to(final Member member) {
