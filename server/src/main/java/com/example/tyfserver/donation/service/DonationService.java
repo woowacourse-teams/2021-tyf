@@ -31,18 +31,19 @@ public class DonationService {
     private final PaymentService paymentService;
     private final SmtpMailConnector mailConnector;
 
-    public DonationResponse createDonation(PaymentCompleteRequest paymentCompleteRequest) {
-        Payment payment = paymentService.completePayment(paymentCompleteRequest);
-        Donation donation = new Donation(payment);
-        Member member = memberRepository.findByPageName(payment.getItemName())
-                .orElseThrow(MemberNotFoundException::new);
-
-        Donation savedDonation = donationRepository.save(donation);
-        member.addDonation(savedDonation);
-
-        mailConnector.sendDonationComplete(payment, member);
-        return new DonationResponse(savedDonation);
-    }
+    //todo: 완전 바뀌어야할 로직
+//    public DonationResponse createDonation(PaymentCompleteRequest paymentCompleteRequest) {
+//        Payment payment = paymentService.completePayment(paymentCompleteRequest);
+//        Donation donation = new Donation(payment);
+//        Member member = memberRepository.findByPageName(payment.getItemName())
+//                .orElseThrow(MemberNotFoundException::new);
+//
+//        Donation savedDonation = donationRepository.save(donation);
+//        member.addDonation(savedDonation);
+//
+//        mailConnector.sendDonationComplete(payment, member);
+//        return new DonationResponse(savedDonation);
+//    }
 
     public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
         Donation donation = donationRepository.findById(donationId)
