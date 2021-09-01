@@ -12,21 +12,10 @@ import javax.validation.constraints.*;
 @ToString
 public class PaymentPendingRequest {
 
-    @NotNull
-    @Min(1000)
-    @Max(9990000)
-    private Long amount;
-
     @NotBlank
-    @Email
-    private String email;
+    private String itemId;
 
-    @NotBlank
-    private String pageName;
-
-    public PaymentPendingRequest(Long amount, String email, String pageName) {
-        this.amount = amount;
-        this.email = email;
-        this.pageName = pageName;
+    public PaymentPendingRequest(String itemId) {
+        this.itemId = itemId;
     }
 }

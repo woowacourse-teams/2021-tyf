@@ -34,7 +34,7 @@ public class DonationService {
     public DonationResponse createDonation(PaymentCompleteRequest paymentCompleteRequest) {
         Payment payment = paymentService.completePayment(paymentCompleteRequest);
         Donation donation = new Donation(payment);
-        Member member = memberRepository.findByPageName(payment.getPageName())
+        Member member = memberRepository.findByPageName(payment.getItemName())
                 .orElseThrow(MemberNotFoundException::new);
 
         Donation savedDonation = donationRepository.save(donation);

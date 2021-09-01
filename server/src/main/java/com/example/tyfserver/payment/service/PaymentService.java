@@ -2,6 +2,7 @@ package com.example.tyfserver.payment.service;
 
 import com.example.tyfserver.auth.domain.CodeResendCoolTime;
 import com.example.tyfserver.auth.domain.VerificationCode;
+import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.auth.exception.VerificationCodeNotFoundException;
 import com.example.tyfserver.auth.exception.VerificationFailedException;
@@ -49,12 +50,13 @@ public class PaymentService {
     private final CodeResendCoolTimeRepository codeResendCoolTimeRepository;
     private final AuthenticationService authenticationService;
 
-    public PaymentPendingResponse createPayment(PaymentPendingRequest pendingRequest) {
+    public PaymentPendingResponse createPayment(String itemId, LoginMember loginMember) {
         Member creator = memberRepository
-                .findByPageName(pendingRequest.getPageName())
+                .findById(loginMember.getId())
                 .orElseThrow(MemberNotFoundException::new);
 
-        Payment payment = new Payment(pendingRequest.getAmount(), pendingRequest.getEmail(), creator.getPageName());
+        // item들 enum 만들고 itemId로 해당 enum 찾는 로직
+        Payment payment = new Payment(0L, creator.getEmail(), "itemId로 찾은 enum의 itemName");
         Payment savedPayment = paymentRepository.save(payment);
         return new PaymentPendingResponse(savedPayment);
     }
@@ -144,7 +146,7 @@ public class PaymentService {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
         Donation donation = donationRepository.findByPaymentId(payment.getId())
                 .orElseThrow(DonationNotFoundException::new);
-        Member member = memberRepository.findByPageName(payment.getPageName())
+        Member member = memberRepository.findByPageName(payment.getItemName())
                 .orElseThrow(MemberNotFoundException::new);
         return new RefundInfoResponse(payment, donation, member);
     }
