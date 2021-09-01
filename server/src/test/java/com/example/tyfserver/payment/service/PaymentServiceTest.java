@@ -311,7 +311,7 @@ class PaymentServiceTest {
         RefundInfoResponse response = paymentService.refundInfo(request);
         RefundInfoResponse expectedResponse = new RefundInfoResponse(
                 new RefundInfoResponse.CreatorInfoResponse("joy", "joy"),
-                new RefundInfoResponse.DonationInfoResponse("후원자이름", 10000L, "화이팅", null)
+                new RefundInfoResponse.PaymentInfoResponse("후원자이름", 10000L, "화이팅", null)
         );
 
         assertThat(response).usingRecursiveComparison()

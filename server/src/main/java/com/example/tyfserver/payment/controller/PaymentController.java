@@ -34,7 +34,8 @@ public class PaymentController {
     }
 
     @PostMapping("/refund/verification/ready")
-    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result) {
+    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result,
+                                                                                   LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new RefundVerificationReadyException();
         }

@@ -70,13 +70,14 @@ public class PaymentService {
         return payment;
     }
 
-    public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
+    public RefundVerificationReadyResponse
+    refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
         Payment payment = findPayment(merchantUid);
-        Donation donation = donationRepository.findByPaymentId(payment.getId())
-                .orElseThrow(DonationNotFoundException::new);
+//        Donation donation = donationRepository.findByPaymentId(payment.getId())
+//                .orElseThrow(DonationNotFoundException::new);
 
-        validateCanRefund(payment, donation);
+        validateCanRefund(payment);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
         VerificationCode verificationCode = verificationCodeRepository
                 .save(VerificationCode.newCode(merchantUid));
@@ -90,16 +91,16 @@ public class PaymentService {
         );
     }
 
-    private void validateCanRefund(Payment payment, Donation donation) {
+    private void validateCanRefund(Payment payment) {
         if (payment.isRefundBlocked()) {
             throw new RefundVerificationBlockedException();
         }
         if (payment.isNotPaid()) {
             throw new CannotRefundException(payment.getStatus());
         }
-        if (donation.isNotRefundable()) {
-            throw new CannotRefundException(donation.getStatus());
-        }
+//        if (donation.isNotRefundable()) {
+//            throw new CannotRefundException(donation.getStatus());
+//        }
     }
 
     private Integer checkResendCoolTime(String merchantUid) {
@@ -144,25 +145,16 @@ public class PaymentService {
 
     public RefundInfoResponse refundInfo(VerifiedRefunder refundInfoRequest) {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
-        Donation donation = donationRepository.findByPaymentId(payment.getId())
-                .orElseThrow(DonationNotFoundException::new);
         Member member = memberRepository.findByPageName(payment.getItemName())
                 .orElseThrow(MemberNotFoundException::new);
-        return new RefundInfoResponse(payment, donation, member);
+        return new RefundInfoResponse(payment, member);
     }
 
     public void refundPayment(VerifiedRefunder verifiedRefunder) {
         Payment payment = findPayment(verifiedRefunder.getMerchantUid());
-        Donation donation = donationRepository.findByPaymentId(payment.getId())
-                .orElseThrow(DonationNotFoundException::new);
-
-        donation.validateIsNotCancelled();
         payment.validateIsNotCancelled();
-
         PaymentInfo refundInfo = paymentServiceConnector.requestPaymentRefund(payment.getMerchantUid());
-
         payment.refund(refundInfo);
-        donation.toCancelled();
     }
 
     private Payment findPayment(String merchantUid) {
