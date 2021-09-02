@@ -6,6 +6,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    hibernate:
+      ddl-auto: none
 
   profiles:
     include: prod-secret
@@ -19,3 +21,10 @@ logging:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+
+
+cloudwatch:
+  log_group:
+    /tyf/logs/app/prod
+
+

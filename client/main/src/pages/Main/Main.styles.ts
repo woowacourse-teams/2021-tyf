@@ -1,10 +1,12 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import SubTitle from '../../components/@atom/SubTitle/SubTitle.styles';
 import Template from '../../components/@atom/Template/Template';
 import Logo from '../../components/@molecule/Logo/Logo';
 import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton.styles';
 import { DEVICE } from '../../constants/device';
+
+import RightArrow from '../../assets/icons/right-arrow.svg';
 
 export const MainTemplate = styled(Template)`
   padding: 5rem 0 6.25rem;
@@ -89,4 +91,27 @@ export const DescriptionContainer = styled.div`
       display: none;
     }
   }
+`;
+
+const downKeyFrames = keyframes`
+0% {
+  bottom: 7%;
+  opacity: 0;
+}
+
+100%{
+  bottom: 5%;
+  opacity: 1;
+}
+`;
+
+export const DownIcon = styled.img.attrs({ src: RightArrow })`
+  transform: rotate(90deg);
+  width: 1.5rem;
+  height: 1.5rem;
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+
+  animation: 1.2s infinite ${downKeyFrames};
 `;

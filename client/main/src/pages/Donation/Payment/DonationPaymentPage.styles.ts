@@ -26,4 +26,8 @@ export const StyledSubTitle = styled(SubTitle)`
 
 export const PaymentButtonContainer = styled(Container)`
   max-width: ${SIZE.MOBILE_MAX}px;
+
+  button {
+    margin-bottom: 1rem;
+  }
 `;

@@ -52,8 +52,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("후원자가 창작자에게 후원한다.")
     @Test
-    void 창작자에게_후원한다() {
-        Long donationId = 후원을_생성한다();
+    @DisplayName("성공적인 후원 생성의 경우")
+    public void createDonation() {
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
 
         DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
         후원메시지를_보낸다(donationId, messageRequest);
@@ -78,20 +80,20 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("창작자가 자신이 받은 후원 목록을 조회한다.")
-    public void 전체_후원_리스트() {
-        //given
-        Long donationId = 후원을_생성한다();
-        후원메시지를_보낸다(donationId, DonationTest.testMessageRequest());
-        Long donationId2 = 후원을_생성한다(member2);
-        후원메시지를_보낸다(donationId2, new DonationMessageRequest("poz", "화이팅"));
+    @DisplayName("존재하지 않는 페이먼트에 대한 후원 생성의 경우")
+    public void createDonationCreatorNotFound() {
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "tyfpagename");
+        페이먼트_생성(10000L, "donator@gmail.com", "tyfpagename");
+        ErrorResponse errorResponse = 후원_생성("impUid", UUID.randomUUID().toString()).as(ErrorResponse.class);
 
         String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
 
-        //when
-        List<DonationResponse> donations = authGet("/donations/me", token)
-                .statusCode(HttpStatus.OK.value())
-                .extract().jsonPath().getList(".", DonationResponse.class);
+    @Test
+    @DisplayName("성공적인 후원 메세지 전송")
+    public void addDonationMessage() {
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        Long donationId = 후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
 
         //then
         assertThat(donations).hasSize(1);
@@ -117,13 +119,21 @@ public class DonationAcceptanceTest extends AcceptanceTest {
                 .jsonPath().getList(".", DonationResponse.class);
     }
 
-    private Long 후원을_생성한다() {
-        return 후원을_생성한다(member);
+    @Test
+    @DisplayName("존재하지 않은 후원에 대한 후원 메세지 전송")
+    public void addDonationMessageDonationNotFound() {
+        ErrorResponse errorResponse = 후원_메세지_생성(10000L, "bepoz", "positive", false).as(ErrorResponse.class);
+
+        assertThat(errorResponse.getErrorCode()).isEqualTo(DonationNotFoundException.ERROR_CODE);
     }
 
-    private Long 후원을_생성한다(Member member) {
-        // given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(member.getPageName(), UUID.randomUUID().toString());
+    @Test
+    @DisplayName("나의 후원목록 조회")
+    public void totalDonations() {
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("creator@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        Long donationId = 후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        후원_메세지_생성(donationId, "donator", "thisismessage", true);
 
         // when // then
         return post("/donations", request)
@@ -132,9 +142,13 @@ public class DonationAcceptanceTest extends AcceptanceTest {
                 .as(DonationResponse.class).getDonationId();
     }
 
-    private void 후원메시지를_보낸다(Long donationId, DonationMessageRequest messageRequest) {
-        // given
-        String url = String.format("/donations/%d/messages", donationId);
+    @Test
+    @DisplayName("공개 후원목록 조회")
+    public void publicDonations() {
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        Long donationId = 후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        후원_메세지_생성(donationId, "donator", "thisismessage", true);
 
         // when // then
         post(url, messageRequest)

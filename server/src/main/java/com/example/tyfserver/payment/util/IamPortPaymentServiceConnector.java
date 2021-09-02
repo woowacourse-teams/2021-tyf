@@ -52,7 +52,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     }
 
     @Override
-    public PaymentInfo requestPaymentCancel(UUID merchantUid) {
+    public PaymentInfo requestPaymentRefund(UUID merchantUid) {
         String accessToken = getAccessToken();
         IamPortPaymentInfo paymentInfo = requestPaymentCancel(merchantUid, accessToken);
 

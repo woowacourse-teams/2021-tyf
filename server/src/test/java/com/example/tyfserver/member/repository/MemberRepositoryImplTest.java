@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.CurationsResponse;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
@@ -37,6 +39,9 @@ class MemberRepositoryImplTest {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     private Member testMember1;
     private Member testMember2;
 
@@ -45,6 +50,18 @@ class MemberRepositoryImplTest {
         testMember1 = memberRepository.save(MemberTest.testMember());
         testMember2 = memberRepository.save(MemberTest.testMember2());
     }
+
+
+    @Test
+    @DisplayName("자기소개는 500자 까지만 저장가능하다.")
+    public void InvalidBio() {
+        //when, then
+        assertThatThrownBy(() -> {
+            testMember1.updateBio("테스트".repeat(1000));
+            em.flush();
+        }).isInstanceOf(RuntimeException.class);
+    }
+
 
     @ParameterizedTest
     @CsvSource(value = {"tyf@gmail.com,false", "invalid,true"})
@@ -207,5 +224,76 @@ class MemberRepositoryImplTest {
                 new CurationsResponse("nick1", 1000L, "page1",
                         "https://cloudfront.net/profile1.png", "I am test")
         );
+    }
+
+
+    @Test
+    @DisplayName("정산 계좌 승인 요청 리스트를 얻어온다.")
+    public void findRequestingAccounts() {
+
+        Member member1 = new Member("email1", "nick1", "page1",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile1.png");
+
+        Account defaultAccount1 = new Account();
+        em.persist(defaultAccount1);
+        member1.addInitialAccount(defaultAccount1);
+        member1.registerAccount("테스트유저1", "1234-5678-1231",
+                "하나", "https://cloudfront.net/bankbook.png");
+
+        Member member2 = new Member("email2", "nick2", "page2",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile2.png");
+
+        Account defaultAccount2 = new Account();
+        em.persist(defaultAccount2);
+        member2.addInitialAccount(defaultAccount2);
+
+        Member member3 = new Member("email3", "nick3", "page3",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile3.png");
+
+        Account defaultAccount3 = new Account();
+        em.persist(defaultAccount3);
+        member3.addInitialAccount(defaultAccount3);
+        member3.registerAccount("테스트유저1", "1234-5678-1233",
+                "하나", "https://cloudfront.net/bankbook.png");
+
+        Member member4 = new Member("email4", "nick4", "page4",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile4.png");
+
+        Account defaultAccount4 = new Account();
+        em.persist(defaultAccount4);
+        member4.addInitialAccount(defaultAccount4);
+
+        Member member5 = new Member("email5", "nick5", "page5",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile5.png");
+
+        Account defaultAccount5 = new Account();
+        member5.addInitialAccount(defaultAccount5);
+        em.persist(defaultAccount5);
+        member5.registerAccount("테스트유저1", "1234-5678-1236",
+                "하나", "https://cloudfront.net/bankbook.png");
+
+        Member member6 = new Member("email6", "nick6", "page6",
+                Oauth2Type.GOOGLE, "https://cloudfront.net/profile6.png");
+        Account defaultAccount6 = new Account();
+        em.persist(defaultAccount6);
+        member6.addInitialAccount(defaultAccount6);
+
+        em.persist(member1);
+        em.persist(member2);
+        em.persist(member3);
+        em.persist(member4);
+        em.persist(member5);
+        em.persist(member6);
+
+        List<Member> requestingAccounts = memberRepository.findRequestingAccounts();
+        assertThat(requestingAccounts).hasSize(3);
+        Member selectedMember = requestingAccounts.get(0);
+        assertThat(selectedMember.getEmail()).isEqualTo(member1.getEmail());
+        assertThat(selectedMember.getNickname()).isEqualTo(member1.getNickname());
+        assertThat(selectedMember.getPageName()).isEqualTo(member1.getPageName());
+        assertThat(selectedMember.getAccount().getAccountHolder()).isEqualTo(member1.getAccount().getAccountHolder());
+        assertThat(selectedMember.getAccount().getAccountNumber()).isEqualTo(member1.getAccount().getAccountNumber());
+        assertThat(selectedMember.getAccount().getBank()).isEqualTo(member1.getAccount().getBank());
+        assertThat(selectedMember.getAccount().getBankbookUrl()).isEqualTo(member1.getAccount().getBankbookUrl());
     }
 }

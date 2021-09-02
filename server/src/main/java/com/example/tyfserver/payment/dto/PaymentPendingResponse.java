@@ -21,3 +21,4 @@ public class PaymentPendingResponse {
         this(payment.getMerchantUid());
     }
 }
+

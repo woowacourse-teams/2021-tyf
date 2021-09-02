@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<included>
+    <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
+        <webhookUri>${SLACK_WEBHOOK_URI}</webhookUri>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %msg %n</pattern>
+        </layout>
+        <username>Cake-Server-log</username>
+        <iconEmoji>:stuck_out_tongue_winking_eye:</iconEmoji>
+        <colorCoding>true</colorCoding>
+    </appender>
+
+    <appender name="ASYNC_SLACK_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SLACK"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+</included>

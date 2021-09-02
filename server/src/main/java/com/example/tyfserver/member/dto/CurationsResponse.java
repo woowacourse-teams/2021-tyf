@@ -1,5 +1,6 @@
 package com.example.tyfserver.member.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

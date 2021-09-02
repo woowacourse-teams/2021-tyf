@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank you for ___ 도네이션 결제 내역</title>
+  </head>
+  <body style="margin: 0; padding: 0">
+    <table
+      align="center"
+      cellpadding="0"
+      cellspacing="0"
+      style="
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        color: #333333;
+      "
+    >
+      <tr>
+        <td align="center" style="padding: 120px 0 120px 0">
+          <a href="https://thankyou-for.com">
+            <img
+              class="logo"
+              src='cid:tyf-logo'
+              width="400"
+              height="72"
+              alt="thank you for 로고"
+            />
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <h1 class="title">결제 내역</h1>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="padding: 60px 0 240px 0">
+          <table
+            class="donation-detail"
+            width="800"
+            cellpadding="14"
+            align="center"
+            border="1"
+            style="border-collapse: collapse; border-color: #b88c8c"
+          >
+            <tr bgcolor="#fcf1f1">
+              <th>결제 번호</th>
+              <th>도네이션 받은 창작자</th>
+              <th>결제 금액</th>
+              <th>결제 날짜</th>
+            </tr>
+            <tr align="center">
+              <td id="merchant-id"><span th:text="${merchant_id}"></span></td>
+              <td id="creator-name"><a th:href="${page_url}"><span th:text="${creator_name}"></span></a></td>
+              <td id="donation-amount"><span th:text="${donation_amount}"></span></td>
+              <td id="date"><span th:text="${date}"></span></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table
+            bgcolor="#fafafa"
+            width="100%"
+            style="width: 100%; padding-left: 20px"
+          >
+            <tr>
+              <td>
+                <p>Thank You For ___</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>
+                  땡큐포 | 대표이사 전환오 | 사업자번호 775-18-01530 |
+                  통신판매번호 2021-서울관악-1897 | 서울시 관악구 행운4길 9, 302
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>
+                  [고객센터] 전화번호 070 - 8098 - 2158 | 이메일
+                  <a href="mailto://thank.you.for.tyf@gmail.com">
+                    thank.you.for.tyf@gmail.com</a
+                  >
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>© Thank You For ___ all rights reserved</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

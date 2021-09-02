@@ -3,6 +3,7 @@ package com.example.tyfserver.member.controller;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.member.dto.*;
+import com.example.tyfserver.member.exception.AccountRegisterValidationRequestException;
 import com.example.tyfserver.member.exception.BioValidationRequestException;
 import com.example.tyfserver.member.exception.NicknameValidationRequestException;
 import com.example.tyfserver.member.exception.PageNameValidationRequestException;
@@ -102,8 +103,36 @@ public class MemberController {
             throw new NicknameValidationRequestException();
         }
 
-        memberService.updateNickName(loginMember, nicknameRequest.getNickname());
+        memberService.updateNickname(loginMember, nicknameRequest.getNickname());
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/me/detailedPoint")
+    public ResponseEntity<DetailedPointResponse> detailedPoint(LoginMember loginMember) {
+        DetailedPointResponse response = memberService.detailedPoint(loginMember.getId());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me/account")
+    public ResponseEntity<AccountInfoResponse> accountInfo(LoginMember loginMember) {
+        return ResponseEntity.ok(memberService.accountInfo(loginMember));
+    }
+
+    @PostMapping("/me/account")
+    public ResponseEntity<Void> registerAccount(LoginMember loginMember,
+                                                @Valid @ModelAttribute AccountRegisterRequest accountRegisterRequest,
+                                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new AccountRegisterValidationRequestException();
+        }
+
+        memberService.registerAccount(loginMember, accountRegisterRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/me/exchange")
+    public ResponseEntity<Void> requestExchange(LoginMember loginMember) {
+        memberService.exchange(loginMember.getId());
+        return ResponseEntity.ok().build();
+    }
 }
