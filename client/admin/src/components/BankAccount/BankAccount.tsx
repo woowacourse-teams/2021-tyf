@@ -17,7 +17,7 @@ const BankAccount = () => {
   const { bankAccountList, agreeBankAccount, declineBankAccount } = useBankAccount();
 
   const showFullImage = (imgSrc: string) => {
-    window.open(BankImage, '_blank');
+    window.open(imgSrc, '_blank');
   };
 
   return (
@@ -51,11 +51,9 @@ const BankAccount = () => {
                 <br />
               </ItemContent>
               <ButtonContainer>
-                <AgreeButton onClick={() => agreeBankAccount(item.memberId)}>
-                  계좌신청수락
-                </AgreeButton>
+                <AgreeButton onClick={() => agreeBankAccount(item.memberId)}>수락</AgreeButton>
                 <DeclineButton onClick={() => declineBankAccount(item.memberId)}>
-                  계좌신청거부
+                  거부
                 </DeclineButton>
               </ButtonContainer>
             </BankAccountListItem>

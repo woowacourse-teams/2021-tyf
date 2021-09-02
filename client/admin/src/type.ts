@@ -1,4 +1,6 @@
 export interface Exchange {
+  name : string,
+	email :string,
   exchangeAmount: number;
   accountNumber: string;
   nickname: string;
