@@ -29,7 +29,7 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true)
     private String nickname;
 
-    @Lob
+    @Column(length = 1500)
     private String bio = DEFAULT_BIO;
 
     private String profileImage;
@@ -43,19 +43,27 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true)
     private String pageName;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
     @OneToMany(mappedBy = "member")
     private final List<Banner> banners = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage, Point point) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
-        this.point = new Point(0L);
         this.profileImage = profileImage;
+        this.point = point;
+    }
+
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
+        this(email, nickname, pageName, oauth2Type, profileImage, new Point(0L));
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type) {
@@ -68,15 +76,15 @@ public class Member extends BaseTimeEntity {
         addPoint(donation.getAmount());
     }
 
-    private void addPoint(final long donationAmount) {
-        this.point.add(donationAmount);
+    private void addPoint(final long amount) {
+        this.point.add(amount);
     }
 
     public void updateBio(String bio) {
         this.bio = bio;
     }
 
-    public void updateNickName(String nickname) {
+    public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 
@@ -94,5 +102,37 @@ public class Member extends BaseTimeEntity {
 
     public void deleteProfile() {
         this.profileImage = null;
+    }
+
+    public void addInitialAccount(Account account) {
+        if (this.account != null) {
+            return;
+        }
+
+        this.account = account;
+    }
+
+    public void registerAccount(String accountHolder, String accountNumber, String bank, String bankBookUrl) {
+        this.account.register(accountHolder, accountNumber, bank, bankBookUrl);
+    }
+
+    public AccountStatus getAccountStatus() {
+        return this.account.getStatus();
+    }
+
+    public void reducePoint(long amount) {
+        point.reduce(amount);
+    }
+
+    public void approveAccount() {
+        this.account.approve();
+    }
+
+    public void rejectAccount() {
+        this.account.reject();
+    }
+
+    public String getBankBookUrl() {
+        return this.account.getBankbookUrl();
     }
 }

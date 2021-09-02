@@ -1,6 +1,8 @@
 package com.example.tyfserver.donation.service;
 
+import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
@@ -27,6 +29,7 @@ public class DonationService {
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
     private final PaymentService paymentService;
+    private final SmtpMailConnector mailConnector;
 
     public DonationResponse createDonation(PaymentCompleteRequest paymentCompleteRequest) {
         Payment payment = paymentService.completePayment(paymentCompleteRequest);
@@ -37,6 +40,7 @@ public class DonationService {
         Donation savedDonation = donationRepository.save(donation);
         member.addDonation(savedDonation);
 
+        mailConnector.sendDonationComplete(payment, member);
         return new DonationResponse(savedDonation);
     }
 
@@ -51,7 +55,7 @@ public class DonationService {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(findMember, pageable);
+        List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED, pageable);
 
         return privateDonationResponses(donations);
     }
@@ -60,7 +64,7 @@ public class DonationService {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(findMember);
+        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED);
 
         return publicDonationResponses(donations);
     }

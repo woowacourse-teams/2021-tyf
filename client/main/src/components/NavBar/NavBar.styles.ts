@@ -65,5 +65,6 @@ export const StyledTextButton = styled(TextButton)`
 
   @media ${DEVICE.DESKTOP} {
     font-size: 1.125rem;
+    max-width: 8rem;
   }
 `;

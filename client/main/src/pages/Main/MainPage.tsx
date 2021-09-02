@@ -12,6 +12,7 @@ import {
   MainTemplate,
   RouteButton,
   StyledSubTitle,
+  DownIcon,
 } from './Main.styles';
 import HeroContentDesktop from '../../assets/images/hero-content-desktop.svg';
 import Logo from '../../components/@molecule/Logo/Logo';
@@ -64,6 +65,7 @@ const MainPage = () => {
           </Transition>
         </section>
       )}
+      <DownIcon />
     </MainTemplate>
   );
 };

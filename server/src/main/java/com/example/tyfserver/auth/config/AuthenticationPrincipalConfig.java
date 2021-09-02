@@ -14,18 +14,24 @@ import java.util.List;
 public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     private final AuthenticationArgumentResolver authenticationArgumentResolver;
+    private final RefundAuthenticationArgumentResolver refundAuthenticationArgumentResolver;
     private final AuthenticationInterceptor authenticationInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/banners", "/banners/me", "/donations/me", "/members/me", "/members/me/point",
-                        "/members/profile", "/members/me/bio", "/members/me/nickname");
+                .excludePathPatterns("/admin/login")
+                .addPathPatterns("/members/me", "/members/me/point", "/members/profile", "/members/me/bio",
+                        "/members/me/nickname", "/members/me/detailedPoint", "/members/me/account", "/members/me/exchange")
+                .addPathPatterns("/donations/me")
+                .addPathPatterns("/banners", "/banners/me")
+                .addPathPatterns("/admin", "/admin/**");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authenticationArgumentResolver);
+        resolvers.add(refundAuthenticationArgumentResolver);
     }
 
     @Override
@@ -34,7 +40,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:9000",
                         "https://thankyou-for.com",
-                        "https://thirsty-euler-f61b80.netlify.app"
+                        "https://admin.thankyou-for.com"
                 );
     }
 }

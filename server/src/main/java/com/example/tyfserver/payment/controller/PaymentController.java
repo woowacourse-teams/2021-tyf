@@ -1,19 +1,15 @@
 package com.example.tyfserver.payment.controller;
 
-import com.example.tyfserver.payment.dto.PaymentCancelRequest;
-import com.example.tyfserver.payment.dto.PaymentCancelResponse;
-import com.example.tyfserver.payment.dto.PaymentPendingRequest;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import com.example.tyfserver.payment.exception.PaymentCancelRequestException;
+import com.example.tyfserver.auth.dto.VerifiedRefunder;
+import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
+import com.example.tyfserver.payment.exception.RefundVerificationException;
+import com.example.tyfserver.payment.exception.RefundVerificationReadyException;
 import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,14 +30,35 @@ public class PaymentController {
         return ResponseEntity.ok(response);
     }
 
-    // todo 환불시 이메일 인증 필요
-    @PostMapping("/cancel")
-    public ResponseEntity<PaymentCancelResponse> cancelPayment(@Valid @RequestBody PaymentCancelRequest paymentCancelRequest, BindingResult result) {
+    @PostMapping("/refund/verification/ready")
+    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new PaymentCancelRequestException();
+            throw new RefundVerificationReadyException();
         }
 
-        PaymentCancelResponse response = paymentService.cancelPayment(paymentCancelRequest);
+        RefundVerificationReadyResponse response = paymentService.refundVerificationReady(verificationReadyRequest);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refund/verification")
+    public ResponseEntity<RefundVerificationResponse> refundVerification(@Valid @RequestBody RefundVerificationRequest verificationRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new RefundVerificationException();
+        }
+
+        RefundVerificationResponse response = paymentService.refundVerification(verificationRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/refund/info")
+    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder refundInfoRequest) {
+        RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refund")
+    public ResponseEntity<Void> refundPayment(VerifiedRefunder verifiedRefunder) {
+        paymentService.refundPayment(verifiedRefunder);
+        return ResponseEntity.ok().build();
     }
 }

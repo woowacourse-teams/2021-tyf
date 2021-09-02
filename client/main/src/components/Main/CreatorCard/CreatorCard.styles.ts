@@ -56,6 +56,8 @@ export const ProfileImg = styled.img`
 `;
 
 export const Name = styled.h4`
+  width: 100%;
+  padding: 0 1rem;
   position: absolute;
   text-align: center;
   line-height: 1.625rem;

@@ -8,10 +8,12 @@ import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.exception.AlreadyRegisteredException;
 import com.example.tyfserver.auth.exception.AlreadyRegisteredInSameOauth2TypeException;
 import com.example.tyfserver.auth.exception.UnregisteredMemberException;
-import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.SignUpReadyResponse;
 import com.example.tyfserver.member.dto.SignUpRequest;
+import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -20,16 +22,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class Oauth2Service {
 
+    private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final AuthenticationService authenticationService;
 
@@ -53,15 +53,8 @@ public class Oauth2Service {
 
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         Member member = signUpRequest.toMember();
-        Member persistMember = memberRepository.save(member);
-
-        return new SignUpResponse(authenticationService.createToken(persistMember), persistMember.getPageName());
-    }
-
-    private String getEmailFromOauth2(Oauth2Request oauth2Request, String code) {
-        final String accessToken = requestAccessToken(code, oauth2Request);
-        return requestEmail(accessToken, oauth2Request);
-    }
+        Member savedMember = memberRepository.save(member);
+        savedMember.addInitialAccount(accountRepository.save(new Account()));
 
     private String requestAccessToken(String code, Oauth2Request oauth2Request) {
         String body = ApiSender.send(

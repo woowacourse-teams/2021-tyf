@@ -10,6 +10,11 @@ WORKDIR /app/client
 
 # install react with package.json
 COPY package.json yarn.lock ./
+
+RUN npm install -g npm@latest
+
+RUN npm set-script prepare ""
+
 RUN yarn
 
 # copy react app + express app

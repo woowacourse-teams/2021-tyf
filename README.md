@@ -1,8 +1,14 @@
 # 2021-tyf 
 
-### 🎁 Thank you for _ _ _
+![image](https://user-images.githubusercontent.com/45073750/129145619-fcd8061b-2deb-4e09-9055-fc575a0c6214.png)
 
 - 누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 모듈 서비스
+
+## 🥰 Members
+
+|              [파노](https://github.com/jho2301)              |              [인치](https://github.com/hchayan)              |               [수리](https://github.com/DWL5)                |              [파즈](https://github.com/Be-poz)               |              [조이](https://github.com/Joyykim)              |               [로키](https://github.com/Rok93)               |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/44419181?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/11311739?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/18106839?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/45073750?v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/56679885?v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/47850258?v=4" width=200px alt="_"> |
 
 ### 💻 커밋 메세지 컨벤션
 
@@ -32,3 +38,6 @@
 - feature/{feature-name}
 - 본인 fork 레포지토리에 위와 같이 브랜치를 만들어 작업한다.
 - 완료되면 upstream의 develop-server develop-client로 pr 요청
+
+[백엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/server/README.md)  
+[프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/README.md)

@@ -1,6 +1,7 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
@@ -15,11 +16,10 @@ import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
 import com.example.tyfserver.payment.service.PaymentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -30,7 +30,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,8 +48,28 @@ class DonationServiceTest {
     @Mock
     private PaymentService paymentService;
 
-    @InjectMocks
-    private DonationService donationService;
+    @MockBean
+    private SmtpMailConnector mailConnector;
+
+    private UUID uuid = UUID.randomUUID();
+    private Member member = new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE, "profile");
+    private Payment payment = new Payment(1000L, "email", "pagename", uuid);
+    private Donation donation = new Donation(payment, new Message(Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, true));
+
+    @BeforeEach
+    void setUp() {
+        paymentRepository.save(payment);
+        memberRepository.save(member);
+        donationRepository.save(donation);
+        doNothing().when(mailConnector).sendDonationComplete(any(), any());
+    }
+
+    @AfterEach
+    void tearDown() {
+        paymentRepository.delete(payment);
+        memberRepository.delete(member);
+        donationRepository.delete(donation);
+    }
 
     @Test
     @DisplayName("createDonation Test")
