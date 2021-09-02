@@ -12,7 +12,7 @@ import {
   EmptyContent,
 } from './Settlement.styles';
 
-export const Settlement = () => {
+const Settlement = () => {
   const { exchangeList, agreeExchange, declineExchange } = useSettlement();
 
   return (
@@ -27,7 +27,9 @@ export const Settlement = () => {
                 <br />
                 <Bold>닉네임</Bold> | {item.nickname}
                 <br />
-                <Bold>이름</Bold> | 한창희
+                <Bold>이름</Bold> | {item.name}
+                <br />
+                <Bold>이메일</Bold> | {item.email}
                 <br />
                 <Bold>계좌번호</Bold> | {item.accountNumber}
                 <br />
@@ -37,10 +39,8 @@ export const Settlement = () => {
                 <br />
               </ItemContent>
               <ButtonContainer>
-                <AgreeButton onClick={() => agreeExchange(item.pageName)}>정산수락</AgreeButton>
-                <DeclineButton onClick={() => declineExchange(item.pageName)}>
-                  정산거부
-                </DeclineButton>
+                <AgreeButton onClick={() => agreeExchange(item.pageName)}>수락</AgreeButton>
+                <DeclineButton onClick={() => declineExchange(item.pageName)}>거부</DeclineButton>
               </ButtonContainer>
             </SettlementListItem>
           ))
@@ -51,3 +51,5 @@ export const Settlement = () => {
     </StyledSettlement>
   );
 };
+
+export default Settlement;
