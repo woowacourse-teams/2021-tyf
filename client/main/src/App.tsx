@@ -28,6 +28,7 @@ import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
 import { useWindowResize } from './utils/useWindowResize';
 import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
+import PointInfoPage from './pages/Point/PointInfo/PointInfoPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -116,6 +117,8 @@ const App = () => {
           isAuthed={!!accessToken}
           redirectTo="/login"
         />
+
+        <Route path="/point" component={PointInfoPage} />
 
         <Route path="/refund" component={RefundApplyPage} exact />
         <Route path="/refund/cert" component={RefundCertificationPage} />
