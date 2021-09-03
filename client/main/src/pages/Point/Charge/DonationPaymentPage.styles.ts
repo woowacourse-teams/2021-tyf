@@ -4,7 +4,7 @@ import Container from '../../../components/@atom/Container/Container.styles';
 import SubTitle from '../../../components/@atom/SubTitle/SubTitle.styles';
 import Template from '../../../components/@atom/Template/Template';
 import { SIZE } from '../../../constants/device';
-import { popupStyle } from '../Amount/DonationAmountPage.styles';
+import { popupStyle } from '../../Donation/Amount/DonationAmountPage.styles';
 
 export const DonationPaymentPageTemplate = styled(Template)`
   ${popupStyle}

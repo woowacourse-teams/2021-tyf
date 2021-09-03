@@ -6,9 +6,7 @@ import NavBar from './components/NavBar/NavBar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import CreatorPage from './pages/Creator/CreatorPage';
 import DonationAmountPage from './pages/Donation/Amount/DonationAmountPage';
-import DonatorInfoPage from './pages/Donation/DonatorInfo/DonatorInfoPage';
 import DonationMessagePage from './pages/Donation/Message/DonationMessagePage';
-import DonationPaymentPage from './pages/Donation/Payment/DonationPaymentPage';
 import DonationSuccessPage from './pages/Donation/Success/DonationSuccessPage';
 import LoginPage from './pages/Login/LoginPage';
 import MainPage from './pages/Main/MainPage';
@@ -83,8 +81,6 @@ const App = () => {
         <Route path="/register/success" component={RegisterSuccessPage} />
 
         <Route path="/donation/:creatorId" component={DonationAmountPage} exact />
-        <Route path="/donation/:creatorId/donatorInfo" component={DonatorInfoPage} />
-        <Route path="/donation/:creatorId/payment" component={DonationPaymentPage} />
         <Route path="/donation/:creatorId/message" component={DonationMessagePage} />
         <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
