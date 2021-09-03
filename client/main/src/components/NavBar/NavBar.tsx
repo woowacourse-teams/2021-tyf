@@ -8,8 +8,10 @@ import {
   StyledLogo,
   LoginButton,
   StyledTextButton,
+  StyledPoint,
   NavBarArea,
 } from './NavBar.styles';
+import DefaultProfileImg from '../../assets/images/default-user-profile.png';
 
 const NavBar = () => {
   const history = useHistory();
@@ -21,7 +23,10 @@ const NavBar = () => {
       <StyledNavBar>
         <StyledLogo onClick={() => history.push('/')} />
         {userInfo ? (
-          <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
+          <>
+            <StyledPoint>21,000 tp</StyledPoint>
+            <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
+          </>
         ) : (
           <LoginButton to="/login">로그인</LoginButton>
         )}

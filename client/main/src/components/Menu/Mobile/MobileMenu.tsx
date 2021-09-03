@@ -33,6 +33,9 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
       <StyledAnchor to={`/creator/${userInfo?.pageName}`} onClick={onClose}>
         마이페이지
       </StyledAnchor>
+      <StyledAnchor to={`/`} onClick={onClose}>
+        내 포인트
+      </StyledAnchor>
       <StyledAnchor to={`/creator/${userInfo?.pageName}/settlement`} onClick={onClose}>
         정산 관리
       </StyledAnchor>

@@ -3,6 +3,7 @@ import { StyledDesktopMenu, MenuButton, MenuIcon } from './DesktopMenu.styles';
 import Home from '../../../assets/icons/home.svg';
 import Graph from '../../../assets/icons/graph.svg';
 import User from '../../../assets/icons/user.svg';
+import Coins from '../../../assets/icons/coins.svg';
 import Setting from '../../../assets/icons/setting.svg';
 import Logout from '../../../assets/icons/logout.svg';
 import { useHistory } from 'react-router-dom';
@@ -37,6 +38,10 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
       <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}`)}>
         <MenuIcon src={User} />
         <span>마이페이지</span>
+      </MenuButton>
+      <MenuButton onClick={() => routeTo(`/`)}>
+        <MenuIcon src={Coins} />
+        <span>내 포인트</span>
       </MenuButton>
       <MenuButton onClick={() => routeTo(`/creator/${userInfo?.pageName}/settlement`)}>
         <MenuIcon src={Graph} />
