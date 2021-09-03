@@ -167,7 +167,7 @@ public class PaymentControllerTest {
         when(paymentService.refundInfo(any(VerifiedRefunder.class)))
                 .thenReturn(new RefundInfoResponse(
                         new RefundInfoResponse.CreatorInfoResponse("joy", "joy"),
-                        new RefundInfoResponse.DonationInfoResponse("후원자이름", 10000L, "화이팅", null)
+                        new RefundInfoResponse.PaymentInfoResponse("후원자이름", 10000L, "화이팅", null)
                 ));
 
         when(authenticationService.createVerifiedRefundRequestByToken(anyString()))

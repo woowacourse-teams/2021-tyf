@@ -12,13 +12,19 @@ import java.util.UUID;
 public class PaymentPendingResponse {
 
     private UUID merchantUid;
+    private String itemName;
+    private long amount;
+    private String email;
 
-    public PaymentPendingResponse(UUID merchantUid) {
+    public PaymentPendingResponse(UUID merchantUid, String itemName, long amount, String email) {
         this.merchantUid = merchantUid;
+        this.itemName = itemName;
+        this.amount = amount;
+        this.email = email;
     }
 
     public PaymentPendingResponse(Payment payment) {
-        this(payment.getMerchantUid());
+        this(payment.getMerchantUid(), payment.getItemName(), payment.getAmount(), payment.getEmail());
     }
 }
 

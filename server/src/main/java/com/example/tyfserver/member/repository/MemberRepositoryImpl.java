@@ -28,9 +28,8 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
                         new QCurationsResponse(member.nickname, payment.amount.sum(), member.pageName, member.profileImage, member.bio))
                 .from(member)
                 .leftJoin(member.donations, donation)
-                .leftJoin(donation.payment, payment)
                 .groupBy(member.nickname)
-                .orderBy(payment.amount.sum().desc())
+                .orderBy(donation.point.sum().desc())
                 .offset(0)
                 .limit(10)
                 .fetch();

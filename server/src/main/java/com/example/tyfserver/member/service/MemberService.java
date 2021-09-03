@@ -51,7 +51,7 @@ public class MemberService {
 
     public PointResponse findMemberPoint(Long id) {
         Member member = findMember(id);
-        return new PointResponse(member.getPoint());
+        return new PointResponse(member.getDonatedPoint());
     }
 
     public List<CurationsResponse> findCurations() {
@@ -91,7 +91,7 @@ public class MemberService {
     }
 
     public DetailedPointResponse detailedPoint(Long id) {
-        Long currentPoint = findMember(id).getPoint();
+        Long currentPoint = findMember(id).getDonatedPoint();
         Long exchangeablePoint = donationRepository.exchangeablePoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
         return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);

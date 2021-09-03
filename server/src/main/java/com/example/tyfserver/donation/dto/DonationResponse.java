@@ -19,7 +19,7 @@ public class DonationResponse {
     private LocalDateTime createdAt;
 
     public DonationResponse(Donation donation) {
-        this(donation.getId(), donation.getName(), donation.getMessage(), donation.getAmount(), donation.getCreatedAt());
+        this(donation.getId(), donation.getName(), donation.getMessage(), donation.getPoint(), donation.getCreatedAt());
     }
 
     public DonationResponse(Long donationId, String name, String message, Long amount,
@@ -33,7 +33,7 @@ public class DonationResponse {
 
     public static DonationResponse forPublic(Donation donation) {
         if (donation.isSecret()) {
-            return new DonationResponse(donation.getId(), Message.SECRET_NAME, Message.SECRET_MESSAGE, donation.getAmount(), donation.getCreatedAt());
+            return new DonationResponse(donation.getId(), Message.SECRET_NAME, Message.SECRET_MESSAGE, donation.getPoint(), donation.getCreatedAt());
         }
         return new DonationResponse(donation);
     }

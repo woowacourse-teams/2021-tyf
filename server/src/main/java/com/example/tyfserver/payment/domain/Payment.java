@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentAlreadyCancelledException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
@@ -29,7 +30,7 @@ public class Payment extends BaseTimeEntity {
     private Email email;
 
     @Column(nullable = false)
-    private String pageName;
+    private String itemName;
 
     @Enumerated(value = EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PENDING;
@@ -39,32 +40,36 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private UUID merchantUid;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "refund_failure_id")
     private RefundFailure refundFailure;
 
-    public Payment(Long id, Long amount, Email email, String pageName, UUID merchantUid) {
+    public Payment(Long id, Long amount, Email email, String itemName, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
         this.email = email;
-        this.pageName = pageName;
+        this.itemName = itemName;
         this.merchantUid = merchantUid;
     }
 
-    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
-        this(id, amount, new Email(email), pageName, merchantUid);
+    public Payment(Long id, Long amount, String email, String itemName, UUID merchantUid) {
+        this(id, amount, new Email(email), itemName, merchantUid);
     }
 
-    public Payment(Long amount, String email, String pageName, UUID merchantUid) {
-        this(null, amount, email, pageName, merchantUid);
+    public Payment(Long amount, String email, String itemName, UUID merchantUid) {
+        this(null, amount, email, itemName, merchantUid);
     }
 
-    public Payment(Long id, Long amount, String email, String pageName) {
-        this(id, amount, email, pageName, UUID.randomUUID());
+    public Payment(Long id, Long amount, String email, String itemName) {
+        this(id, amount, email, itemName, UUID.randomUUID());
     }
 
-    public Payment(Long amount, String email, String pageName) {
-        this(null, amount, email, pageName, UUID.randomUUID());
+    public Payment(Long amount, String email, String itemName) {
+        this(null, amount, email, itemName, UUID.randomUUID());
     }
 
     public String getMaskedEmail() {
@@ -120,7 +125,7 @@ public class Payment extends BaseTimeEntity {
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, paymentInfo.getModule());
         }
 
-        if (!pageName.equals(paymentInfo.getPageName())) {
+        if (!itemName.equals(paymentInfo.getPageName())) {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
         }

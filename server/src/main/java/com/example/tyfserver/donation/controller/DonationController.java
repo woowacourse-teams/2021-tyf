@@ -24,13 +24,14 @@ public class DonationController {
 
     private final DonationService donationService;
 
-    @PostMapping
-    public ResponseEntity<DonationResponse> createDonation(@Valid @RequestBody PaymentCompleteRequest paymentCompleteRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new DonationRequestException();
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(paymentCompleteRequest));
-    }
+    //todo: 이 부분 완전 바뀌어야함
+//    @PostMapping
+//    public ResponseEntity<DonationResponse> createDonation(@Valid @RequestBody PaymentCompleteRequest paymentCompleteRequest, BindingResult result) {
+//        if (result.hasErrors()) {
+//            throw new DonationRequestException();
+//        }
+//        return ResponseEntity.status(HttpStatus.CREATED).body(donationService.createDonation(paymentCompleteRequest));
+//    }
 
     @PostMapping("/{donationId}/messages")
     public ResponseEntity<Void> addDonationMessage(@PathVariable Long donationId,

@@ -1,6 +1,5 @@
 package com.example.tyfserver.payment.dto;
 
-import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,15 +14,15 @@ import java.time.LocalDateTime;
 public class RefundInfoResponse {
 
     private CreatorInfoResponse creator;
-    private DonationInfoResponse donation;
+    private PaymentInfoResponse payment;
 
-    public RefundInfoResponse(CreatorInfoResponse creator, DonationInfoResponse donation) {
+    public RefundInfoResponse(CreatorInfoResponse creator, PaymentInfoResponse payment) {
         this.creator = creator;
-        this.donation = donation;
+        this.payment = payment;
     }
 
-    public RefundInfoResponse(Payment payment, Donation donation, Member member) {
-        this(new CreatorInfoResponse(member), new DonationInfoResponse(donation, payment));
+    public RefundInfoResponse(Payment payment, Member member) {
+        this(new CreatorInfoResponse(member), new PaymentInfoResponse(payment));
     }
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,24 +44,20 @@ public class RefundInfoResponse {
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
-    public static class DonationInfoResponse {
+    public static class PaymentInfoResponse {
 
-        private String name;
         private Long amount;
-        private String message;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy'/'MM'/'dd'/' HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
 
-        public DonationInfoResponse(String name, Long amount, String message, LocalDateTime createdAt) {
-            this.name = name;
+        public PaymentInfoResponse(Long amount, LocalDateTime createdAt) {
             this.amount = amount;
-            this.message = message;
             this.createdAt = createdAt;
         }
 
-        public DonationInfoResponse(Donation donation, Payment payment) {
-            this(donation.getName(), payment.getAmount(), donation.getMessage(), donation.getCreatedAt());
+        public PaymentInfoResponse(Payment payment) {
+            this(payment.getAmount(), payment.getCreatedAt());
         }
     }
 }

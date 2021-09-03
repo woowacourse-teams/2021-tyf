@@ -3,7 +3,6 @@ package com.example.tyfserver.donation.domain;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,29 +23,31 @@ public class Donation extends BaseTimeEntity {
     @Embedded
     private Message message;
 
+    private long point;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.REFUNDABLE;
 
-    public Donation(Long id, Payment payment, Message message) {
+    public Donation(Long id, Message message, long point) {
         this.id = id;
-        this.payment = payment;
         this.message = message;
+        this.point = point;
     }
 
-    public Donation(Payment payment, Message message) {
-        this(null, payment, message);
+    public Donation(long point) {
+        this(null, Message.defaultMessage(), point);
     }
 
-    public Donation(Payment payment) {
-        this(payment, Message.defaultMessage());
+    public Donation(Message message) {
+        this(null, message, 0L);
+    }
+
+    public Donation(Message message, long point) {
+        this(null, message, point);
     }
 
     public void to(final Member member) {
@@ -69,18 +70,12 @@ public class Donation extends BaseTimeEntity {
         return message.isSecret();
     }
 
-    public Long getAmount() {
-        return payment.getAmount();
-    }
-    
     public void toCancelled() {
         status = DonationStatus.CANCELLED;
-        member.reducePoint(this.getAmount());
     }
 
     public void toExchanged() {
         status = DonationStatus.EXCHANGED;
-        member.reducePoint(this.getAmount());
     }
 
     public void toExchangeable() {

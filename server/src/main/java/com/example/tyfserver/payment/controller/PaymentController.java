@@ -1,5 +1,6 @@
 package com.example.tyfserver.payment.controller;
 
+import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
@@ -20,18 +21,21 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
+    //todo: /payments 에서 /charge/ready 쪽으로 옮겨가야됨. PaymentController 네이밍이 ChargeController로 바뀔지도?
     @PostMapping
-    public ResponseEntity<PaymentPendingResponse> payment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest, BindingResult result) {
+    public ResponseEntity<PaymentPendingResponse> payment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest, BindingResult result,
+                                                          LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new PaymentPendingRequestException();
         }
 
-        PaymentPendingResponse response = paymentService.createPayment(paymentPendingRequest);
+        PaymentPendingResponse response = paymentService.createPayment(paymentPendingRequest.getItemId(), loginMember);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refund/verification/ready")
-    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result) {
+    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result,
+                                                                                   LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new RefundVerificationReadyException();
         }

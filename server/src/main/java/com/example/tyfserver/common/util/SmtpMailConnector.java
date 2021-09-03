@@ -73,7 +73,7 @@ public class SmtpMailConnector {
 
     public void sendDonationComplete(Payment payment, Member member) {
         Context context = new Context();
-        context.setVariable("page_url", CREATOR_PREFIX_DOMAIN + payment.getPageName());
+        context.setVariable("page_url", CREATOR_PREFIX_DOMAIN + payment.getItemName());
         context.setVariable("merchant_id", payment.getMerchantUid());
         context.setVariable("creator_name", member.getNickname());
         context.setVariable("donation_amount", payment.getAmount());
