@@ -13,18 +13,12 @@ describe('RefundConfirmPage', () => {
   });
 
   test('환불 대상 결제의 정보가 보인다.', async () => {
-    // 창작자정보, 후원정보 잘 보이는지 테스트
-    const { creator, donation } = refundInfoMock;
-    //창작자명
-    await screen.findByText(creator.nickname);
-    //후원금액
-    await screen.findByText(donation.amount);
-    //후원일자
-    await screen.findByText(donation.createdAt);
-    //후원자명
-    await screen.findByText(donation.name);
-    //후원자 메세지
-    await screen.findByText(donation.message);
+    // 충전포인트
+    await screen.findByText(new RegExp(toCommaSeparatedString(refundInfoMock.chargedPoint)));
+    // 결제금액
+    await screen.findByText(new RegExp(toCommaSeparatedString(refundInfoMock.price)));
+    // 결제일자
+    await screen.findByText(new RegExp(refundInfoMock.createdAt));
   });
 
   test('환불 신청을 할 수 있다.', async () => {
