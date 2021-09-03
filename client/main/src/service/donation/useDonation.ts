@@ -13,7 +13,7 @@ const useDonation = (creatorId: CreatorId) => {
   const { pageName } = useCreator(creatorId);
   const { amount, email } = donation;
 
-  const donate = async (pg: string) => {
+  const donate = async () => {
     const { merchantUid } = await requestPayment({ amount, email, pageName });
     const { IMP } = window;
 
@@ -25,7 +25,7 @@ const useDonation = (creatorId: CreatorId) => {
     IMP.init(accountId);
 
     const IMPRequestPayOption: RequestPayParams = {
-      pg,
+      pg: '카카오페이',
       pay_method: 'card',
       merchant_uid: merchantUid,
       name: pageName,
