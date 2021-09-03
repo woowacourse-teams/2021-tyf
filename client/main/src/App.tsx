@@ -80,9 +80,25 @@ const App = () => {
         />
         <Route path="/register/success" component={RegisterSuccessPage} />
 
-        <Route path="/donation/:creatorId" component={DonationAmountPage} exact />
-        <Route path="/donation/:creatorId/message" component={DonationMessagePage} />
-        <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
+        <PrivateRoute
+          path="/donation/:creatorId"
+          component={DonationAmountPage}
+          isAuthed={!accessToken}
+          redirectTo="/"
+          exact
+        />
+        <PrivateRoute
+          path="/donation/:creatorId/message"
+          component={DonationMessagePage}
+          isAuthed={!accessToken}
+          redirectTo="/"
+        />
+        <PrivateRoute
+          path="/donation/:creatorId/success"
+          component={DonationSuccessPage}
+          isAuthed={!accessToken}
+          redirectTo="/"
+        />
 
         <Route path="/creator/:creatorId" component={CreatorPage} exact />
         <PrivateRoute
