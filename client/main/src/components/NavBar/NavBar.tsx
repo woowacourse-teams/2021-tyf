@@ -11,7 +11,6 @@ import {
   StyledPoint,
   NavBarArea,
 } from './NavBar.styles';
-import DefaultProfileImg from '../../assets/images/default-user-profile.png';
 
 const NavBar = () => {
   const history = useHistory();
@@ -24,7 +23,7 @@ const NavBar = () => {
         <StyledLogo onClick={() => history.push('/')} />
         {userInfo ? (
           <>
-            <StyledPoint>21,000 tp</StyledPoint>
+            <StyledPoint onClick={() => history.push('/point')}>21,000 tp</StyledPoint>
             <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
           </>
         ) : (
