@@ -92,6 +92,10 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
+    public long getAvailablePoint() {
+        return this.availablePoint.getPoint();
+    }
+
     public long getDonatedPoint() {
         return this.donatedPoint.getPoint();
     }
