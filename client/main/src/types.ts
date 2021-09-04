@@ -68,8 +68,9 @@ export interface Refund {
 }
 
 export interface refundOrderDetail {
-  creator: Pick<Creator, 'nickname' | 'pageName'>;
-  donation: Pick<Donation, 'name' | 'amount' | 'message' | 'createdAt'>;
+  chargedPoint: number;
+  price: number;
+  createdAt: Date;
 }
 
 // SETTLEMENT

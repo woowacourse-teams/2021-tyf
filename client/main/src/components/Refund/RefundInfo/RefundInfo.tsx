@@ -1,12 +1,13 @@
 import { InfoContainer, StyledRefundInfo, StyledSubTitle, InfoTitle } from './RefundInfo.styles';
 import useRefundOrderDetail from '../../../service/refund/useRefundOrderDetail';
+import { toCommaSeparatedString } from '../../../utils/format';
 
 export interface RefundInfoProps {
   refundAccessToken: string;
 }
 
 const RefundInfo = ({ refundAccessToken }: RefundInfoProps) => {
-  // const { refundOrderDetail } = useRefundOrderDetail(refundAccessToken);
+  const { refundOrderDetail } = useRefundOrderDetail(refundAccessToken);
 
   return (
     <StyledRefundInfo>
@@ -14,15 +15,15 @@ const RefundInfo = ({ refundAccessToken }: RefundInfoProps) => {
       <InfoContainer>
         <p>
           <InfoTitle>충전포인트:</InfoTitle>
-          5,500 tp
+          {toCommaSeparatedString(refundOrderDetail.chargedPoint)} tp
         </p>
         <p>
           <InfoTitle>결제금액:</InfoTitle>
-          5,000 원
+          {toCommaSeparatedString(refundOrderDetail.price)} 원
         </p>
         <p>
           <InfoTitle>결제일자:</InfoTitle>
-          2021.08.03_17:24
+          {String(refundOrderDetail.createdAt)}
         </p>
       </InfoContainer>
     </StyledRefundInfo>
