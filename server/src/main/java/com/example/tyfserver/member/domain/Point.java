@@ -28,4 +28,8 @@ public class Point {
         }
         this.point -= amount;
     }
+
+    public boolean lessThan(Long point) {
+        return this.point < point;
+    }
 }

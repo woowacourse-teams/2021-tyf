@@ -3,6 +3,7 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.member.exception.NotEnoughPointException;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -122,6 +123,12 @@ public class Member extends BaseTimeEntity {
 
     public void registerAccount(String accountHolder, String accountNumber, String bank, String bankBookUrl) {
         this.account.register(accountHolder, accountNumber, bank, bankBookUrl);
+    }
+
+    public void validateEnoughPointToDonate(Long point) {
+        if (availablePoint.lessThan(point)) {
+            throw new NotEnoughPointException();
+        }
     }
 
     public AccountStatus getAccountStatus() {

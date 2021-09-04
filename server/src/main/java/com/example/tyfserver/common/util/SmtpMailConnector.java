@@ -71,7 +71,7 @@ public class SmtpMailConnector {
         sendMail("정산 계좌 승인 반려", message, mailAddress);
     }
 
-    public void sendDonationComplete(Payment payment, Member member) {
+    public void sendChargeComplete(Payment payment, Member member) {
         Context context = new Context();
         context.setVariable("page_url", CREATOR_PREFIX_DOMAIN + payment.getItemName());
         context.setVariable("merchant_id", payment.getMerchantUid());

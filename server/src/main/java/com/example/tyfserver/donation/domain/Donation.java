@@ -32,22 +32,14 @@ public class Donation extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.REFUNDABLE;
 
+    public Donation(Message message, long point) {
+        this(null, message, point);
+    }
+
     public Donation(Long id, Message message, long point) {
         this.id = id;
         this.message = message;
         this.point = point;
-    }
-
-    public Donation(long point) {
-        this(null, Message.defaultMessage(), point);
-    }
-
-    public Donation(Message message) {
-        this(null, message, 0L);
-    }
-
-    public Donation(Message message, long point) {
-        this(null, message, point);
     }
 
     public void to(final Member member) {
