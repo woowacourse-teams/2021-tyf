@@ -118,7 +118,12 @@ const App = () => {
           redirectTo="/login"
         />
 
-        <Route path="/point" component={PointInfoPage} />
+        <PrivateRoute
+          path="/point"
+          component={PointInfoPage}
+          isAuthed={!!accessToken}
+          redirectTo="/login"
+        />
 
         <Route path="/refund" component={RefundApplyPage} exact />
         <Route path="/refund/cert" component={RefundCertificationPage} />
