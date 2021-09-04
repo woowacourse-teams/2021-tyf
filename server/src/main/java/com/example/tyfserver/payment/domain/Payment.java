@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
@@ -165,5 +166,13 @@ public class Payment extends BaseTimeEntity {
 
     public boolean isNotPaid() {
         return status != PaymentStatus.PAID;
+    }
+
+    public boolean isAfterRefundGuaranteeDuration() {
+        return LocalDateTime.now().isAfter(getCreatedAt().plusDays(7));
+    }
+
+    public void validateMemberHasEnoughPoint() {
+        member.validateEnoughPoint(amount);
     }
 }

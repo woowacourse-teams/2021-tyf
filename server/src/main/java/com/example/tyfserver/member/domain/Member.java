@@ -125,7 +125,7 @@ public class Member extends BaseTimeEntity {
         this.account.register(accountHolder, accountNumber, bank, bankBookUrl);
     }
 
-    public void validateEnoughPointToDonate(Long point) {
+    public void validateEnoughPoint(Long point) {
         if (availablePoint.lessThan(point)) {
             throw new NotEnoughPointException();
         }

@@ -32,7 +32,7 @@ public class DonationService {
         Member creator = memberRepository.findByPageName(donationRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        donator.validateEnoughPointToDonate(donationRequest.getPoint());
+        donator.validateEnoughPoint(donationRequest.getPoint());
 
         Message message = new Message(donator.getNickname());
         Donation creatorDonation = new Donation(message, donationRequest.getPoint());

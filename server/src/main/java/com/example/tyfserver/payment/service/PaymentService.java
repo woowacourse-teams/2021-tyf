@@ -16,10 +16,7 @@ import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.*;
 import com.example.tyfserver.payment.dto.*;
-import com.example.tyfserver.payment.exception.CannotRefundException;
-import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
-import com.example.tyfserver.payment.exception.PaymentNotFoundException;
-import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
+import com.example.tyfserver.payment.exception.*;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.payment.repository.RefundFailureRepository;
 import lombok.RequiredArgsConstructor;
@@ -70,8 +67,6 @@ public class PaymentService {
     public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
         Payment payment = findPayment(merchantUid);
-//        Donation donation = donationRepository.findByPaymentId(payment.getId())
-//                .orElseThrow(DonationNotFoundException::new);
 
         validateCanRefund(payment);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
@@ -94,9 +89,10 @@ public class PaymentService {
         if (payment.isNotPaid()) {
             throw new CannotRefundException(payment.getStatus());
         }
-//        if (donation.isNotRefundable()) {
-//            throw new CannotRefundException(donation.getStatus());
-//        }
+        if (payment.isAfterRefundGuaranteeDuration()) {
+            throw new RefundGuaranteeDurationException();
+        }
+        payment.validateMemberHasEnoughPoint();
     }
 
     private Integer checkResendCoolTime(String merchantUid) {
@@ -141,9 +137,8 @@ public class PaymentService {
 
     public RefundInfoResponse refundInfo(VerifiedRefunder refundInfoRequest) {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
-        Member member = memberRepository.findByPageName(payment.getItemName())
-                .orElseThrow(MemberNotFoundException::new);
-        return new RefundInfoResponse(payment, member);
+
+        return new RefundInfoResponse(payment);
     }
 
     public void refundPayment(VerifiedRefunder verifiedRefunder) {
