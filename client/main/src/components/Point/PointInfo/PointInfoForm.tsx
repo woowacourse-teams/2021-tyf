@@ -19,7 +19,7 @@ const PointInfoForm = () => {
       </Transition>
       <Transition delay={0.2}>
         <MoneyInfo>
-          <span>{toCommaSeparatedString(0)}</span>
+          <span>{(userInfo && userInfo.point && toCommaSeparatedString(userInfo.point)) ?? 0}</span>
           <span>tp</span>
         </MoneyInfo>
       </Transition>

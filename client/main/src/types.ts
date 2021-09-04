@@ -24,7 +24,9 @@ export interface Register extends Pick<Creator, 'pageName' | 'nickname' | 'email
   oauthType: string;
 }
 
-export interface UserInfo extends Creator {}
+export interface UserInfo extends Creator {
+  point: number;
+}
 
 // STATISTICS
 

@@ -38,6 +38,7 @@ export const userInfoMock: UserInfo = {
   profileImage: 'asdf',
   pageName: 'inchpage',
   email: 'jho2301@gmail.com',
+  point: 20000,
 };
 
 export const statisticsMock: Statistics = {

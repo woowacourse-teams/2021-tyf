@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
 import useUserInfo from '../../service//user/useUserInfo';
+import { toCommaSeparatedString } from '../../utils/format';
 import useModal from '../../utils/useModal';
 import Menu from '../Menu/Menu';
 import {
@@ -23,7 +24,9 @@ const NavBar = () => {
         <StyledLogo onClick={() => history.push('/')} />
         {userInfo ? (
           <>
-            <StyledPoint onClick={() => history.push('/point')}>21,000 tp</StyledPoint>
+            <StyledPoint onClick={() => history.push('/point')}>
+              {(userInfo && userInfo.point && toCommaSeparatedString(userInfo.point)) ?? 0} tp
+            </StyledPoint>
             <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
           </>
         ) : (
