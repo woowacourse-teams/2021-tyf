@@ -104,6 +104,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentCancel(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.CANCELLED;
+        member.reducePoint(amount);
     }
 
     private void validatePaymentCancel(PaymentInfo paymentInfo) {
