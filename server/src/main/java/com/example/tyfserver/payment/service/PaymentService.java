@@ -59,8 +59,7 @@ public class PaymentService {
 
         Payment payment = findPayment(merchantUid);
         payment.complete(paymentInfo);
-        //todo: html 변경 후 적용
-//        smtpMailConnector.sendChargeComplete(payment);
+        smtpMailConnector.sendChargeComplete(payment);
         return new PaymentCompleteResponse(payment.getAmount());
     }
 
