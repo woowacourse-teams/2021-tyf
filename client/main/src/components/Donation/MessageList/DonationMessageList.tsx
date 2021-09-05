@@ -35,11 +35,11 @@ const DonationMessageList = ({ isAdmin }: Props) => {
       {donationList.length > 0 ? (
         <>
           <CommentsList>
-            {donationList.map(({ donationId, name, message, amount, createdAt }) => (
+            {donationList.map(({ donationId, name, message, donatedPoint, createdAt }) => (
               <CommentsListItem key={donationId} role="donation-message">
                 <ItemInfo>
                   <span>
-                    {name} <Divider>|</Divider> {toCommaSeparatedString(amount)}원
+                    {name} <Divider>|</Divider> {toCommaSeparatedString(donatedPoint)}tp
                   </span>
                   <ItemDateInfo>{String(createdAt).slice(0, 10)}</ItemDateInfo>
                 </ItemInfo>

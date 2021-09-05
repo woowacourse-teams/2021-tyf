@@ -1,8 +1,7 @@
 import { FormEvent } from 'react';
-import { useHistory } from 'react-router-dom';
 
-import useDonationAmountForm from '../../../service//donation/useDonationAmountForm';
-import useDonationAmount from '../../../service//donation/useDonationAmount';
+import useDonationAmountForm from '../../../service/donation/useDonationAmountForm';
+import useDonation from '../../../service/donation/useDonation';
 import { CreatorId } from '../../../types';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Button from '../../@atom/Button/Button.styles';
@@ -21,17 +20,14 @@ export interface DonationAmountFormProps {
 }
 
 const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
-  const history = useHistory();
   const { donationAmount, addDonationAmount, setDonationAmount, isDonationAmountInValidRange } =
     useDonationAmountForm();
-  const { setDonationAmount: setGlobalDonationAmount } = useDonationAmount();
+  const { donate } = useDonation();
 
   const onSetDonationAmount = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setGlobalDonationAmount(Number(donationAmount));
-
-    history.push(`/donation/${creatorId}/message`);
+    donate(creatorId, donationAmount);
   };
 
   return (
@@ -42,7 +38,7 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
           <MoneyInput
             role="money-input"
             placeholder="0"
-            value={donationAmount}
+            value={donationAmount || ''}
             onChange={({ target }) => setDonationAmount(target.value)}
           />
         </InputLabel>

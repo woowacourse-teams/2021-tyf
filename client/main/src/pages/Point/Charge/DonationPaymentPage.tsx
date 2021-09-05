@@ -15,7 +15,7 @@ import Transition from '../../../components/@atom/Transition/Transition.styles';
 
 const DonationPaymentPage = () => {
   const { creatorId } = useParams<ParamTypes>();
-  const { donate } = useDonation(creatorId);
+  const { donate } = useDonation();
 
   usePageRefreshGuardEffect(creatorId, false, '/donation/' + creatorId);
 
@@ -25,7 +25,7 @@ const DonationPaymentPage = () => {
       <Transition>
         <StyledSubTitle>결제수단을 선택해주세요!</StyledSubTitle>
         <PaymentButtonContainer>
-          <IconOutlineBarButton src={KakaoPay} onClick={donate}>
+          <IconOutlineBarButton src={KakaoPay} onClick={() => console.log('hi')}>
             카카오페이
           </IconOutlineBarButton>
         </PaymentButtonContainer>

@@ -1,4 +1,4 @@
-import { apiClient, authorizationHeader } from '../../API';
+import { apiClient } from '../../API';
 import { OAuthProvider } from '../../types';
 
 export const requestLogin = (
