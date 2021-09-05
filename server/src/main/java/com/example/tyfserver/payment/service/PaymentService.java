@@ -10,7 +10,6 @@ import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.util.SmtpMailConnector;
-import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -32,7 +31,6 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
-    private final DonationRepository donationRepository;
     private final RefundFailureRepository refundFailureRepository;
 
     private final PaymentServiceConnector paymentServiceConnector;
