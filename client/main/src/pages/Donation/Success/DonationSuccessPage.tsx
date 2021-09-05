@@ -20,6 +20,7 @@ import {
   SuccessButtonContainer,
   SuccessMessageContainer,
 } from './DonationSuccessPage.styles';
+import useAuthCheckEffect from '../../../service/@shared/useAuthCheckEffect';
 
 const DonationSuccessPage = () => {
   const { creatorId } = useParams<ParamTypes>();
@@ -27,6 +28,7 @@ const DonationSuccessPage = () => {
   const { donation } = useDonation();
 
   usePageRefreshGuardEffect(creatorId, false, '/donation/' + creatorId);
+  useAuthCheckEffect(window.close);
 
   const openCreatorPage = () => {
     popupWindow(window.location.origin + `/creator/${creatorId}`);

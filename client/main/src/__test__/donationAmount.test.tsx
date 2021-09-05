@@ -2,17 +2,22 @@ import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
 import DonationAmountPage from '../pages/Donation/Amount/DonationAmountPage';
+import { accessTokenState } from '../service/@state/login';
 import { myRender } from './utils/testUtil';
 
 beforeEach(() => {
-  myRender(<DonationAmountPage />);
+  const initializeState = ({ set }: any) => {
+    set(accessTokenState, 'mocked');
+  };
+
+  myRender(<DonationAmountPage />, initializeState);
 });
 
 describe('donationAmount', () => {
   test('사용자는 도네이션 금액을 입력할 수 있다.', async () => {
     const $amountInput = (await screen.findByRole('money-input')) as HTMLInputElement;
     const $donateButton = await screen.findByRole('button', {
-      name: '후원하기',
+      name: '도네이션',
     });
     expect($donateButton).toBeDisabled();
     expect($amountInput.value).toBe('');

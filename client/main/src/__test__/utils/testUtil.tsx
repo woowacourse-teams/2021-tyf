@@ -7,9 +7,9 @@ import Spinner from '../../components/Spinner/Spinner';
 
 import { theme } from '../../theme';
 
-export const myRender = (children: React.ReactNode) =>
+export const myRender = (children: React.ReactNode, initializeState?: ({ set }: any) => void) =>
   render(
-    <RecoilRoot>
+    <RecoilRoot initializeState={initializeState}>
       <ThemeProvider theme={theme}>
         <Suspense fallback={<Spinner />}>
           <BrowserRouter>{children}</BrowserRouter>

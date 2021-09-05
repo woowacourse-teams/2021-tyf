@@ -32,7 +32,7 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
 
   return (
     <StyledDonationAmountForm onSubmit={onSetDonationAmount}>
-      <SubTitle>후원할 포인트를 입력해주세요! 🎉</SubTitle>
+      <SubTitle>도네이션 할 포인트를 입력해주세요! 🎉</SubTitle>
       <MoneyInputContainer>
         <InputLabel>
           <MoneyInput
@@ -54,7 +54,7 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
           +{toCommaSeparatedString(3000)}tp
         </MoneyAddButton>
       </ButtonContainer>
-      <Button disabled={!isDonationAmountInValidRange}>후원하기</Button>
+      <Button disabled={!isDonationAmountInValidRange}>도네이션</Button>
     </StyledDonationAmountForm>
   );
 };
