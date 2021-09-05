@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/dom';
 import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import DonationMessageList from '../components/Donation/MessageList/DonationMessageList';
+import DonationMessageList from '../components/Creator/MessageList/DonationMessageList';
 import { donationMessageListMock, userInfoMock } from '../mock/mockData';
 import CreatorPage from '../pages/Creator/CreatorPage';
 import { myRender } from './utils/testUtil';
