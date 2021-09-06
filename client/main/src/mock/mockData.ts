@@ -1,5 +1,5 @@
 import whiteBackground from '../assets/images/dummy/profile-img.jpg';
-import { Creator, Donation, UserInfo, Statistics } from '../types';
+import { Creator, Donation, UserInfo } from '../types';
 
 export const creatorListMock: Creator[] = [
   {
@@ -38,10 +38,7 @@ export const userInfoMock: UserInfo = {
   profileImage: 'asdf',
   pageName: 'inchpage',
   email: 'jho2301@gmail.com',
-};
-
-export const statisticsMock: Statistics = {
-  point: 200000,
+  point: 1234,
 };
 
 export const donationMessageListMock: Donation[] = [

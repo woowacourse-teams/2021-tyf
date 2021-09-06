@@ -16,7 +16,6 @@ import RegisterNamePage from './pages/Register/Name/RegisterNamePage';
 import RegisterSuccessPage from './pages/Register/Success/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/Terms/RegisterTermsPage';
 import SettingPage from './pages/Setting/SettingPage';
-import StatisticsPage from './pages/Statistics/StatisticsPage';
 import useInitScrollTopEffect from './utils/useInitScrollTopEffect';
 import { accessTokenState } from './service/@state/login';
 import { CreatorId, OAuthProvider } from './types';
@@ -26,6 +25,7 @@ import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
 import { useWindowResize } from './utils/useWindowResize';
 import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
+import MyPointPage from './pages/MyPoint/MyPointPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -85,9 +85,10 @@ const App = () => {
         <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
         <Route path="/creator/:creatorId" component={CreatorPage} exact />
+
         <PrivateRoute
-          path="/creator/:creatorId/statistic"
-          component={StatisticsPage}
+          path="/mypoint"
+          component={MyPointPage}
           isAuthed={!!accessToken}
           redirectTo="/login"
         />
