@@ -12,8 +12,8 @@ public enum Item {
     ITEM_50("50000포인트 충전", 50000L),
     ITEM_100("100000포인트 충전", 100000L);
 
-    private String itemName;
-    private long itemPrice;
+    private final String itemName;
+    private final long itemPrice;
 
     Item(String itemName, long itemPrice) {
         this.itemName = itemName;
