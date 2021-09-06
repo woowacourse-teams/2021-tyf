@@ -7,7 +7,7 @@ import {
   StyledSubTitle,
 } from './DonationPaymentPage.styles';
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
-import useDonation from '../../../service//donation/useDonation';
+import useDonation from '../../../service/donation/useDonation';
 import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../App';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
@@ -22,14 +22,6 @@ const DonationPaymentPage = () => {
   return (
     <DonationPaymentPageTemplate>
       <FixedLogo onClick={() => popupWindow(window.location.origin)} />
-      <Transition>
-        <StyledSubTitle>결제수단을 선택해주세요!</StyledSubTitle>
-        <PaymentButtonContainer>
-          <IconOutlineBarButton src={KakaoPay} onClick={() => console.log('hi')}>
-            카카오페이
-          </IconOutlineBarButton>
-        </PaymentButtonContainer>
-      </Transition>
     </DonationPaymentPageTemplate>
   );
 };

@@ -7,9 +7,12 @@ import {
 } from './MyPointPage.styles';
 import { toCommaSeparatedString } from '../../utils/format';
 import useUserInfo from '../../service/user/useUserInfo';
+import PointChargeModal from '../../components/Point/ChargeModal/PointChargeModal';
+import useModal from '../../utils/useModal';
 
 const MyPointPage = () => {
   const { userInfo } = useUserInfo();
+  const { isOpen, openModal, closeModal } = useModal();
 
   return (
     <StyledTemplate>
@@ -25,8 +28,9 @@ const MyPointPage = () => {
           <Point>{userInfo && toCommaSeparatedString(userInfo?.point)}</Point>
           <span>tp</span>
         </div>
-        <ChargeButton>충전하기</ChargeButton>
+        <ChargeButton onClick={openModal}>충전하기</ChargeButton>
       </StyledContainer>
+      {isOpen && <PointChargeModal closeModal={closeModal} />}
     </StyledTemplate>
   );
 };
