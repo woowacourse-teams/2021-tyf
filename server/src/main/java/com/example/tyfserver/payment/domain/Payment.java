@@ -170,10 +170,11 @@ public class Payment extends BaseTimeEntity {
     }
 
     public boolean isAfterRefundGuaranteeDuration() {
-        return LocalDateTime.now().isAfter(getCreatedAt().plusDays(7));
+        return LocalDateTime.now()
+                .isAfter(getCreatedAt().plusDays(7));
     }
 
-    public void validateMemberHasEnoughPoint() {
+    public void validateMemberHasRefundablePoint() {
         member.validateEnoughPoint(amount);
     }
 }

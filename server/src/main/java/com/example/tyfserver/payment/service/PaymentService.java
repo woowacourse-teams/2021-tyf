@@ -89,7 +89,7 @@ public class PaymentService {
         if (payment.isAfterRefundGuaranteeDuration()) {
             throw new RefundGuaranteeDurationException();
         }
-        payment.validateMemberHasEnoughPoint();
+        payment.validateMemberHasRefundablePoint();
     }
 
     private Integer checkResendCoolTime(String merchantUid) {
