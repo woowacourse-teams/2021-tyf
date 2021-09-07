@@ -18,6 +18,9 @@ import {
   DonatorTermLink,
   StyledSubTitle,
   PaymentButtonContainer,
+  SelectAllText,
+  CheckboxContainerList,
+  Caution,
 } from './PointChargeModal.styles';
 import PointRadio from './PointRadio/PointRadio';
 
@@ -75,7 +78,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
           </PaymentButtonContainer>
         </Transition>
       ) : (
-        <div>
+        <>
           <SubTitle>충전 금액 선택</SubTitle>
           <div>
             <ButtonContainer onChange={onOptionChange}>
@@ -85,18 +88,18 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
                 </PointRadio>
               ))}
             </ButtonContainer>
-            <p>※ 결제 금액에는 모든 세금이 포함되어있습니다 .</p>
-            <p>※ 포인트 유효기간: 마지막 사용일로부터 5년 이후</p>
+            <Caution>※ 결제 금액에는 모든 세금이 포함되어있습니다 .</Caution>
+            <Caution>※ 포인트 유효기간: 마지막 사용일로부터 5년 이후</Caution>
           </div>
-          <CheckboxContainer>
-            <div>
+          <CheckboxContainerList>
+            <CheckboxContainer>
               <Checkbox
                 checked={isAllChecked}
                 onChange={({ target }) => setIsAllchecked(target.checked)}
               />
-              <span>전체 동의</span>
-            </div>
-            <div>
+              <SelectAllText>전체 동의</SelectAllText>
+            </CheckboxContainer>
+            <CheckboxContainer>
               <Checkbox
                 checked={isTermAgreed}
                 onChange={({ target }) => setIsTermAgreed(target.checked)}
@@ -107,26 +110,26 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
                 </DonatorTermLink>
                 에 동의합니다. (필수)
               </span>
-            </div>
-            <div>
+            </CheckboxContainer>
+            <CheckboxContainer>
               <Checkbox
                 checked={isHowToAgreed}
                 onChange={({ target }) => setIsHowToAgreed(target.checked)}
               />
               <span>충전 금액과 방법에 대해 확인 및 동의합니다.</span>
-            </div>
-            <div>
+            </CheckboxContainer>
+            <CheckboxContainer>
               <Checkbox
                 checked={isAdultAgreed}
                 onChange={({ target }) => setIsAdultAgreed(target.checked)}
               />
               <span>저는 만 19세 이상의 성인이며 위 결제에 동의합니다.</span>
-            </div>
-          </CheckboxContainer>
+            </CheckboxContainer>
+          </CheckboxContainerList>
           <PaymentReadyButton onClick={onPaymentReady} disabled={!isValid}>
             결제하기
           </PaymentReadyButton>
-        </div>
+        </>
       )}
     </StyledModal>
   );

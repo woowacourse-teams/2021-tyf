@@ -27,14 +27,22 @@ export const ButtonContainer = styled.div`
   margin-bottom: 1.25rem;
 `;
 
-export const CheckboxContainer = styled.div`
+export const CheckboxContainerList = styled.div`
   margin: 4rem 0 3rem;
+`;
 
-  div {
-    margin-bottom: 0.5rem;
+export const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  &:nth-of-type(1) {
+    padding-bottom: 0.875rem;
+    margin-bottom: 0.875rem;
+    border-bottom: 1px solid ${PALETTE.GRAY_200};
   }
 
-  div > span {
+  & > span {
     margin-left: 1rem;
   }
 `;
@@ -44,9 +52,9 @@ export const PaymentReadyButton = styled(Button)`
 `;
 
 export const DonatorTermLink = styled.span`
-  text-decoration: underline;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
+  color: ${({ theme }) => theme.primary.base};
 `;
 
 export const StyledSubTitle = styled(SubTitle)`
@@ -59,4 +67,15 @@ export const PaymentButtonContainer = styled(Container)`
   button {
     margin-bottom: 1rem;
   }
+`;
+
+export const Caution = styled.p`
+  font-size: 0.75rem;
+  color: ${PALETTE.GRAY_400};
+  line-height: 1rem;
+`;
+
+export const SelectAllText = styled.span`
+  font-size: 1.125rem;
+  font-weight: 500;
 `;

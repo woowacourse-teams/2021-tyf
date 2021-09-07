@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PointChargeForm } from '../../types';
 
 const usePointChargeForm = () => {
@@ -34,6 +34,10 @@ const usePointChargeForm = () => {
   };
 
   const isValid = selectedItemId && isTermAgreed && isAdultAgreed && isHowToAgreed;
+
+  useEffect(() => {
+    _setIsAllChecked(isTermAgreed && isAdultAgreed && isHowToAgreed);
+  }, [isTermAgreed, isAdultAgreed, isHowToAgreed]);
 
   return {
     form,
