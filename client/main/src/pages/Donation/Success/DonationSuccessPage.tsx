@@ -20,27 +20,25 @@ import {
   SuccessButtonContainer,
   SuccessMessageContainer,
 } from './DonationSuccessPage.styles';
+import useAuthCheckEffect from '../../../service/@shared/useAuthCheckEffect';
 
 const DonationSuccessPage = () => {
   const { creatorId } = useParams<ParamTypes>();
   const { nickname } = useCreator(creatorId);
-  const { donation } = useDonation(creatorId);
+  const { donation } = useDonation();
 
   usePageRefreshGuardEffect(creatorId, false, '/donation/' + creatorId);
+  useAuthCheckEffect(window.close);
 
   const openCreatorPage = () => {
     popupWindow(window.location.origin + `/creator/${creatorId}`);
     window.close();
   };
 
-  const closeWindow = () => {
-    window.close();
-  };
-
   useEffect(() => {
     if (donation.donationId !== INVALID_DONATION_ID) return;
 
-    closeWindow();
+    window.close();
   }, [donation]);
 
   return (
@@ -49,7 +47,7 @@ const DonationSuccessPage = () => {
       <Transition>
         <SuccessMessageContainer>
           <SubText>{nickname}님에게</SubText>
-          <MainText>{toCommaSeparatedString(donation.amount)}원</MainText>
+          <MainText>{toCommaSeparatedString(donation.donatedPoint)}tp</MainText>
           <SubText>후원되었습니다.</SubText>
           <EmojiText>🎉</EmojiText>
         </SuccessMessageContainer>
@@ -59,7 +57,7 @@ const DonationSuccessPage = () => {
           <CreatorRouteButton onClick={openCreatorPage}>
             🏠 창작자 페이지로 놀러가기
           </CreatorRouteButton>
-          <CloseButton onClick={closeWindow}>창 닫기</CloseButton>
+          <CloseButton onClick={window.close}>창 닫기</CloseButton>
         </SuccessButtonContainer>
       </Transition>
     </StyledTemplate>

@@ -6,6 +6,8 @@ import { donationUrlShare } from '../../../service/creator/donationURLShare';
 import { useWindowResize } from '../../../utils/useWindowResize';
 import DesktopCreatorInfo from './Desktop/DesktopCreatorInfo';
 import MobileCreatorInfo from './Mobile/MobileCreatorInfo';
+import useAccessToken from '../../../service/@shared/useAccessToken';
+import { useHistory } from 'react-router';
 
 interface CreatorInfoProps {
   isAdmin: boolean;
@@ -14,10 +16,18 @@ interface CreatorInfoProps {
 }
 
 const CreatorInfo = ({ isAdmin, creatorId, toggleModal }: CreatorInfoProps) => {
+  const history = useHistory();
   const creator = useCreator(creatorId);
   const { windowWidth } = useWindowResize();
+  const { accessToken } = useAccessToken();
 
   const popupDonationAmountPage = () => {
+    if (!accessToken) {
+      alert('도네이션을 하기 위해서 로그인을 해주세요.');
+      history.push('/login');
+      return;
+    }
+
     popupWindow(window.location.origin + `/donation/${creatorId}`, {
       width: DONATION_POPUP.WIDTH,
       height: DONATION_POPUP.HEIGHT,

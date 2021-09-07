@@ -6,9 +6,7 @@ import NavBar from './components/NavBar/NavBar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import CreatorPage from './pages/Creator/CreatorPage';
 import DonationAmountPage from './pages/Donation/Amount/DonationAmountPage';
-import DonatorInfoPage from './pages/Donation/DonatorInfo/DonatorInfoPage';
 import DonationMessagePage from './pages/Donation/Message/DonationMessagePage';
-import DonationPaymentPage from './pages/Donation/Payment/DonationPaymentPage';
 import DonationSuccessPage from './pages/Donation/Success/DonationSuccessPage';
 import LoginPage from './pages/Login/LoginPage';
 import MainPage from './pages/Main/MainPage';
@@ -18,7 +16,6 @@ import RegisterNamePage from './pages/Register/Name/RegisterNamePage';
 import RegisterSuccessPage from './pages/Register/Success/RegisterSuccessPage';
 import RegisterTermsPage from './pages/Register/Terms/RegisterTermsPage';
 import SettingPage from './pages/Setting/SettingPage';
-import StatisticsPage from './pages/Statistics/StatisticsPage';
 import useInitScrollTopEffect from './utils/useInitScrollTopEffect';
 import { accessTokenState } from './service/@state/login';
 import { CreatorId, OAuthProvider } from './types';
@@ -28,7 +25,7 @@ import RefundConfirmPage from './pages/Refund/Confirm/RefundConfirmPage';
 import { useWindowResize } from './utils/useWindowResize';
 import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
-import PointInfoPage from './pages/Point/PointInfo/PointInfoPage';
+import MyPointPage from './pages/MyPoint/MyPointPage';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -84,15 +81,14 @@ const App = () => {
         <Route path="/register/success" component={RegisterSuccessPage} />
 
         <Route path="/donation/:creatorId" component={DonationAmountPage} exact />
-        <Route path="/donation/:creatorId/donatorInfo" component={DonatorInfoPage} />
-        <Route path="/donation/:creatorId/payment" component={DonationPaymentPage} />
         <Route path="/donation/:creatorId/message" component={DonationMessagePage} />
         <Route path="/donation/:creatorId/success" component={DonationSuccessPage} />
 
         <Route path="/creator/:creatorId" component={CreatorPage} exact />
+
         <PrivateRoute
-          path="/creator/:creatorId/statistic"
-          component={StatisticsPage}
+          path="/mypoint"
+          component={MyPointPage}
           isAuthed={!!accessToken}
           redirectTo="/login"
         />
@@ -114,13 +110,6 @@ const App = () => {
         <PrivateRoute
           path="/creator/:creatorId/setting"
           component={SettingPage}
-          isAuthed={!!accessToken}
-          redirectTo="/login"
-        />
-
-        <PrivateRoute
-          path="/point"
-          component={PointInfoPage}
           isAuthed={!!accessToken}
           redirectTo="/login"
         />
