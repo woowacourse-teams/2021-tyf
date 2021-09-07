@@ -89,3 +89,12 @@ export interface Point {
   exchangeablePoint: number;
   exchangedTotalPoint: number;
 }
+
+// MyPoint
+
+export interface PointChargeForm {
+  selectedItemId: string;
+  isTermAgreed: boolean;
+  isHowToAgreed: boolean;
+  isAdultAgreed: boolean;
+}
