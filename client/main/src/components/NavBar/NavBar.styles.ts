@@ -7,6 +7,7 @@ import Anchor from '../@atom/Anchor/Anchor';
 import { DEVICE, SIZE } from '../../constants/device';
 import TextButton from '../@atom/TextButton/TextButton.styles';
 import { Z_INDEX } from '../../constants/style';
+import PALETTE from '../../constants/palette';
 
 const NavBarHeightStyle = css`
   height: 3.5rem;
@@ -24,6 +25,7 @@ export const StyledNavBar = styled(Container)`
   padding: 0 1rem;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   min-width: ${SIZE.MOBILE_MIN}px;
   position: fixed;
   width: 100vw;
@@ -62,9 +64,35 @@ export const LoginButton = styled(Anchor)`
 
 export const StyledTextButton = styled(TextButton)`
   width: fit-content;
+  margin-right: 0.75rem;
 
-  @media ${DEVICE.DESKTOP} {
+  @media ${DEVICE.DESKTOP_LARGE} {
     font-size: 1.125rem;
-    max-width: 8rem;
+    white-space: nowrap;
+    max-width: 10rem;
+    overflow: auto;
+  }
+`;
+
+export const StyledPoint = styled(TextButton)`
+  display: none;
+  width: fit-content;
+
+  @media ${DEVICE.DESKTOP_LARGE} {
+    display: block;
+    font-size: 1.125rem;
+    white-space: nowrap;
+    max-width: 10rem;
+    overflow: auto;
+  }
+
+  &:hover {
+    font-weight: 500;
+  }
+
+  &:after {
+    content: '|';
+    margin: 0 0.5rem;
+    color: ${PALETTE.GRAY_400};
   }
 `;
