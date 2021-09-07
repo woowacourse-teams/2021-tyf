@@ -33,7 +33,7 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
       <StyledAnchor to={`/creator/${userInfo?.pageName}`} onClick={onClose}>
         마이페이지
       </StyledAnchor>
-      <StyledAnchor to={`/point`} onClick={onClose}>
+      <StyledAnchor to={`/mypoint`} onClick={onClose}>
         내 포인트
       </StyledAnchor>
       <StyledAnchor to={`/creator/${userInfo?.pageName}/settlement`} onClick={onClose}>

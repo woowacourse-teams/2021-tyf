@@ -39,7 +39,7 @@ const DesktopMenu = ({ onClose }: DesktopMenuProps) => {
         <MenuIcon src={User} />
         <span>마이페이지</span>
       </MenuButton>
-      <MenuButton onClick={() => routeTo(`/point`)}>
+      <MenuButton onClick={() => routeTo(`/mypoint`)}>
         <MenuIcon src={Coins} />
         <span>내 포인트</span>
       </MenuButton>

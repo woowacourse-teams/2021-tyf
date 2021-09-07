@@ -24,8 +24,8 @@ const NavBar = () => {
         <StyledLogo onClick={() => history.push('/')} />
         {userInfo ? (
           <>
-            <StyledPoint onClick={() => history.push('/point')}>
-              {(userInfo && userInfo.point && toCommaSeparatedString(userInfo.point)) ?? 0} tp
+            <StyledPoint onClick={() => history.push('/mypoint')}>
+              {userInfo?.point && toCommaSeparatedString(userInfo.point)} tp
             </StyledPoint>
             <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
           </>

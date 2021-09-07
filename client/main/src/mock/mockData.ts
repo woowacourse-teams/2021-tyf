@@ -101,16 +101,9 @@ export const donationMessageListMock: Donation[] = [
 ];
 
 export const refundInfoMock = {
-  creator: {
-    nickname: '창작자 닉네임',
-    pageName: '창작자 페이지 이름',
-  },
-  donation: {
-    name: '후원자 이름',
-    donatedPoint: 10000,
-    message: '후원 메시지',
-    createdAt: 'hi',
-  },
+  chargedPoint: 5500,
+  price: 5000,
+  createdAt: '2021.08.03_17:24',
 };
 
 export const refundReadyMock = {
