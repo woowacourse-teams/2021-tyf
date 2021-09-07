@@ -36,9 +36,11 @@ public class Member extends BaseTimeEntity {
     private String profileImage;
 
     @Embedded
+    @AttributeOverride(name = "point", column = @Column(name = "available_point"))
     private Point availablePoint;
 
     @Embedded
+    @AttributeOverride(name = "point", column = @Column(name = "donated_point"))
     private Point donatedPoint;
 
     @Enumerated(EnumType.STRING)
