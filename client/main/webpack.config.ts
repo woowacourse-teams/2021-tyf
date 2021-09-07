@@ -4,6 +4,7 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
 interface WebpackConfig extends webpack.Configuration {
   devServer?: webpackDevServer.Configuration;
@@ -17,6 +18,7 @@ const config: WebpackConfig = {
   output: {
     filename: '[contenthash].bundle.js',
     path: path.resolve('server', 'dist'),
+    assetModuleFilename: 'static/[hash][ext][query]',
     clean: true,
   },
   module: {
@@ -34,8 +36,15 @@ const config: WebpackConfig = {
         ],
       },
       {
-        test: /\.(svg|png|jpg|gif|webp)$/i,
-        type: 'asset',
+        test: /\.(svg|gif|webp)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(png|jpg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[hash].webp',
+        },
       },
     ],
   },
@@ -51,6 +60,11 @@ const config: WebpackConfig = {
           semantic: true,
           syntactic: true,
         },
+      },
+    }),
+    new ImageMinimizerPlugin({
+      minimizerOptions: {
+        plugins: [['webp'], ['svgo']],
       },
     }),
     new BundleAnalyzerPlugin({
@@ -71,3 +85,5 @@ const config: WebpackConfig = {
 config.mode = isProduction ? 'production' : 'development';
 
 export default config;
+
+// https://webpack.js.org/plugins/image-minimizer-webpack-plugin/
