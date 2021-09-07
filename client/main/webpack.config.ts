@@ -80,10 +80,14 @@ const config: WebpackConfig = {
     historyApiFallback: true,
     open: true,
   },
+  optimization: {
+    runtimeChunk: true,
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
 
 config.mode = isProduction ? 'production' : 'development';
 
 export default config;
-
-// https://webpack.js.org/plugins/image-minimizer-webpack-plugin/
