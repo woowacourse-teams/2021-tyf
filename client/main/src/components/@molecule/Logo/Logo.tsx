@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import IconButton from '../../@atom/IconButton/IconButton';
-import LogoImg from '../../../assets/images/logo.svg';
+import LogoImg from '../../../assets/images/logo.png';
 import { DEVICE } from '../../../constants/device';
 
 const Logo = styled.img.attrs({

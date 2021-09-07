@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import Container from '../@atom/Container/Container.styles';
 import IconButton from '../@atom/IconButton/IconButton';
-import logoImg from '../../assets/images/logo.svg';
+import logoImg from '../../assets/images/logo.png';
 import Anchor from '../@atom/Anchor/Anchor';
 import { DEVICE, SIZE } from '../../constants/device';
 import TextButton from '../@atom/TextButton/TextButton.styles';
