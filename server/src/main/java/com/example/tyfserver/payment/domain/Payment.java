@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
@@ -170,8 +170,10 @@ public class Payment extends BaseTimeEntity {
     }
 
     public boolean isAfterRefundGuaranteeDuration() {
-        return LocalDateTime.now()
-                .isAfter(getCreatedAt().plusDays(7));
+        LocalDate createdDate = getCreatedAt().toLocalDate();
+        LocalDate nowDate = LocalDate.now();
+
+        return nowDate.isAfter(createdDate.plusDays(6));
     }
 
     public void validateMemberHasRefundablePoint() {
