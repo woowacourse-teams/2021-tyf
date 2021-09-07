@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 public class SmtpMailConnector {
 
     private static final String PREFIX_SUBJECT = "[Thank You For]";
-    private static final String CREATOR_PREFIX_DOMAIN = "https://thankyou-for.com/creator/";
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
