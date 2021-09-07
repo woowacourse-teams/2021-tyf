@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 public class SmtpMailConnector {
 
     private static final String PREFIX_SUBJECT = "[Thank You For]";
-    private static final String CREATOR_PREFIX_DOMAIN = "https://thankyou-for.com/creator/";
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
@@ -71,18 +70,15 @@ public class SmtpMailConnector {
         sendMail("정산 계좌 승인 반려", message, mailAddress);
     }
 
-    public void sendDonationComplete(Payment payment, Member member) {
+    public void sendChargeComplete(Payment payment) {
         Context context = new Context();
-        context.setVariable("page_url", CREATOR_PREFIX_DOMAIN + payment.getItemName());
+        context.setVariable("item_name", payment.getItemName());
         context.setVariable("merchant_id", payment.getMerchantUid());
-        context.setVariable("creator_name", member.getNickname());
-        context.setVariable("donation_amount", payment.getAmount());
+        context.setVariable("charge_amount", payment.getAmount());
         context.setVariable("date",    payment.getCreatedAt().now().
                 format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-
-
-        String message = templateEngine.process("mail-donation-complete.html", context);
+        String message = templateEngine.process("mail-charge-complete.html", context);
         sendMail("후원 성공", message, payment.getEmail());
 
     }

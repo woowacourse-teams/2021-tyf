@@ -17,7 +17,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -64,7 +63,7 @@ class DonationServiceTest {
         paymentRepository.save(payment);
         memberRepository.save(member);
         donationRepository.save(donation);
-        doNothing().when(mailConnector).sendDonationComplete(any(), any());
+        doNothing().when(mailConnector).sendChargeComplete(any(), any());
     }
 
     @AfterEach

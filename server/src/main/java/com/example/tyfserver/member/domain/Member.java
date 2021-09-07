@@ -3,6 +3,7 @@ package com.example.tyfserver.member.domain;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.member.exception.NotEnoughPointException;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,9 +36,11 @@ public class Member extends BaseTimeEntity {
     private String profileImage;
 
     @Embedded
+    @AttributeOverride(name = "point", column = @Column(name = "available_point"))
     private Point availablePoint;
 
     @Embedded
+    @AttributeOverride(name = "point", column = @Column(name = "donated_point"))
     private Point donatedPoint;
 
     @Enumerated(EnumType.STRING)
@@ -92,6 +95,10 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
+    public long getAvailablePoint() {
+        return this.availablePoint.getPoint();
+    }
+
     public long getDonatedPoint() {
         return this.donatedPoint.getPoint();
     }
@@ -118,6 +125,12 @@ public class Member extends BaseTimeEntity {
 
     public void registerAccount(String accountHolder, String accountNumber, String bank, String bankBookUrl) {
         this.account.register(accountHolder, accountNumber, bank, bankBookUrl);
+    }
+
+    public void validateEnoughPoint(Long point) {
+        if (availablePoint.lessThan(point)) {
+            throw new NotEnoughPointException();
+        }
     }
 
     public AccountStatus getAccountStatus() {

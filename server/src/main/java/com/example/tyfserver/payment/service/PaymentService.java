@@ -10,21 +10,12 @@ import com.example.tyfserver.auth.repository.CodeResendCoolTimeRepository;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.util.SmtpMailConnector;
-import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.exception.DonationNotFoundException;
-import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.domain.Payment;
-import com.example.tyfserver.payment.domain.PaymentInfo;
-import com.example.tyfserver.payment.domain.PaymentServiceConnector;
-import com.example.tyfserver.payment.domain.RefundFailure;
+import com.example.tyfserver.payment.domain.*;
 import com.example.tyfserver.payment.dto.*;
-import com.example.tyfserver.payment.exception.CannotRefundException;
-import com.example.tyfserver.payment.exception.CodeResendCoolTimeException;
-import com.example.tyfserver.payment.exception.PaymentNotFoundException;
-import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
+import com.example.tyfserver.payment.exception.*;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.payment.repository.RefundFailureRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +31,6 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
-    private final DonationRepository donationRepository;
     private final RefundFailureRepository refundFailureRepository;
 
     private final PaymentServiceConnector paymentServiceConnector;
@@ -51,31 +41,29 @@ public class PaymentService {
     private final AuthenticationService authenticationService;
 
     public PaymentPendingResponse createPayment(String itemId, LoginMember loginMember) {
-        Member creator = memberRepository
+        Member donator = memberRepository
                 .findById(loginMember.getId())
                 .orElseThrow(MemberNotFoundException::new);
 
-        // item들 enum 만들고 itemId로 해당 enum 찾는 로직
-        Payment payment = new Payment(0L, creator.getEmail(), "itemId로 찾은 enum의 itemName");
+        Item item = Item.findItem(itemId);
+        Payment payment = new Payment(item.getItemPrice(), donator.getEmail(), item.getItemName());
         Payment savedPayment = paymentRepository.save(payment);
         return new PaymentPendingResponse(savedPayment);
     }
 
-    public Payment completePayment(PaymentCompleteRequest paymentCompleteRequest) {
+    public PaymentCompleteResponse completePayment(PaymentCompleteRequest paymentCompleteRequest) {
         UUID merchantUid = UUID.fromString(paymentCompleteRequest.getMerchantUid());
         PaymentInfo paymentInfo = paymentServiceConnector.requestPaymentInfo(merchantUid);
 
         Payment payment = findPayment(merchantUid);
         payment.complete(paymentInfo);
-        return payment;
+        smtpMailConnector.sendChargeComplete(payment);
+        return new PaymentCompleteResponse(payment.getAmount());
     }
 
-    public RefundVerificationReadyResponse
-    refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
+    public RefundVerificationReadyResponse refundVerificationReady(RefundVerificationReadyRequest refundVerificationReadyRequest) {
         String merchantUid = refundVerificationReadyRequest.getMerchantUid();
         Payment payment = findPayment(merchantUid);
-//        Donation donation = donationRepository.findByPaymentId(payment.getId())
-//                .orElseThrow(DonationNotFoundException::new);
 
         validateCanRefund(payment);
         Integer resendCoolTime = checkResendCoolTime(merchantUid);
@@ -98,9 +86,10 @@ public class PaymentService {
         if (payment.isNotPaid()) {
             throw new CannotRefundException(payment.getStatus());
         }
-//        if (donation.isNotRefundable()) {
-//            throw new CannotRefundException(donation.getStatus());
-//        }
+        if (payment.isAfterRefundGuaranteeDuration()) {
+            throw new RefundGuaranteeDurationException();
+        }
+        payment.validateMemberHasRefundablePoint();
     }
 
     private Integer checkResendCoolTime(String merchantUid) {
@@ -145,9 +134,8 @@ public class PaymentService {
 
     public RefundInfoResponse refundInfo(VerifiedRefunder refundInfoRequest) {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
-        Member member = memberRepository.findByPageName(payment.getItemName())
-                .orElseThrow(MemberNotFoundException::new);
-        return new RefundInfoResponse(payment, member);
+
+        return new RefundInfoResponse(payment);
     }
 
     public void refundPayment(VerifiedRefunder verifiedRefunder) {
