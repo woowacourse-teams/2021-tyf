@@ -24,11 +24,7 @@ export interface Register extends Pick<Creator, 'pageName' | 'nickname' | 'email
   oauthType: string;
 }
 
-export interface UserInfo extends Creator {}
-
-// STATISTICS
-
-export interface Statistics {
+export interface UserInfo extends Creator {
   point: number;
 }
 
@@ -41,7 +37,7 @@ export interface Donation {
   email: string;
   name: string;
   message: string;
-  amount: number;
+  donatedPoint: number;
   createdAt: Date;
 }
 
@@ -67,7 +63,7 @@ export interface Refund {
 
 export interface refundOrderDetail {
   creator: Pick<Creator, 'nickname' | 'pageName'>;
-  donation: Pick<Donation, 'name' | 'amount' | 'message' | 'createdAt'>;
+  donation: Pick<Donation, 'name' | 'donatedPoint' | 'message' | 'createdAt'>;
 }
 
 // SETTLEMENT
@@ -92,4 +88,13 @@ export interface Point {
   currentPoint: number;
   exchangeablePoint: number;
   exchangedTotalPoint: number;
+}
+
+// MyPoint
+
+export interface PointChargeForm {
+  selectedItemId: string;
+  isTermAgreed: boolean;
+  isHowToAgreed: boolean;
+  isAdultAgreed: boolean;
 }

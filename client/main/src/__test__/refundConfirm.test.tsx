@@ -18,7 +18,7 @@ describe('RefundConfirmPage', () => {
     //창작자명
     await screen.findByText(creator.nickname);
     //후원금액
-    await screen.findByText(donation.amount);
+    await screen.findByText(donation.donatedPoint);
     //후원일자
     await screen.findByText(donation.createdAt);
     //후원자명

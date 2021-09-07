@@ -18,7 +18,7 @@ const RefundInfo = ({ refundAccessToken }: RefundInfoProps) => {
         </p>
         <p>
           <InfoTitle>후원금액:</InfoTitle>
-          {refundOrderDetail.donation.amount}
+          {refundOrderDetail.donation.donatedPoint}
         </p>
         <p>
           <InfoTitle>후원일자:</InfoTitle>
