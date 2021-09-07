@@ -22,7 +22,8 @@ public interface DonationRepository extends JpaRepository<Donation, Long>, Donat
 
     List<Donation> findDonationByMemberAndStatusNotOrderByCreatedAtDesc(Member member, DonationStatus status, Pageable pageable);
 
-    Optional<Donation> findByPaymentId(Long id);
+    // todo
+//    Optional<Donation> findByPaymentId(Long id);
 
     @EntityGraph(attributePaths = "member")
     List<Donation> findDonationByStatusAndMember(DonationStatus status, Member member);
