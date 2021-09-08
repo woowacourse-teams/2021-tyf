@@ -1,7 +1,6 @@
 package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
-import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,6 +49,20 @@ public class Donation extends BaseTimeEntity {
         this.message = message;
     }
 
+    // todo 테스트 코드에서만 사용중
+    public void toCancelled() {
+        status = DonationStatus.CANCELLED;
+    }
+
+    public void toExchanged() {
+        status = DonationStatus.EXCHANGED;
+    }
+
+    // todo 테스트 코드에서만 사용중 : 스케줄러 적용시 사용?
+    public void toExchangeable() {
+        status = DonationStatus.EXCHANGEABLE;
+    }
+
     public String getName() {
         return message.getName();
     }
@@ -60,27 +73,5 @@ public class Donation extends BaseTimeEntity {
 
     public boolean isSecret() {
         return message.isSecret();
-    }
-
-    public void toCancelled() {
-        status = DonationStatus.CANCELLED;
-    }
-
-    public void toExchanged() {
-        status = DonationStatus.EXCHANGED;
-    }
-
-    public void toExchangeable() {
-        status = DonationStatus.EXCHANGEABLE;
-    }
-
-    public void validateIsNotCancelled() {
-        if (status == DonationStatus.CANCELLED) {
-            throw new DonationAlreadyCancelledException();
-        }
-    }
-
-    public boolean isNotRefundable() {
-        return status != DonationStatus.REFUNDABLE;
     }
 }
