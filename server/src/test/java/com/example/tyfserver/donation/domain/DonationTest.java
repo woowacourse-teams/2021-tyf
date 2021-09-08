@@ -4,7 +4,7 @@ import com.example.tyfserver.donation.dto.DonationMessageRequest;
 
 public class DonationTest {
 
-    public static final String NAME = "joy";
+    public static final String NAME = "test";
     public static final String MESSAGE = "응원합니다";
     public static final long DONATION_AMOUNT = 1000L;
 
