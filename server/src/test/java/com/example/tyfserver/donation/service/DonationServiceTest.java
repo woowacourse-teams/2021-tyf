@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.domain.MessageTest;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
@@ -54,9 +55,9 @@ class DonationServiceTest {
     private SmtpMailConnector mailConnector;
 
     private final UUID uuid = UUID.randomUUID();
-    private final Member member = new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE, "profile", new Point(5000L), new Point(0L));
+    private final Member member = new Member("email", "nickname", "pagename", Oauth2Type.GOOGLE, "profile", new Point(5000L));
     private final Payment payment = new Payment(1000L, "email", "pagename", uuid);
-    private final Donation donation = new Donation(Message.defaultMessage(), 1000L);
+    private final Donation donation = new Donation(MessageTest.testMessage(), 1000L);
 
     @BeforeEach
     void setUp() {
@@ -127,10 +128,10 @@ class DonationServiceTest {
         List<DonationResponse> publicDonationsBefore = donationService.findPublicDonations(member.getPageName());
         assertThat(publicDonationsBefore).hasSize(0);
 
-        DonationRequest request = new DonationRequest(member.getPageName(), 1000L);
-        DonationResponse donation = donationService.createDonation(request, member.getId());
-        DonationMessageRequest messageRequest = new DonationMessageRequest(Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE);
-        donationService.addMessageToDonation(donation.getDonationId(), messageRequest);
+        DonationRequest donationRequest = new DonationRequest(member.getPageName(), 1000L);
+        DonationResponse donationResponse = donationService.createDonation(donationRequest, member.getId());
+        DonationMessageRequest messageRequest = new DonationMessageRequest("test", Message.DEFAULT_MESSAGE);
+        donationService.addMessageToDonation(donationResponse.getDonationId(), messageRequest);
 
         //when
         List<DonationResponse> publicDonationsAfter = donationService.findPublicDonations(member.getPageName());

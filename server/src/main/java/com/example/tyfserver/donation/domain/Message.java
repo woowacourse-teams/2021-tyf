@@ -11,7 +11,6 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Message {
 
-    public static final String DEFAULT_NAME = "익명인";
     public static final String DEFAULT_MESSAGE = "당신을 응원합니다.";
     public static final String SECRET_NAME = "익명인";
     public static final String SECRET_MESSAGE = "비공개 메세지입니다.";
@@ -21,10 +20,6 @@ public class Message {
     private String message;
 
     private boolean secret;
-
-    public static Message defaultMessage() {
-        return new Message(Message.DEFAULT_NAME, Message.DEFAULT_MESSAGE, true);
-    }
 
     public Message(String name) {
         this(name, DEFAULT_MESSAGE, false);

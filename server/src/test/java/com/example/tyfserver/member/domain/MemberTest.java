@@ -1,8 +1,6 @@
 package com.example.tyfserver.member.domain;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.exception.AccountRequestingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,18 +20,6 @@ public class MemberTest {
 
     public static Member testMemberWithProfileImage() {
         return new Member("tyf@gmail.com", "nickname", "pageName", Oauth2Type.NAVER, "https://test.com/test");
-    }
-
-    @Test
-    @DisplayName("addDonation 메서드 테스트")
-    public void addDonationTest() {
-        //given
-        Member member = testMember();
-        Donation donation = new Donation(new Message("name", "message", false), 1000L);
-        //when
-        member.addDonation(donation);
-        //then
-        assertThat(member.getDonatedPoint()).isEqualTo(1000L);
     }
 
     @Test
@@ -95,7 +81,6 @@ public class MemberTest {
                 .isExactlyInstanceOf(AccountRequestingException.class);
     }
 
-
     @Test
     @DisplayName("계좌정보가 등록이 승인된다.")
     public void approveAccount() {
@@ -110,7 +95,6 @@ public class MemberTest {
         Account memberAccount = member.getAccount();
         assertThat(memberAccount.getStatus()).isEqualTo(AccountStatus.REGISTERED);
     }
-
 
     @Test
     @DisplayName("계좌정보가 등록이 반려된다.")
