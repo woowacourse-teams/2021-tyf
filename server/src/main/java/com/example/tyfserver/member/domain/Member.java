@@ -39,10 +39,6 @@ public class Member extends BaseTimeEntity {
     @AttributeOverride(name = "point", column = @Column(name = "available_point"))
     private Point availablePoint;
 
-    @Embedded
-    @AttributeOverride(name = "point", column = @Column(name = "donated_point"))
-    private Point donatedPoint;
-
     @Enumerated(EnumType.STRING)
     private Oauth2Type oauth2Type;
 
@@ -60,32 +56,33 @@ public class Member extends BaseTimeEntity {
     private final List<Donation> donations = new ArrayList<>();
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
-                  Point availablePoint, Point donatedPoint) {
+                  Point availablePoint) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
         this.profileImage = profileImage;
         this.availablePoint = availablePoint;
-        this.donatedPoint = donatedPoint;
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
-        this(email, nickname, pageName, oauth2Type, profileImage, new Point(0L), new Point(0L));
+        this(email, nickname, pageName, oauth2Type, profileImage, new Point(0L));
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type) {
         this(email, nickname, pageName, oauth2Type, null);
     }
 
-    public void addDonation(final Donation donation) {
+    public void addDonation(Donation donation) {
         this.donations.add(donation);
         donation.to(this);
     }
 
-    private void addPoint(final long amount) {
-        this.donatedPoint.add(amount);
+    public void addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.to(this);
     }
+
 
     public void updateBio(String bio) {
         this.bio = bio;
@@ -97,10 +94,6 @@ public class Member extends BaseTimeEntity {
 
     public long getAvailablePoint() {
         return this.availablePoint.getPoint();
-    }
-
-    public long getDonatedPoint() {
-        return this.donatedPoint.getPoint();
     }
 
     public boolean isSameOauthType(String type) {
@@ -138,7 +131,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void reducePoint(long amount) {
-        donatedPoint.reduce(amount);
+        availablePoint.reduce(amount);
     }
 
     public void approveAccount() {
@@ -151,5 +144,9 @@ public class Member extends BaseTimeEntity {
 
     public String getBankBookUrl() {
         return this.account.getBankbookUrl();
+    }
+
+    public void addAvailablePoint(Long amount) {
+        this.availablePoint.add(amount);
     }
 }
