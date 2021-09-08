@@ -47,6 +47,7 @@ public class PaymentService {
 
         Item item = Item.findItem(itemId);
         Payment payment = new Payment(item.getItemPrice(), donator.getEmail(), item.getItemName());
+        donator.addPayment(payment);
         Payment savedPayment = paymentRepository.save(payment);
         return new PaymentPendingResponse(savedPayment);
     }
