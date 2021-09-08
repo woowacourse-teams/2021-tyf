@@ -24,6 +24,7 @@
     "mock:server": "json-server --watch src/mock/jsonServer/db.json --routes src/mock/jsonServer/routes.json ",
     "build": "jest src && webpack --mode=production --node-env=production",
     "build:dev": "jest src && webpack --mode=development --node-env=development",
+    "build:no-test": "webpack --mode=production --node-env=production",
     "test": "jest src --watch ",
     "test:once": "jest src",
     "test:clean": "jest --clearCache && jest src --watch ",
