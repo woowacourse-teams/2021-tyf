@@ -18,24 +18,28 @@ const MyPointPage = () => {
   return (
     <StyledTemplate>
       <StyledContainer>
-        <Transition>
-          <StyledTitle>
-            {userInfo?.nickname}님이
-            <br />
-            도네이션 할 수 있는
-            <br />
-            포인트는
-          </StyledTitle>
-        </Transition>
-        <Transition delay={0.2}>
-          <div>
-            <Point>{userInfo?.point && toCommaSeparatedString(userInfo.point)}</Point>
-            <span>tp</span>
-          </div>
-        </Transition>
-        <Transition delay={0.4}>
-          <ChargeButton onClick={openModal}>충전하기</ChargeButton>
-        </Transition>
+        <section>
+          <Transition>
+            <StyledTitle>
+              {userInfo?.nickname}님이
+              <br />
+              도네이션 할 수 있는
+              <br />
+              포인트는
+            </StyledTitle>
+          </Transition>
+          <Transition delay={0.2}>
+            <div>
+              <Point>{userInfo?.point && toCommaSeparatedString(userInfo.point)}</Point>
+              <span>tp</span>
+            </div>
+          </Transition>
+        </section>
+        <section>
+          <Transition delay={0.4}>
+            <ChargeButton onClick={openModal}>충전하기</ChargeButton>
+          </Transition>
+        </section>
       </StyledContainer>
       {isOpen && <PointChargeModal closeModal={closeModal} />}
     </StyledTemplate>
