@@ -6,8 +6,10 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
@@ -186,7 +188,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null, false)
+                        "제 페이지에 와주셔서 감사합니다!", null, 0, false)
                 );
     }
 
@@ -206,7 +208,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null, false)
+                        "제 페이지에 와주셔서 감사합니다!", null, 0, false)
                 );
     }
 
@@ -285,8 +287,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
         회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
         회원생성을_요청("user1@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse.getMerchantUid().toString());
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(Item.ITEM_1.getItemName()).as(PaymentPendingResponse.class);
+        후원_생성("pagename", 10000L);
 
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
 
@@ -301,12 +303,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void detailedPoint() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("tyf@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse1.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse2.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse3.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(Item.ITEM_1.getItemName()).as(PaymentPendingResponse.class);
+        후원_생성("pagename", 10000L);
+        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(Item.ITEM_1.getItemName()).as(PaymentPendingResponse.class);
+        후원_생성("pagename", 10000L);
+        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(Item.ITEM_1.getItemName()).as(PaymentPendingResponse.class);
+        후원_생성("pagename", 10000L);
 
         //when
         DetailedPointResponse response = 상세_포인트_조회(signUpResponse.getToken()).as(DetailedPointResponse.class);
@@ -350,8 +352,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void requestExchangeAmountLessThanLimit() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(Item.ITEM_1.getItemName()).as(PaymentPendingResponse.class);
+        후원_생성("pagename", 10000L);
 
         //when
         ErrorResponse errorResponse = 정산_요청(signUpResponse.getToken()).as(ErrorResponse.class);

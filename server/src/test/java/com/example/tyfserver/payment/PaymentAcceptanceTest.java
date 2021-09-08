@@ -13,6 +13,7 @@ import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.*;
@@ -44,8 +45,8 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @MockBean
     private VerificationCodeRepository verificationCodeRepository;
 
-    public static ExtractableResponse<Response> 페이먼트_생성(Long amount, String email, String pageName) {
-        return post("/payments", new PaymentPendingRequest(amount, email, pageName)).extract();
+    public static ExtractableResponse<Response> 페이먼트_생성(String itemId) {
+        return post("/payments", new PaymentPendingRequest(itemId)).extract();
     }
 
     public static ExtractableResponse<Response> 페이먼트_취소(String merchantUid) {
@@ -60,7 +61,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @DisplayName("페이먼트를 성공적으로 생성하는 경우")
     public void payment() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
 
         assertThat(paymentPendingResponse.getMerchantUid()).isNotNull();
     }
@@ -69,7 +70,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @DisplayName("페이먼트를 생성하는데 유효하지 않은 Request인 경우")
     public void paymentInvalidRequest() {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        ErrorResponse errorResponse = 페이먼트_생성(900L, "", "pagename").as(ErrorResponse.class);
+        ErrorResponse errorResponse = 페이먼트_생성("ITEM_0").as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(PaymentPendingRequestException.ERROR_CODE);
     }
@@ -77,7 +78,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("페이먼트를 생성하는데 존재하지 않는 창작자인 경우")
     public void paymentCreatorNotFound() {
-        ErrorResponse errorResponse = 페이먼트_생성(10000L, "donator@gmail.com", "not exists pagename").as(ErrorResponse.class);
+        ErrorResponse errorResponse = 페이먼트_생성(Item.ITEM_1.name()).as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(MemberNotFoundException.ERROR_CODE);
     }
@@ -88,9 +89,10 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         //given
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        UUID merchantUid = 페이먼트_생성(10000L, "donator@gmail.com", pageName)
+        UUID merchantUid =  페이먼트_생성(Item.ITEM_1.name())
                 .as(PaymentPendingResponse.class).getMerchantUid();
-        후원_생성("impUid", merchantUid.toString()).as(DonationResponse.class);
+
+        후원_생성(pageName, 10000L);
 
         RefundVerificationReadyResponse result = 환불_인증코드_생성(merchantUid.toString(), "code")
                 .as(RefundVerificationReadyResponse.class);
@@ -118,10 +120,10 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     public void refundVerificationReadyResendCoolTimeIsAlive() {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        String merchantUid = 페이먼트_생성(10000L, "donator@gmail.com", pageName)
+        String merchantUid = 페이먼트_생성(Item.ITEM_1.name())
                 .as(PaymentPendingResponse.class).getMerchantUid().toString();
 
-        후원_생성("impUid", merchantUid).as(DonationResponse.class);
+        후원_생성(pageName, 10000L);
 
         환불_인증코드_생성(merchantUid, "code");
         ErrorResponse errorResponse = 환불_인증코드_생성(merchantUid, "code2").as(ErrorResponse.class);
@@ -135,7 +137,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
         String email = "donator@gmail.com";
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, email, pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse =페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
         String verificationCode = "123456";
 
@@ -152,7 +154,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
         String email = "donator@gmail.com";
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, email, pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
         String verificationCode = "123456";
         환불_인증코드_생성(merchantUid, verificationCode);
@@ -174,7 +176,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
         String email = "donator@gmail.com";
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, email, pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
 
         String unverificationCode = "000000";
@@ -189,7 +191,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
         String email = "donator@gmail.com";
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, email, pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse =페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
         String verificationCode = "123456";
         환불_인증코드_생성(merchantUid, verificationCode);
@@ -225,9 +227,9 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         //given
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
-        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+        Long donationId = 후원_생성(pageName, 10000L).as(DonationResponse.class).getDonationId();
 
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
         환불_인증코드_생성(merchantUid, "123456");
@@ -236,12 +238,9 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         RefundInfoResponse refundInfoResponse = 환불정보_조회(token).as(RefundInfoResponse.class);
 
         assertAll(
-                () -> assertThat(refundInfoResponse.getCreator().getPageName()).isEqualTo("pagename"),
-                () -> assertThat(refundInfoResponse.getCreator().getNickname()).isEqualTo("nickname"),
-                () -> assertThat(refundInfoResponse.getPayment().getAmount()).isEqualTo(10_000L),
-                () -> assertThat(refundInfoResponse.getPayment().getMessage()).isEqualTo("늘 응원합니다!"),
-                () -> assertThat(refundInfoResponse.getPayment().getName()).isEqualTo("roki"),
-                () -> assertThat(refundInfoResponse.getPayment().getCreatedAt()).isNotNull()
+                () -> assertThat(refundInfoResponse.getAmount()).isEqualTo("pagename"),
+                () -> assertThat(refundInfoResponse.getCreatedAt()).isEqualTo("nickname"),
+                () -> assertThat(refundInfoResponse.getItemName()).isEqualTo(10_000L)
         );
     }
 
@@ -260,9 +259,9 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     void refundPayment() {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
-        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+        Long donationId = 후원_생성(pageName, 10000L).as(DonationResponse.class).getDonationId();
 
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
         환불_인증코드_생성(merchantUid, "123456").as(RefundVerificationReadyResponse.class);
@@ -278,9 +277,9 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     void refundPaymentAlreadyCancelledDonation() {
         String pageName = "pagename";
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", pageName).as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
-        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+        Long donationId = 후원_생성(pageName, 10000L).as(DonationResponse.class).getDonationId();
 
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
         환불_인증코드_생성(merchantUid, "123456");
@@ -297,9 +296,9 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @MethodSource
     void refundPaymentNotMatchingRefundInfo(long amount, String pageName, PaymentStatus paymentStatus, String errorCode) {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
-        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+        Long donationId = 후원_생성(pageName, 10000L).as(DonationResponse.class).getDonationId();
 
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
         환불_인증코드_생성(merchantUid, "123456");
@@ -322,17 +321,17 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     @DisplayName("환불을 서버의 환불정보와 결제 서버의 merchnatUid 정보와 일치하지 않은 경우")
     @Test
     void refundPaymentNotMatchingMerchantUid() {
-        String pagename = "pagename";
-        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pagename);
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", pagename).as(PaymentPendingResponse.class);
+        String pageName = "pagename";
+        회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", pageName);
+        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name()).as(PaymentPendingResponse.class);
         String merchantUid = paymentPendingResponse.getMerchantUid().toString();
-        Long donationId = 후원_생성("impUid", merchantUid).as(DonationResponse.class).getDonationId();
+        Long donationId = 후원_생성(pageName, 10000L).as(DonationResponse.class).getDonationId();
 
         후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
         환불_인증코드_생성(merchantUid, "123456");
         String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
 
-        ErrorResponse errorResponse = 환불_요청_실패(token, UUID.randomUUID().toString(), 10000L, pagename, PaymentStatus.CANCELLED).as(ErrorResponse.class);
+        ErrorResponse errorResponse = 환불_요청_실패(token, UUID.randomUUID().toString(), 10000L, pageName, PaymentStatus.CANCELLED).as(ErrorResponse.class);
 
         assertThat(errorResponse.getErrorCode()).isEqualTo(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID);
     }
