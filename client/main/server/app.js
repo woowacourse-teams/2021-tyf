@@ -6,20 +6,20 @@ import fs from 'fs';
 import subodmain from 'express-subdomain';
 import expressStaticGzip from 'express-static-gzip';
 
-// const BASE_URL = 'https://thankyou-for.com';
+const BASE_URL = 'https://thankyou-for.com';
 
 const app = express();
 const sub = express.Router();
 
 app.use(subodmain('www', sub));
 
-// sub.get('/*', (req, res) => {
-//   res.redirect(BASE_URL + req.path);
-// });
+sub.get('/*', (req, res) => {
+  res.redirect(BASE_URL + req.path);
+});
 
-// app.use((req, res, next) => {
-//   req.protocol === 'https' ? next() : res.redirect(BASE_URL + req.path);
-// });
+app.use((req, res, next) => {
+  req.protocol === 'https' ? next() : res.redirect(BASE_URL + req.path);
+});
 
 app.use('/', expressStaticGzip(path.resolve('dist', 'compressed')));
 app.use('/', express.static(path.resolve('dist')));
@@ -33,14 +33,10 @@ const httpsOption = {
   key: fs.readFileSync('/etc/ssl/private.key.pem'),
 };
 
-// http.createServer(app).listen(80, () => {
-//   console.log('server is running on port 80');
-// });
-
-http.createServer(app).listen(9000, () => {
-  console.log('server is running on port 9000');
+http.createServer(app).listen(80, () => {
+  console.log('server is running on port 80');
 });
 
-// https.createServer(httpsOption, app).listen(443, () => {
-//   console.log('server is running on port 443');
-// });
+https.createServer(httpsOption, app).listen(443, () => {
+  console.log('server is running on port 443');
+});

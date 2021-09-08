@@ -9,6 +9,7 @@ const Logo = styled.img.attrs({
   alt: 'logo',
 })`
   width: 8.5rem;
+  aspect-ratio: 300 / 72;
 
   @media ${DEVICE.DESKTOP_LARGE} {
     width: 16rem;
@@ -19,6 +20,8 @@ export const FixedLogo = styled(IconButton).attrs({
   src: LogoImg,
 })`
   width: 8.5rem;
+  aspect-ratio: 300 / 72;
+
   position: absolute;
   top: 1rem;
 
