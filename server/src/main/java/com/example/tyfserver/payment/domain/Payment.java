@@ -124,7 +124,7 @@ public class Payment extends BaseTimeEntity {
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, paymentInfo.getModule());
         }
 
-        if (!itemName.equals(paymentInfo.getPageName())) {
+        if (!itemName.equals(paymentInfo.getItemName())) {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
         }

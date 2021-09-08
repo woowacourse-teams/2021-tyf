@@ -132,7 +132,7 @@ class PaymentServiceTest {
                 .thenReturn(paymentInfo);
 
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
-                .thenReturn(Optional.of(new Payment(AMOUNT, paymentInfo.getPageName(), MERCHANT_UID)));
+                .thenReturn(Optional.of(new Payment(AMOUNT, paymentInfo.getItemName(), MERCHANT_UID)));
 
         //then
         assertThatThrownBy(() -> paymentService.completePayment(request))
@@ -154,7 +154,7 @@ class PaymentServiceTest {
 
         when(paymentRepository.findByMerchantUid(Mockito.any(UUID.class)))
                 .thenReturn(
-                        Optional.of(new Payment(AMOUNT, paymentInfo.getPageName(), MERCHANT_UID)));
+                        Optional.of(new Payment(AMOUNT, paymentInfo.getItemName(), MERCHANT_UID)));
 
         //then
         assertThatThrownBy(() -> paymentService.completePayment(request))

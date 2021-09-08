@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/payments")
 @RequiredArgsConstructor
-public class PaymentController { //todo: 사실상 Payment의 모든 기능은 Login이 된 상태라고 가정해야함!
+public class PaymentController {
 
     private final PaymentService paymentService;
 

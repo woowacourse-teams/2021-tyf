@@ -12,6 +12,7 @@ import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.domain.PaymentTest;
 import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.exception.PaymentCompleteRequestException;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -115,7 +116,6 @@ public class PaymentControllerTest {
         ;
     }
 
-
     @Test
     @DisplayName("/payments/charge/ready - 유효하지 않은 Request")
     public void readyCreatePaymentRequestFailed() throws Exception {
@@ -157,6 +157,28 @@ public class PaymentControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("point").value(AMOUNT))
                 .andDo(document("createPayment",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/charge - 유효하지 않은 Request")
+    public void createPaymentPaymentCompleteRequestFailed() throws Exception {
+        //given
+        PaymentCompleteRequest paymentCompleteRequest = new PaymentCompleteRequest(IMP_UID, "Invalid UUID value");
+
+        //when
+        Member member = MemberTest.testMember();
+        validInterceptorAndArgumentResolverLoginMemberMocking(member);
+
+        //then
+        mockMvc.perform(post("/payments/charge")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(PaymentCompleteRequestException.ERROR_CODE))
+                .andDo(document("createPaymentRequestFailed",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
