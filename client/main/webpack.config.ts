@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
 
 interface WebpackConfig extends webpack.Configuration {
   devServer?: webpackDevServer.Configuration;
@@ -66,6 +67,10 @@ const config: WebpackConfig = {
       minimizerOptions: {
         plugins: [['webp'], ['svgo']],
       },
+    }),
+    new CompressionPlugin({
+      test: /\.(js|html)$/,
+      filename: 'compressed/[path][base].gz',
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'disabled',
