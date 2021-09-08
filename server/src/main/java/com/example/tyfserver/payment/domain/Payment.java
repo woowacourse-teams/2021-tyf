@@ -28,7 +28,7 @@ public class Payment extends BaseTimeEntity {
     private Long amount;
 
     @Embedded
-    private Email email;
+    private Email email; //todo: Member에 이미 Email이 존재하는데...? 따로 받을 필요가 있을까?
 
     @Column(nullable = false)
     private String itemName;
@@ -49,28 +49,34 @@ public class Payment extends BaseTimeEntity {
     @JoinColumn(name = "refund_failure_id")
     private RefundFailure refundFailure;
 
-    public Payment(Long id, Long amount, Email email, String itemName, UUID merchantUid) {
+    public Payment(Long id, Long amount, Email email, String itemName, String impUid, UUID merchantUid, Member member) {
         this.id = id;
         this.amount = amount;
         this.email = email;
         this.itemName = itemName;
+        this.impUid = impUid;
         this.merchantUid = merchantUid;
+        this.member = member;
     }
 
-    public Payment(Long id, Long amount, String email, String itemName, UUID merchantUid) {
-        this(id, amount, new Email(email), itemName, merchantUid);
+    public Payment(Long amount, Email email, String itemName, String impUid, UUID merchantUid, Member member) {
+        this(null, amount, email, itemName, impUid, merchantUid, member);
     }
 
-    public Payment(Long amount, String email, String itemName, UUID merchantUid) {
-        this(null, amount, email, itemName, merchantUid);
+    public Payment(Long amount, String email, String itemName, String impUid, UUID merchantUid, Member member) {
+        this(amount, new Email(email), itemName, impUid, merchantUid, member);
     }
 
-    public Payment(Long id, Long amount, String email, String itemName) {
-        this(id, amount, email, itemName, UUID.randomUUID());
+    public Payment(Long amount, String email, String itemName, UUID merchantUid, Member member) {
+        this(amount, email, itemName, null, merchantUid, member);
     }
 
-    public Payment(Long amount, String email, String itemName) {
-        this(null, amount, email, itemName, UUID.randomUUID());
+    public Payment(Long amount, String itemName, UUID merchantUid, Member member) {
+        this(amount, member.getEmail(), itemName, merchantUid, member);
+    }
+
+    public Payment(Long amount, String itemName, Member member) {
+        this(amount, member.getEmail(), itemName, UUID.randomUUID(), member);
     }
 
     public String getMaskedEmail() {
@@ -134,7 +140,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     public void checkRemainTryCount() {
-        if (refundFailure != null && refundFailure.getRemainTryCount() == 0) {
+        if (refundFailure != null && refundFailure.isBlocked()) {
             throw new RefundVerificationBlockedException();
         }
     }

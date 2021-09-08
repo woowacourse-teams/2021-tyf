@@ -1,6 +1,10 @@
 package com.example.tyfserver.payment.domain;
 
+import com.example.tyfserver.auth.domain.Oauth2Type;
+import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.Point;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,21 +23,23 @@ class PaymentTest {
 
     private static final UUID MERCHANT_UID = UUID.randomUUID();
     private static final UUID INVALID_MERCHANT_UID = UUID.randomUUID();
-    private static final long AMOUNT = 1000L;
-    private static final String PAGE_NAME = "test";
+    private static final long AMOUNT = Item.ITEM_1.getItemPrice();
+    private static final String ITEM_NAME = Item.ITEM_1.getItemName();
     private static final String IMP_UID = "test_imp_uid";
     private static final String ERROR_CODE = "errorCode";
     private static final String MODULE = "테스트모듈";
+    private static final Member MEMBER = new Member("email", "nickName", "pageName", Oauth2Type.KAKAO,
+            "https://cloudfront.net/profile.png", new Point(0L), new Point(1_000L));
 
     public static Payment testPayment() {
-        return new Payment(AMOUNT, "test@test.com", PAGE_NAME, MERCHANT_UID);
+        return new Payment(AMOUNT, ITEM_NAME, MERCHANT_UID, MEMBER);
     }
 
     @Test
     @DisplayName("결제 정보 유효성 검사 통과 시, 결제가 완료된다.")
     void testComplete() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, ITEM_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -48,7 +54,7 @@ class PaymentTest {
     @MethodSource("testCompleteNotPaid_source")
     void testCompleteNotPaid(PaymentStatus status) {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, ITEM_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -74,7 +80,7 @@ class PaymentTest {
     @Test
     void testCompleteWhenIdDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(INVALID_MERCHANT_UID, PaymentStatus.PAID, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(INVALID_MERCHANT_UID, PaymentStatus.PAID, AMOUNT, ITEM_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -90,7 +96,7 @@ class PaymentTest {
     @Test
     void testCompleteWhenAmountDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, 10000000L, PAGE_NAME, IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, 10000000L, ITEM_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -102,11 +108,11 @@ class PaymentTest {
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.INVALID);
     }
 
-    @DisplayName("결제 정보와 저장된 결제 데이터의 창작자 페이지 이름이 다르다면 결제 실패한다.")
+    @DisplayName("결제 정보와 저장된 결제 데이터의 아이템 이름이 다르다면 결제 실패한다.")
     @Test
     void testCompleteWhenPageNameDiff() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, "fake", IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.PAID, AMOUNT, Item.ITEM_3.getItemName(), IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -122,7 +128,7 @@ class PaymentTest {
     @DisplayName("결제 정보 환불 유효성 검사 통과 시, 결제가 환불된다.")
     void testCancel() {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.CANCELLED, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, PaymentStatus.CANCELLED, AMOUNT, ITEM_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -137,7 +143,7 @@ class PaymentTest {
     @MethodSource("testCancelNotCancelled_source")
     void testCancelNotCancelled(PaymentStatus status) {
         //given
-        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, PAGE_NAME, IMP_UID, MODULE);
+        PaymentInfo paymentInfo = new PaymentInfo(MERCHANT_UID, status, AMOUNT, ITEM_NAME, IMP_UID, MODULE);
         Payment payment = testPayment();
 
         //when
@@ -156,5 +162,74 @@ class PaymentTest {
                 Arguments.of(PaymentStatus.FAILED),
                 Arguments.of(PaymentStatus.INVALID)
         );
+    }
+
+    @DisplayName("환불이 제한된 Payment가 경우 환불이 제한됐는지 확인한다")
+    @Test
+    void testIsRefundBlockedIfPaymentIsRefundBlocked() {
+        //given
+        Payment payment = testPayment();
+        payment.updateRefundFailure(new RefundFailure(0));
+
+        //when
+        boolean actual = payment.isRefundBlocked();
+
+        //then
+        assertThat(actual).isTrue();
+    }
+
+    @DisplayName("환불이 제한되지 않은 Payment가 환불이 제한됐는지 확인한다")
+    @Test
+    void testIsRefundBlockedIfPaymentIsNotRefundBlocked() {
+        //given
+        Payment payment = testPayment();
+
+        //when
+        boolean actual = payment.isRefundBlocked();
+
+        //then
+        assertThat(actual).isFalse();
+    }
+
+    @DisplayName("Payment가 환불 실패이력이 있을 때, 환불을 실패한 이력이 있는지 확인하는 기능")
+    @Test
+    void testHasNoRefundFailureIfPaymentHasRefundFailure() {
+        //given
+        Payment payment = testPayment();
+        payment.updateRefundFailure(new RefundFailure());
+
+        //when
+        boolean actual = payment.hasNoRefundFailure();
+
+        //then
+        assertThat(actual).isFalse();
+
+    }
+
+    @DisplayName("Payment가 환불 실패이력이 없을 때, 환불을 실패한 이력이 있는지 확인하는 기능")
+    @Test
+    void testHasNoRefundFailureIfPaymentHasNotRefundFailure() {
+        //given
+        Payment payment = testPayment();
+
+        //when
+        boolean actual = payment.hasNoRefundFailure();
+
+        //then
+        assertThat(actual).isTrue();
+    }
+
+    @Disabled
+    @DisplayName("환불 보증 기간이 지났는지 확인하는 기능")
+    @Test
+    void testIsAfterRefundGuaranteeDuration() { // todo: isAfterRefundGuaranteeDuration 테스트를 위해서는 createAt 값을 가져와야하는데...
+        //given
+        Payment payment = testPayment();
+
+        //when
+        boolean actual = payment.isAfterRefundGuaranteeDuration();
+
+        //then
+
     }
 }

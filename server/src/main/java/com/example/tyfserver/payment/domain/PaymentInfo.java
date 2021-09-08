@@ -9,7 +9,7 @@ public class PaymentInfo {
     private UUID merchantUid;
     private PaymentStatus status;
     private Long amount;
-    private String pageName;
+    private String pageName; //todo: 이 부분도 pageName이 아니라 Item or ItemName 으로 변경되야할 듯
     private String impUid;
     private String module;
 
