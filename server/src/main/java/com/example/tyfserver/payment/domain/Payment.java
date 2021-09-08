@@ -95,6 +95,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentComplete(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
+        this.member.addAvailablePoint(paymentInfo.getAmount());
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
@@ -184,5 +185,9 @@ public class Payment extends BaseTimeEntity {
 
     public void validateMemberHasRefundablePoint() {
         member.validateEnoughPoint(amount);
+    }
+
+    public void to(Member member) {
+        this.member = member;
     }
 }
