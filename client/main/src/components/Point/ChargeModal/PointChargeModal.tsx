@@ -1,10 +1,11 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
 import { popupTerms } from '../../../service/@shared/popupTerms';
 import useAccessToken from '../../../service/@shared/useAccessToken';
 import usePointChargeForm from '../../../service/myPoint/usePointChargeForm';
 import { pay } from '../../../service/payment/payment';
+import { loadScript } from '../../../utils/dynamicImport';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
@@ -62,6 +63,14 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
 
     setIsNext(true);
   };
+
+  useEffect(() => {
+    const JQUERY = 'https://code.jquery.com/jquery-1.12.4.min.js';
+    const IAMPORT = 'https://cdn.iamport.kr/js/iamport.payment-1.1.5.js';
+
+    loadScript(JQUERY);
+    loadScript(IAMPORT);
+  }, []);
 
   return (
     <StyledModal onClose={closeModal}>
