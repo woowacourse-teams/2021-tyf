@@ -19,13 +19,13 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/payments")
 @RequiredArgsConstructor
-public class PaymentController {
+public class PaymentController { //todo: 사실상 Payment의 모든 기능은 Login이 된 상태라고 가정해야함!
 
     private final PaymentService paymentService;
 
     @PostMapping("/charge/ready")
-    public ResponseEntity<PaymentPendingResponse> payment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest, BindingResult result,
-                                                          LoginMember loginMember) {
+    public ResponseEntity<PaymentPendingResponse> readyPayment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest,
+                                                               BindingResult result, LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new PaymentPendingRequestException();
         }
@@ -40,13 +40,14 @@ public class PaymentController {
             throw new PaymentCompleteRequestException();
         }
 
+        PaymentCompleteResponse paymentCompleteResponse = paymentService.completePayment(paymentCompleteRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(paymentService.completePayment(paymentCompleteRequest));
+                .body(paymentCompleteResponse);
     }
 
     @PostMapping("/refund/verification/ready")
-    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result,
-                                                                                   LoginMember loginMember) {
+    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest,
+                                                                                   BindingResult result) {
         if (result.hasErrors()) {
             throw new RefundVerificationReadyException();
         }
@@ -66,8 +67,8 @@ public class PaymentController {
     }
 
     @GetMapping("/refund/info")
-    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder refundInfoRequest) {
-        RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
+    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder verifiedRefunder) {
+        RefundInfoResponse response = paymentService.refundInfo(verifiedRefunder);
         return ResponseEntity.ok(response);
     }
 

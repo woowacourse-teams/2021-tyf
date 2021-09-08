@@ -28,7 +28,7 @@ public class Payment extends BaseTimeEntity {
     private Long amount;
 
     @Embedded
-    private Email email; //todo: Member에 이미 Email이 존재하는데...? 따로 받을 필요가 있을까?
+    private Email email;
 
     @Column(nullable = false)
     private String itemName;
@@ -49,34 +49,24 @@ public class Payment extends BaseTimeEntity {
     @JoinColumn(name = "refund_failure_id")
     private RefundFailure refundFailure;
 
-    public Payment(Long id, Long amount, Email email, String itemName, String impUid, UUID merchantUid, Member member) {
+    public Payment(Long id, Long amount, String itemName, String impUid, UUID merchantUid) {
         this.id = id;
         this.amount = amount;
-        this.email = email;
         this.itemName = itemName;
         this.impUid = impUid;
         this.merchantUid = merchantUid;
-        this.member = member;
     }
 
-    public Payment(Long amount, Email email, String itemName, String impUid, UUID merchantUid, Member member) {
-        this(null, amount, email, itemName, impUid, merchantUid, member);
+    public Payment(Long amount, String itemName, String impUid, UUID merchantUid) {
+        this(null, amount, itemName, impUid, merchantUid);
     }
 
-    public Payment(Long amount, String email, String itemName, String impUid, UUID merchantUid, Member member) {
-        this(amount, new Email(email), itemName, impUid, merchantUid, member);
+    public Payment(Long amount, String itemName, UUID merchantUid) {
+        this(amount, itemName, null, merchantUid);
     }
 
-    public Payment(Long amount, String email, String itemName, UUID merchantUid, Member member) {
-        this(amount, email, itemName, null, merchantUid, member);
-    }
-
-    public Payment(Long amount, String itemName, UUID merchantUid, Member member) {
-        this(amount, member.getEmail(), itemName, merchantUid, member);
-    }
-
-    public Payment(Long amount, String itemName, Member member) {
-        this(amount, member.getEmail(), itemName, UUID.randomUUID(), member);
+    public Payment(Long amount, String itemName) {
+        this(amount, itemName, UUID.randomUUID());
     }
 
     public String getMaskedEmail() {
@@ -189,5 +179,6 @@ public class Payment extends BaseTimeEntity {
 
     public void to(Member member) {
         this.member = member;
+        this.email = new Email(member.getEmail());
     }
 }
