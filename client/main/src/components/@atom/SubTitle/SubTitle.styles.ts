@@ -4,7 +4,7 @@ import { DEVICE } from '../../../constants/device';
 
 const SubTitle = styled.h3`
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
 
   @media ${DEVICE.DESKTOP_LARGE} {

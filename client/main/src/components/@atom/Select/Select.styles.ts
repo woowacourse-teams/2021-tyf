@@ -74,7 +74,7 @@ export const ListItem = styled.li`
   align-items: center;
 
   &:hover {
-    font-weight: 600;
+    font-weight: 700;
   }
 
   &:first-child {

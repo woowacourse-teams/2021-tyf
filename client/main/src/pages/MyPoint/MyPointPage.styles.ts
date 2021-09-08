@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Template from '../../components/@atom/Template/Template';
 import Button from '../../components/@atom/Button/Button.styles';
 import { DEVICE } from '../../constants/device';
-import Container from '../../components/@atom/Container/Container.styles';
 import PALETTE from '../../constants/palette';
 
 export const StyledTemplate = styled(Template)`
@@ -45,7 +44,7 @@ export const StyledContainer = styled.div`
 
 export const StyledTitle = styled.h1`
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 6rem;
   text-align: left;
   align-self: flex-start;
@@ -55,7 +54,7 @@ export const StyledTitle = styled.h1`
 export const ChargeButton = styled(Button)``;
 
 export const Point = styled.span`
-  font-weight: 600;
+  font-weight: 700;
   margin-right: 0.25rem;
   font-size: 3rem;
 `;

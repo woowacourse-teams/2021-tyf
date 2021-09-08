@@ -75,7 +75,6 @@ const config: WebpackConfig = {
     }) as unknown as webpack.WebpackPluginInstance,
   ],
   devServer: {
-    contentBase: path.resolve('public'),
     port: 9000,
     historyApiFallback: true,
     open: true,

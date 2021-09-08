@@ -20,6 +20,7 @@
   "private": false,
   "scripts": {
     "start": "webpack serve",
+    "start:prod": "webpack serve --mode=production --node-env=production",
     "mock:server": "json-server --watch src/mock/jsonServer/db.json --routes src/mock/jsonServer/routes.json ",
     "build": "jest src && webpack --mode=production --node-env=production",
     "build:dev": "jest src && webpack --mode=development --node-env=development",
