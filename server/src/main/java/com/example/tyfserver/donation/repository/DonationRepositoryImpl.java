@@ -39,6 +39,17 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         return Objects.requireNonNullElse(result, 0L);
     }
 
+    public Long currentPoint(Long memberId) {
+        Long result = queryFactory
+                .select(donation.point.sum())
+                .from(donation)
+                .where(currentStatus(memberId))
+                .groupBy(donation.member)
+                .fetchOne();
+
+        return Objects.requireNonNullElse(result, 0L);
+    }
+
     private BooleanExpression exchangeableStatus(Long memberId) {
         return donation.member.id.eq(memberId)
                 .and(donation.status.eq(DonationStatus.EXCHANGEABLE));
@@ -47,5 +58,11 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     private BooleanExpression exchangedStatus(Long memberId) {
         return donation.member.id.eq(memberId)
                 .and(donation.status.eq(DonationStatus.EXCHANGED));
+    }
+
+    private BooleanExpression currentStatus(Long memberId) {
+        return donation.member.id.eq(memberId)
+                .and(donation.status.ne(DonationStatus.CANCELLED))
+                .and(donation.status.ne(DonationStatus.EXCHANGED));
     }
 }
