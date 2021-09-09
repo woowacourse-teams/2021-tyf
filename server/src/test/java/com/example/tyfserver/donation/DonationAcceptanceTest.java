@@ -37,8 +37,8 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         return authPost("/donations", token, new DonationRequest(pageName, point)).extract();
     }
 
-    public static ExtractableResponse<Response> 후원_메세지_생성(Long donationId, String name, String message, boolean secret) {
-        return post("/donations/" + donationId + "/messages", new DonationMessageRequest(name, message, secret)).extract();
+    public static ExtractableResponse<Response> 후원_메세지_생성(Long donationId, String name, String message, boolean secret, String token) {
+        return authPost("/donations/" + donationId + "/messages", token, new DonationMessageRequest(name, message, secret)).extract();
     }
 
     public static ExtractableResponse<Response> 총_후원목록(String token) {
@@ -106,7 +106,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
 
         //when
-        ExtractableResponse<Response> response = 후원_메세지_생성(donationId, "bepoz", "positive", false);
+        ExtractableResponse<Response> response = 후원_메세지_생성(donationId, "bepoz", "positive", false, signUpResponse.getToken());
 
         //then
         assertThat(response.statusCode()).isEqualTo(201);
@@ -116,7 +116,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("유효하지 않은 Request의 후원 메세지 전송")
     public void addDonationMessageInvalidRequest() {
         //when
-        ErrorResponse errorResponse = 후원_메세지_생성(1L, "", "positive", false).as(ErrorResponse.class);
+        SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "donator");
+        Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
+        ErrorResponse errorResponse = 후원_메세지_생성(donationId, "", "positive", false, signUpResponse.getToken())
+                .as(ErrorResponse.class);
 
         //then
         assertThat(errorResponse.getErrorCode()).isEqualTo(DonationMessageRequestException.ERROR_CODE);
@@ -126,7 +129,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않은 후원에 대한 후원 메세지 전송")
     public void addDonationMessageDonationNotFound() {
         //when
-        ErrorResponse errorResponse = 후원_메세지_생성(10000L, "bepoz", "positive", false).as(ErrorResponse.class);
+        SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "donator");
+        Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
+        ErrorResponse errorResponse = 후원_메세지_생성(donationId, "bepoz", "positive", false, signUpResponse.getToken())
+                .as(ErrorResponse.class);
 
         //then
         assertThat(errorResponse.getErrorCode()).isEqualTo(DonationNotFoundException.ERROR_CODE);
@@ -140,7 +146,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         SignUpResponse creatorSignUpResponse = 회원가입_후_로그인되어_있음("creator@gmail.com", "KAKAO", "creator", "creator");
 
         Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        후원_메세지_생성(donationId, "donator", "thisismessage", true);
+        후원_메세지_생성(donationId, "donator", "thisismessage", true, signUpResponse.getToken());
 
         //when
         List<DonationResponse> responses = 총_후원목록(creatorSignUpResponse.getToken())
@@ -159,10 +165,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("creator@gmail.com", "KAKAO", "creator", "creator");
 
         Long publicDonationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        후원_메세지_생성(publicDonationId, "donator", "thisismessage", false);
+        후원_메세지_생성(publicDonationId, "donator", "thisismessage", false, signUpResponse.getToken());
 
         Long secretDonationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        후원_메세지_생성(secretDonationId, "donator", "thisismessage", true);
+        후원_메세지_생성(secretDonationId, "donator", "thisismessage", true, signUpResponse.getToken());
 
         //when
         List<DonationResponse> responses = 공개_후원목록("creator")

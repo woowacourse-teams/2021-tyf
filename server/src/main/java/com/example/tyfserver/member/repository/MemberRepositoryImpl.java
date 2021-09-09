@@ -25,7 +25,7 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
     public List<CurationsResponse> findCurations() {
         return queryFactory
                 .select(
-                        new QCurationsResponse(member.nickname, payment.amount.sum(), member.pageName, member.profileImage, member.bio))
+                        new QCurationsResponse(member.nickname, donation.point.sum(), member.pageName, member.profileImage, member.bio))
                 .from(member)
                 .leftJoin(member.donations, donation)
                 .groupBy(member.nickname)
