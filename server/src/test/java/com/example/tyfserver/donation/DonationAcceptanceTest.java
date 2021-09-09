@@ -115,9 +115,12 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("유효하지 않은 Request의 후원 메세지 전송")
     public void addDonationMessageInvalidRequest() {
-        //when
+        //given
         SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "donator");
+        회원생성을_요청("creator@gmail.com", "KAKAO", "creator", "creator");
         Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
+
+        //when
         ErrorResponse errorResponse = 후원_메세지_생성(donationId, "", "positive", false, signUpResponse.getToken())
                 .as(ErrorResponse.class);
 
@@ -128,10 +131,11 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("존재하지 않은 후원에 대한 후원 메세지 전송")
     public void addDonationMessageDonationNotFound() {
-        //when
+        //given
         SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "donator");
-        Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        ErrorResponse errorResponse = 후원_메세지_생성(donationId, "bepoz", "positive", false, signUpResponse.getToken())
+
+        //when
+        ErrorResponse errorResponse = 후원_메세지_생성(1L, "bepoz", "positive", false, signUpResponse.getToken())
                 .as(ErrorResponse.class);
 
         //then

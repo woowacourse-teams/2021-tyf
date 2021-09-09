@@ -106,7 +106,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         페이먼트_완료("impUid", merchantUid.toString(), signUpResponse.getToken()).as(PaymentCompleteResponse.class);
 
         //when
-        RefundVerificationReadyResponse result = 환불_인증코드_생성(merchantUid.toString(), "code", signUpResponse.getToken())
+        RefundVerificationReadyResponse result = 환불_인증코드_생성(merchantUid, "code", signUpResponse.getToken())
                 .as(RefundVerificationReadyResponse.class);
 
         //then
@@ -156,7 +156,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("refunder@gmail.com", "KAKAO", "refunder", "refunder");
         String merchantUid =  페이먼트_생성(Item.ITEM_100.name(), signUpResponse.getToken())
                 .as(PaymentPendingResponse.class).getMerchantUid().toString();
-        페이먼트_완료("impUid", merchantUid.toString(), signUpResponse.getToken()).as(PaymentCompleteResponse.class);
+        페이먼트_완료("impUid", merchantUid, signUpResponse.getToken()).as(PaymentCompleteResponse.class);
 
         String verificationCode = "123456";
 
@@ -202,7 +202,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("refunder@gmail.com", "KAKAO", "refunder", "refunder");
         String merchantUid =  페이먼트_생성(Item.ITEM_100.name(), signUpResponse.getToken())
                 .as(PaymentPendingResponse.class).getMerchantUid().toString();
-        페이먼트_완료("impUid", merchantUid.toString(), signUpResponse.getToken()).as(PaymentCompleteResponse.class);
+        페이먼트_완료("impUid", merchantUid, signUpResponse.getToken()).as(PaymentCompleteResponse.class);
 
         String unverificationCode = "000000";
         ErrorResponse errorResponse = 환불_인증코드_없음(merchantUid, unverificationCode, signUpResponse.getToken()).as(ErrorResponse.class);
