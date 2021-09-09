@@ -133,7 +133,7 @@ class DonationControllerTest {
         ;
     }
 
-    // todo 제거
+    // todo PaymentsController 테스트로 옮겨야 함 (아임포트 실 결제 정보 상태에 대한 테스트들)
 //    @Test
 //    @DisplayName("/donations - 실 결제 정보 상태가 PAID가 아닐경우")
 //    public void createDonationFailedStatusNotPaid() throws Exception {

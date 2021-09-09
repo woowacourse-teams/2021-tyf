@@ -58,7 +58,7 @@ public class Donation extends BaseTimeEntity {
         status = DonationStatus.EXCHANGED;
     }
 
-    // todo 테스트 코드에서만 사용중 : 스케줄러 적용시 사용?
+    // todo 테스트 코드에서만 사용중 : 스케줄러 적용시 사용
     public void toExchangeable() {
         status = DonationStatus.EXCHANGEABLE;
     }

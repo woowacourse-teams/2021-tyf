@@ -54,12 +54,12 @@ public class MemberController {
 
     @GetMapping("/{pageName}")
     public ResponseEntity<MemberResponse> memberInfo(@PathVariable String pageName) {
-        return ResponseEntity.ok(memberService.findMember(pageName));
+        return ResponseEntity.ok(memberService.findMemberByPageName(pageName));
     }
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponse> memberDetail(LoginMember loginMember) {
-        return ResponseEntity.ok(memberService.findMemberDetail(loginMember.getId()));
+        return ResponseEntity.ok(memberService.findMemberById(loginMember.getId()));
     }
 
     @GetMapping("/me/point")

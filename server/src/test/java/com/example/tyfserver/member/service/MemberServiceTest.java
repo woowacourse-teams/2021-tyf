@@ -96,12 +96,12 @@ class MemberServiceTest {
     @DisplayName("findMember")
     public void findMemberTest() {
         //given & when
-        MemberResponse response = memberService.findMember(PAGENAME);
+        MemberResponse response = memberService.findMemberByPageName(PAGENAME);
         //then
         assertThat(response).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, 제_페이지에_와주셔서_감사합니다, PROFILE, POINT, false));
 
-        assertThatThrownBy(() -> memberService.findMember("asdf"))
+        assertThatThrownBy(() -> memberService.findMemberByPageName("asdf"))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -109,12 +109,12 @@ class MemberServiceTest {
     @DisplayName("findMemberDetail")
     public void findMemberDetailTest() {
         //given & when
-        MemberResponse response = memberService.findMemberDetail(member.getId());
+        MemberResponse response = memberService.findMemberById(member.getId());
         //then
         assertThat(response).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, 제_페이지에_와주셔서_감사합니다, PROFILE, POINT, false));
 
-        assertThatThrownBy(() -> memberService.findMemberDetail(INVALID_ID))
+        assertThatThrownBy(() -> memberService.findMemberById(INVALID_ID))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 

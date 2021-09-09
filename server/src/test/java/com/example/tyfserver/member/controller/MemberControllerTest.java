@@ -187,7 +187,7 @@ class MemberControllerTest {
         MemberResponse response = new MemberResponse("email", "nickname",
                 "pagename", "I am test", "profile.png", 10000L, false);
         //when
-        when(memberService.findMember(Mockito.anyString())).thenReturn(response);
+        when(memberService.findMemberByPageName(Mockito.anyString())).thenReturn(response);
         //then
         mockMvc.perform(get("/members/pagename")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -208,7 +208,7 @@ class MemberControllerTest {
     public void memberInfoMemberNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new MemberNotFoundException()).when(memberService).findMember(Mockito.anyString());
+        doThrow(new MemberNotFoundException()).when(memberService).findMemberByPageName(Mockito.anyString());
         //then
         mockMvc.perform(get("/members/pagename")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -227,7 +227,7 @@ class MemberControllerTest {
         MemberResponse response = new MemberResponse("email", "nickname", "pagename",
                 "I am test", "profile.png", 10000L, false);
         //when
-        when(memberService.findMemberDetail(Mockito.anyLong())).thenReturn(response);
+        when(memberService.findMemberById(Mockito.anyLong())).thenReturn(response);
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
@@ -248,7 +248,7 @@ class MemberControllerTest {
     public void memberDetailMemberNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new MemberNotFoundException()).when(memberService).findMemberDetail(Mockito.anyLong());
+        doThrow(new MemberNotFoundException()).when(memberService).findMemberById(Mockito.anyLong());
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
