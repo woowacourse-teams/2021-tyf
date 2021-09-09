@@ -3,6 +3,7 @@ package com.example.tyfserver;
 import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
+import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
@@ -49,9 +50,10 @@ public class AcceptanceTest {
         when(s3Connector.uploadBankBook(any(), any()))
                 .thenReturn(DEFAULT_PROFILE_IMAGE);
         doNothing().when(s3Connector).delete(anyString());
+
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 10000L,
-                        "pagename", "impUid", "module"));
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, Item.ITEM_100.getItemPrice(),
+                        Item.ITEM_100.getItemName(), "impUid", "module"));
     }
 
     protected static RequestSpecification apiTemplate() {

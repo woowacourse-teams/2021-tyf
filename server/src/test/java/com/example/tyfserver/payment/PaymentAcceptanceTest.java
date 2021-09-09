@@ -11,12 +11,8 @@ import com.example.tyfserver.auth.exception.VerificationCodeNotFoundException;
 import com.example.tyfserver.auth.exception.VerificationFailedException;
 import com.example.tyfserver.auth.repository.VerificationCodeRepository;
 import com.example.tyfserver.common.dto.ErrorResponse;
-import com.example.tyfserver.donation.dto.DonationResponse;
-import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
-import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.PaymentInfo;
-import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.*;
@@ -35,9 +31,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
-import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
-import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_메세지_생성;
-import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.any;
@@ -56,10 +49,6 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
     public static ExtractableResponse<Response> 페이먼트_완료(String impUid, String merchantId, String token) {
         return authPost("/payments/charge", token, new PaymentCompleteRequest(impUid, merchantId)).extract();
-    }
-
-    public static ExtractableResponse<Response> 페이먼트_취소(String merchantUid, String token) {
-        return authPost("/payments/cancel", token, new PaymentCancelRequest(merchantUid)).extract();
     }
 
     public static ExtractableResponse<Response> 환불정보_조회(String token) {
@@ -311,24 +300,26 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
- /*   @DisplayName("환불을 이미 환불된 도네이션을 대상으로 진행하는 경우")
+    @DisplayName("이미 환불 처리된 결제를 다시 환불하는 경우")
     @Test
-    void refundPaymentAlreadyCancelledDonation() {
-        String pageName = "pagename";
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("donator@gmail.com", "KAKAO", "donator", "pagename");
-        PaymentPendingResponse paymentPendingResponse = 페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken()).as(PaymentPendingResponse.class);
-        String merchantUid = paymentPendingResponse.getMerchantUid().toString();
-        Long donationId = 후원_생성(pageName, 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
+    void refundPaymentAlreadyCancelled() {
+        //given
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("refunder@gmail.com", "KAKAO", "refunder", "refunder");
+        String merchantUid =  페이먼트_생성(Item.ITEM_100.name(), signUpResponse.getToken())
+                .as(PaymentPendingResponse.class).getMerchantUid().toString();
+        페이먼트_완료("impUid", merchantUid, signUpResponse.getToken()).as(PaymentCompleteResponse.class);
 
-        후원_메세지_생성(donationId, "roki", "늘 응원합니다!", false);
-        환불_인증코드_생성(merchantUid, "123456");
-        String token = 환불_인증코드_인증(merchantUid, "123456").as(RefundVerificationResponse.class).getRefundAccessToken();
+        환불_인증코드_생성(merchantUid, "123456", signUpResponse.getToken());
+        String token = 환불_인증코드_인증(merchantUid, "123456", signUpResponse.getToken())
+                .as(RefundVerificationResponse.class).getRefundAccessToken();
         환불_요청_성공(token, merchantUid);
 
+        //when
         ErrorResponse errorResponse = 환불_요청_성공(token, merchantUid).as(ErrorResponse.class);
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo(DonationAlreadyCancelledException.ERROR_CODE);
-    }*/
+        //then
+        assertThat(errorResponse.getErrorCode()).isEqualTo(PaymentAlreadyCancelledException.ERROR_CODE);
+    }
 
     @DisplayName("환불을 서버의 환불정보와 결제 서버의 정보와 일치하지 않은 경우")
     @ParameterizedTest
@@ -353,10 +344,10 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
     private static Stream<Arguments> refundPaymentNotMatchingRefundInfo() {
         return Stream.of(
-                Arguments.of(10000L, "pagename", PaymentStatus.PAID, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
-                Arguments.of(10000L, "pagename", PaymentStatus.PENDING, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
-                Arguments.of(20000L, "pagename", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT),
-                Arguments.of(10000L, "pagename2", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR)
+                Arguments.of(Item.ITEM_100.getItemPrice(), "refunder", PaymentStatus.PAID, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
+                Arguments.of(Item.ITEM_100.getItemPrice(), "refunder", PaymentStatus.PENDING, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
+                Arguments.of(Item.ITEM_10.getItemPrice(), "refunder", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT),
+                Arguments.of(Item.ITEM_100.getItemPrice(), "refunder2", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR)
         );
     }
 
@@ -378,8 +369,9 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 환불_요청_성공(String token, String merchantUid) {
         when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, 10000L,
-                        "pagename", "impUid", "module"));
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, Item.ITEM_100.getItemPrice(),
+                        Item.ITEM_100.getItemName(), "impUid", "module"));
+
         return authPost("/payments/refund", token, new VerifiedRefunder(merchantUid)).extract();
     }
 
