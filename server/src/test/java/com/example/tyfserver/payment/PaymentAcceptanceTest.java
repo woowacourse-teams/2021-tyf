@@ -111,7 +111,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(result.getEmail()).isEqualTo("do***or@gmail.com"),
+                () -> assertThat(result.getEmail()).isEqualTo("re****er@gmail.com"),
                 () -> assertThat(result.getResendCoolTime()).isEqualTo(CodeResendCoolTime.DEFAULT_TTL),
                 () -> assertThat(result.getTimeout()).isEqualTo(VerificationCode.DEFAULT_TTL)
         );
