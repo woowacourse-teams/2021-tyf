@@ -27,8 +27,8 @@ public class DonationService {
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
 
-    public DonationResponse createDonation(DonationRequest donationRequest, long id) {
-        Member donator = findMember(id);
+    public DonationResponse createDonation(DonationRequest donationRequest, Long memberId) {
+        Member donator = findMember(memberId);
         Member creator = memberRepository.findByPageName(donationRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
