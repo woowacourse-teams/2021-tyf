@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class PaymentPendingRequest {
 
-    @Enum(enumClass = Item.class, ignoreCase = true)
+    @Enum(enumClass = Item.class)
     @NotBlank
     private String itemId;
 
