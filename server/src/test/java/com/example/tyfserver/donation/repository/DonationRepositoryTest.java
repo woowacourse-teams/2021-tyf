@@ -51,6 +51,7 @@ class DonationRepositoryTest {
         memberRepository.save(member1);
         memberRepository.save(member2);
 
+        // 총 28000 포인트
         donation1 = initDonation(1000L, false);
         donation2 = initDonation(2000L, false);
         donation3 = initDonation(3000L, false);
@@ -123,5 +124,16 @@ class DonationRepositoryTest {
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
 
         assertThat(exchangedTotalPoint).isEqualTo(2000L);
+    }
+
+    @Test
+    @DisplayName("정산 가능 + 정산 불가 총 포인트를 조회한다.")
+    public void currentPoint() {
+        donation1.toExchanged();
+        donation2.toExchanged();
+
+        Long exchangedTotalPoint = donationRepository.currentPoint(member1.getId());
+
+        assertThat(exchangedTotalPoint).isEqualTo(25000L);
     }
 }
