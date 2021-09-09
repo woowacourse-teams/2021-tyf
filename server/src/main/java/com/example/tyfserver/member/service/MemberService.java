@@ -45,12 +45,12 @@ public class MemberService {
     }
 
     public MemberResponse findMemberById(Long id) {
-        Member member = findById(id);
+        Member member = findMember(id);
         return new MemberResponse(member);
     }
 
     public PointResponse findMemberPoint(Long id) {
-        Member member = findById(id);
+        Member member = findMember(id);
         return new PointResponse(donationRepository.currentPoint(member.getId()));
     }
 
@@ -59,7 +59,7 @@ public class MemberService {
     }
 
     public ProfileResponse uploadProfile(MultipartFile multipartFile, LoginMember loginMember) {
-        Member findMember = findById(loginMember.getId());
+        Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
         String uploadedFile = s3Connector.uploadProfile(multipartFile, loginMember.getId());
         findMember.uploadProfileImage(uploadedFile);
@@ -67,17 +67,17 @@ public class MemberService {
     }
 
     public void deleteProfile(LoginMember loginMember) {
-        Member findMember = findById(loginMember.getId());
+        Member findMember = findMember(loginMember.getId());
         deleteProfile(findMember);
     }
 
     public void updateBio(LoginMember loginMember, String bio) {
-        Member member = findById(loginMember.getId());
+        Member member = findMember(loginMember.getId());
         member.updateBio(bio);
     }
 
     public void updateNickname(LoginMember loginMember, String nickname) {
-        Member member = findById(loginMember.getId());
+        Member member = findMember(loginMember.getId());
         member.updateNickname(nickname);
     }
 
@@ -98,7 +98,7 @@ public class MemberService {
     }
 
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
-        Member member = findById(loginMember.getId());
+        Member member = findMember(loginMember.getId());
 
         String uploadedBankBookUrl = s3Connector.uploadBankBook(accountRegisterRequest.getBankbookImage(),
                 loginMember.getId());
@@ -107,12 +107,12 @@ public class MemberService {
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
-        Member member = findById(loginMember.getId());
+        Member member = findMember(loginMember.getId());
         return AccountInfoResponse.of(member.getAccount());
     }
 
     public void exchange(Long id) {
-        Member member = findById(id);
+        Member member = findMember(id);
         Long exchangeablePoint = donationRepository.exchangeablePoint(id);
         validateExchangeable(member, exchangeablePoint);
 
@@ -131,7 +131,7 @@ public class MemberService {
         }
     }
 
-    private Member findById(Long id) {
+    private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
     }
