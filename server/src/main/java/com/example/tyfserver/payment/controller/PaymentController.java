@@ -24,8 +24,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/charge/ready")
-    public ResponseEntity<PaymentPendingResponse> readyPayment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest,
-                                                               BindingResult result, LoginMember loginMember) {
+    public ResponseEntity<PaymentPendingResponse> payment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest, BindingResult result,
+                                                          LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new PaymentPendingRequestException();
         }
@@ -40,14 +40,13 @@ public class PaymentController {
             throw new PaymentCompleteRequestException();
         }
 
-        PaymentCompleteResponse paymentCompleteResponse = paymentService.completePayment(paymentCompleteRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(paymentCompleteResponse);
+                .body(paymentService.completePayment(paymentCompleteRequest));
     }
 
     @PostMapping("/refund/verification/ready")
-    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest,
-                                                                                   BindingResult result) {
+    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result,
+                                                                                   LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new RefundVerificationReadyException();
         }
@@ -67,8 +66,8 @@ public class PaymentController {
     }
 
     @GetMapping("/refund/info")
-    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder verifiedRefunder) {
-        RefundInfoResponse response = paymentService.refundInfo(verifiedRefunder);
+    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder refundInfoRequest) {
+        RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
         return ResponseEntity.ok(response);
     }
 
