@@ -4,13 +4,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 @Profile("test")
 @Configuration
@@ -28,8 +31,26 @@ public class EmbeddedRedisConfig {
             port = findAvailablePort();
         }
 
-        redisServer = new RedisServer(port);
+        if (isArmMac()) {
+            redisServer = new RedisServer(Objects.requireNonNull(getRedisFileForArmMac()), port);
+        } else {
+            redisServer = new RedisServer(port);
+        }
         redisServer.start();
+    }
+
+    private boolean isArmMac() {
+        return System.getProperty("os.arch").equals("aarch64") &&
+                System.getProperty("os.name").equals("Mac OS X");
+    }
+
+    private File getRedisFileForArmMac() {
+        try {
+            return new ClassPathResource("binary/redis/redis-server-6.0.10-mac-arm64").getFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @PreDestroy
