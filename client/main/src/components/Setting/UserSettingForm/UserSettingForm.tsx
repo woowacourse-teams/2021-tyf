@@ -54,10 +54,10 @@ const UserSettingForm = () => {
     <StyledUserSettingForm onSubmit={onApply}>
       <Title>설정</Title>
       <ProfileImgInputLabel>
-        <ProfileImg role="profile-img" src={form.profileImage || DefaultUserProfile} />
+        <ProfileImg alt="profile" src={form.profileImage || DefaultUserProfile} />
         <input
-          role="profile-img-input"
           type="file"
+          aria-label="profile-img"
           onChange={onChangeProfileImg}
           accept="image/png,image/jpeg, image/jpg, image/gif"
           hidden
@@ -67,7 +67,7 @@ const UserSettingForm = () => {
       <NickNameInputContainer>
         <StyledSubTitle>닉네임</StyledSubTitle>
         <ValidationInput
-          role="nickname-input"
+          aria-label="nickname"
           value={form.nickname}
           onChange={({ target }) => setNickname(target.value)}
           placeholder="닉네임 입력하기"
@@ -79,7 +79,7 @@ const UserSettingForm = () => {
       <IntroductionTextareaContainer>
         <StyledSubTitle>자기소개</StyledSubTitle>
         <Textarea
-          role="bio-input"
+          aria-label="bio"
           value={form.bio}
           onChange={({ target }) => setBio(target.value)}
           placeholder="자기소개 입력하기"

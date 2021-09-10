@@ -15,7 +15,9 @@ beforeEach(() => {
 
 describe('donationAmount', () => {
   test('사용자는 도네이션 금액을 입력할 수 있다.', async () => {
-    const $amountInput = (await screen.findByRole('money-input')) as HTMLInputElement;
+    const $amountInput = (await screen.findByRole('textbox', {
+      name: 'money',
+    })) as HTMLInputElement;
     const $donateButton = await screen.findByRole('button', {
       name: '도네이션',
     });
@@ -27,7 +29,7 @@ describe('donationAmount', () => {
   });
 
   test('사용자는 도네이션 금액을 금액추가 버튼을 눌러 증가시킬 수 있다.', async () => {
-    const $moneyInput = (await screen.findByRole('money-input')) as HTMLInputElement;
+    const $moneyInput = (await screen.findByRole('textbox', { name: 'money' })) as HTMLInputElement;
     const $add1000Button = await screen.findByRole('button', {
       name: /\+1,000tp/i,
     });
