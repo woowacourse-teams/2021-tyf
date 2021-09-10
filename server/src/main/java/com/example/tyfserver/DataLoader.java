@@ -99,7 +99,7 @@ public class DataLoader implements CommandLineRunner {
         donation8.to(soori);
 
         Donation donation9 = generateDonationDummy(10_000L);
-        donation8.addMessage(Message.defaultMessage());
+        donation8.addMessage(new Message("익명인"));
         donation8.to(soori);
 
         donationRepository.save(donation1);
@@ -114,6 +114,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private Donation generateDonationDummy(Long amount) {
-        return new Donation(Message.defaultMessage(), 0L);
+        return new Donation(new Message("익명인"), 0L);
     }
 }
