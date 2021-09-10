@@ -44,14 +44,14 @@ export const StyledLogo = styled(IconButton).attrs({
   src: logoImg,
 })`
   width: 8.5rem;
-  height: 3.16rem;
+  height: auto;
+
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 
   @media ${DEVICE.DESKTOP} {
     width: 10rem;
-    height: 2.4rem;
   }
 `;
 
