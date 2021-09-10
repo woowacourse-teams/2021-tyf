@@ -4,7 +4,6 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.exception.AccountRequestingException;
-import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,16 +24,22 @@ public class MemberTest {
         return new Member("tyf@gmail.com", "nickname", "pageName", Oauth2Type.NAVER, "https://test.com/test");
     }
 
+    public static Member testMemberWithAvailablePoint(long availablePoint) {
+        return new Member("tyf@gmail.com", "nickname", "pageName", Oauth2Type.NAVER, "https://test.com/test", new Point(availablePoint));
+    }
+
     @Test
     @DisplayName("addDonation 메서드 테스트")
     public void addDonationTest() {
         //given
         Member member = testMember();
-        Donation donation = new Donation(new Payment(1000L, "test@test.com", "test"), new Message("name", "message", false));
+        Donation donation = new Donation(new Message("name", "message", false), 1_000L);
+
         //when
         member.addDonation(donation);
+
         //then
-        assertThat(member.getDonatedPoint()).isEqualTo(1000L);
+        assertThat(member.getDonations()).isNotEmpty();
     }
 
     @Test

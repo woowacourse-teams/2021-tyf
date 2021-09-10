@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
+import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ class PaymentRepositoryTest {
     private PaymentRepository paymentRepository;
 
     private UUID uuid = UUID.randomUUID();
-    private Payment payment = new Payment(1000L, "email@gmail.com", "pageName", uuid);
+    private Payment payment = new Payment(Item.ITEM_1.getItemPrice(), Item.ITEM_1.getItemName(), uuid);
 
     @BeforeEach
     void setUp() {
