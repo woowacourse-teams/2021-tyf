@@ -6,6 +6,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 interface WebpackConfig extends webpack.Configuration {
   devServer?: webpackDevServer.Configuration;
@@ -50,6 +51,17 @@ const config: WebpackConfig = {
     ],
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve('public'),
+          to: path.resolve('server', 'dist'),
+          globOptions: {
+            ignore: [path.resolve('public', 'index.html'), path.resolve('public', 'favicon.ico')],
+          },
+        },
+      ],
+    }) as unknown as webpack.WebpackPluginInstance,
     new HtmlWebpackPlugin({
       template: path.resolve('public', 'index.html'),
       base: '/',
@@ -72,6 +84,7 @@ const config: WebpackConfig = {
       test: /\.(js|html)$/,
       filename: 'compressed/[path][base].gz',
     }),
+
     new BundleAnalyzerPlugin({
       analyzerMode: 'disabled',
       generateStatsFile: true,
