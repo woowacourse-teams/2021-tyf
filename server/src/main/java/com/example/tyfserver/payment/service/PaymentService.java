@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -46,7 +47,7 @@ public class PaymentService {
                 .orElseThrow(MemberNotFoundException::new);
 
         Item item = Item.findItem(itemId);
-        Payment payment = new Payment(item.getItemPrice(), donator.getEmail(), item.getItemName());
+        Payment payment = new Payment(item.getItemPrice(), item.getItemName());
         donator.addPayment(payment);
         Payment savedPayment = paymentRepository.save(payment);
         return new PaymentPendingResponse(savedPayment);
@@ -87,7 +88,7 @@ public class PaymentService {
         if (payment.isNotPaid()) {
             throw new CannotRefundException(payment.getStatus());
         }
-        if (payment.isAfterRefundGuaranteeDuration()) {
+        if (payment.isAfterRefundGuaranteeDuration(LocalDate.now())) {
             throw new RefundGuaranteeDurationException();
         }
         payment.validateMemberHasRefundablePoint();

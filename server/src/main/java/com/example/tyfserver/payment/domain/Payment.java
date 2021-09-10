@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
@@ -49,28 +50,29 @@ public class Payment extends BaseTimeEntity {
     @JoinColumn(name = "refund_failure_id")
     private RefundFailure refundFailure;
 
-    public Payment(Long id, Long amount, Email email, String itemName, UUID merchantUid) {
+    public Payment(Long id, Long amount, String itemName, String impUid, UUID merchantUid, LocalDateTime createdAt) {
+        super(createdAt);
         this.id = id;
         this.amount = amount;
-        this.email = email;
         this.itemName = itemName;
+        this.impUid = impUid;
         this.merchantUid = merchantUid;
     }
 
-    public Payment(Long id, Long amount, String email, String itemName, UUID merchantUid) {
-        this(id, amount, new Email(email), itemName, merchantUid);
+    public Payment(Long id, Long amount, String itemName, String impUid, UUID merchantUid) {
+        this(id, amount, itemName, impUid, merchantUid, null);
     }
 
-    public Payment(Long amount, String email, String itemName, UUID merchantUid) {
-        this(null, amount, email, itemName, merchantUid);
+    public Payment(Long amount, String itemName, String impUid, UUID merchantUid) {
+        this(null, amount, itemName, impUid, merchantUid);
     }
 
-    public Payment(Long id, Long amount, String email, String itemName) {
-        this(id, amount, email, itemName, UUID.randomUUID());
+    public Payment(Long amount, String itemName, UUID merchantUid) {
+        this(amount, itemName, null, merchantUid);
     }
 
-    public Payment(Long amount, String email, String itemName) {
-        this(null, amount, email, itemName, UUID.randomUUID());
+    public Payment(Long amount, String itemName) {
+        this(amount, itemName, UUID.randomUUID());
     }
 
     public String getMaskedEmail() {
@@ -128,14 +130,14 @@ public class Payment extends BaseTimeEntity {
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, paymentInfo.getModule());
         }
 
-        if (!itemName.equals(paymentInfo.getPageName())) {
+        if (!itemName.equals(paymentInfo.getItemName())) {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
         }
     }
 
     public void checkRemainTryCount() {
-        if (refundFailure != null && refundFailure.getRemainTryCount() == 0) {
+        if (refundFailure != null && refundFailure.isBlocked()) {
             throw new RefundVerificationBlockedException();
         }
     }
@@ -170,11 +172,9 @@ public class Payment extends BaseTimeEntity {
         return status != PaymentStatus.PAID;
     }
 
-    public boolean isAfterRefundGuaranteeDuration() {
+    public boolean isAfterRefundGuaranteeDuration(LocalDate now) {
         LocalDate createdDate = getCreatedAt().toLocalDate();
-        LocalDate nowDate = LocalDate.now();
-
-        return nowDate.isAfter(createdDate.plusDays(6));
+        return now.isAfter(createdDate.plusDays(6));
     }
 
     public void validateMemberHasRefundablePoint() {
@@ -183,5 +183,6 @@ public class Payment extends BaseTimeEntity {
 
     public void to(Member member) {
         this.member = member;
+        this.email = new Email(member.getEmail());
     }
 }

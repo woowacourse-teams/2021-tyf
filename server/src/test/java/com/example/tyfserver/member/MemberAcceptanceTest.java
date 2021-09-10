@@ -6,8 +6,11 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
+import com.example.tyfserver.payment.domain.Item;
+import com.example.tyfserver.payment.dto.PaymentCompleteResponse;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
@@ -26,7 +29,7 @@ import java.util.Map;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
 import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
-import static com.example.tyfserver.payment.PaymentAcceptanceTest.페이먼트_생성;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
@@ -66,8 +69,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart(multiPartSpecification)
                 .put("/members/profile")
-                .then().extract()
-                ;
+                .then().extract();
     }
 
     public static ExtractableResponse<Response> 프로필_삭제(String token) {
@@ -186,7 +188,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null, false)
+                        "제 페이지에 와주셔서 감사합니다!", null, 0, false)
                 );
     }
 
@@ -206,7 +208,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
-                        "제 페이지에 와주셔서 감사합니다!", null, false)
+                        "제 페이지에 와주셔서 감사합니다!", null, 0, false)
                 );
     }
 
@@ -280,19 +282,18 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("큐레이션 조회")
+    @DisplayName("큐레이션 - 후원 금액을 많이 받은 순으로 10명의 창작자를 뽑는다.")
     public void curations() {
         회원생성을_요청("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
         회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
-        회원생성을_요청("user1@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse.getMerchantUid().toString());
 
+        SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "pagename");
+        후원_생성("pagename3", 10000L, signUpResponse.getToken());
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
 
         assertThat(curations).hasSize(3);
-        assertThat(curations.get(0).getPageName()).isEqualTo("pagename");
-        assertThat(curations.get(1).getPageName()).isEqualTo("pagename3");
+        assertThat(curations.get(0).getPageName()).isEqualTo("pagename3");
+        assertThat(curations.get(1).getPageName()).isEqualTo("pagename");
         assertThat(curations.get(2).getPageName()).isEqualTo("pagename2");
     }
 
@@ -300,19 +301,16 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("상세 포인트를 조회하는 경우")
     public void detailedPoint() {
         //given
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("tyf@gmail.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse1 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse1.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse2 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse2.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
-        PaymentPendingResponse pendingResponse3 = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse3.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "donator");
+
+        SignUpResponse creatorSignUpResponse = 회원가입_후_로그인되어_있음("creator@gmail.com", "KAKAO", "creator", "creator");
+        후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class);
 
         //when
-        DetailedPointResponse response = 상세_포인트_조회(signUpResponse.getToken()).as(DetailedPointResponse.class);
+        DetailedPointResponse response = 상세_포인트_조회(creatorSignUpResponse.getToken()).as(DetailedPointResponse.class);
 
         //then
-        assertThat(response.getCurrentPoint()).isEqualTo(30000L);
+        assertThat(response.getCurrentPoint()).isEqualTo(10000L);
         assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }
@@ -350,8 +348,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void requestExchangeAmountLessThanLimit() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
-        후원_생성("impUid", pendingResponse.getMerchantUid().toString()).as(DonationResponse.class).getDonationId();
+        PaymentPendingResponse pendingResponse = 페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken()).as(PaymentPendingResponse.class);
+        후원_생성("pagename", 10000L, signUpResponse.getToken());
 
         //when
         ErrorResponse errorResponse = 정산_요청(signUpResponse.getToken()).as(ErrorResponse.class);
