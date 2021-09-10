@@ -110,7 +110,7 @@ const downKeyFrames = keyframes`
 }
 `;
 
-export const DownIcon = styled.img.attrs({ src: RightArrow })`
+export const DownIcon = styled.img.attrs({ src: RightArrow, alt: 'down icon' })`
   transform: rotate(90deg);
   width: 1.5rem;
   height: 1.5rem;
