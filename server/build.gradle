@@ -5,7 +5,7 @@ plugins {
     id 'java'
     //queryDsl
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
-    id 'jacoco'
+//    id 'jacoco'
 }
 
 group = 'com.example'
@@ -119,77 +119,77 @@ compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 //queryDsl end
-
-jacoco {
-    toolVersion="0.8.5"
-}
-
-jacocoTestReport {
-    dependsOn bootJar
-
-    reports {
-        html.enabled true
-        xml.enabled true
-        csv.enabled false
-
-        html.destination file("src/jacoco/jacoco.html")
-        xml.destination file("src/jacoco/jacoco.xml")
-    }
-
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it,
-                    exclude: [
-                            '**/TyfServerApplication*',
-                            '**/*Request*',
-                            '**/*Response*',
-                            '**/QA*','**/QB*','**/QC*','**/QD*', '**/QE*',
-                            '**/QF*', '**/QG*', '**/QH*', '**/QI*', '**/QJ*',
-                            '**/QK*', '**/QL*', '**/QM*', '**/QN*', '**/QO*',
-                            '**/QP*', '**/QQ*', '**/QR*', '**/QS*', '**/QT*',
-                            '**/QU*', '**/QV*', '**/QW*', '**/QX*', '**/QY*', '**/QZ*',
-                            '**/*S3*',
-                            '**/RefundFailure',
-                            '**/DataLoader',
-                            '**/LoginMember',
-                            '**/*Connector'
-                    ])
-        }))
-    }
-
-    finalizedBy 'jacocoTestCoverageVerification'
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            enabled = true
-            element = 'CLASS'
-
-            limit {
-                counter = 'METHOD'
-                value = 'COVEREDRATIO'
-                minimum = 0.6
-            }
-
-            excludes = [
-                    '**.*TyfServerApplication*',
-                    '*.Q*',
-                    '**.*Request*',
-                    '**.*Response*',
-                    '**.*LoginMember',
-                    '**.*Interceptor*',
-                    '**.*Exception*',
-                    '**.*S3*',
-                    '**.*DataLoader*',
-                    '**.NaverOauth2',
-                    '**.RefundFailure',
-                    '**.IamPortPayment*',
-                    '**.ApiSender',
-                    '**.*Connector',
-                    '**.Oauth2Token',
-                    '**.AdminAccount'
-            ]
-        }
-    }
-}
+//
+//jacoco {
+//    toolVersion="0.8.5"
+//}
+//
+//jacocoTestReport {
+//    dependsOn bootJar
+//
+//    reports {
+//        html.enabled true
+//        xml.enabled true
+//        csv.enabled false
+//
+//        html.destination file("src/jacoco/jacoco.html")
+//        xml.destination file("src/jacoco/jacoco.xml")
+//    }
+//
+//    afterEvaluate {
+//        classDirectories.setFrom(files(classDirectories.files.collect {
+//            fileTree(dir: it,
+//                    exclude: [
+//                            '**/TyfServerApplication*',
+//                            '**/*Request*',
+//                            '**/*Response*',
+//                            '**/QA*','**/QB*','**/QC*','**/QD*', '**/QE*',
+//                            '**/QF*', '**/QG*', '**/QH*', '**/QI*', '**/QJ*',
+//                            '**/QK*', '**/QL*', '**/QM*', '**/QN*', '**/QO*',
+//                            '**/QP*', '**/QQ*', '**/QR*', '**/QS*', '**/QT*',
+//                            '**/QU*', '**/QV*', '**/QW*', '**/QX*', '**/QY*', '**/QZ*',
+//                            '**/*S3*',
+//                            '**/RefundFailure',
+//                            '**/DataLoader',
+//                            '**/LoginMember',
+//                            '**/*Connector'
+//                    ])
+//        }))
+//    }
+//
+//    finalizedBy 'jacocoTestCoverageVerification'
+//}
+//
+//jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            enabled = true
+//            element = 'CLASS'
+//
+//            limit {
+//                counter = 'METHOD'
+//                value = 'COVEREDRATIO'
+//                minimum = 0.6
+//            }
+//
+//            excludes = [
+//                    '**.*TyfServerApplication*',
+//                    '*.Q*',
+//                    '**.*Request*',
+//                    '**.*Response*',
+//                    '**.*LoginMember',
+//                    '**.*Interceptor*',
+//                    '**.*Exception*',
+//                    '**.*S3*',
+//                    '**.*DataLoader*',
+//                    '**.NaverOauth2',
+//                    '**.RefundFailure',
+//                    '**.IamPortPayment*',
+//                    '**.ApiSender',
+//                    '**.*Connector',
+//                    '**.Oauth2Token',
+//                    '**.AdminAccount'
+//            ]
+//        }
+//    }
+//}
