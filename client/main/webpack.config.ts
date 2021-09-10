@@ -93,5 +93,6 @@ const config: WebpackConfig = {
 };
 
 config.mode = isProduction ? 'production' : 'development';
+config.devtool = isProduction ? 'source-map' : 'inline-source-map';
 
 export default config;
