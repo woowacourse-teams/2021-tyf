@@ -23,8 +23,8 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/admin/login")
                 .addPathPatterns("/members/me", "/members/me/point", "/members/profile", "/members/me/bio",
                         "/members/me/nickname", "/members/me/detailedPoint", "/members/me/account", "/members/me/exchange")
-                .addPathPatterns("/payments/**")
-                .addPathPatterns("/donations/me")
+                .addPathPatterns("payments/**")
+                .addPathPatterns("donations/", "donations/*/messages", "/donations/me")
                 .addPathPatterns("/banners", "/banners/me")
                 .addPathPatterns("/admin", "/admin/**");
     }

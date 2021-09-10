@@ -208,8 +208,7 @@ class PaymentServiceTest {
     void refundVerificationReady() {
         // given
         RefundVerificationReadyRequest request = new RefundVerificationReadyRequest(MERCHANT_UID.toString());
-        Payment payment = PaymentTest.testPayment();
-        payment.setCreatedAt(LocalDateTime.now().minusDays(1));
+        Payment payment = PaymentTest.testPayment(LocalDateTime.now().minusDays(1));
         payment.updateStatus(PaymentStatus.PAID);
 
         // when
