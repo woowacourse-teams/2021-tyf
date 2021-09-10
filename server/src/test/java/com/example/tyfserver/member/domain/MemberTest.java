@@ -101,7 +101,6 @@ public class MemberTest {
                 .isExactlyInstanceOf(AccountRequestingException.class);
     }
 
-
     @Test
     @DisplayName("계좌정보가 등록이 승인된다.")
     public void approveAccount() {
@@ -116,7 +115,6 @@ public class MemberTest {
         Account memberAccount = member.getAccount();
         assertThat(memberAccount.getStatus()).isEqualTo(AccountStatus.REGISTERED);
     }
-
 
     @Test
     @DisplayName("계좌정보가 등록이 반려된다.")

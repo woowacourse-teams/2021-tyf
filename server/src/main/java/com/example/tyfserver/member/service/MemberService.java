@@ -38,13 +38,13 @@ public class MemberService {
         }
     }
 
-    public MemberResponse findMember(String pageName) {
+    public MemberResponse findMemberByPageName(String pageName) {
         Member member = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
         return new MemberResponse(member);
     }
 
-    public MemberResponse findMemberDetail(Long id) {
+    public MemberResponse findMemberById(Long id) {
         Member member = findMember(id);
         return new MemberResponse(member);
     }

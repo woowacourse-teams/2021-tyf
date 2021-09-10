@@ -15,7 +15,7 @@ public class DonationMessageRequest {
 
     @NotBlank
     @Length(max = 20)
-    private String name;
+    private String name; // todo 멤버의 닉네임을 사용해야함
     @NotBlank
     @Length(min = 1, max = 200)
     private String message;

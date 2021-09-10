@@ -12,7 +12,6 @@ import java.util.List;
 import static com.example.tyfserver.donation.domain.QDonation.donation;
 import static com.example.tyfserver.member.domain.QAccount.account;
 import static com.example.tyfserver.member.domain.QMember.member;
-import static com.example.tyfserver.payment.domain.QPayment.payment;
 
 public class MemberRepositoryImpl implements MemberQueryRepository {
 
@@ -29,7 +28,7 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
                 .from(member)
                 .leftJoin(member.donations, donation)
                 .groupBy(member.nickname)
-                .orderBy(donation.point.sum().desc())
+                .orderBy(donation.point.sum().desc()) // todo 개선 필요 : 도네이션 합계 쿼리시 모든 도네이션을 계산중임. CANCELLED 같은 애들은 빼고 정상적인 도네이션만 쿼리 필요.
                 .offset(0)
                 .limit(10)
                 .fetch();
