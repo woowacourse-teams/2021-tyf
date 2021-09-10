@@ -288,13 +288,14 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
 
         SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "pagename");
-        후원_생성("pagename3", 10000L, signUpResponse.getToken());
+        후원_생성("pagename3", 1000L, signUpResponse.getToken());
+        후원_생성("pagename2", 2000L, signUpResponse.getToken());
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
 
         assertThat(curations).hasSize(3);
-        assertThat(curations.get(0).getPageName()).isEqualTo("pagename3");
-        assertThat(curations.get(1).getPageName()).isEqualTo("pagename");
-        assertThat(curations.get(2).getPageName()).isEqualTo("pagename2");
+        assertThat(curations.get(0).getPageName()).isEqualTo("pagename2");
+        assertThat(curations.get(1).getPageName()).isEqualTo("pagename3");
+        assertThat(curations.get(2).getPageName()).isEqualTo("pagename");
     }
 
     @Test
