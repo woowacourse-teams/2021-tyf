@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -87,7 +88,7 @@ public class PaymentService {
         if (payment.isNotPaid()) {
             throw new CannotRefundException(payment.getStatus());
         }
-        if (payment.isAfterRefundGuaranteeDuration()) {
+        if (payment.isAfterRefundGuaranteeDuration(LocalDate.now())) {
             throw new RefundGuaranteeDurationException();
         }
         payment.validateMemberHasRefundablePoint();

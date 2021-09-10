@@ -1,7 +1,7 @@
 package com.example.tyfserver.common.domain;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -12,11 +12,15 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
+@NoArgsConstructor
 @Getter
-@Setter // todo: 이 부분은 테스트 통과를 위해서 임시로 지정 (팀원들한테 조언 구하기!)
 public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public BaseTimeEntity(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -32,7 +33,11 @@ public class PaymentTest {
             "https://cloudfront.net/profile.png", new Point(1_000L));
 
     public static Payment testPayment() {
-        Payment payment = new Payment(AMOUNT, ITEM_NAME, MERCHANT_UID);
+        return testPayment(null);
+    }
+
+    public static Payment testPayment(LocalDateTime now) {
+        Payment payment = new Payment(null, AMOUNT, ITEM_NAME, IMP_UID, MERCHANT_UID, now);
         payment.to(DONATOR);
         return payment;
     }
@@ -225,27 +230,20 @@ public class PaymentTest {
     @Test
     void testIsAfterRefundGuaranteeDurationIfPaymentInRefundGuaranteeDuration() {
         //given
-        Payment payment = testPayment();
-        payment.setCreatedAt(LocalDateTime.now().minusDays(1));
+        int year = 2020;
+        int month = 1;
 
-        //when
-        boolean actual = payment.isAfterRefundGuaranteeDuration();
+        // 1일 1시 0분 구매
+        LocalDateTime refundAt;
+        LocalDateTime createdAt = LocalDateTime.of(year, month, 1, 1, 0);
+        Payment payment = testPayment(createdAt);
 
-        //then
-        assertThat(actual).isFalse();
-    }
+        // 7일 23시 59분 까지 보증기간 남음(환불 가능)
+        refundAt = LocalDateTime.of(year, month, 7, 23, 59);
+        assertThat(payment.isAfterRefundGuaranteeDuration(refundAt.toLocalDate())).isFalse();
 
-    @DisplayName("환불 보증 기간이 만료된 경우, 환불 보증 기간이 지났는지 확인하는 기능")
-    @Test
-    void testIsAfterRefundGuaranteeDurationIfPaymentAfterRefundGuaranteeDuration() {
-        //given
-        Payment payment = testPayment();
-        payment.setCreatedAt(LocalDateTime.now().minusDays(7));
-
-        //when
-        boolean actual = payment.isAfterRefundGuaranteeDuration();
-
-        //then
-        assertThat(actual).isTrue();
+        // 8일 0시 0분 부터는 보증기간 지남(환불 불가)
+        refundAt = LocalDateTime.of(year, month, 8, 0, 0);
+        assertThat(payment.isAfterRefundGuaranteeDuration(refundAt.toLocalDate())).isTrue();
     }
 }
