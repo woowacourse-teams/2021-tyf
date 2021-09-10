@@ -16,7 +16,9 @@ const DesktopCreatorList = () => {
 
   return (
     <List>
-      {!isFirstPage && <LeftArrowButton src={LeftArrow} onClick={showPrevList} />}
+      {!isFirstPage && (
+        <LeftArrowButton aria-label="left-arrow" src={LeftArrow} onClick={showPrevList} />
+      )}
       <ItemContainer ref={listRef}>
         {creatorList.map((creator, index) => (
           <li key={index}>
@@ -26,7 +28,9 @@ const DesktopCreatorList = () => {
           </li>
         ))}
       </ItemContainer>
-      {!isLastPage && <RightArrowButton src={RightArrow} onClick={showNextList} />}
+      {!isLastPage && (
+        <RightArrowButton aria-label="right-arrow" src={RightArrow} onClick={showNextList} />
+      )}
     </List>
   );
 };

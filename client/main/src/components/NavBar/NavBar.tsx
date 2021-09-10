@@ -21,7 +21,7 @@ const NavBar = () => {
   return (
     <>
       <StyledNavBar>
-        <StyledLogo onClick={() => history.push('/')} />
+        <StyledLogo aria-label="logo" onClick={() => history.push('/')} />
         {userInfo ? (
           <>
             <StyledPoint onClick={() => history.push('/mypoint')}>
