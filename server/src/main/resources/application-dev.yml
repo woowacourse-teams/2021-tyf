@@ -17,7 +17,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 
   profiles:
     include: dev-secret, aws
