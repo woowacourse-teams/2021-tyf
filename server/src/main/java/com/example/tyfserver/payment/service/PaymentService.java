@@ -18,6 +18,7 @@ import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.*;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import com.example.tyfserver.payment.repository.RefundFailureRepository;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,7 @@ public class PaymentService {
                 .orElseThrow(MemberNotFoundException::new);
 
         Item item = Item.findItem(itemId);
-        Payment payment = new Payment(item.getItemPrice(), item.getItemName());
+        Payment payment = new Payment(TaxIncludedCalculator.addTax(item.getItemPrice()), item.getItemName());
         donator.addPayment(payment);
         Payment savedPayment = paymentRepository.save(payment);
         return new PaymentPendingResponse(savedPayment);
