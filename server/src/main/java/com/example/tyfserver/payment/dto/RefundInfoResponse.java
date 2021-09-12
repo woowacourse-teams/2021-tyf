@@ -1,6 +1,5 @@
 package com.example.tyfserver.payment.dto;
 
-import com.example.tyfserver.payment.domain.Payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,9 +23,5 @@ public class RefundInfoResponse {
         this.price = price;
         this.createdAt = createdAt;
         this.itemName = itemName;
-    }
-
-    public RefundInfoResponse(Payment payment) {
-        this(payment.getAmount(), payment.getCreatedAt(), payment.getItemName());
     }
 }
