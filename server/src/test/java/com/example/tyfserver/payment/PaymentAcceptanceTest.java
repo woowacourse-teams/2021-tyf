@@ -76,7 +76,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("후원자가 유효하지 않은 ITEM으로 충전을 요청할 경우, ItemNotFoundException(payment-0014)을 응답한다.")
+    @DisplayName("후원자가 유효하지 않은 ITEM으로 충전을 요청할 경우, ItemNotFoundException(payment-014)을 응답한다.")
     public void paymentInvalidRequest() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("donator@gmail.com", "KAKAO", "donator", "pagename");
@@ -305,17 +305,23 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
     void refundPaymentAlreadyCancelled() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("refunder@gmail.com", "KAKAO", "refunder", "refunder");
-        String merchantUid = 페이먼트_생성(Item.ITEM_100.name(), signUpResponse.getToken())
+        String merchantUid1 = 페이먼트_생성(Item.ITEM_100.name(), signUpResponse.getToken())
                 .as(PaymentPendingResponse.class).getMerchantUid().toString();
-        페이먼트_완료("impUid", merchantUid, signUpResponse.getToken()).as(PaymentCompleteResponse.class);
 
-        환불_인증코드_생성(merchantUid, "123456", signUpResponse.getToken());
-        String token = 환불_인증코드_인증(merchantUid, "123456", signUpResponse.getToken())
+        String merchantUid2 = 페이먼트_생성(Item.ITEM_100.name(), signUpResponse.getToken())
+                .as(PaymentPendingResponse.class).getMerchantUid().toString();
+
+
+        페이먼트_완료("impUid1", merchantUid1, signUpResponse.getToken()).as(PaymentCompleteResponse.class);
+        페이먼트_완료("impUid2", merchantUid2, signUpResponse.getToken()).as(PaymentCompleteResponse.class);
+
+        환불_인증코드_생성(merchantUid1, "123456", signUpResponse.getToken());
+        String token = 환불_인증코드_인증(merchantUid1, "123456", signUpResponse.getToken())
                 .as(RefundVerificationResponse.class).getRefundAccessToken();
-        환불_요청_성공(token, merchantUid);
+        환불_요청_성공(token, merchantUid1);
 
         //when
-        ErrorResponse errorResponse = 환불_요청_성공(token, merchantUid).as(ErrorResponse.class);
+        ErrorResponse errorResponse = 환불_요청_성공(token, merchantUid1).as(ErrorResponse.class);
 
         //then
         assertThat(errorResponse.getErrorCode()).isEqualTo(PaymentAlreadyCancelledException.ERROR_CODE);

@@ -51,6 +51,7 @@ public class Payment extends BaseTimeEntity {
     @JoinColumn(name = "refund_failure_id")
     private RefundFailure refundFailure;
 
+
     public Payment(Long id, Long amount, String itemName, String impUid, UUID merchantUid, LocalDateTime createdAt) {
         super(createdAt);
         this.id = id;
@@ -108,7 +109,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentCancel(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.CANCELLED;
-        member.reducePoint(amount);
+        member.reducePoint(TaxIncludedCalculator.detachTax(amount));
     }
 
     private void validatePaymentCancel(PaymentInfo paymentInfo) {
@@ -179,7 +180,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     public void validateMemberHasRefundablePoint() {
-        member.validateEnoughPoint(amount);
+        member.validateEnoughPoint(TaxIncludedCalculator.detachTax(amount));
     }
 
     public void to(Member member) {
