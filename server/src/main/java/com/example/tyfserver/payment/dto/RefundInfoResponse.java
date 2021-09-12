@@ -12,14 +12,16 @@ import java.time.LocalDateTime;
 @Getter
 public class RefundInfoResponse {
 
-    private Long amount;
+    private Long point;
+    private Long price;
     private String itemName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy'/'MM'/'dd'/' HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-    public RefundInfoResponse(Long amount, LocalDateTime createdAt, String itemName) {
-        this.amount = amount;
+    public RefundInfoResponse(Long point, Long price, LocalDateTime createdAt, String itemName) {
+        this.point = point;
+        this.price = price;
         this.createdAt = createdAt;
         this.itemName = itemName;
     }

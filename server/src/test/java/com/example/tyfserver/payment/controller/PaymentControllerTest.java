@@ -247,7 +247,7 @@ public class PaymentControllerTest {
                         .header("Authorization", "Bearer {refundAccessToken}")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("amount").value(refundInfoResponse.getAmount()))
+                .andExpect(jsonPath("amount").value(refundInfoResponse.getPoint()))
                 .andExpect(jsonPath("itemName").value(refundInfoResponse.getItemName()))
                 .andDo(document("refundInfo",
                         preprocessRequest(prettyPrint()),

@@ -30,6 +30,8 @@ import java.util.UUID;
 @Transactional
 public class PaymentService {
 
+    private static final double TAX_RATIO = 0.1;
+    private static final double TAX_TO_POINT_RATIO = 1.0 / 1.1;
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final RefundFailureRepository refundFailureRepository;
@@ -47,7 +49,7 @@ public class PaymentService {
                 .orElseThrow(MemberNotFoundException::new);
 
         Item item = Item.findItem(itemId);
-        Payment payment = new Payment(item.getItemPrice(), item.getItemName());
+        Payment payment = new Payment((long) (item.getItemPrice() * TAX_RATIO), item.getItemName());
         donator.addPayment(payment);
         Payment savedPayment = paymentRepository.save(payment);
         return new PaymentPendingResponse(savedPayment);
@@ -137,7 +139,12 @@ public class PaymentService {
     public RefundInfoResponse refundInfo(VerifiedRefunder refundInfoRequest) {
         Payment payment = findPayment(refundInfoRequest.getMerchantUid());
 
-        return new RefundInfoResponse(payment);
+        return new RefundInfoResponse(
+                (long) (payment.getAmount() * TAX_TO_POINT_RATIO),
+                payment.getAmount(),
+                payment.getCreatedAt(),
+                payment.getItemName()
+                );
     }
 
     public void refundPayment(VerifiedRefunder verifiedRefunder) {

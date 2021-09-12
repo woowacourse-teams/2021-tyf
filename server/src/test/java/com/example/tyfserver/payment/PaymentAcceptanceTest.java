@@ -264,7 +264,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(refundInfoResponse.getAmount()).isEqualTo(Item.ITEM_100.getItemPrice()),
+                () -> assertThat(refundInfoResponse.getPoint()).isEqualTo(Item.ITEM_100.getItemPrice()),
                 () -> assertThat(refundInfoResponse.getItemName()).isEqualTo(Item.ITEM_100.getItemName())
         );
     }
