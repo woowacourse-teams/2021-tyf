@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class TaxIncludedCalculator {
 
@@ -11,6 +12,6 @@ public class TaxIncludedCalculator {
     }
 
     public static long detachTax(long price) {
-        return BigDecimal.valueOf(price).divide(BigDecimal.valueOf(TAX_RATIO)).longValue();
+        return BigDecimal.valueOf(price).divide(BigDecimal.valueOf(TAX_RATIO), MathContext.DECIMAL32).longValue();
     }
 }

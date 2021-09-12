@@ -16,6 +16,7 @@ import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.*;
 import com.example.tyfserver.payment.exception.*;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -343,10 +344,10 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
     private static Stream<Arguments> refundPaymentNotMatchingRefundInfo() {
         return Stream.of(
-                Arguments.of(Item.ITEM_100.getItemPrice(), "refunder", PaymentStatus.PAID, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
-                Arguments.of(Item.ITEM_100.getItemPrice(), "refunder", PaymentStatus.PENDING, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
-                Arguments.of(Item.ITEM_10.getItemPrice(), "refunder", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT),
-                Arguments.of(Item.ITEM_100.getItemPrice(), "refunder2", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR)
+                Arguments.of(TaxIncludedCalculator.addTax(Item.ITEM_100.getItemPrice()), "refunder", PaymentStatus.PAID, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
+                Arguments.of(TaxIncludedCalculator.addTax(Item.ITEM_100.getItemPrice()), "refunder", PaymentStatus.PENDING, IllegalPaymentInfoException.ERROR_CODE_NOT_CANCELLED),
+                Arguments.of(TaxIncludedCalculator.addTax(Item.ITEM_10.getItemPrice()), "refunder", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT),
+                Arguments.of(TaxIncludedCalculator.addTax(Item.ITEM_100.getItemPrice()), "refunder2", PaymentStatus.CANCELLED, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR)
         );
     }
 
@@ -368,7 +369,8 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 환불_요청_성공(String token, String merchantUid) {
         when(paymentServiceConnector.requestPaymentRefund(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED, Item.ITEM_100.getItemPrice(),
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.CANCELLED,
+                        TaxIncludedCalculator.addTax(Item.ITEM_100.getItemPrice()),
                         Item.ITEM_100.getItemName(), "impUid", "module"));
 
         return authPost("/payments/refund", token, new VerifiedRefunder(merchantUid)).extract();
