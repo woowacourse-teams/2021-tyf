@@ -7,6 +7,7 @@ import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -52,7 +53,8 @@ public class AcceptanceTest {
         doNothing().when(s3Connector).delete(anyString());
 
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, Item.ITEM_100.getItemPrice(),
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID,
+                        TaxIncludedCalculator.addTax(Item.ITEM_100.getItemPrice()),
                         Item.ITEM_100.getItemName(), "impUid", "module"));
     }
 
