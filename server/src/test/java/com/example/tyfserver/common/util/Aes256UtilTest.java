@@ -1,8 +1,11 @@
 package com.example.tyfserver.common.util;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class Aes256UtilTest {
@@ -10,15 +13,10 @@ class Aes256UtilTest {
     @Autowired
     Aes256Util aes256Util;
 
-    @Test
-    void encrypt() {
-        System.out.println("result123 : " + aes256Util.encrypt("1234-1234-1234"));
-    }
-
+    @DisplayName("암호화 된 데이터를 복호화 한다.")
     @Test
     void decrypt() {
-        String aes = aes256Util.encrypt("");
-        System.out.println("result123:" + aes256Util.decrypt(aes));
-
+        String aes = aes256Util.encrypt("1234-1234-1234-1234");
+        assertThat(aes256Util.decrypt(aes)).isEqualTo("1234-1234-1234-1234");
     }
 }
