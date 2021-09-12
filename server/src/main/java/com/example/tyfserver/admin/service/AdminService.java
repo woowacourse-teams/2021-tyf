@@ -72,7 +72,7 @@ public class AdminService {
                     account.getBank(),account.getBankbookUrl()));
         }
 
-        return RequestingAccountResponse.toList(memberRepository.findRequestingAccounts());
+        return requestingAccountResponses;
     }
 
     public List<ExchangeResponse> exchangeList() {

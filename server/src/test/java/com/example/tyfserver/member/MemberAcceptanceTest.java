@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.tyfserver.admin.AdminAcceptanceTest.관리자_로그인;
+import static com.example.tyfserver.admin.AdminAcceptanceTest.요청_계좌_승인;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
 import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
@@ -326,6 +328,30 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         assertThat(accountInfoResponse).usingRecursiveComparison()
                 .isEqualTo(AccountInfoResponse.of(new Account()));
+    }
+
+    @Test
+    @DisplayName("계좌 정보 조회 요청 - 계좌 등록 후")
+    public void getAccountInfoAfterAccountRegistered() {
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com",
+                "KAKAO", "nickname", "pagename");
+
+        MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
+                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
+                .controlName("bankbookImage")
+                .fileName("bankbook.jpg")
+                .build();
+
+        계좌_등록(multiPartSpecification, "name", "1234-5678-1234", "bank", signUpResponse.getToken());
+
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+        요청_계좌_승인(1L, token);
+
+        ExtractableResponse<Response> response = 계좌_조회(signUpResponse.getToken());
+        AccountInfoResponse accountInfoResponse = response.as(AccountInfoResponse.class);
+        assertThat(accountInfoResponse.getAccountHolder()).isEqualTo("name");
+        assertThat(accountInfoResponse.getAccountNumber()).isEqualTo("1234-5678-1234");
+        assertThat(accountInfoResponse.getBank()).isEqualTo("bank");
     }
 
     @Test

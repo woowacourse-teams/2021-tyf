@@ -36,6 +36,7 @@ public class Aes256Util {
     }
 
     public String decrypt(String encryptedData) {
+        System.out.println("decrypt : " + encryptedData);
         byte[] keyData;
         try {
             keyData = secretKey.getBytes(StandardCharsets.UTF_8);
