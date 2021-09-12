@@ -62,7 +62,7 @@ export interface Refund {
 }
 
 export interface refundOrderDetail {
-  chargedPoint: number;
+  point: number;
   price: number;
   createdAt: Date;
 }

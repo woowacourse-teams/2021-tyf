@@ -15,7 +15,7 @@ const RefundInfo = ({ refundAccessToken }: RefundInfoProps) => {
       <InfoContainer>
         <p>
           <InfoTitle>충전포인트:</InfoTitle>
-          {toCommaSeparatedString(refundOrderDetail.chargedPoint)} tp
+          {toCommaSeparatedString(refundOrderDetail.point)} tp
         </p>
         <p>
           <InfoTitle>결제금액:</InfoTitle>

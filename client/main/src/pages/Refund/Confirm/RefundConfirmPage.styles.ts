@@ -10,6 +10,7 @@ export const RefundConfirmPageTemplate = styled(Template)`
   align-items: center;
   flex-direction: column;
   min-height: 50rem;
+  height: 100vh;
   max-width: ${SIZE.MOBILE_MAX}px;
 `;
 

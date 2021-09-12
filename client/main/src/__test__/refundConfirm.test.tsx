@@ -14,7 +14,7 @@ describe('RefundConfirmPage', () => {
 
   test('환불 대상 결제의 정보가 보인다.', async () => {
     // 충전포인트
-    await screen.findByText(new RegExp(toCommaSeparatedString(refundInfoMock.chargedPoint)));
+    await screen.findByText(new RegExp(toCommaSeparatedString(refundInfoMock.point)));
     // 결제금액
     await screen.findByText(new RegExp(toCommaSeparatedString(refundInfoMock.price)));
     // 결제일자

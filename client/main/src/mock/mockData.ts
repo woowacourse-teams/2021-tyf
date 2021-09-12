@@ -101,7 +101,7 @@ export const donationMessageListMock: Donation[] = [
 ];
 
 export const refundInfoMock = {
-  chargedPoint: 5500,
+  point: 5500,
   price: 5000,
   createdAt: '2021.08.03_17:24',
 };
