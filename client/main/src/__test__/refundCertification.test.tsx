@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import RefundCertificationPage from '../pages/Refund/Certification/RefundCertificationPage';
-import { mockAlert, mockHistoryPush, myRender } from './utils/testUtil';
+import { mockAlert, myRender } from './utils/testUtil';
 
 const historyPushMock = jest.fn();
 const alertMock = mockAlert();

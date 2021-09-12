@@ -61,7 +61,7 @@ export const Name = styled.h4`
   position: absolute;
   text-align: center;
   line-height: 1.625rem;
-  font-weight: 600;
+  font-weight: 700;
   top: 6.5rem;
   left: 50%;
   transform: translateX(-50%);

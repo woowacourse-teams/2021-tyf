@@ -9,7 +9,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 700;
   color: ${(props) => props.theme.color.sub};
   background-color: ${(props) => props.theme.primary.base};
   cursor: pointer;

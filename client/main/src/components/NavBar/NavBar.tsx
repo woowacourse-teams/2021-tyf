@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
 import useUserInfo from '../../service//user/useUserInfo';
+import { toCommaSeparatedString } from '../../utils/format';
 import useModal from '../../utils/useModal';
 import Menu from '../Menu/Menu';
 import {
@@ -8,6 +9,7 @@ import {
   StyledLogo,
   LoginButton,
   StyledTextButton,
+  StyledPoint,
   NavBarArea,
 } from './NavBar.styles';
 
@@ -19,9 +21,14 @@ const NavBar = () => {
   return (
     <>
       <StyledNavBar>
-        <StyledLogo onClick={() => history.push('/')} />
+        <StyledLogo aria-label="logo" onClick={() => history.push('/')} />
         {userInfo ? (
-          <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
+          <>
+            <StyledPoint onClick={() => history.push('/mypoint')}>
+              {userInfo?.point && toCommaSeparatedString(userInfo.point)} tp
+            </StyledPoint>
+            <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
+          </>
         ) : (
           <LoginButton to="/login">로그인</LoginButton>
         )}

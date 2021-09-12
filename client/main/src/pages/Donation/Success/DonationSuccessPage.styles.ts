@@ -26,7 +26,7 @@ export const SuccessButtonContainer = styled(Container)`
 
 export const MainText = styled.p`
   font-size: 2rem;
-  font-weight: 900;
+  font-weight: 700;
   margin: 0.5rem 0;
   margin-bottom: 0.75rem;
 `;

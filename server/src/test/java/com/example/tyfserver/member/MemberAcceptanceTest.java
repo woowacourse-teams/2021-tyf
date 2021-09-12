@@ -1,23 +1,21 @@
 package com.example.tyfserver.member;
 
 import com.example.tyfserver.AcceptanceTest;
-import com.example.tyfserver.auth.dto.SignUpResponse;
+import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
+import com.example.tyfserver.auth.util.JwtTokenProvider;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.dto.*;
-import com.example.tyfserver.member.exception.*;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import io.restassured.RestAssured;
-import io.restassured.builder.MultiPartSpecBuilder;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import io.restassured.specification.MultiPartSpecification;
+import com.example.tyfserver.member.exception.MemberNotFoundException;
+import com.example.tyfserver.member.repository.MemberRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.util.MimeTypeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,55 +29,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
 
-    public static ExtractableResponse<Response> 페이지네임_유효성_검사_요청(String pageName) {
-        return post("/members/validate/pageName", new PageNameRequest(pageName)).extract();
-    }
+    private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME!@#$";
+    private static final String INVALID_NICK_NAME = "INVALID_NICK_NAME!@#$";
+    private static final String INVALID_TOKEN = "INVALID_TOKEN";
 
-    public static ExtractableResponse<Response> 닉네임_유효성_검사_요청(String nickname) {
-        return post("/members/validate/nickname", new NicknameRequest(nickname)).extract();
-    }
+    @Autowired
+    private MemberRepository memberRepository;
 
-    public static ExtractableResponse<Response> 토큰_유효성_검사_요청(String token) {
-        return post("/members/validate/token", new TokenValidationRequest(token)).extract();
-    }
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    public static ExtractableResponse<Response> 페이지네임으로_멤버정보_조회(String pageName) {
-        return get("/members/" + pageName).extract();
-    }
+    private Member member = MemberTest.testMember();
+    private Member member2 = MemberTest.testMember2();
 
-    public static ExtractableResponse<Response> 토큰을_이용한_멤버정보_조회(String token) {
-        return authGet("/members/me", token).extract();
-    }
-
-    public static ExtractableResponse<Response> 토큰을_이용한_포인트_조회(String token) {
-        return authGet("/members/me/point", token).extract();
-    }
-
-    public static ExtractableResponse<Response> 큐레이션_조회() {
-        return get("/members/curations").extract();
-    }
-
-    public static ExtractableResponse<Response> 프로필_수정(MultiPartSpecification multiPartSpecification, String token) {
-        return RestAssured
-                .given().log().all()
-                .auth().oauth2(token)
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .multiPart(multiPartSpecification)
-                .put("/members/profile")
-                .then().extract()
-                ;
-    }
-
-    public static ExtractableResponse<Response> 프로필_삭제(String token) {
-        return authDelete("/members/profile", token).extract();
-    }
-
-    public static ExtractableResponse<Response> 자기소개_수정(String token, String bio) {
-        return authPut("/members/me/bio", token, new MemberBioUpdateRequest(bio)).extract();
-    }
-
-    public static ExtractableResponse<Response> 닉네임_수정(String token, String nickname) {
-        return authPut("/members/me/nickname", token, new NicknameRequest(nickname)).extract();
+    @Override
+    @BeforeEach
+    public void setUp() {
+        super.setUp();
+        member = memberRepository.save(member);
+        member2 = memberRepository.save(member2);
     }
 
     public static ExtractableResponse<Response> 상세_포인트_조회(String token) {
@@ -120,69 +88,61 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 요청의 페이지네임 검사의 경우")
-    public void validatePageNameInvalidRequest() {
-        ErrorResponse errorResponse = 페이지네임_유효성_검사_요청("$%^&*").as(ErrorResponse.class);
-
-        assertThat(errorResponse.getErrorCode()).isEqualTo(PageNameValidationRequestException.ERROR_CODE);
+    @DisplayName("랜딩 페이지 유효성 검사")
+    public void validateLandingPageValidation() {
+        PageNameValidationRequest validationRequest = new PageNameValidationRequest("tyf");
+        post("/members/validate/pageName", validationRequest)
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    @DisplayName("중복되는 페이지네임 검사의 경우")
-    public void validatePageNameDuplicated() {
-        회원생성을_요청("tyf@gmail.com", "GOOGLE", "nickname", "duplicated");
-        ErrorResponse errorResponse = 페이지네임_유효성_검사_요청("duplicated").as(ErrorResponse.class);
-
-        assertThat(errorResponse.getErrorCode()).isEqualTo(DuplicatedPageNameException.ERROR_CODE);
+    @DisplayName("랜딩 페이지 유효성 검사 - 실패")
+    public void validateLandingPageValidation_fail() {
+        PageNameValidationRequest validationRequest = new PageNameValidationRequest("ㅁㄴㅇㄹ");
+        post("/members/validate/pageName", validationRequest)
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
-    @DisplayName("유효한 닉네임 검사의 경우")
-    public void validateNickname() {
-        ExtractableResponse<Response> response = 닉네임_유효성_검사_요청("nickname");
+    @DisplayName("닉네임 유효성 검사")
+    public void validateNicknameValidation() {
+        NicknameRequest validationRequest = new NicknameRequest("닉네임");
 
-        assertThat(response.statusCode()).isEqualTo(200);
+        post("/members/validate/nickname", validationRequest)
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    @DisplayName("유효하지 않은 요청의 닉네임 검사의 경우")
-    public void validateNicknameInvalidRequest() {
-        ErrorResponse errorResponse = 닉네임_유효성_검사_요청("#$%^&").as(ErrorResponse.class);
-
-        assertThat(errorResponse.getErrorCode()).isEqualTo(NicknameValidationRequestException.ERROR_CODE);
+    @DisplayName("닉네임 유효성 검사 - 실패")
+    public void validateNicknameValidation_fail() {
+        NicknameRequest validationRequest = new NicknameRequest(INVALID_NICK_NAME);
+        post("/members/validate/nickname", validationRequest)
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
-    @DisplayName("중복되는 닉네임 검사의 경우")
-    public void validateNicknameDuplicated() {
-        회원생성을_요청("tyf@gmail.com", "GOOGLE", "duplicated", "pagename");
-        ErrorResponse errorResponse = 닉네임_유효성_검사_요청("duplicated").as(ErrorResponse.class);
-
-        assertThat(errorResponse.getErrorCode()).isEqualTo(DuplicatedNicknameException.ERROR_CODE);
+    @DisplayName("토큰 유효성 검사")
+    public void validateTokenValidation() {
+        String token = jwtTokenProvider.createToken(1L, "joy@naver.com");
+        TokenValidationRequest validationRequest = new TokenValidationRequest(token);
+        post("/members/validate/token", validationRequest)
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    @DisplayName("유효한 토큰 검사의 경우")
-    public void validateToken() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@gmail.com", "GOOGLE", "nickname", "pagename");
-        ExtractableResponse<Response> response = 토큰_유효성_검사_요청(signUpResponse.getToken());
-
-        assertThat(response.statusCode()).isEqualTo(200);
+    @DisplayName("토큰 유효성 검사 - 실패")
+    public void validateTokenValidation_fail() {
+        TokenValidationRequest validationRequest = new TokenValidationRequest(INVALID_TOKEN);
+        post("/members/validate/token", validationRequest)
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
-    @DisplayName("유효하지 않은 토큰 검사의 경우")
-    public void validateTokenInvalidCase() {
-        ErrorResponse errorResponse = 토큰_유효성_검사_요청("invalidToken").as(ErrorResponse.class);
-
-        assertThat(errorResponse.getErrorCode()).isEqualTo(InvalidTokenException.ERROR_CODE);
-    }
-
-    @Test
-    @DisplayName("페이지네임으로 멤버 정보를 조회하는 경우")
-    public void memberInfo() {
-        회원생성을_요청("email@email.com", "KAKAO", "nickname", "pagename");
-        MemberResponse memberResponse = 페이지네임으로_멤버정보_조회("pagename").as(MemberResponse.class);
+    @DisplayName("창작자 정보 조회")
+    public void getMemberInfo() {
+        MemberResponse memberResponse = get("/members/" + member.getPageName())
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(MemberResponse.class);
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
@@ -199,10 +159,11 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("토큰으로 멤버 정보를 조회하는 경우")
-    public void memberDetail() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        MemberResponse memberResponse = 토큰을_이용한_멤버정보_조회(signUpResponse.getToken()).as(MemberResponse.class);
+    @DisplayName("창작자 정보 조회 - 실패: 존재하지 않는 멤버")
+    public void getMemberInfo_fail() {
+        ErrorResponse error = get("/members/" + INVALID_PAGE_NAME)
+//                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
 
         assertThat(memberResponse).usingRecursiveComparison()
                 .isEqualTo(new MemberResponse("email@email.com", "nickname", "pagename",
@@ -211,39 +172,49 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("토큰으로 포인트를 조회하는 경우")
-    public void memberPoint() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        PointResponse pointResponse = 토큰을_이용한_포인트_조회(signUpResponse.getToken()).as(PointResponse.class);
+    @DisplayName("창작자 자신의 정보 조회")
+    public void getMemberInfoSelf() {
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
+        MemberResponse MemberResponse = authGet("/members/me", token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(MemberResponse.class);
 
-        assertThat(pointResponse.getPoint()).isEqualTo(0L);
+        assertThat(MemberResponse).usingRecursiveComparison()
+                .isEqualTo(new MemberResponse(member));
     }
 
     @Test
-    @DisplayName("토큰으로 자기소개를 수정하는 경우")
-    public void updateBio() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        ExtractableResponse<Response> response = 자기소개_수정(signUpResponse.getToken(), "updatedBio");
+    @DisplayName("창작자 자신의 정보 조회 - 실패: 인증헤더 없음")
+    public void getMemberInfoSelf_fail1() {
+        ErrorResponse error = get("/members/me")
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
 
-        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(error.getErrorCode())
+                .isEqualTo(AuthorizationHeaderNotFoundException.ERROR_CODE);
     }
 
     @Test
-    @DisplayName("토큰으로 자기소개를 수정하는데 유효하지 않은 자기소개인 경우")
-    public void updateBioInvalidRequestFailed() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        ErrorResponse errorResponse = 자기소개_수정(signUpResponse.getToken(), "").as(ErrorResponse.class);
+    @DisplayName("창작자 자신의 정보 조회 - 실패: 유효하지 않은 토큰")
+    public void getMemberInfoSelf_fail2() {
+        ErrorResponse error = authGet("/members/me", INVALID_TOKEN)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo(BioValidationRequestException.ERROR_CODE);
+        assertThat(error.getErrorCode())
+                .isEqualTo(InvalidTokenException.ERROR_CODE);
     }
 
     @Test
-    @DisplayName("토큰으로 닉네임을 수정하는 경우")
-    public void updateNickname() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        ExtractableResponse<Response> response = 닉네임_수정(signUpResponse.getToken(), "updatedNickname");
+    @DisplayName("창작자 포인트 조회")
+    public void getMemberPoint() {
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
+        PointResponse pointResponse = authGet("/members/me/point", token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(PointResponse.class);
 
-        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(pointResponse).usingRecursiveComparison()
+                .isEqualTo(new PointResponse(0L));
     }
 
     @Test
@@ -290,10 +261,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
 
-        assertThat(curations).hasSize(3);
-        assertThat(curations.get(0).getPageName()).isEqualTo("pagename");
-        assertThat(curations.get(1).getPageName()).isEqualTo("pagename3");
-        assertThat(curations.get(2).getPageName()).isEqualTo("pagename2");
+        assertThat(error.getErrorCode())
+                .isEqualTo(AuthorizationHeaderNotFoundException.ERROR_CODE);
     }
 
     @Test

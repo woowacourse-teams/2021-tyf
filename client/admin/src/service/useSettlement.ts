@@ -1,33 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import {
   requestAgreeExchange,
   requestDeclineExchange,
   requestExchangeList,
-} from '../components/request/request';
+} from '../request/settlement';
 import { Exchange } from '../type';
+import { accessTokenState } from './@state/login';
 
 const useSettlement = () => {
   const history = useHistory();
   const [exchangeList, setExchangeList] = useState<Exchange[]>([]);
-  const [accessToken, setAccessToken] = useState('');
-
-  const getAccessToken = () => {
-    const token = sessionStorage.getItem('adminToken');
-    if (!token) {
-      alert('로그인 후 접근가능합니다.');
-      history.push('/');
-      return;
-    }
-
-    setAccessToken(token);
-  };
+  const accessToken = useRecoilValue(accessTokenState);
 
   const getExchangeList = async () => {
     try {
       const data: Exchange[] = await requestExchangeList(accessToken);
-
+      console.log(data);
       setExchangeList(data);
     } catch (error) {
       alert(error.message);
@@ -42,6 +33,9 @@ const useSettlement = () => {
       await requestAgreeExchange(pageName, accessToken);
 
       alert('정산을 수락했습니다.');
+      // TODO : 요소 제거후 새로고침해서 요소 갱신 개선하기
+      // setExchangeList(exchangeList.filter(item => item.pageName !== pageName)
+      location.reload();
     } catch (error) {
       alert(error.message);
     }
@@ -57,20 +51,15 @@ const useSettlement = () => {
       await requestDeclineExchange(pageName, reason, accessToken);
 
       alert('정산을 거절했습니다.');
+      location.reload();
     } catch (error) {
       alert(error.message);
     }
   };
 
   useEffect(() => {
-    getAccessToken();
-  }, []);
-
-  useEffect(() => {
-    if (!accessToken) return;
-
     getExchangeList();
-  }, [accessToken]);
+  }, []);
 
   return { exchangeList, agreeExchange, declineExchange };
 };

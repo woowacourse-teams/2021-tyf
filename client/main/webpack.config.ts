@@ -4,6 +4,9 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 interface WebpackConfig extends webpack.Configuration {
   devServer?: webpackDevServer.Configuration;
@@ -17,6 +20,7 @@ const config: WebpackConfig = {
   output: {
     filename: '[contenthash].bundle.js',
     path: path.resolve('server', 'dist'),
+    assetModuleFilename: 'static/[hash][ext][query]',
     clean: true,
   },
   module: {
@@ -34,12 +38,30 @@ const config: WebpackConfig = {
         ],
       },
       {
-        test: /\.(svg|png|jpg|gif|webp)$/i,
-        type: 'asset',
+        test: /\.(svg|gif|webp)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(png|jpg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[hash].webp',
+        },
       },
     ],
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve('public'),
+          to: path.resolve('server', 'dist'),
+          globOptions: {
+            ignore: [path.resolve('public', 'index.html'), path.resolve('public', 'favicon.ico')],
+          },
+        },
+      ],
+    }) as unknown as webpack.WebpackPluginInstance,
     new HtmlWebpackPlugin({
       template: path.resolve('public', 'index.html'),
       base: '/',
@@ -53,6 +75,16 @@ const config: WebpackConfig = {
         },
       },
     }),
+    new ImageMinimizerPlugin({
+      minimizerOptions: {
+        plugins: [['webp'], ['svgo']],
+      },
+    }),
+    new CompressionPlugin({
+      test: /\.(js|html)$/,
+      filename: 'compressed/[path][base].gz',
+    }),
+
     new BundleAnalyzerPlugin({
       analyzerMode: 'disabled',
       generateStatsFile: true,
@@ -61,13 +93,19 @@ const config: WebpackConfig = {
     }) as unknown as webpack.WebpackPluginInstance,
   ],
   devServer: {
-    contentBase: path.resolve('public'),
     port: 9000,
     historyApiFallback: true,
     open: true,
   },
+  optimization: {
+    runtimeChunk: true,
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
 
 config.mode = isProduction ? 'production' : 'development';
+config.devtool = isProduction ? 'source-map' : 'inline-source-map';
 
 export default config;

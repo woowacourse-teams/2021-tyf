@@ -12,9 +12,9 @@ describe('Setting', () => {
 
   test('기존의 프로필 이미지, 닉네임, 바이오가 입력창에 초기화된다.', async () => {
     waitFor(() => {
-      const $nicknameInput = screen.getByRole('nickname-input') as HTMLInputElement;
-      const $bioInput = screen.getByRole('bio-input') as HTMLInputElement;
-      const $profileImg = screen.getByRole('profile-img') as HTMLImageElement;
+      const $nicknameInput = screen.getByRole('textbox', { name: 'nickname' }) as HTMLInputElement;
+      const $bioInput = screen.getByRole('textbox', { name: 'bio' }) as HTMLInputElement;
+      const $profileImg = screen.getByRole('img', { name: 'profile' }) as HTMLImageElement;
 
       expect($nicknameInput.value).toBe(userInfoMock.nickname);
       expect($bioInput.value).toBe(userInfoMock.bio);
@@ -24,13 +24,12 @@ describe('Setting', () => {
 
   test('유효한 값을 입력 후 저장하면 새로고침이 된다.', () => {
     const reloadSpy = jest.fn();
-    const $nicknameInput = screen.getByRole('nickname-input') as HTMLInputElement;
-    const $bioInput = screen.getByRole('bio-input') as HTMLInputElement;
-    const $profileImgInput = screen.getByRole('profile-img-input', {
-      hidden: true,
-    }) as HTMLInputElement;
-    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const $nicknameInput = screen.getByRole('textbox', { name: 'nickname' }) as HTMLInputElement;
+    const $bioInput = screen.getByRole('textbox', { name: 'bio' }) as HTMLInputElement;
+    const $profileImgInput = screen.getByLabelText('profile-img') as HTMLInputElement;
     const $applyButton = screen.getByRole('button', { name: '적용하기' });
+
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
 
     Object.defineProperty(window, 'location', { value: { reload: reloadSpy } });
 

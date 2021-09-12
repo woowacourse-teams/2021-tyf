@@ -1,47 +1,39 @@
 package com.example.tyfserver.donation;
 
 import com.example.tyfserver.AcceptanceTest;
-import com.example.tyfserver.auth.dto.SignUpResponse;
-import com.example.tyfserver.common.dto.ErrorResponse;
-import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.auth.util.JwtTokenProvider;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
-import com.example.tyfserver.donation.exception.DonationMessageRequestException;
-import com.example.tyfserver.donation.exception.DonationNotFoundException;
-import com.example.tyfserver.donation.exception.DonationRequestException;
+import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.MemberTest;
+import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import com.example.tyfserver.payment.exception.PaymentNotFoundException;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
-import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
-import static com.example.tyfserver.payment.PaymentAcceptanceTest.페이먼트_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 public class DonationAcceptanceTest extends AcceptanceTest {
 
-    public static ExtractableResponse<Response> 후원_생성(String impUid, String merchantUid) {
-        return post("/donations", new PaymentCompleteRequest(impUid, merchantUid)).extract();
-    }
+    @Autowired
+    private MemberRepository memberRepository;
 
-    public static ExtractableResponse<Response> 후원_메세지_생성(Long donationId, String name, String message, boolean secret) {
-        return post("/donations/" + donationId + "/messages", new DonationMessageRequest(name, message, secret)).extract();
-    }
+    @Autowired
+    private DonationRepository donationRepository;
 
-    public static ExtractableResponse<Response> 총_후원목록(String token) {
-        return authGet("/donations/me", token).extract();
-    }
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    public static ExtractableResponse<Response> 공개_후원목록(String pageName) {
-        return get("/donations/public/" + pageName).extract();
-    }
+    private Member member;
+    private Member member2;
 
     @Test
     @DisplayName("성공적인 후원 생성의 경우")
@@ -49,16 +41,29 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("creator@gmail.com", "KAKAO", "nickname", "pagename");
         PaymentPendingResponse pendingResponse = 페이먼트_생성(10000L, "donator@gmail.com", "pagename").as(PaymentPendingResponse.class);
 
-        ExtractableResponse<Response> response = 후원_생성("impUid", pendingResponse.getMerchantUid().toString());
-        assertThat(response.statusCode()).isEqualTo(201);
+    @Override
+    @BeforeEach
+    public void setUp() {
+        super.setUp();
+        member = memberRepository.save(MemberTest.testMember());
+        member2 = memberRepository.save(MemberTest.testMember2());
     }
 
-    @Test
-    @DisplayName("유효하지 않은 Request를 가진 후원 생성의 경우")
-    public void createDonationInvalidRequest() {
-        ErrorResponse errorResponse = 후원_생성("", UUID.randomUUID().toString()).as(ErrorResponse.class);
+    @AfterEach
+    void tearDown() {
+        donationRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo(DonationRequestException.ERROR_CODE);
+    @DisplayName("후원자가 창작자에게 후원한다.")
+    @Test
+    void 창작자에게_후원한다() {
+        Long donationId = 후원을_생성한다();
+
+        DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
+        후원메시지를_보낸다(donationId, messageRequest);
+
+        후원메시지_검증(donationId, messageRequest);
     }
 
     @Test
@@ -83,11 +88,23 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 Request의 후원 메세지 전송")
-    public void addDonationMessageInvalidRequest() {
-        ErrorResponse errorResponse = 후원_메세지_생성(1L, "", "positive", false).as(ErrorResponse.class);
+    @DisplayName("창작자가 자신이 받은 후원 목록을 조회한다.")
+    public void 전체_후원_리스트_실패() {
+        //given
+        Long donationId = 후원을_생성한다();
+        DonationMessageRequest messageRequest = DonationTest.testMessageRequest();
+        후원메시지를_보낸다(donationId, messageRequest);
+        String token = jwtTokenProvider.createToken(member.getId(), member.getEmail());
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo(DonationMessageRequestException.ERROR_CODE);
+        //when //then
+        authGet("/donations/me", token)
+                .statusCode(HttpStatus.OK.value())
+                .extract().body()
+                .jsonPath().getList(".", DonationResponse.class);
+    }
+
+    private Long 후원을_생성한다() {
+        return 후원을_생성한다(member);
     }
 
     @Test
@@ -95,7 +112,11 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     public void addDonationMessageDonationNotFound() {
         ErrorResponse errorResponse = 후원_메세지_생성(10000L, "bepoz", "positive", false).as(ErrorResponse.class);
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo(DonationNotFoundException.ERROR_CODE);
+        // when // then
+        return post("/donations", request)
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(DonationResponse.class).getDonationId();
     }
 
     @Test

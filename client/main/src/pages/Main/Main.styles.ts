@@ -37,6 +37,9 @@ export const HeroContent = styled.picture.attrs({
   img {
     padding-left: 5%;
     width: 100%;
+    height: auto;
+
+    aspect-ratio: 1024 / 606;
   }
 
   @media ${DEVICE.DESKTOP} {
@@ -52,7 +55,7 @@ export const RouteButton = styled(OutlineButton)`
   display: block;
   margin-top: 1.75rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 export const StyledSubTitle = styled(SubTitle)`
@@ -64,6 +67,7 @@ export const StyledSubTitle = styled(SubTitle)`
 
   ${Logo} {
     width: 14rem;
+    aspect-ratio: 300 / 72;
   }
 
   @media ${DEVICE.DESKTOP_LARGE} {
@@ -79,11 +83,13 @@ export const DescriptionContainer = styled.div`
 
   ${Logo} {
     width: 12rem;
+    aspect-ratio: 300 / 72;
   }
 
   @media ${DEVICE.DESKTOP_LARGE} {
     ${Logo} {
       width: 17rem;
+      aspect-ratio: 300 / 72;
     }
 
     br {
@@ -104,7 +110,7 @@ const downKeyFrames = keyframes`
 }
 `;
 
-export const DownIcon = styled.img.attrs({ src: RightArrow })`
+export const DownIcon = styled.img.attrs({ src: RightArrow, alt: 'down icon' })`
   transform: rotate(90deg);
   width: 1.5rem;
   height: 1.5rem;

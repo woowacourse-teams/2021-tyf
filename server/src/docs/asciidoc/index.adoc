@@ -281,7 +281,6 @@ include::{snippets}/createBannersHeaderNotFoundFailed/http-response.adoc[]
 include::{snippets}/createBannersInvalidTokenFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createBannersInvalidTokenFailed/http-response.adoc[]
-
 == Donations (후원)
 === 후원 요청 - 성공
 ==== Request
@@ -363,7 +362,6 @@ include::{snippets}/publicDonations/http-response.adoc[]
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
-
 == Payment (결제)
 === 결제 요청 - 성공
 ==== Request

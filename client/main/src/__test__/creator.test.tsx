@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/dom';
 import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import DonationMessageList from '../components/Donation/MessageList/DonationMessageList';
+import DonationMessageList from '../components/Creator/MessageList/DonationMessageList';
 import { donationMessageListMock, userInfoMock } from '../mock/mockData';
 import CreatorPage from '../pages/Creator/CreatorPage';
 import { myRender } from './utils/testUtil';
@@ -11,19 +11,19 @@ describe('DonationMessageList', () => {
   test('창작자 본인이 아닐 때, 도네이션 메세지 목록이 보인다', async () => {
     myRender(<DonationMessageList isAdmin={false} />);
 
-    await screen.findAllByRole('donation-message');
+    await screen.findAllByRole('listitem', { name: 'donation-message' });
   });
 
   test('창작자 본인일 때, 도네이션 메세지 목록이 보인다', async () => {
     myRender(<DonationMessageList isAdmin={true} />);
 
-    await screen.findAllByRole('donation-message');
+    await screen.findAllByRole('listitem', { name: 'donation-message' });
   });
 
   test('창작자 본인이 아니면 더보기 버튼이 보이지않는다', async () => {
     myRender(<DonationMessageList isAdmin={false} />);
 
-    await screen.findAllByRole('donation-message');
+    await screen.findAllByRole('listitem', { name: 'donation-message' });
 
     const moreButton = screen.queryByRole('button', { name: /더보기/i });
 
@@ -33,7 +33,7 @@ describe('DonationMessageList', () => {
   test('창작자 본인이면 더보기 버튼이 보인다', async () => {
     myRender(<DonationMessageList isAdmin={true} />);
 
-    await screen.findAllByRole('donation-message');
+    await screen.findAllByRole('listitem', { name: 'donation-message' });
 
     await screen.findAllByRole('button', { name: /더보기/i });
   });
@@ -46,7 +46,7 @@ describe('DonationMessageList', () => {
     act(() => userEvent.click(moreButton));
 
     await waitFor(() => {
-      const donationMessages = screen.getAllByRole('donation-message');
+      const donationMessages = screen.getAllByRole('listitem', { name: 'donation-message' });
 
       expect(donationMessageListMock.length).toBe(donationMessages.length);
     });
@@ -73,7 +73,7 @@ describe('Profile', () => {
     await screen.findByText(userInfoMock.bio);
 
     await waitFor(async () => {
-      const $profileImg = (await screen.findByRole('profile-img')) as HTMLImageElement;
+      const $profileImg = (await screen.findByRole('img', { name: 'profile' })) as HTMLImageElement;
 
       expect($profileImg.src).toMatch(new RegExp(`${userInfoMock.profileImage}$`));
     });

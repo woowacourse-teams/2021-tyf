@@ -1,10 +1,12 @@
 import Template from '../components/@atom/Template/Template';
-import { Settlement } from '../components/Settlement/Settlement';
+import Settlement from '../components/Settlement/Settlement';
 
-export const settlementPage = () => {
+const SettlementPage = () => {
   return (
     <Template>
       <Settlement />
     </Template>
   );
 };
+
+export default SettlementPage;

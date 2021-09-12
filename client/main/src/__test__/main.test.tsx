@@ -10,7 +10,7 @@ beforeEach(() => {
 describe('MainPage', () => {
   test('창작자 리스트를 조회한다.', async () => {
     Element.prototype.scroll = jest.fn();
-    const [$creatorListCard] = await screen.findAllByRole('creator-card');
+    const [$creatorListCard] = await screen.findAllByRole('article', { name: 'creator-card' });
     expect($creatorListCard).toBeInTheDocument();
   });
 });

@@ -1,58 +1,27 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { IamportResponse, RequestPayParams } from '../../iamport';
 
 import { CreatorId } from '../../types';
-import { requestPayment, requestPaymentComplete } from '../@request/payments';
+import { requestDonation } from '../@request/donation';
+import useAccessToken from '../@shared/useAccessToken';
 import { donationState } from '../@state/donation';
-import useCreator from '../creator/useCreator';
 
-const useDonation = (creatorId: CreatorId) => {
+const useDonation = () => {
   const history = useHistory();
+  const { accessToken } = useAccessToken();
   const [donation, setDonation] = useRecoilState(donationState);
-  const { pageName } = useCreator(creatorId);
-  const { amount, email } = donation;
 
-  const donate = async (pg: string) => {
-    const { merchantUid } = await requestPayment({ amount, email, pageName });
-    const { IMP } = window;
+  const donate = async (creatorId: CreatorId, donationAmount: number) => {
+    try {
+      const result = await requestDonation(creatorId, donationAmount, accessToken);
+      const { donationId, message, amount } = result;
 
-    const prodAccountId = 'imp52497817';
-    const devAccountId = 'imp61348931';
+      setDonation({ ...donation, donationId, amount, message });
 
-    const accountId = process.env.NODE_ENV === 'development' ? devAccountId : prodAccountId;
-
-    IMP.init(accountId);
-
-    const IMPRequestPayOption: RequestPayParams = {
-      pg,
-      pay_method: 'card',
-      merchant_uid: merchantUid,
-      name: pageName,
-      amount,
-      buyer_email: email,
-    };
-
-    const IMPResponseHandler = async (response: IamportResponse) => {
-      if (!response.success) {
-        alert(`결제에 실패했습니다. 다시 시도해주세요.\n 에러 내역: ${response.error_msg}`);
-        window.close();
-        return;
-      }
-
-      try {
-        const donationResult = await requestPaymentComplete(response);
-
-        setDonation(donationResult);
-        alert('결제에 성공했습니다.');
-        history.push(`/donation/${pageName}/message`);
-      } catch (error) {
-        alert(`결제에 실패했습니다. 다시 시도해주세요. ${error.message}`);
-        window.close();
-      }
-    };
-
-    IMP.request_pay(IMPRequestPayOption, IMPResponseHandler);
+      history.push(`/donation/${creatorId}/message`);
+    } catch (error) {
+      alert('도네이션에 실패했습니다.');
+    }
   };
 
   return { donate, donation };

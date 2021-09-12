@@ -96,7 +96,7 @@ class PaymentServiceTest {
         PaymentPendingResponse paymentSaveResponse = paymentService.createPayment(pendingRequest);
 
         //then
-        assertThat(paymentSaveResponse.getMerchantUid()).isEqualTo(MERCHANT_UID);
+        Assertions.assertThat(paymentSaveResponse.getMerchantUid()).isEqualTo(MERCHANT_UID);
     }
 
 
@@ -116,8 +116,8 @@ class PaymentServiceTest {
 
         //then
         Payment payment = paymentService.completePayment(request);
-        assertThat(payment.getImpUid()).isEqualTo(request.getImpUid());
-        assertThat(payment.getStatus()).isEqualTo(PaymentStatus.PAID);
+        Assertions.assertThat(payment.getImpUid()).isEqualTo(request.getImpUid());
+        Assertions.assertThat(payment.getStatus()).isEqualTo(PaymentStatus.PAID);
     }
 
     @DisplayName("결제상태가 지불(PAID)이 아닌 결제정보가 전달되면 승인이 실패 한다")
@@ -136,7 +136,7 @@ class PaymentServiceTest {
                         Optional.of(new Payment(AMOUNT, EMAIL, paymentInfo.getPageName(), MERCHANT_UID)));
 
         //then
-        assertThatThrownBy(() -> paymentService.completePayment(request))
+        Assertions.assertThatThrownBy(() -> paymentService.completePayment(request))
                 .isInstanceOf(IllegalPaymentInfoException.class)
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_NOT_PAID);
     }
@@ -158,7 +158,7 @@ class PaymentServiceTest {
                         Optional.of(new Payment(AMOUNT, EMAIL, paymentInfo.getPageName(), MERCHANT_UID)));
 
         //then
-        assertThatThrownBy(() -> paymentService.completePayment(request))
+        Assertions.assertThatThrownBy(() -> paymentService.completePayment(request))
                 .isInstanceOf(IllegalPaymentInfoException.class)
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID);
     }
@@ -180,7 +180,7 @@ class PaymentServiceTest {
                         Optional.of(new Payment(AMOUNT, EMAIL, PAGE_NAME, MERCHANT_UID)));
 
         //then
-        assertThatThrownBy(() -> paymentService.completePayment(request))
+        Assertions.assertThatThrownBy(() -> paymentService.completePayment(request))
                 .isInstanceOf(IllegalPaymentInfoException.class)
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_AMOUNT);
     }
@@ -200,7 +200,7 @@ class PaymentServiceTest {
                         Optional.of(new Payment(AMOUNT, EMAIL, "diffPageName", MERCHANT_UID)));
 
         //then
-        assertThatThrownBy(() -> paymentService.completePayment(request))
+        Assertions.assertThatThrownBy(() -> paymentService.completePayment(request))
                 .isInstanceOf(IllegalPaymentInfoException.class)
                 .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_CREATOR);
     }

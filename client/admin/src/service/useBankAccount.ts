@@ -1,30 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import {
   requestAgreeBankAccount,
   requestDeclineBankAccount,
   requestBankAccountList,
-} from '../components/request/request';
+} from '../request/bankAccount';
 import { BankAccount } from '../type';
+import { accessTokenState } from './@state/login';
 
 const useBankAccount = () => {
   const history = useHistory();
   const [bankAccountList, setBankAccountList] = useState<BankAccount[]>([]);
-  const [accessToken, setAccessToken] = useState('');
-
-  // TODO: 분리하기
-  const getAccessToken = () => {
-    const token = sessionStorage.getItem('adminToken');
-    if (!token) {
-      alert('로그인 후 접근가능합니다.');
-      sessionStorage.setItem('adminToken', '');
-      history.push('/');
-      return;
-    }
-
-    setAccessToken(token);
-  };
+  const accessToken = useRecoilValue(accessTokenState);
 
   const getBankAccountList = async () => {
     try {
@@ -44,6 +33,7 @@ const useBankAccount = () => {
       await requestAgreeBankAccount(userId, accessToken);
 
       alert('계좌 신청을 수락했습니다.');
+      location.reload();
     } catch (error) {
       alert(error.message);
     }
@@ -59,20 +49,15 @@ const useBankAccount = () => {
       await requestDeclineBankAccount(userId, reason, accessToken);
 
       alert('계좌 신청을 거절했습니다.');
+      location.reload();
     } catch (error) {
       alert(error.message);
     }
   };
 
   useEffect(() => {
-    getAccessToken();
-  }, []);
-
-  useEffect(() => {
-    if (!accessToken) return;
-
     getBankAccountList();
-  }, [accessToken]);
+  }, []);
 
   return { bankAccountList, agreeBankAccount, declineBankAccount };
 };

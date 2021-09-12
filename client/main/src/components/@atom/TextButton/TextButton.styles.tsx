@@ -9,7 +9,7 @@ const TextButton = styled.button`
   width: 100%;
 
   :hover {
-    font-weight: 600;
+    font-weight: 700;
   }
 `;
 

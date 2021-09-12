@@ -1,11 +1,16 @@
-import { apiClient } from '../../API';
+import { apiClient, authorizationHeader } from '../../API';
 import { CreatorId, Donation, DonationId } from '../../types';
 
 export const requestDonation = (
   creatorId: CreatorId,
-  donationAmount: number
+  point: number,
+  accessToken: string
 ): Promise<Donation> => {
-  return apiClient.post('/donations', { pageName: creatorId, donationAmount });
+  return apiClient.post(
+    '/donations',
+    { pageName: creatorId, point },
+    authorizationHeader(accessToken)
+  );
 };
 
 export const requestSendDonationMessage = (

@@ -1,5 +1,5 @@
 import whiteBackground from '../assets/images/dummy/profile-img.jpg';
-import { Creator, Donation, UserInfo, Statistics } from '../types';
+import { Creator, Donation, UserInfo } from '../types';
 
 export const creatorListMock: Creator[] = [
   {
@@ -38,10 +38,7 @@ export const userInfoMock: UserInfo = {
   profileImage: 'asdf',
   pageName: 'inchpage',
   email: 'jho2301@gmail.com',
-};
-
-export const statisticsMock: Statistics = {
-  point: 200000,
+  point: 1234,
 };
 
 export const donationMessageListMock: Donation[] = [
@@ -104,16 +101,9 @@ export const donationMessageListMock: Donation[] = [
 ];
 
 export const refundInfoMock = {
-  creator: {
-    nickname: '창작자 닉네임',
-    pageName: '창작자 페이지 이름',
-  },
-  donation: {
-    name: '후원자 이름',
-    amount: 10000,
-    message: '후원 메시지',
-    createdAt: 'hi',
-  },
+  point: 5500,
+  price: 5000,
+  createdAt: '2021.08.03_17:24',
 };
 
 export const refundReadyMock = {

@@ -5,6 +5,7 @@ import TextButton from '../../../components/@atom/TextButton/TextButton.styles';
 import Transition from '../../../components/@atom/Transition/Transition.styles';
 import { FixedLogo } from '../../../components/@molecule/Logo/Logo';
 import MessageForm from '../../../components/Donation/MessageForm/DonationMessageForm';
+import useAuthCheckEffect from '../../../service/@shared/useAuthCheckEffect';
 import { popupWindow } from '../../../utils/popup';
 import usePageRefreshGuardEffect from '../../../utils/usePageRefreshGuardEffect';
 import { StyledTemplate } from './DonationMessagePage.styles';
@@ -14,6 +15,7 @@ const DonationMessagePage = () => {
   const history = useHistory();
 
   usePageRefreshGuardEffect(creatorId, false, '/donation/' + creatorId);
+  useAuthCheckEffect(window.close);
 
   return (
     <StyledTemplate>

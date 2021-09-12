@@ -12,7 +12,7 @@ const Profile = () => {
   return (
     <>
       <Link to={`/creator/${creatorId}`}>
-        <ProfileImg src={profileImage || defaultUserProfile} />
+        <ProfileImg alt="profile" src={profileImage || defaultUserProfile} />
       </Link>
       <NickName>{nickname}</NickName>
     </>

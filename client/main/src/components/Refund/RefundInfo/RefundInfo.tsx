@@ -1,7 +1,8 @@
 import { InfoContainer, StyledRefundInfo, StyledSubTitle, InfoTitle } from './RefundInfo.styles';
 import useRefundOrderDetail from '../../../service/refund/useRefundOrderDetail';
+import { toCommaSeparatedString } from '../../../utils/format';
 
-interface RefundInfoProps {
+export interface RefundInfoProps {
   refundAccessToken: string;
 }
 
@@ -10,29 +11,19 @@ const RefundInfo = ({ refundAccessToken }: RefundInfoProps) => {
 
   return (
     <StyledRefundInfo>
-      <StyledSubTitle>주문내역</StyledSubTitle>
+      <StyledSubTitle>결제내역</StyledSubTitle>
       <InfoContainer>
         <p>
-          <InfoTitle>창작자명:</InfoTitle>
-          {refundOrderDetail.creator.nickname}
+          <InfoTitle>충전포인트:</InfoTitle>
+          {toCommaSeparatedString(refundOrderDetail.point)} tp
         </p>
         <p>
-          <InfoTitle>후원금액:</InfoTitle>
-          {refundOrderDetail.donation.amount}
+          <InfoTitle>결제금액:</InfoTitle>
+          {toCommaSeparatedString(refundOrderDetail.price)} 원
         </p>
         <p>
-          <InfoTitle>후원일자:</InfoTitle>
-          {refundOrderDetail.donation.createdAt}
-        </p>
-      </InfoContainer>
-      <InfoContainer>
-        <p>
-          <InfoTitle>후원자명:</InfoTitle>
-          {refundOrderDetail.donation.name}
-        </p>
-        <p>
-          <InfoTitle>후원메시지:</InfoTitle>
-          {refundOrderDetail.donation.message}
+          <InfoTitle>결제일자:</InfoTitle>
+          {String(refundOrderDetail.createdAt)}
         </p>
       </InfoContainer>
     </StyledRefundInfo>

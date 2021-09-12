@@ -17,7 +17,7 @@ const useLoginEffect = (oauthProvider?: OAuthProvider) => {
       const { token } = await requestLogin(oauthProvider, authCode);
 
       storeAccessToken(token);
-      history.push('/');
+      history.go(-3);
     } catch (error) {
       if (error.response.data.errorCode === AUTH_ERROR.NOT_USER) {
         alert('회원가입 페이지로 이동합니다.');

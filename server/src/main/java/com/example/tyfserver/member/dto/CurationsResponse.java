@@ -15,7 +15,6 @@ public class CurationsResponse {
     private String profileImage;
     private String bio;
 
-    @QueryProjection
     public CurationsResponse(String nickname, Long donationAmount, String pageName, String profileImage, String bio) {
         this.nickname = nickname;
         this.donationAmount = donationAmount;
