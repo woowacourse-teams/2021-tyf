@@ -80,7 +80,11 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
           <PaymentButtonContainer>
             <IconOutlineBarButton
               src={KakaoPay}
-              onClick={() => pay('kakaopay', selectedItemId, accessToken, closeModal)}
+              onClick={() =>
+                pay('kakaopay', selectedItemId, accessToken, () => {
+                  window.location.reload();
+                })
+              }
             >
               카카오페이
             </IconOutlineBarButton>
