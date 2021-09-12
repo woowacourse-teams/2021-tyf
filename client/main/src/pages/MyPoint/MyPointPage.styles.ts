@@ -9,6 +9,7 @@ export const StyledTemplate = styled(Template)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: calc(100vh - 3.5rem);
 
   @media ${DEVICE.DESKTOP} {
     justify-content: center;
@@ -17,9 +18,9 @@ export const StyledTemplate = styled(Template)`
 
 export const StyledContainer = styled.div`
   position: relative;
-  min-height: calc(100vh - 3.5rem);
   padding: 4.625rem 0;
   width: 100%;
+  min-height: calc(100vh - 3.5rem);
 
   section {
     width: 100%;
@@ -36,6 +37,7 @@ export const StyledContainer = styled.div`
   }
 
   @media ${DEVICE.DESKTOP} {
+    min-height: 0;
     width: 22rem;
     border-top: 1px solid ${PALETTE.GRAY_300};
     border-bottom: 1px solid ${PALETTE.GRAY_300};
