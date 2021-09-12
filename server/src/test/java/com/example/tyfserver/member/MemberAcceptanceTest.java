@@ -319,7 +319,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("계좌 정보 조회 요청")
     public void getAccountInfo() {
-        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
+        SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com",
+                "KAKAO", "nickname", "pagename");
         ExtractableResponse<Response> response = 계좌_조회(signUpResponse.getToken());
         AccountInfoResponse accountInfoResponse = response.as(AccountInfoResponse.class);
 

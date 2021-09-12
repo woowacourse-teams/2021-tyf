@@ -1,8 +1,10 @@
 package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.repository.DonationRepository;
+import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Exchange;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
@@ -25,6 +27,7 @@ public class MemberService {
     private final DonationRepository donationRepository;
     private final ExchangeRepository exchangeRepository;
     private final S3Connector s3Connector;
+    private final Aes256Util aes256Util;
 
     public void validatePageName(PageNameRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
@@ -102,13 +105,24 @@ public class MemberService {
 
         String uploadedBankBookUrl = s3Connector.uploadBankBook(accountRegisterRequest.getBankbookImage(),
                 loginMember.getId());
+
+        String encryptedAccountNumber = aes256Util.encrypt(accountRegisterRequest.getAccountNumber());
         member.registerAccount(accountRegisterRequest.getAccountHolder(),
-                accountRegisterRequest.getAccountNumber(), accountRegisterRequest.getBank(), uploadedBankBookUrl);
+                encryptedAccountNumber, accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
         Member member = findMember(loginMember.getId());
-        return AccountInfoResponse.of(member.getAccount());
+        Account account = member.getAccount();
+
+        if (account.isAccountNumberNotEmpty()) {
+            String decryptedAccountNumber = aes256Util.decrypt(account.getAccountNumber());
+
+            return new AccountInfoResponse(account.getStatus().name(), account.getAccountHolder(),
+                    account.getBank(), decryptedAccountNumber);
+        }
+
+        return AccountInfoResponse.of(account);
     }
 
     public void exchange(Long id) {
