@@ -14,9 +14,9 @@ const useDonation = () => {
   const donate = async (creatorId: CreatorId, donationAmount: number) => {
     try {
       const result = await requestDonation(creatorId, donationAmount, accessToken);
-      const { donationId, message, donatedPoint } = result;
+      const { donationId, message, amount } = result;
 
-      setDonation({ ...donation, donationId, donatedPoint, message });
+      setDonation({ ...donation, donationId, amount, message });
 
       history.push(`/donation/${creatorId}/message`);
     } catch (error) {

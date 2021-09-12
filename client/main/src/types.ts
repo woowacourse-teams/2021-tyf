@@ -37,7 +37,7 @@ export interface Donation {
   email: string;
   name: string;
   message: string;
-  donatedPoint: number;
+  amount: number;
   createdAt: Date;
 }
 

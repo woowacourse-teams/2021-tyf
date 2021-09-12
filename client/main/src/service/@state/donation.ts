@@ -10,7 +10,7 @@ export const donationState = atom<Donation>({
     email: '',
     name: '',
     message: '',
-    donatedPoint: -1,
+    amount: -1,
     createdAt: new Date(),
   },
 });

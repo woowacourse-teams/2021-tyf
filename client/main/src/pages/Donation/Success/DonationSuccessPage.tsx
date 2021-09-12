@@ -47,7 +47,7 @@ const DonationSuccessPage = () => {
       <Transition>
         <SuccessMessageContainer>
           <SubText>{nickname}님에게</SubText>
-          <MainText>{toCommaSeparatedString(donation.donatedPoint)}tp</MainText>
+          <MainText>{toCommaSeparatedString(donation.amount)}tp</MainText>
           <SubText>후원되었습니다.</SubText>
           <EmojiText>🎉</EmojiText>
         </SuccessMessageContainer>
