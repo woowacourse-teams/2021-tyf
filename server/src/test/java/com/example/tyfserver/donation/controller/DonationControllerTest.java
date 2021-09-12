@@ -88,7 +88,6 @@ class DonationControllerTest {
                 .andExpect(jsonPath("name").value(response.getName()))
                 .andExpect(jsonPath("message").value(response.getMessage()))
                 .andExpect(jsonPath("amount").value(response.getAmount()))
-                .andExpect(jsonPath("createdAt").value(response.getCreatedAt().toString()))
                 .andDo(document("createDonation",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
