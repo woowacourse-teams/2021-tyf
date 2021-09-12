@@ -26,7 +26,3 @@ logging.level:
 cloudwatch:
   log_group:
     /tyf/logs/app/prod
-
-aes:
-  secret:
-    aasdfdj123fddf6dq=edja89wptro3ds
