@@ -37,8 +37,3 @@ iamport:
 admin:
   id: test-id
   password: test-password
-
-
-aes:
-  secret:
-    jmlim12345bbbbbaaaaa123456789066
