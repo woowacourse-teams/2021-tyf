@@ -2,6 +2,7 @@ package com.example.tyfserver.member.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.LoginMember;
+import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
@@ -64,6 +65,9 @@ class MemberServiceTest {
 
     @Autowired
     private ExchangeRepository exchangeRepository;
+
+    @Autowired
+    private Aes256Util aes256Util;
 
     @MockBean
     private S3Connector s3Connector;
@@ -211,21 +215,23 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("계좌정보를 등록한다.")
+    @DisplayName("계좌정보를 등록한다. 계좌정보는 암호화되어 적용된다.")
     public void registerAccountInfo() {
         //given
         LoginMember loginMember = new LoginMember(member.getId(), member.getEmail());
-        final AccountRegisterRequest test = new AccountRegisterRequest("test", "1234-5678-1234", null, "하나");
+        final AccountRegisterRequest test = new AccountRegisterRequest("test",
+                "1234-5678-1234", null, "하나");
 
         //when
         memberService.registerAccount(loginMember, test);
 
+
         //then
         Account account = member.getAccount();
         assertThat(account.getStatus()).isEqualTo(AccountStatus.REQUESTING);
-        assertThat(account.getAccountHolder()).isEqualTo("test");
-        assertThat(account.getBank()).isEqualTo("하나");
-        assertThat(account.getAccountNumber()).isEqualTo("1234-5678-1234");
+        assertThat(account.getAccountHolder()).isEqualTo(test.getAccountHolder());
+        assertThat(account.getBank()).isEqualTo(test.getBank());
+        assertThat(account.getAccountNumber()).isEqualTo(aes256Util.encrypt(test.getAccountNumber()));
     }
 
     @Test

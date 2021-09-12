@@ -54,3 +54,7 @@ iamport:
 admin:
   id: test-id
   password: test-password
+
+aes:
+  secret:
+    tyftesttyftesttyftesttyftesttyft

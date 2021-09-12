@@ -52,6 +52,10 @@ public class Account extends BaseTimeEntity {
         this.status = AccountStatus.REJECTED;
     }
 
+    public boolean isAccountNumberNotEmpty() {
+        return accountNumber != null && !accountNumber.isBlank();
+    }
+
     private void validateRegisterAccount() {
         if (this.status == AccountStatus.REGISTERED) {
             throw new AccountAlreadyRegisteredException();

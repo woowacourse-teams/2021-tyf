@@ -5,6 +5,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentAlreadyCancelledException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,7 +92,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentComplete(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
-        this.member.addAvailablePoint(paymentInfo.getAmount());
+        this.member.addAvailablePoint(TaxIncludedCalculator.detachTax(paymentInfo.getAmount()));
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
