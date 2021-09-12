@@ -6,7 +6,7 @@ VOLUME /etc/ssl
 # expose port 80 443
 EXPOSE 80 443
 
-WORKDIR /app/client/main
+WORKDIR /app/client
 
 # install react with package.json
 COPY package.json yarn.lock ./
@@ -24,7 +24,7 @@ COPY . .
 RUN yarn build
 
 # change directory to server
-WORKDIR /app/client/main/server
+WORKDIR /app/client/server
 
 # install express with package.json
 RUN yarn

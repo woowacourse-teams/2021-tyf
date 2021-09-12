@@ -29,7 +29,7 @@ public class MemberService {
     private final S3Connector s3Connector;
     private final Aes256Util aes256Util;
 
-    public void validatePageName(PageNameRequest request) {
+    public void validatePageName(PageNameValidationRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
             throw new DuplicatedPageNameException();
         }

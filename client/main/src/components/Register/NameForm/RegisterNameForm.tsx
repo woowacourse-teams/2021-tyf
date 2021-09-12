@@ -29,7 +29,7 @@ const RegisterNameForm = () => {
       </RegisterNameTitle>
       <NameInputContainer>
         <ValidationInput
-          role="nickname"
+          aria-label="nickname"
           value={nickname}
           onChange={({ target }) => setNickname(target.value)}
           isSuccess={isValidNickName}

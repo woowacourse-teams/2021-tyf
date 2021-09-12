@@ -36,7 +36,7 @@ export const SourceCodeContainer = styled.div`
 `;
 
 export const StyledSubTitle = styled(SubTitle)`
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.125rem;
   text-align: left;
   margin-bottom: 1rem;

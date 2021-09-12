@@ -13,18 +13,11 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.UUID;
-
-import static org.mockito.Mockito.*;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 public class AcceptanceTest {
 
@@ -73,19 +66,6 @@ public class AcceptanceTest {
 
     protected static ValidatableResponse get(String url) {
         return apiTemplate()
-                .get(url)
-                .then().log().all();
-    }
-
-    protected static RequestSpecification paramTemplate(String key, String value) {
-        return RestAssured
-                .given().log().all()
-                .param(key, value)
-                .contentType(MediaType.APPLICATION_JSON_VALUE);
-    }
-
-    protected static ValidatableResponse paramGet(String url, String key, String value) {
-        return paramTemplate(key, value)
                 .get(url)
                 .then().log().all();
     }

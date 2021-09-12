@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { ParamTypes } from '../../App';
 import useUserInfo from '../../service/user/useUserInfo';
-import DonationMessageList from '../../components/Donation/MessageList/DonationMessageList';
+import DonationMessageList from '../../components/Creator/MessageList/DonationMessageList';
 import { useWindowResize } from '../../utils/useWindowResize';
 import { StyledTemplate } from './CreatorPage.styles';
 import Spinner from '../../components/Spinner/Spinner';

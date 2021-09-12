@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
-import StyledOutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
+import OutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const StyledSettlementAccountForm = styled.form`
   padding: 3rem;
@@ -35,6 +35,6 @@ export const FileName = styled.span`
   margin-bottom: 0.75rem;
 `;
 
-export const UploadLabelButton = styled(StyledOutlineButton)`
+export const UploadLabelButton = styled(OutlineButton)`
   pointer-events: none;
 `;

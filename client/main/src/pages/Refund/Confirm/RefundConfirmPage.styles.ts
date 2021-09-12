@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Button from '../../../components/@atom/Button/Button.styles';
 import Template from '../../../components/@atom/Template/Template';
+import { SIZE } from '../../../constants/device';
 
 export const RefundConfirmPageTemplate = styled(Template)`
   position: relative;
@@ -9,6 +10,8 @@ export const RefundConfirmPageTemplate = styled(Template)`
   align-items: center;
   flex-direction: column;
   min-height: 50rem;
+  height: 100vh;
+  max-width: ${SIZE.MOBILE_MAX}px;
 `;
 
 export const ButtonContainer = styled.div`

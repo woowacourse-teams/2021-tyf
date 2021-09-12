@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Button from '../../@atom/Button/Button.styles';
 import PALETTE from '../../../constants/palette';
 
-const StyledOutlineButton = styled(Button)`
+const OutlineButton = styled(Button)`
   background-color: transparent;
   color: ${({ theme }) => theme.color.main};
   border: ${({ theme }) => `1px solid ${theme.color.border}`};
@@ -18,4 +18,4 @@ const StyledOutlineButton = styled(Button)`
   }
 `;
 
-export default StyledOutlineButton;
+export default OutlineButton;

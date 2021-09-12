@@ -9,7 +9,9 @@ describe('RegisterNamePage', () => {
   });
 
   test('유효한 닉네임을 입력해야 다음 버튼이 활성화 된다', () => {
-    const nickNameInput = screen.getByRole('nickname');
+    const nickNameInput = screen.getByRole('textbox', {
+      name: 'nickname',
+    });
     const nextButton = screen.getByRole('button', { name: '회원가입 완료' });
 
     // 최초에 버튼이 비활성화 되어있다
