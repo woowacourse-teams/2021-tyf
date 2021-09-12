@@ -63,5 +63,5 @@ export const ShowMoreButton = styled(OutlineButton)`
   display: block;
   margin-top: 1.75rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
 `;

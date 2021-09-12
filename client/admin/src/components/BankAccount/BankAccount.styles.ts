@@ -36,7 +36,7 @@ export const ItemContent = styled.div``;
 
 export const Bold = styled.span`
   display: inline-block;
-  font-weight: 600;
+  font-weight: 700;
   min-width: 7.5rem;
   text-align: end;
 `;

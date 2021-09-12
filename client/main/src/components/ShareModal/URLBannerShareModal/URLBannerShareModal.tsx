@@ -31,7 +31,7 @@ const URLBannerShareModal = ({ onClose, userInfo }: URLBannerShareModalProps) =>
   return (
     <StyledModal onClose={onClose}>
       <DisplayButtonContainer>
-        <DisplayButton src={bannerURL} alt="" />
+        <DisplayButton src={bannerURL} alt="selected-button-style" />
         <PaletteContainer>
           <ColorSelectButton color="#444444" onClick={() => changeButtonColor('black')} />
           <ColorSelectButton color="#F3706E" onClick={() => changeButtonColor('red')} />

@@ -36,7 +36,7 @@ const DonationMessageList = ({ isAdmin }: Props) => {
         <>
           <CommentsList>
             {donationList.map(({ donationId, name, message, donatedPoint, createdAt }) => (
-              <CommentsListItem key={donationId} role="donation-message">
+              <CommentsListItem key={donationId} aria-label="donation-message">
                 <ItemInfo>
                   <span>
                     {name} <Divider>|</Divider> {toCommaSeparatedString(donatedPoint)}tp

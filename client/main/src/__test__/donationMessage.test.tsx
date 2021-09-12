@@ -9,14 +9,15 @@ beforeEach(() => {
   const initializeState = ({ set }: any) => {
     set(accessTokenState, 'mocked');
   };
-
   myRender(<DonationMessagePage />, initializeState);
 });
 
 describe('donationMessage', () => {
   test('후원자의 닉네임과 메세지를 입력할 수 있다.', () => {
-    const $nicknameInput = screen.getByRole('nickname-input') as HTMLInputElement;
-    const $messageInput = screen.getByRole('message-input') as HTMLTextAreaElement;
+    const $nicknameInput = screen.getByRole('textbox', {
+      name: 'nickname',
+    }) as HTMLInputElement;
+    const $messageInput = screen.getByRole('textbox', { name: 'message' }) as HTMLTextAreaElement;
     const $submitButton = screen.getByRole('button', {
       name: '메세지 남기기',
     }) as HTMLButtonElement;

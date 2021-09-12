@@ -10,7 +10,7 @@ export const StyledPointSelect = styled.div`
     cursor: pointer;
     display: inline-block;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     width: 7rem;
     height: 2.25rem;
     line-height: 2.25rem;

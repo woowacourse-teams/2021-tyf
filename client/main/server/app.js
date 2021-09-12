@@ -4,6 +4,7 @@ import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import subodmain from 'express-subdomain';
+import expressStaticGzip from 'express-static-gzip';
 
 const BASE_URL = 'https://thankyou-for.com';
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
   req.protocol === 'https' ? next() : res.redirect(BASE_URL + req.path);
 });
 
+app.use('/', expressStaticGzip(path.resolve('dist', 'compressed')));
 app.use('/', express.static(path.resolve('dist')));
 
 app.get('/*', (req, res) => {

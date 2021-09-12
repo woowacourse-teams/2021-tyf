@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ImgHTMLAttributes, VFC } from 'react';
+import { ButtonHTMLAttributes, ImgHTMLAttributes } from 'react';
 
 import { Icon, StyledIconButton } from './IconButton.styles';
 

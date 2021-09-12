@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import Container from '../@atom/Container/Container.styles';
 import IconButton from '../@atom/IconButton/IconButton';
-import logoImg from '../../assets/images/logo.svg';
+import logoImg from '../../assets/images/logo.png';
 import Anchor from '../@atom/Anchor/Anchor';
 import { DEVICE, SIZE } from '../../constants/device';
 import TextButton from '../@atom/TextButton/TextButton.styles';
@@ -44,6 +44,8 @@ export const StyledLogo = styled(IconButton).attrs({
   src: logoImg,
 })`
   width: 8.5rem;
+  height: auto;
+
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
