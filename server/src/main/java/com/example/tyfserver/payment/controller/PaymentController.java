@@ -1,12 +1,15 @@
 package com.example.tyfserver.payment.controller;
 
+import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.dto.VerifiedRefunder;
 import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.exception.PaymentCompleteRequestException;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.exception.RefundVerificationException;
 import com.example.tyfserver.payment.exception.RefundVerificationReadyException;
 import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +23,31 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping
-    public ResponseEntity<PaymentPendingResponse> payment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest, BindingResult result) {
+    @PostMapping("/charge/ready")
+    public ResponseEntity<PaymentPendingResponse> readyPayment(@Valid @RequestBody PaymentPendingRequest paymentPendingRequest,
+                                                               BindingResult result, LoginMember loginMember) {
         if (result.hasErrors()) {
             throw new PaymentPendingRequestException();
         }
 
-        PaymentPendingResponse response = paymentService.createPayment(paymentPendingRequest);
+        PaymentPendingResponse response = paymentService.createPayment(paymentPendingRequest.getItemId(), loginMember);
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/charge")
+    public ResponseEntity<PaymentCompleteResponse> completePayment(@Valid @RequestBody PaymentCompleteRequest paymentCompleteRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new PaymentCompleteRequestException();
+        }
+
+        PaymentCompleteResponse paymentCompleteResponse = paymentService.completePayment(paymentCompleteRequest);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(paymentCompleteResponse);
+    }
+
     @PostMapping("/refund/verification/ready")
-    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest, BindingResult result) {
+    public ResponseEntity<RefundVerificationReadyResponse> refundVerificationReady(@Valid @RequestBody RefundVerificationReadyRequest verificationReadyRequest,
+                                                                                   BindingResult result) {
         if (result.hasErrors()) {
             throw new RefundVerificationReadyException();
         }
@@ -51,8 +67,8 @@ public class PaymentController {
     }
 
     @GetMapping("/refund/info")
-    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder refundInfoRequest) {
-        RefundInfoResponse response = paymentService.refundInfo(refundInfoRequest);
+    public ResponseEntity<RefundInfoResponse> refundInfo(VerifiedRefunder verifiedRefunder) {
+        RefundInfoResponse response = paymentService.refundInfo(verifiedRefunder);
         return ResponseEntity.ok(response);
     }
 

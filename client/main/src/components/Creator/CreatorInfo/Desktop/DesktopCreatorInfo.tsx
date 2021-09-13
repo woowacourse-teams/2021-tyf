@@ -20,14 +20,14 @@ interface Props {
 const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage }: Props) => {
   return (
     <StyledCreatorInfo>
-      <ProfileImg role="profile-img" src={creator.profileImage || DefaultProfileImg} />
+      <ProfileImg alt="profile" src={creator.profileImage || DefaultProfileImg} />
       <InfoContainer>
         <StyledInfo>
           <NickName>{creator.nickname}</NickName>
           {isAdmin ? (
             <StyledButton onClick={shareUrl}>내 페이지 공유하기</StyledButton>
           ) : (
-            <StyledButton onClick={popupDonationAmountPage}>후원하기</StyledButton>
+            <StyledButton onClick={popupDonationAmountPage}>도네이션하기</StyledButton>
           )}
         </StyledInfo>
 

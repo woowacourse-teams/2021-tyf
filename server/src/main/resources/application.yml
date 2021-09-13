@@ -9,6 +9,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    hibernate:
+      ddl-auto: create
 
   redis:
     host: localhost
@@ -52,3 +54,7 @@ iamport:
 admin:
   id: test-id
   password: test-password
+
+aes:
+  secret:
+    tyftesttyftesttyftesttyftesttyft

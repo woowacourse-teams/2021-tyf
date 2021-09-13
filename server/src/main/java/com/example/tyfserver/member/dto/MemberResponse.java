@@ -15,23 +15,26 @@ public class MemberResponse {
     private String pageName;
     private String bio;
     private String profileImage;
+    private long point;
     private boolean bankRegistered;
 
     public MemberResponse(Member member) {
         this(member.getEmail(), member.getNickname(), member.getPageName(),
-                member.getBio(), member.getProfileImage(), isBankRegistered(member));
+                member.getBio(), member.getProfileImage(), member.getAvailablePoint(), isBankRegistered(member));
     }
 
     private static boolean isBankRegistered(Member member) {
         return member.getAccountStatus() == AccountStatus.REGISTERED;
     }
 
-    public MemberResponse(String email, String nickname, String pageName, String bio, String profileImage, boolean bankRegistered) {
+    public MemberResponse(String email, String nickname, String pageName, String bio,
+                          String profileImage, long point, boolean bankRegistered) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.bio = bio;
         this.profileImage = profileImage;
+        this.point = point;
         this.bankRegistered = bankRegistered;
     }
 }

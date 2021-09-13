@@ -2,7 +2,6 @@ package com.example.tyfserver.common.util;
 
 import com.amazonaws.util.IOUtils;
 import com.example.tyfserver.common.exception.SendingMailFailedException;
-import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -17,6 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 public class SmtpMailConnector {
 
     private static final String PREFIX_SUBJECT = "[Thank You For]";
-    private static final String CREATOR_PREFIX_DOMAIN = "https://thankyou-for.com/creator/";
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
@@ -71,20 +70,15 @@ public class SmtpMailConnector {
         sendMail("정산 계좌 승인 반려", message, mailAddress);
     }
 
-    public void sendDonationComplete(Payment payment, Member member) {
+    public void sendChargeComplete(Payment payment) {
         Context context = new Context();
-        context.setVariable("page_url", CREATOR_PREFIX_DOMAIN + payment.getPageName());
+        context.setVariable("item_name", payment.getItemName());
         context.setVariable("merchant_id", payment.getMerchantUid());
-        context.setVariable("creator_name", member.getNickname());
-        context.setVariable("donation_amount", payment.getAmount());
-        context.setVariable("date",    payment.getCreatedAt().now().
-                format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        context.setVariable("charge_amount", payment.getAmount());
+        context.setVariable("date", formatDateTime(payment.getCreatedAt()));
 
-
-
-        String message = templateEngine.process("mail-donation-complete.html", context);
-        sendMail("후원 성공", message, payment.getEmail());
-
+        String message = templateEngine.process("mail-charge-complete.html", context);
+        sendMail("충전 결제 내역", message, payment.getEmail());
     }
 
     private void sendMail(String subject, String htmlText, String toEmail) {
@@ -95,7 +89,7 @@ public class SmtpMailConnector {
             mimeMessageHelper.setTo(toEmail);
             mimeMessageHelper.setSubject(PREFIX_SUBJECT + subject);
             mimeMessageHelper.setText(htmlText, true);
-            mimeMessageHelper.addInline("tyf-logo", getLogo(),"application/octect-stream");
+            mimeMessageHelper.addInline("tyf-logo", getLogo(), "application/octect-stream");
             javaMailSender.send(mail);
         } catch (MessagingException e) {
             throw new SendingMailFailedException();
@@ -103,14 +97,17 @@ public class SmtpMailConnector {
     }
 
     private ByteArrayResource getLogo() {
-        InputStream inputStream = null;
         try {
-            inputStream = new ClassPathResource("static/logo.png").getInputStream();
+            InputStream inputStream = new ClassPathResource("static/logo.png").getInputStream();
             return new ByteArrayResource(IOUtils.toByteArray(inputStream));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         throw new SendingMailFailedException();
+    }
+
+    private String formatDateTime(LocalDateTime at) {
+        return at.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

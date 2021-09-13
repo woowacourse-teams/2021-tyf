@@ -4,7 +4,6 @@ import { baseURL } from '../API';
 import {
   creatorListMock,
   donationMessageListMock,
-  statisticsMock,
   userInfoMock,
   refundInfoMock,
   refundReadyMock,
@@ -28,9 +27,6 @@ const donationHandlers = [
 ];
 
 const memberHandlers = [
-  rest.get(`${baseURL}/members/me/point`, (req, res, ctx) => {
-    return res(ctx.json(statisticsMock));
-  }),
   rest.get(`${baseURL}/members/me`, (req, res, ctx) => {
     return res(ctx.json(userInfoMock));
   }),

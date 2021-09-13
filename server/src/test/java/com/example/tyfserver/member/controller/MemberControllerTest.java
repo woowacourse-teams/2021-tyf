@@ -64,14 +64,14 @@ class MemberControllerTest {
     @DisplayName("/members/validate/pageName - success")
     public void validatePageName() throws Exception {
         //given
-        PageNameValidationRequest request = new PageNameValidationRequest("pagename");
+        PageNameRequest request = new PageNameRequest("pagename");
 
         //when
         doNothing().when(memberService).validatePageName(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/pageName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("validatePageName",
@@ -84,14 +84,14 @@ class MemberControllerTest {
     @DisplayName("/members/validate/pageName - 유효하지 않은 request")
     public void validatePageNameRequestFailed() throws Exception {
         //given
-        PageNameValidationRequest request = new PageNameValidationRequest("INVALID");
+        PageNameRequest request = new PageNameRequest("INVALID");
 
         //when
         doNothing().when(memberService).validatePageName(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/pageName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PageNameValidationRequestException.ERROR_CODE))
                 .andDo(print())
@@ -105,14 +105,14 @@ class MemberControllerTest {
     @DisplayName("/members/validate/pageName - 중복된 pageName")
     public void validatePageNameDuplicatedFailed() throws Exception {
         //given
-        PageNameValidationRequest request = new PageNameValidationRequest("pagename");
+        PageNameRequest request = new PageNameRequest("pagename");
 
         //when
         doThrow(new DuplicatedPageNameException()).when(memberService).validatePageName(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/pageName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DuplicatedPageNameException.ERROR_CODE))
                 .andDo(document("validatePageNameDuplicatedFailed",
@@ -131,8 +131,8 @@ class MemberControllerTest {
         doNothing().when(memberService).validateNickname(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("validateNickname",
                         preprocessRequest(prettyPrint()),
@@ -150,8 +150,8 @@ class MemberControllerTest {
         doNothing().when(memberService).validateNickname(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
                 .andDo(document("validateNicknameRequestFailed",
@@ -170,8 +170,8 @@ class MemberControllerTest {
         doThrow(new DuplicatedNicknameException()).when(memberService).validateNickname(Mockito.any());
         //then
         mockMvc.perform(post("/members/validate/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(DuplicatedNicknameException.ERROR_CODE))
                 .andDo(document("validateNicknameDuplicatedFailed",
@@ -185,12 +185,12 @@ class MemberControllerTest {
     public void memberInfo() throws Exception {
         //given
         MemberResponse response = new MemberResponse("email", "nickname",
-                "pagename", "I am test", "profile.png", false);
+                "pagename", "I am test", "profile.png", 10000L, false);
         //when
-        when(memberService.findMember(Mockito.anyString())).thenReturn(response);
+        when(memberService.findMemberByPageName(Mockito.anyString())).thenReturn(response);
         //then
         mockMvc.perform(get("/members/pagename")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("email").value("email"))
                 .andExpect(jsonPath("nickname").value("nickname"))
@@ -208,10 +208,10 @@ class MemberControllerTest {
     public void memberInfoMemberNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new MemberNotFoundException()).when(memberService).findMember(Mockito.anyString());
+        doThrow(new MemberNotFoundException()).when(memberService).findMemberByPageName(Mockito.anyString());
         //then
         mockMvc.perform(get("/members/pagename")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("memberInfoMemberNotFoundFailed",
@@ -225,13 +225,13 @@ class MemberControllerTest {
     public void memberDetail() throws Exception {
         //given
         MemberResponse response = new MemberResponse("email", "nickname", "pagename",
-                "I am test", "profile.png", false);
+                "I am test", "profile.png", 10000L, false);
         //when
-        when(memberService.findMemberDetail(Mockito.anyLong())).thenReturn(response);
+        when(memberService.findMemberById(Mockito.anyLong())).thenReturn(response);
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("email").value("email"))
                 .andExpect(jsonPath("nickname").value("nickname"))
@@ -248,11 +248,11 @@ class MemberControllerTest {
     public void memberDetailMemberNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new MemberNotFoundException()).when(memberService).findMemberDetail(Mockito.anyLong());
+        doThrow(new MemberNotFoundException()).when(memberService).findMemberById(Mockito.anyLong());
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("memberDetailMemberNotFoundFailed",
@@ -269,7 +269,7 @@ class MemberControllerTest {
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("memberDetailHeaderNotFoundFailed",
@@ -286,7 +286,7 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("memberDetailInvalidTokenFailed",
@@ -305,7 +305,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me/point")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("point").value(1000L))
                 .andDo(document("memberPoint",
@@ -323,7 +323,7 @@ class MemberControllerTest {
         validInterceptorAndArgumentResolverMocking();
         //then
         mockMvc.perform(get("/members/me/point")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("memberPointMemberNotFoundFailed",
@@ -340,7 +340,7 @@ class MemberControllerTest {
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me/point")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("memberPointHeaderNotFoundFailed",
@@ -357,7 +357,7 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(get("/members/me/point")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("memberPointInvalidTokenFailed",
@@ -379,7 +379,7 @@ class MemberControllerTest {
         );
         //then
         mockMvc.perform(get("/members/curations")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..nickname").exists())
                 .andExpect(jsonPath("$..donationAmount").exists())
@@ -404,8 +404,8 @@ class MemberControllerTest {
         doNothing().when(authenticationService).validateToken(Mockito.anyString());
         //then
         mockMvc.perform(post("/members/validate/token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("validateToken",
                         preprocessRequest(prettyPrint()),
@@ -422,8 +422,8 @@ class MemberControllerTest {
         doThrow(new InvalidTokenException()).when(authenticationService).validateToken(Mockito.anyString());
         //then
         mockMvc.perform(post("/members/validate/token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("validateTokenInvalidTokenFailed",
@@ -447,7 +447,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(generateMultipartPutRequest("/members/profile")
-                        .file(file))
+                .file(file))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("profileImage").value(url))
                 .andDo(document("profile",
@@ -469,7 +469,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(generateMultipartPutRequest("/members/profile")
-                        .file(file))
+                .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(S3FileNotFoundException.ERROR_CODE))
                 .andDo(document("profileS3FileNotFoundFailed",
@@ -491,7 +491,7 @@ class MemberControllerTest {
         doThrow(new MemberNotFoundException()).when(memberService).uploadProfile(Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(generateMultipartPutRequest("/members/profile")
-                        .file(file))
+                .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("profileMemberNotFoundFailed",
@@ -510,7 +510,7 @@ class MemberControllerTest {
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
         //then
         mockMvc.perform(generateMultipartPutRequest("/members/profile")
-                        .file(file))
+                .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("profileHeaderNotFoundFailed",
@@ -530,7 +530,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(generateMultipartPutRequest("/members/profile")
-                        .file(file))
+                .file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("profileInvalidTokenFailed",
@@ -633,8 +633,8 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(put("/members/me/bio")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("updateBio",
                         preprocessRequest(prettyPrint()),
@@ -655,8 +655,8 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(put("/members/me/bio")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(BioValidationRequestException.ERROR_CODE))
                 .andDo(document("updateBioInvalidBioValueRequestFailed",
@@ -721,8 +721,8 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(put("/members/me/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("updateNickname",
                         preprocessRequest(prettyPrint()),
@@ -745,8 +745,8 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(put("/members/me/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(NicknameValidationRequestException.ERROR_CODE))
                 .andDo(document("updateNicknameInvalidNicknameValueRequestFailed",
@@ -759,7 +759,8 @@ class MemberControllerTest {
     @DisplayName("Get - /members/me/account - success")
     void getAccountInfo() throws Exception {
         //given
-        AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(new Account("", "", "", ""));
+        AccountInfoResponse accountInfoResponse =
+                AccountInfoResponse.of(new Account("", "", "", ""));
 
         //when
         when(memberService.accountInfo(Mockito.any())).thenReturn(accountInfoResponse);
@@ -817,11 +818,11 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(multipart("/members/me/account")
-                        .file(file)
-                        .param("accountHolder", "test")
-                        .param("accountNumber", "1234-5678-1234")
-                        .param("bank", "은행")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andDo(document("registerAccount",
                         preprocessRequest(prettyPrint()),
@@ -840,11 +841,11 @@ class MemberControllerTest {
 
         //when
         mockMvc.perform(multipart("/members/me/account")
-                        .file(file)
-                        .param("accountHolder", "")
-                        .param("accountNumber", "")
-                        .param("bank", "")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("accountHolder", "")
+                .param("accountNumber", "")
+                .param("bank", "")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AccountRegisterValidationRequestException.ERROR_CODE))
                 .andDo(document("registerAccountFailWhenInvalidValue",
@@ -864,11 +865,11 @@ class MemberControllerTest {
 
         //when
         mockMvc.perform(multipart("/members/me/account")
-                        .file(file)
-                        .param("accountHolder", "test")
-                        .param("accountNumber", "1234-5678-1234")
-                        .param("bank", "은행")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AccountAlreadyRegisteredException.ERROR_CODE))
                 .andDo(document("registerAccountFailRegistered",
@@ -888,11 +889,11 @@ class MemberControllerTest {
 
         //when
         mockMvc.perform(multipart("/members/me/account")
-                        .file(file)
-                        .param("accountHolder", "test")
-                        .param("accountNumber", "1234-5678-1234")
-                        .param("bank", "은행")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AccountRequestingException.ERROR_CODE))
                 .andDo(document("registerAccountFailRequesting",
@@ -912,10 +913,10 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(multipart("/members/me/account")
-                        .file(file)
-                        .param("accountHolder", "test")
-                        .param("accountNumber", "1234-5678-1234")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("registerAccountHeaderNotFoundFailed",
@@ -937,11 +938,11 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(multipart("/members/me/account")
-                        .file(file)
-                        .param("accountHolder", "test")
-                        .param("accountNumber", "1234-5678-1234")
-                        .param("bank", "은행")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("accountHolder", "test")
+                .param("accountNumber", "1234-5678-1234")
+                .param("bank", "은행")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("registerAccountInvalidTokenFailed",
@@ -985,7 +986,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(get("/members/me/detailedPoint")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("detailedPoint",
                         preprocessRequest(prettyPrint()),
@@ -1001,7 +1002,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(get("/members/me/detailedPoint")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("detailedPointInvalidTokenFailed",
@@ -1018,7 +1019,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(get("/members/me/detailedPoint")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("detailedPointAuthorizationHeaderNotFoundFailed",
@@ -1036,7 +1037,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(post("/members/me/exchange")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("requestExchange",
                         preprocessRequest(prettyPrint()),
@@ -1053,7 +1054,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(post("/members/me/exchange")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("requestExchangeMemberNotFound",
@@ -1071,7 +1072,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(post("/members/me/exchange")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AlreadyRequestExchangeException.ERROR_CODE))
                 .andDo(document("requestExchangeAlreadyRequestExchange",
@@ -1089,7 +1090,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(post("/members/me/exchange")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(ExchangeAmountException.ERROR_CODE))
                 .andDo(document("requestExchangeAmountLess",
@@ -1106,7 +1107,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(post("/members/me/exchange")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("requestExchangeAuthorizationNotFound",
@@ -1123,7 +1124,7 @@ class MemberControllerTest {
 
         //then
         mockMvc.perform(post("/members/me/exchange")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("requestExchangeInvalidToken",

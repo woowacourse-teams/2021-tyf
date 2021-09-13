@@ -18,7 +18,7 @@ export const MoneyInputContainer = styled.div`
   min-height: 10rem;
 
   &::after {
-    content: '원';
+    content: 'tp';
     display: block;
     position: absolute;
     right: 0.5rem;

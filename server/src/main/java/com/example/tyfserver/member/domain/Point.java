@@ -1,5 +1,6 @@
 package com.example.tyfserver.member.domain;
 
+import com.example.tyfserver.member.exception.NotEnoughPointException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +25,12 @@ public class Point {
 
     public void reduce(final long amount) {
         if (amount > point) {
-            throw new RuntimeException("포인트가 총액보다 적게 있습니다.");
+            throw new NotEnoughPointException();
         }
         this.point -= amount;
+    }
+
+    public boolean lessThan(Long point) {
+        return this.point < point;
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DonationRepository extends JpaRepository<Donation, Long>, DonationQueryRepository {
 
@@ -21,8 +20,6 @@ public interface DonationRepository extends JpaRepository<Donation, Long>, Donat
     List<Donation> findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(Member member, DonationStatus status);
 
     List<Donation> findDonationByMemberAndStatusNotOrderByCreatedAtDesc(Member member, DonationStatus status, Pageable pageable);
-
-    Optional<Donation> findByPaymentId(Long id);
 
     @EntityGraph(attributePaths = "member")
     List<Donation> findDonationByStatusAndMember(DonationStatus status, Member member);

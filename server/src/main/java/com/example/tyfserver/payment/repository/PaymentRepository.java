@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
+    @EntityGraph(attributePaths = {"member"})
     Optional<Payment> findByMerchantUid(UUID merchantUid);
 
     @EntityGraph(attributePaths = {"refundFailure"})

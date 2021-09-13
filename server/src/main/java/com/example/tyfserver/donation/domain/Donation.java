@@ -1,9 +1,7 @@
 package com.example.tyfserver.donation.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
-import com.example.tyfserver.donation.exception.DonationAlreadyCancelledException;
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,29 +22,23 @@ public class Donation extends BaseTimeEntity {
     @Embedded
     private Message message;
 
+    private long point;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.REFUNDABLE;
 
-    public Donation(Long id, Payment payment, Message message) {
+    public Donation(Message message, long point) {
+        this(null, message, point);
+    }
+
+    public Donation(Long id, Message message, long point) {
         this.id = id;
-        this.payment = payment;
         this.message = message;
-    }
-
-    public Donation(Payment payment, Message message) {
-        this(null, payment, message);
-    }
-
-    public Donation(Payment payment) {
-        this(payment, Message.defaultMessage());
+        this.point = point;
     }
 
     public void to(final Member member) {
@@ -55,6 +47,20 @@ public class Donation extends BaseTimeEntity {
 
     public void addMessage(Message message) {
         this.message = message;
+    }
+
+    // todo 테스트 코드에서만 사용중
+    public void toCancelled() {
+        status = DonationStatus.CANCELLED;
+    }
+
+    public void toExchanged() {
+        status = DonationStatus.EXCHANGED;
+    }
+
+    // todo 테스트 코드에서만 사용중 : 스케줄러 적용시 사용
+    public void toExchangeable() {
+        status = DonationStatus.EXCHANGEABLE;
     }
 
     public String getName() {
@@ -67,33 +73,5 @@ public class Donation extends BaseTimeEntity {
 
     public boolean isSecret() {
         return message.isSecret();
-    }
-
-    public Long getAmount() {
-        return payment.getAmount();
-    }
-    
-    public void toCancelled() {
-        status = DonationStatus.CANCELLED;
-        member.reducePoint(this.getAmount());
-    }
-
-    public void toExchanged() {
-        status = DonationStatus.EXCHANGED;
-        member.reducePoint(this.getAmount());
-    }
-
-    public void toExchangeable() {
-        status = DonationStatus.EXCHANGEABLE;
-    }
-
-    public void validateIsNotCancelled() {
-        if (status == DonationStatus.CANCELLED) {
-            throw new DonationAlreadyCancelledException();
-        }
-    }
-
-    public boolean isNotRefundable() {
-        return status != DonationStatus.REFUNDABLE;
     }
 }

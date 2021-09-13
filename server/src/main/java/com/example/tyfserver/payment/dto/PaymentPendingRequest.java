@@ -1,32 +1,24 @@
 package com.example.tyfserver.payment.dto;
 
+import com.example.tyfserver.payment.domain.Item;
+import com.example.tyfserver.payment.util.Enum;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class PaymentPendingRequest {
 
-    @NotNull
-    @Min(1000)
-    @Max(9990000)
-    private Long amount;
-
+    @Enum(enumClass = Item.class)
     @NotBlank
-    @Email
-    private String email;
+    private String itemId;
 
-    @NotBlank
-    private String pageName;
-
-    public PaymentPendingRequest(Long amount, String email, String pageName) {
-        this.amount = amount;
-        this.email = email;
-        this.pageName = pageName;
+    public PaymentPendingRequest(String itemId) {
+        this.itemId = itemId;
     }
 }

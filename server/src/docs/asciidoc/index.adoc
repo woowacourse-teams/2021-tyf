@@ -245,42 +245,6 @@ include::{snippets}/registerAccountInvalidTokenFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/registerAccountInvalidTokenFailed/http-response.adoc[]
 
-== Banners (배너)
-=== 배너 이미지 목록 조회 - 성공
-==== Request
-include::{snippets}/getBanners/http-request.adoc[]
-==== Response
-include::{snippets}/getBanners/http-response.adoc[]
-=== 배너 이미지 목록 조회 - Authorization 헤더를 찾을 수 없음
-==== Request
-include::{snippets}/getBannersHeaderNotFoundFailed/http-request.adoc[]
-==== Response
-include::{snippets}/getBannersHeaderNotFoundFailed/http-response.adoc[]
-=== 배너 이미지 목록 조회 - 유효하지 않은 토큰
-==== Request
-include::{snippets}/getBannersInvalidTokenFailed/http-request.adoc[]
-==== Response
-include::{snippets}/getBannersInvalidTokenFailed/http-response.adoc[]
-=== 배너 이미지 생성 - 성공
-==== Request
-include::{snippets}/createBanners/http-request.adoc[]
-==== Response
-include::{snippets}/createBanners/http-response.adoc[]
-=== 배너 이미지 생성 - 회원을 찾을 수 없음
-==== Request
-include::{snippets}/createBannersMemberNotFoundFailed/http-request.adoc[]
-==== Response
-include::{snippets}/createBannersMemberNotFoundFailed/http-response.adoc[]
-=== 배너 이미지 생성 - Authorization 헤더를 찾을 수 없음
-==== Request
-include::{snippets}/createBannersHeaderNotFoundFailed/http-request.adoc[]
-==== Response
-include::{snippets}/createBannersHeaderNotFoundFailed/http-response.adoc[]
-=== 배너 이미지 생성 - 유효하지 않은 토큰
-==== Request
-include::{snippets}/createBannersInvalidTokenFailed/http-request.adoc[]
-==== Response
-include::{snippets}/createBannersInvalidTokenFailed/http-response.adoc[]
 == Donations (후원)
 === 후원 요청 - 성공
 ==== Request
@@ -362,6 +326,7 @@ include::{snippets}/publicDonations/http-response.adoc[]
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
+
 == Payment (결제)
 === 결제 요청 - 성공
 ==== Request

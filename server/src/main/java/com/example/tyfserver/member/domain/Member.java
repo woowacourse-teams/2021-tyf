@@ -1,9 +1,10 @@
 package com.example.tyfserver.member.domain;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.banner.domain.Banner;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.member.exception.NotEnoughPointException;
+import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,8 @@ public class Member extends BaseTimeEntity {
     private String profileImage;
 
     @Embedded
-    private Point point;
+    @AttributeOverride(name = "point", column = @Column(name = "available_point"))
+    private Point availablePoint;
 
     @Enumerated(EnumType.STRING)
     private Oauth2Type oauth2Type;
@@ -48,18 +50,19 @@ public class Member extends BaseTimeEntity {
     private Account account;
 
     @OneToMany(mappedBy = "member")
-    private final List<Banner> banners = new ArrayList<>();
+    private final List<Payment> payments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private final List<Donation> donations = new ArrayList<>();
 
-    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage, Point point) {
+    public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
+                  Point availablePoint) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
         this.profileImage = profileImage;
-        this.point = point;
+        this.availablePoint = availablePoint;
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
@@ -70,15 +73,16 @@ public class Member extends BaseTimeEntity {
         this(email, nickname, pageName, oauth2Type, null);
     }
 
-    public void addDonation(final Donation donation) {
+    public void addDonation(Donation donation) {
         this.donations.add(donation);
         donation.to(this);
-        addPoint(donation.getAmount());
     }
 
-    private void addPoint(final long amount) {
-        this.point.add(amount);
+    public void addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.to(this);
     }
+
 
     public void updateBio(String bio) {
         this.bio = bio;
@@ -88,8 +92,8 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
-    public long getPoint() {
-        return this.point.getPoint();
+    public long getAvailablePoint() {
+        return this.availablePoint.getPoint();
     }
 
     public boolean isSameOauthType(String type) {
@@ -116,12 +120,18 @@ public class Member extends BaseTimeEntity {
         this.account.register(accountHolder, accountNumber, bank, bankBookUrl);
     }
 
+    public void validateEnoughPoint(Long point) {
+        if (availablePoint.lessThan(point)) {
+            throw new NotEnoughPointException();
+        }
+    }
+
     public AccountStatus getAccountStatus() {
         return this.account.getStatus();
     }
 
     public void reducePoint(long amount) {
-        point.reduce(amount);
+        availablePoint.reduce(amount);
     }
 
     public void approveAccount() {
@@ -134,5 +144,9 @@ public class Member extends BaseTimeEntity {
 
     public String getBankBookUrl() {
         return this.account.getBankbookUrl();
+    }
+
+    public void addAvailablePoint(Long amount) {
+        this.availablePoint.add(amount);
     }
 }

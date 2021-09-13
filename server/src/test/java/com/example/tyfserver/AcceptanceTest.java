@@ -3,19 +3,28 @@ package com.example.tyfserver;
 import com.example.tyfserver.auth.util.Oauth2ServiceConnector;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
+import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.UUID;
+
+import static org.mockito.Mockito.*;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 public class AcceptanceTest {
 
@@ -42,9 +51,11 @@ public class AcceptanceTest {
         when(s3Connector.uploadBankBook(any(), any()))
                 .thenReturn(DEFAULT_PROFILE_IMAGE);
         doNothing().when(s3Connector).delete(anyString());
+
         when(paymentServiceConnector.requestPaymentInfo(any(UUID.class)))
-                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID, 10000L,
-                        "pagename", "impUid", "module"));
+                .thenAnswer(invocation -> new PaymentInfo(invocation.getArgument(0), PaymentStatus.PAID,
+                        TaxIncludedCalculator.addTax(Item.ITEM_100.getItemPrice()),
+                        Item.ITEM_100.getItemName(), "impUid", "module"));
     }
 
     protected static RequestSpecification apiTemplate() {
@@ -62,6 +73,19 @@ public class AcceptanceTest {
 
     protected static ValidatableResponse get(String url) {
         return apiTemplate()
+                .get(url)
+                .then().log().all();
+    }
+
+    protected static RequestSpecification paramTemplate(String key, String value) {
+        return RestAssured
+                .given().log().all()
+                .param(key, value)
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    protected static ValidatableResponse paramGet(String url, String key, String value) {
+        return paramTemplate(key, value)
                 .get(url)
                 .then().log().all();
     }

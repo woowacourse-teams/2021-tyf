@@ -1,18 +1,16 @@
 package com.example.tyfserver.donation.service;
 
-import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
+import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.domain.Payment;
-import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
-import com.example.tyfserver.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,19 +26,20 @@ public class DonationService {
 
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
-    private final PaymentService paymentService;
-    private final SmtpMailConnector mailConnector;
 
-    public DonationResponse createDonation(PaymentCompleteRequest paymentCompleteRequest) {
-        Payment payment = paymentService.completePayment(paymentCompleteRequest);
-        Donation donation = new Donation(payment);
-        Member member = memberRepository.findByPageName(payment.getPageName())
+    public DonationResponse createDonation(DonationRequest donationRequest, long id) {
+        Member donator = findMember(id);
+        Member creator = memberRepository.findByPageName(donationRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
-        Donation savedDonation = donationRepository.save(donation);
-        member.addDonation(savedDonation);
+        donator.validateEnoughPoint(donationRequest.getPoint());
 
-        mailConnector.sendDonationComplete(payment, member);
+        Message message = new Message(donator.getNickname());
+        Donation creatorDonation = new Donation(message, donationRequest.getPoint());
+        Donation savedDonation = donationRepository.save(creatorDonation);
+        donator.reducePoint(donationRequest.getPoint());
+        creator.addDonation(savedDonation);
+
         return new DonationResponse(savedDonation);
     }
 
@@ -52,12 +51,16 @@ public class DonationService {
     }
 
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
-        Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(MemberNotFoundException::new);
+        Member findMember = findMember(memberId);
 
         List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED, pageable);
 
         return privateDonationResponses(donations);
+    }
+
+    private Member findMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     public List<DonationResponse> findPublicDonations(String pageName) {

@@ -37,13 +37,13 @@ const DonationMessageForm = ({ creatorId }: DonationMessageFormProps) => {
         <br /> 남겨주세요!
       </DonationMessageTitle>
       <NickNameInput
-        role="nickname-input"
+        aria-label="nickname"
         placeholder="닉네임 입력하기"
         value={form.name}
         onChange={({ target }) => setName(target.value)}
       />
       <Textarea
-        role="message-input"
+        aria-label="message"
         placeholder="응원메세지 작성하기"
         value={form.message}
         onChange={({ target }) => setMessage(target.value)}

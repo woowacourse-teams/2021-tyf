@@ -28,7 +28,7 @@ const CreatorCard = ({ creator }: CreatorCardProps) => {
   }, []);
 
   return (
-    <StyledCreatorCard role="creator-card" color={CARD_COLORS[colorNumber]}>
+    <StyledCreatorCard aria-label="creator-card" color={CARD_COLORS[colorNumber]}>
       <ProfileImg
         src={creator.profileImage ?? defaultUserProfile}
         alt={creator.nickname + '의 프로필 사진'}
