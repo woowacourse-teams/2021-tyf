@@ -188,7 +188,9 @@ jacocoTestCoverageVerification {
                     '**.ApiSender',
                     '**.*Connector',
                     '**.Oauth2Token',
-                    '**.AdminAccount'
+                    '**.AdminAccount',
+                    '**.Exchange',
+                    '**.DonationType'
             ]
         }
     }
