@@ -20,7 +20,7 @@ public class MemberResponse {
 
     public MemberResponse(Member member) {
         this(member.getEmail(), member.getNickname(), member.getPageName(),
-                member.getBio(), member.getProfileImage(), member.getAvailablePoint(), isBankRegistered(member));
+                member.getBio(), member.getProfileImage(), member.getPoint(), isBankRegistered(member));
     }
 
     private static boolean isBankRegistered(Member member) {

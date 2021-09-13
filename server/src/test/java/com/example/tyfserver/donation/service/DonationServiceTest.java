@@ -91,7 +91,7 @@ class DonationServiceTest {
         assertThat(response.getDonationId()).isNotNull();
 
         Member member = memberRepository.findById(this.member.getId()).get();
-        assertThat(member.getAvailablePoint()).isEqualTo(5000L - request.getPoint());
+        assertThat(member.getPoint()).isEqualTo(5000L - request.getPoint());
 
         Member saveCreator = memberRepository.findById(creator.getId()).get();
         assertThat(saveCreator.getDonations()).hasSize(1);

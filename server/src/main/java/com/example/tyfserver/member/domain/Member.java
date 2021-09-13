@@ -36,8 +36,7 @@ public class Member extends BaseTimeEntity {
     private String profileImage;
 
     @Embedded
-    @AttributeOverride(name = "point", column = @Column(name = "available_point"))
-    private Point availablePoint;
+    private Point point;
 
     @Enumerated(EnumType.STRING)
     private Oauth2Type oauth2Type;
@@ -56,13 +55,13 @@ public class Member extends BaseTimeEntity {
     private final List<Donation> donations = new ArrayList<>();
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
-                  Point availablePoint) {
+                  Point point) {
         this.email = email;
         this.nickname = nickname;
         this.pageName = pageName;
         this.oauth2Type = oauth2Type;
         this.profileImage = profileImage;
-        this.availablePoint = availablePoint;
+        this.point = point;
     }
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage) {
@@ -83,7 +82,6 @@ public class Member extends BaseTimeEntity {
         payment.to(this);
     }
 
-
     public void updateBio(String bio) {
         this.bio = bio;
     }
@@ -92,8 +90,8 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
-    public long getAvailablePoint() {
-        return this.availablePoint.getPoint();
+    public long getPoint() {
+        return this.point.getPoint();
     }
 
     public boolean isSameOauthType(String type) {
@@ -121,7 +119,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void validateEnoughPoint(Long point) {
-        if (availablePoint.lessThan(point)) {
+        if (this.point.lessThan(point)) {
             throw new NotEnoughPointException();
         }
     }
@@ -131,7 +129,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void reducePoint(long amount) {
-        availablePoint.reduce(amount);
+        point.reduce(amount);
     }
 
     public void approveAccount() {
@@ -147,6 +145,6 @@ public class Member extends BaseTimeEntity {
     }
 
     public void addAvailablePoint(Long amount) {
-        this.availablePoint.add(amount);
+        this.point.add(amount);
     }
 }
