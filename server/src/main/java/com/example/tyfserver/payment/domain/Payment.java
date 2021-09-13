@@ -40,7 +40,7 @@ public class Payment extends BaseTimeEntity {
 
     private String impUid;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "BINARY(16)")
     private UUID merchantUid;
 
     @ManyToOne(fetch = FetchType.LAZY)
