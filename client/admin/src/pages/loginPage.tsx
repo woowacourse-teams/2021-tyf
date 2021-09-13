@@ -1,7 +1,7 @@
 import Template from '../components/@atom/Template/Template';
 import LoginForm from '../components/Login/LoginForm';
 
-const loginPage = () => {
+const LoginPage = () => {
   return (
     <Template>
       <LoginForm />
@@ -9,4 +9,4 @@ const loginPage = () => {
   );
 };
 
-export default loginPage;
+export default LoginPage;

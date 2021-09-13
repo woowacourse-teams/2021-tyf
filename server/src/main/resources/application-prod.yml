@@ -7,7 +7,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
 
   profiles:
     include: prod-secret
@@ -26,5 +26,3 @@ logging.level:
 cloudwatch:
   log_group:
     /tyf/logs/app/prod
-
-

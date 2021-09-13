@@ -1,8 +1,7 @@
 package com.example.tyfserver.payment.dto;
 
-import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,55 +13,22 @@ import java.time.LocalDateTime;
 @Getter
 public class RefundInfoResponse {
 
-    private CreatorInfoResponse creator;
-    private DonationInfoResponse donation;
+    private Long point;
+    private Long price;
+    private String itemName;
 
-    public RefundInfoResponse(CreatorInfoResponse creator, DonationInfoResponse donation) {
-        this.creator = creator;
-        this.donation = donation;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy'/'MM'/'dd'/' HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime createdAt;
+
+    public RefundInfoResponse(Long point, Long price, LocalDateTime createdAt, String itemName) {
+        this.point = point;
+        this.price = price;
+        this.createdAt = createdAt;
+        this.itemName = itemName;
     }
 
-    public RefundInfoResponse(Payment payment, Donation donation, Member member) {
-        this(new CreatorInfoResponse(member), new DonationInfoResponse(donation, payment));
-    }
-
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @Getter
-    public static class CreatorInfoResponse {
-
-        private String nickname;
-        private String pageName;
-
-        public CreatorInfoResponse(String nickname, String pageName) {
-            this.nickname = nickname;
-            this.pageName = pageName;
-        }
-
-        public CreatorInfoResponse(Member member) {
-            this(member.getNickname(), member.getPageName());
-        }
-    }
-
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @Getter
-    public static class DonationInfoResponse {
-
-        private String name;
-        private Long amount;
-        private String message;
-
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy'/'MM'/'dd'/' HH:mm:ss", timezone = "Asia/Seoul")
-        private LocalDateTime createdAt;
-
-        public DonationInfoResponse(String name, Long amount, String message, LocalDateTime createdAt) {
-            this.name = name;
-            this.amount = amount;
-            this.message = message;
-            this.createdAt = createdAt;
-        }
-
-        public DonationInfoResponse(Donation donation, Payment payment) {
-            this(donation.getName(), payment.getAmount(), donation.getMessage(), donation.getCreatedAt());
-        }
+    public RefundInfoResponse(Payment payment) {
+        this(TaxIncludedCalculator.detachTax(payment.getAmount()), payment.getAmount(),
+                payment.getCreatedAt(), payment.getItemName());
     }
 }

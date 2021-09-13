@@ -1,29 +1,20 @@
 import { ChangeEvent } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import useLoginForm from '../../service/useLoginForm';
-import { LoginResponse } from '../../type';
+import useLogin from '../../service/useLogin';
 import { Button } from '../@atom/Button/Button.styles';
 import { Input } from '../@atom/Input/Input.styles';
-import { requestLogin } from '../request/request';
 import { LoginContainer, LoginTitle, StyledLogin, StyledLoginForm } from './LoginForm.styles';
 
 const LoginForm = () => {
-  const history = useHistory();
   const { form, onChange, isValidForm } = useLoginForm();
+  const { login } = useLogin();
 
-  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+  const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const { id, pwd } = form;
-      const { token }: LoginResponse = await requestLogin(id, pwd);
-
-      sessionStorage.setItem('adminToken', token);
-      history.push('/refund');
-    } catch (error) {
-      alert(error.message ?? error.data.message);
-    }
+    const { id, pwd } = form;
+    login(id, pwd);
   };
 
   return (

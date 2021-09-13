@@ -27,6 +27,6 @@ export const MenuItem = styled.span`
   cursor: pointer;
 
   &:hover {
-    font-weight: bold;
+    font-weight: 700;
   }
 `;

@@ -29,7 +29,7 @@ const RegisterAddressForm = () => {
       </RegisterAddressTitle>
       <AddressInputContainer>
         <ValidationInput
-          role="url-name"
+          aria-label="url-name"
           value={pageName}
           onChange={({ target }) => setPageName(target.value)}
           isSuccess={isValidAddress}

@@ -43,11 +43,11 @@ const Carousel = ({ pageCount, children, contentWidth, className }: CarouselProp
 
   return (
     <StyledCarousel>
-      {!isFirstPage && <LeftArrowButton onClick={showPrevList} />}
+      {!isFirstPage && <LeftArrowButton aria-label="left-arrow" onClick={showPrevList} />}
       <ContentContainer className={className} ref={carouselRef} contentWidth={contentWidth}>
         {children}
       </ContentContainer>
-      {!isLastPage && <RightArrowButton onClick={showNextList} />}
+      {!isLastPage && <RightArrowButton aria-label="right-arrow" onClick={showNextList} />}
     </StyledCarousel>
   );
 };

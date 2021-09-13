@@ -2,10 +2,12 @@ package com.example.tyfserver.donation.controller;
 
 import com.example.tyfserver.auth.config.AuthenticationArgumentResolver;
 import com.example.tyfserver.auth.config.AuthenticationInterceptor;
+import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.auth.exception.AuthorizationHeaderNotFoundException;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
+import com.example.tyfserver.donation.dto.DonationRequest;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
@@ -13,7 +15,6 @@ import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
-import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
-import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -45,6 +45,7 @@ class DonationControllerTest {
     private static final String MERCHANT_UID = UUID.randomUUID().toString();
     private static final String IMP_ID = "imp_id";
     private static final String MODULE = "테스트모듈";
+    private static final String PAGENAME = "pagename";
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,24 +61,33 @@ class DonationControllerTest {
     @MockBean
     private DonationService donationService;
 
+    private void validInterceptorAndArgumentResolverMocking() {
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(new LoginMember(1L, "email"));
+    }
+
     @Test
     @DisplayName("/donations - success")
     public void createDonation() throws Exception {
         //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest("pagename", MERCHANT_UID);
-        DonationResponse response = new DonationResponse(1L, "name", "message", 1000L, LocalDateTime.now());
+        long amount = 1000L;
+        DonationRequest request = new DonationRequest(PAGENAME, amount);
+        DonationResponse response = new DonationResponse(1L, "name", "message", amount, LocalDateTime.now());
         //when
-        when(donationService.createDonation(Mockito.any(PaymentCompleteRequest.class)))
+        validInterceptorAndArgumentResolverMocking();
+        when(donationService.createDonation(any(DonationRequest.class), anyLong()))
                 .thenReturn(response);
         //then
         mockMvc.perform(post("/donations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("donationId").value(1L))
-                .andExpect(jsonPath("name").value("name"))
-                .andExpect(jsonPath("message").value("message"))
-                .andExpect(jsonPath("amount").value(1000L))
+                .andExpect(jsonPath("donationId").value(response.getDonationId()))
+                .andExpect(jsonPath("name").value(response.getName()))
+                .andExpect(jsonPath("message").value(response.getMessage()))
+                .andExpect(jsonPath("amount").value(response.getAmount()))
                 .andDo(document("createDonation",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -88,9 +98,10 @@ class DonationControllerTest {
     @DisplayName("/donations - 회원을 찾을 수 없음")
     public void createDonationMemberNotFoundFailed() throws Exception {
         //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest("pagename", MERCHANT_UID);
+        DonationRequest request = new DonationRequest("invalid", 1000L);
         //when
-        doThrow(new MemberNotFoundException()).when(donationService).createDonation(Mockito.any(PaymentCompleteRequest.class));
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new MemberNotFoundException()).when(donationService).createDonation(any(DonationRequest.class), anyLong());
         //then
         mockMvc.perform(post("/donations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -121,89 +132,90 @@ class DonationControllerTest {
         ;
     }
 
-    @Test
-    @DisplayName("/donations - 실 결제 정보 상태가 PAID가 아닐경우")
-    public void createDonationFailedStatusNotPaid() throws Exception {
-        //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-        //when
-        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_NOT_PAID, "테스트모듈"))
-                .when(donationService).createDonation(Mockito.any(PaymentCompleteRequest.class));
+    // todo PaymentsController 테스트로 옮겨야 함 (아임포트 실 결제 정보 상태에 대한 테스트들)
+//    @Test
+//    @DisplayName("/donations - 실 결제 정보 상태가 PAID가 아닐경우")
+//    public void createDonationFailedStatusNotPaid() throws Exception {
+//        //given
+//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
+//        //when
+//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_NOT_PAID, "테스트모듈"))
+//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
+//
+//        //then
+//        mockMvc.perform(post("/donations")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_NOT_PAID))
+//                .andDo(document("createDonationFailedStatusNotPaid",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint())))
+//        ;
+//    }
 
-        //then
-        mockMvc.perform(post("/donations")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(ERROR_CODE_NOT_PAID))
-                .andDo(document("createDonationFailedStatusNotPaid",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
+//    @Test
+//    @DisplayName("/donations - 실 결제 정보의 id와 저장된 결제정보의 id가 일치하지 않을 경우")
+//    public void createDonationFailedInvalidId() throws Exception {
+//        //given
+//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
+//        //when
+//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
+//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
+//
+//        //then
+//        mockMvc.perform(post("/donations")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_ID))
+//                .andDo(document("createDonationFailedStatusInvalidId",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint())))
+//        ;
+//    }
 
-    @Test
-    @DisplayName("/donations - 실 결제 정보의 id와 저장된 결제정보의 id가 일치하지 않을 경우")
-    public void createDonationFailedInvalidId() throws Exception {
-        //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-        //when
-        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
-                .when(donationService).createDonation(Mockito.any(PaymentCompleteRequest.class));
+//    @Test
+//    @DisplayName("/donations - 실 결제 정보의 Amount와 저장된 결제정보의 Amount가 일치하지 않을 경우")
+//    public void createDonationFailedInvalidAmount() throws Exception {
+//        //given
+//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
+//        //when
+//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, MODULE))
+//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
+//
+//        //then
+//        mockMvc.perform(post("/donations")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_AMOUNT))
+//                .andDo(document("createDonationFailedInvalidAmount",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint())))
+//        ;
+//    }
 
-        //then
-        mockMvc.perform(post("/donations")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_ID))
-                .andDo(document("createDonationFailedStatusInvalidId",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
-
-    @Test
-    @DisplayName("/donations - 실 결제 정보의 Amount와 저장된 결제정보의 Amount가 일치하지 않을 경우")
-    public void createDonationFailedInvalidAmount() throws Exception {
-        //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-        //when
-        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, MODULE))
-                .when(donationService).createDonation(Mockito.any(PaymentCompleteRequest.class));
-
-        //then
-        mockMvc.perform(post("/donations")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_AMOUNT))
-                .andDo(document("createDonationFailedInvalidAmount",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
-
-    @Test
-    @DisplayName("/donations - 실 결제 정보의 PageName과 저장된 결제정보의 PageName이 일치하지 않을 경우")
-    public void createDonationFailedInvalidPageName() throws Exception {
-        //given
-        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-        //when
-        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, MODULE))
-                .when(donationService).createDonation(Mockito.any(PaymentCompleteRequest.class));
-
-        //then
-        mockMvc.perform(post("/donations")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_CREATOR))
-                .andDo(document("createDonationFailedInvalidPageName",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-        ;
-    }
+//    @Test
+//    @DisplayName("/donations - 실 결제 정보의 PageName과 저장된 결제정보의 PageName이 일치하지 않을 경우")
+//    public void createDonationFailedInvalidPageName() throws Exception {
+//        //given
+//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
+//        //when
+//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, MODULE))
+//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
+//
+//        //then
+//        mockMvc.perform(post("/donations")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_CREATOR))
+//                .andDo(document("createDonationFailedInvalidPageName",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint())))
+//        ;
+//    }
 
     @Test
     @DisplayName("/donations/{donationId}/messages - success")
@@ -211,7 +223,7 @@ class DonationControllerTest {
         //given
         DonationMessageRequest request = new DonationMessageRequest("name", "message", true);
         //when
-        doNothing().when(donationService).addMessageToDonation(Mockito.anyLong(), Mockito.any(DonationMessageRequest.class));
+        doNothing().when(donationService).addMessageToDonation(anyLong(), any(DonationMessageRequest.class));
         //then
         mockMvc.perform(post("/donations/1/messages")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -230,7 +242,7 @@ class DonationControllerTest {
         DonationMessageRequest request = new DonationMessageRequest("name", "message", true);
         //when
         doThrow(new DonationNotFoundException())
-                .when(donationService).addMessageToDonation(Mockito.anyLong(), Mockito.any(DonationMessageRequest.class));
+                .when(donationService).addMessageToDonation(anyLong(), any(DonationMessageRequest.class));
         //then
         mockMvc.perform(post("/donations/1/messages")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -266,13 +278,13 @@ class DonationControllerTest {
     public void totalDonations() throws Exception {
         //given
         //when
-        when(donationService.findMyDonations(Mockito.any(), Mockito.any()))
+        when(donationService.findMyDonations(any(), any()))
                 .thenReturn(Arrays.asList(
                         new DonationResponse(1L, "name1", "message1", 1000L, LocalDateTime.now()),
                         new DonationResponse(2L, "name2", "message2", 2000L, LocalDateTime.now())
                 ));
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(false);
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(any())).thenReturn(false);
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -295,9 +307,9 @@ class DonationControllerTest {
     public void totalDonationsMemberNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new MemberNotFoundException()).when(donationService).findMyDonations(Mockito.any(), Mockito.any());
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(false);
+        doThrow(new MemberNotFoundException()).when(donationService).findMyDonations(any(), any());
+        when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(any())).thenReturn(false);
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -316,7 +328,7 @@ class DonationControllerTest {
     public void totalDonationsHeaderNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+        doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(any(), any(), any());
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -335,7 +347,7 @@ class DonationControllerTest {
     public void totalDonationsInvalidTokenFailed() throws Exception {
         //given
         //when
-        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+        doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(any(), any(), any());
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -354,7 +366,7 @@ class DonationControllerTest {
     public void publicDonations() throws Exception {
         //given
         //when
-        when(donationService.findPublicDonations(Mockito.anyString()))
+        when(donationService.findPublicDonations(anyString()))
                 .thenReturn(Arrays.asList(
                         new DonationResponse(1L, "default", "defaultMessage1", 1000L, LocalDateTime.now()),
                         new DonationResponse(2L, "default2", "defaultMessage2", 2000L, LocalDateTime.now())
@@ -380,7 +392,7 @@ class DonationControllerTest {
     public void publicDonationsMemberNotFoundFailed() throws Exception {
         //given
         //when
-        doThrow(new MemberNotFoundException()).when(donationService).findPublicDonations(Mockito.anyString());
+        doThrow(new MemberNotFoundException()).when(donationService).findPublicDonations(anyString());
         //then
         mockMvc.perform(get("/donations/public/pagename")
                 .contentType(MediaType.APPLICATION_JSON))

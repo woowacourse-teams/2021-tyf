@@ -29,7 +29,7 @@ const MainPage = () => {
         <Transition>
           <HeroContent>
             <source media={DEVICE.DESKTOP} srcSet={HeroContentDesktop} />
-            <img src={MainImage} />
+            <img alt="당신의 재능에 가치를 부여하세요" src={MainImage} />
           </HeroContent>
         </Transition>
       </section>

@@ -1,14 +1,18 @@
 package com.example.tyfserver.payment.domain;
 
 import com.example.tyfserver.common.domain.BaseTimeEntity;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentAlreadyCancelledException;
 import com.example.tyfserver.payment.exception.RefundVerificationBlockedException;
+import com.example.tyfserver.payment.util.TaxIncludedCalculator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
@@ -29,7 +33,7 @@ public class Payment extends BaseTimeEntity {
     private Email email;
 
     @Column(nullable = false)
-    private String pageName;
+    private String itemName;
 
     @Enumerated(value = EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PENDING;
@@ -39,32 +43,38 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private UUID merchantUid;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "refund_failure_id")
     private RefundFailure refundFailure;
 
-    public Payment(Long id, Long amount, Email email, String pageName, UUID merchantUid) {
+
+    public Payment(Long id, Long amount, String itemName, String impUid, UUID merchantUid, LocalDateTime createdAt) {
+        super(createdAt);
         this.id = id;
         this.amount = amount;
-        this.email = email;
-        this.pageName = pageName;
+        this.itemName = itemName;
+        this.impUid = impUid;
         this.merchantUid = merchantUid;
     }
 
-    public Payment(Long id, Long amount, String email, String pageName, UUID merchantUid) {
-        this(id, amount, new Email(email), pageName, merchantUid);
+    public Payment(Long id, Long amount, String itemName, String impUid, UUID merchantUid) {
+        this(id, amount, itemName, impUid, merchantUid, null);
     }
 
-    public Payment(Long amount, String email, String pageName, UUID merchantUid) {
-        this(null, amount, email, pageName, merchantUid);
+    public Payment(Long amount, String itemName, String impUid, UUID merchantUid) {
+        this(null, amount, itemName, impUid, merchantUid);
     }
 
-    public Payment(Long id, Long amount, String email, String pageName) {
-        this(id, amount, email, pageName, UUID.randomUUID());
+    public Payment(Long amount, String itemName, UUID merchantUid) {
+        this(amount, itemName, null, merchantUid);
     }
 
-    public Payment(Long amount, String email, String pageName) {
-        this(null, amount, email, pageName, UUID.randomUUID());
+    public Payment(Long amount, String itemName) {
+        this(amount, itemName, UUID.randomUUID());
     }
 
     public String getMaskedEmail() {
@@ -83,6 +93,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentComplete(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
+        this.member.addAvailablePoint(TaxIncludedCalculator.detachTax(paymentInfo.getAmount()));
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {
@@ -98,6 +109,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentCancel(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.CANCELLED;
+        member.reducePoint(TaxIncludedCalculator.detachTax(amount));
     }
 
     private void validatePaymentCancel(PaymentInfo paymentInfo) {
@@ -120,14 +132,14 @@ public class Payment extends BaseTimeEntity {
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, paymentInfo.getModule());
         }
 
-        if (!pageName.equals(paymentInfo.getPageName())) {
+        if (!itemName.equals(paymentInfo.getItemName())) {
             updateStatus(PaymentStatus.INVALID);
             throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, paymentInfo.getModule());
         }
     }
 
     public void checkRemainTryCount() {
-        if (refundFailure != null && refundFailure.getRemainTryCount() == 0) {
+        if (refundFailure != null && refundFailure.isBlocked()) {
             throw new RefundVerificationBlockedException();
         }
     }
@@ -160,5 +172,19 @@ public class Payment extends BaseTimeEntity {
 
     public boolean isNotPaid() {
         return status != PaymentStatus.PAID;
+    }
+
+    public boolean isAfterRefundGuaranteeDuration(LocalDate now) {
+        LocalDate createdDate = getCreatedAt().toLocalDate();
+        return now.isAfter(createdDate.plusDays(6));
+    }
+
+    public void validateMemberHasRefundablePoint() {
+        member.validateEnoughPoint(TaxIncludedCalculator.detachTax(amount));
+    }
+
+    public void to(Member member) {
+        this.member = member;
+        this.email = new Email(member.getEmail());
     }
 }

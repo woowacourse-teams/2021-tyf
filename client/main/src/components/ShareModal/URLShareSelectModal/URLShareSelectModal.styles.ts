@@ -21,7 +21,7 @@ export const StyledContainerButton = styled(Container)`
   border-radius: 5px;
   cursor: pointer;
   transition: 0.2s all;
-  font-weight: bold;
+  font-weight: 700;
 
   :hover {
     border: 1px solid ${PALETTE.GRAY_400};

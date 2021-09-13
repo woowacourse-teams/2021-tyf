@@ -1,4 +1,6 @@
 export const toCommaSeparatedString = (value: number) => {
+  if (!value || Number.isNaN(value)) return value + '';
+
   return value.toLocaleString('en-us');
 };
 

@@ -13,7 +13,7 @@ public class AccountInfoResponse {
     private String bank;
     private String accountNumber;
 
-    private AccountInfoResponse(String status, String accountHolder, String bank, String accountNumber) {
+    public AccountInfoResponse(String status, String accountHolder, String bank, String accountNumber) {
         this.status = status;
         this.accountHolder = accountHolder;
         this.bank = bank;

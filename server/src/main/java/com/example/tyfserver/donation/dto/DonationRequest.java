@@ -14,10 +14,10 @@ public class DonationRequest {
     @NotBlank
     private String pageName;
     @Positive
-    private Long donationAmount;
+    private Long point;
 
-    public DonationRequest(String pageName, Long donationAmount) {
+    public DonationRequest(String pageName, Long point) {
         this.pageName = pageName;
-        this.donationAmount = donationAmount;
+        this.point = point;
     }
 }

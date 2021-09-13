@@ -14,9 +14,13 @@ const DesktopCreatorList = () => {
   const { listRef, creatorList, showPrevList, showNextList, isFirstPage, isLastPage } =
     useCreatorList();
 
+  // TODO: Carousel 컴포넌트로 대체 및 Lists do not contain only <li> elements and script supporting elements 해결
+
   return (
     <List>
-      {!isFirstPage && <LeftArrowButton src={LeftArrow} onClick={showPrevList} />}
+      {!isFirstPage && (
+        <LeftArrowButton aria-label="left-arrow" src={LeftArrow} onClick={showPrevList} />
+      )}
       <ItemContainer ref={listRef}>
         {creatorList.map((creator, index) => (
           <li key={index}>
@@ -26,7 +30,9 @@ const DesktopCreatorList = () => {
           </li>
         ))}
       </ItemContainer>
-      {!isLastPage && <RightArrowButton src={RightArrow} onClick={showNextList} />}
+      {!isLastPage && (
+        <RightArrowButton aria-label="right-arrow" src={RightArrow} onClick={showNextList} />
+      )}
     </List>
   );
 };
