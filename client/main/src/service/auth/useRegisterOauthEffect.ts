@@ -25,10 +25,15 @@ const useRegisterOauthEffect = () => {
     } catch (error) {
       const { message, errorCode, token } = error.response.data;
 
-      storeAccessToken(token);
       if (errorCode === AUTH_ERROR.ALREADY_REGISTER) {
         alert(AUTH_ERROR_MESSAGE[AUTH_ERROR.ALREADY_REGISTER]);
-        history.push('/login');
+
+        if (!token) {
+          history.push('/login');
+          return;
+        }
+
+        storeAccessToken(token);
         return;
       }
 

@@ -28,7 +28,7 @@ const useLoginEffect = (oauthProvider?: OAuthProvider) => {
       history.go(-3);
     } catch (error) {
       if (error.response.data.errorCode === AUTH_ERROR.NOT_USER) {
-        alert('가입된 사용자가 아닙니다. 회원가입 절차로 이동합니다.');
+        alert('회원이 아닙니다. 회원가입 페이지로 이동합니다.');
 
         routeToOAuthPage(oauthProvider, 'REGISTER');
       } else {
