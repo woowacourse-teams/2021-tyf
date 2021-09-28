@@ -39,7 +39,7 @@ const pageNameValidation = async (pageName: string) => {
 
 const debounce = debounceGenerator(300);
 
-const useRegister = () => {
+const useRegisterPageName = () => {
   const [user, setUser] = useRecoilState(newUserState);
   const [addressErrorMessage, setAddressErrorMessage] = useState('');
   const [isValidAddress, setIsValidAddress] = useState(false);
@@ -71,4 +71,4 @@ const useRegister = () => {
   return { pageName, addressErrorMessage, isValidAddress, setPageName };
 };
 
-export default useRegister;
+export default useRegisterPageName;
