@@ -13,12 +13,12 @@ import {
   RouteButton,
   StyledSubTitle,
   DownIcon,
-  HelpButton,
 } from './Main.styles';
 import HeroContentDesktop from '../../assets/images/hero-content-desktop.svg';
 import Logo from '../../components/@molecule/Logo/Logo';
 import MainImage from '../../assets/images/hero-content.svg';
 import Transition from '../../components/@atom/Transition/Transition.styles';
+import HelpButton from '../../components/Help/HelpButton/HelpButton';
 
 const MainPage = () => {
   const history = useHistory();
@@ -66,9 +66,7 @@ const MainPage = () => {
           </Transition>
         </section>
       )}
-      <Link to="/fee-guide">
-        <HelpButton />
-      </Link>
+      <HelpButton />
       <DownIcon />
     </MainTemplate>
   );
