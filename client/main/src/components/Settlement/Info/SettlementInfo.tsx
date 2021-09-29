@@ -6,7 +6,7 @@ import MobileSettlementInfo from './Mobile/MobileSettlementInfo';
 const SettlementInfo = () => {
   const { windowWidth } = useWindowResize();
 
-  return windowWidth > SIZE.DESKTOP_LARGE ? <DesktopSettlementInfo /> : <MobileSettlementInfo />;
+  return windowWidth > SIZE.DESKTOP_EXTRA ? <DesktopSettlementInfo /> : <MobileSettlementInfo />;
 };
 
 export default SettlementInfo;
