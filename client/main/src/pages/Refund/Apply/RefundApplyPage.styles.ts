@@ -8,5 +8,4 @@ export const RefundApplyPageTemplate = styled(Template)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  max-width: ${SIZE.MOBILE_MAX}px;
 `;
