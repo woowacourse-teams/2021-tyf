@@ -6,10 +6,6 @@ import Logo from '../../components/@molecule/Logo/Logo';
 import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton.styles';
 import { DEVICE } from '../../constants/device';
 import RightArrow from '../../assets/icons/right-arrow.svg';
-import IconButton from '../../components/@atom/IconButton/IconButton';
-import PALETTE from '../../constants/palette';
-import { Z_INDEX } from '../../constants/style';
-import { Link } from 'react-router-dom';
 
 export const MainTemplate = styled(Template)`
   padding: 5rem 0 6.25rem;
