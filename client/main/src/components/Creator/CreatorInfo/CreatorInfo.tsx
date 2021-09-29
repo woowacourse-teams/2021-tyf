@@ -24,7 +24,7 @@ const CreatorInfo = ({ isAdmin, creatorId, toggleModal }: CreatorInfoProps) => {
   const popupDonationAmountPage = () => {
     if (!accessToken) {
       alert('도네이션을 하기 위해서 로그인을 해주세요.');
-      history.push('/login');
+      history.push(`/login?redirectTo=${window.location.pathname}`);
       return;
     }
 
