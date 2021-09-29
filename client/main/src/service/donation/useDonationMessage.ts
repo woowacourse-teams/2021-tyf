@@ -12,8 +12,6 @@ const useDonationMessage = (creatorId: CreatorId) => {
   const sendDonationMessage = async (message: string, isSecret: boolean) => {
     const finalMessage = message || donation.message;
 
-    console.dir(donation);
-
     try {
       await requestSendDonationMessage(donation.donationId, donation.name, finalMessage, isSecret);
 
