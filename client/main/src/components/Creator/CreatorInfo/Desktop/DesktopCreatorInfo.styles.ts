@@ -65,4 +65,8 @@ export const DescriptionContainer = styled(Container)`
   color: ${PALETTE.GRAY_500};
   min-height: 6rem;
   padding: 1rem 3rem;
+
+  p {
+    text-align: center;
+  }
 `;

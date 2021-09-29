@@ -22,6 +22,10 @@ export const DescriptionContainer = styled(Container)`
   color: ${PALETTE.GRAY_500};
   min-height: 6rem;
   line-height: 1.25;
+
+  p {
+    text-align: center;
+  }
 `;
 
 export const StyledButton = styled(Button)``;
