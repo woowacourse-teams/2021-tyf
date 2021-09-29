@@ -314,7 +314,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(response.getCurrentPoint()).isEqualTo(10000L);
-        assertThat(response.getExchangeablePoint()).isEqualTo(0L);
+        assertThat(response.getExchangeablePoint()).isEqualTo(10000L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }
 
@@ -376,7 +376,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void requestExchangeAmountLessThanLimit() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken()).as(PaymentPendingResponse.class);
+        페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken());
         후원_생성("pagename", 10000L, signUpResponse.getToken());
 
         //when

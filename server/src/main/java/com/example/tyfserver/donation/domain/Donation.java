@@ -29,7 +29,7 @@ public class Donation extends BaseTimeEntity {
     private Member member;
 
     @Enumerated(value = EnumType.STRING)
-    private DonationStatus status = DonationStatus.REFUNDABLE;
+    private DonationStatus status = DonationStatus.WAITING_FOR_EXCHANGE;
 
     public Donation(Message message, long point) {
         this(null, message, point);
@@ -49,18 +49,8 @@ public class Donation extends BaseTimeEntity {
         this.message = message;
     }
 
-    // todo 테스트 코드에서만 사용중
-    public void toCancelled() {
-        status = DonationStatus.CANCELLED;
-    }
-
     public void toExchanged() {
         status = DonationStatus.EXCHANGED;
-    }
-
-    // todo 테스트 코드에서만 사용중 : 스케줄러 적용시 사용
-    public void toExchangeable() {
-        status = DonationStatus.EXCHANGEABLE;
     }
 
     public String getName() {

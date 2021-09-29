@@ -52,7 +52,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
 
     private BooleanExpression exchangeableStatus(Long memberId) {
         return donation.member.id.eq(memberId)
-                .and(donation.status.eq(DonationStatus.EXCHANGEABLE));
+                .and(donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE));
     }
 
     private BooleanExpression exchangedStatus(Long memberId) {
@@ -62,7 +62,6 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
 
     private BooleanExpression currentStatus(Long memberId) {
         return donation.member.id.eq(memberId)
-                .and(donation.status.ne(DonationStatus.CANCELLED))
                 .and(donation.status.ne(DonationStatus.EXCHANGED));
     }
 }
