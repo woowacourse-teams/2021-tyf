@@ -12,6 +12,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -24,12 +25,14 @@ import java.util.UUID;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 public class AcceptanceTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @MockBean
     private Oauth2ServiceConnector oauth2ServiceConnector;
@@ -46,6 +49,7 @@ public class AcceptanceTest {
     @BeforeEach
     protected void setUp() {
         RestAssured.port = port;
+        databaseCleanup.cleanUp();
         when(oauth2ServiceConnector.getEmailFromOauth2(any(), any()))
                 .thenReturn(DEFAULT_EMAIL);
         when(s3Connector.uploadBankBook(any(), any()))
