@@ -17,9 +17,9 @@ const RegisterAuthForm = () => {
         <GoogleBarButton onClick={() => routeToOAuthPage('GOOGLE', 'REGISTER')}>
           구글 회원가입
         </GoogleBarButton>
-        <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'REGISTER')}>
+        {/* <NaverBarButton onClick={() => alert('현재 서비스 준비중입니다.')} disabled>
           네이버 회원가입
-        </NaverBarButton>
+        </NaverBarButton> */}
         <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO', 'REGISTER')}>
           카카오 회원가입
         </KakaoBarButton>
