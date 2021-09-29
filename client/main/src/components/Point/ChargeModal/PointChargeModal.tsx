@@ -121,7 +121,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
                 <DonatorTermLink onClick={() => popupTerms('/contracts/donator-policy.html')}>
                   결제 약관
                 </DonatorTermLink>
-                에 동의합니다. (필수)
+                에 동의합니다.
               </span>
             </CheckboxContainer>
             <CheckboxContainer>
