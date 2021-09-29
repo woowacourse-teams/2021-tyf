@@ -54,7 +54,7 @@ const useDonationMessageList = (isAdmin: boolean, creatorId: CreatorId) => {
         setHasMoreList(false);
       }
 
-      setDonationList(() => donationList.concat(nextDonationList));
+      setDonationList((prev) => prev.concat(nextDonationList));
       setCurrentPageIndex(currentPageIndex + 1);
     } catch (error) {
       alert('도네이션 메세지 목록을 불러오는데 실패했습니다.');
@@ -62,8 +62,9 @@ const useDonationMessageList = (isAdmin: boolean, creatorId: CreatorId) => {
   };
 
   useEffect(() => {
+    setDonationList([]);
     isAdmin ? initAdminDonationList() : initDonationList();
-  }, []);
+  }, [isAdmin]);
 
   return { donationList, showMoreDonationList, hasMoreList };
 };
