@@ -9,12 +9,13 @@ const useDonationMessage = (creatorId: CreatorId) => {
   const donation = useRecoilValue(donationState);
   const history = useHistory();
 
-  const sendDonationMessage = async (name: string, message: string, isSecret: boolean) => {
-    const finalName = name || donation.name;
+  const sendDonationMessage = async (message: string, isSecret: boolean) => {
     const finalMessage = message || donation.message;
 
+    console.dir(donation);
+
     try {
-      await requestSendDonationMessage(donation.donationId, finalName, finalMessage, isSecret);
+      await requestSendDonationMessage(donation.donationId, donation.name, finalMessage, isSecret);
 
       history.push(`/donation/${creatorId}/success`);
     } catch (error) {
