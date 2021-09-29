@@ -3,6 +3,7 @@ import { FormEvent } from 'react';
 import { MAX_MESSAGE_LENGTH } from '../../../constants/donation';
 import useDonationMessage from '../../../service//donation/useDonationMessage';
 import useDonationMessageForm from '../../../service//donation/useDonationMessageForm';
+import useUserInfo from '../../../service/user/useUserInfo';
 import { CreatorId } from '../../../types';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import Textarea from '../../@atom/Textarea/Textarea';
@@ -20,13 +21,14 @@ export interface DonationMessageFormProps {
 }
 
 const DonationMessageForm = ({ creatorId }: DonationMessageFormProps) => {
-  const { form, isPrivate, setMessage, setName, setIsPrivate } = useDonationMessageForm();
+  const { form, isPrivate, setMessage, setIsPrivate } = useDonationMessageForm();
   const { sendDonationMessage } = useDonationMessage(creatorId);
+  const { userInfo } = useUserInfo();
 
   const onSubmitMessage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    sendDonationMessage(form.name, form.message, isPrivate);
+    sendDonationMessage(form.message, isPrivate);
   };
 
   return (
@@ -36,12 +38,7 @@ const DonationMessageForm = ({ creatorId }: DonationMessageFormProps) => {
         <br /> 응원의 한마디를
         <br /> 남겨주세요!
       </DonationMessageTitle>
-      <NickNameInput
-        aria-label="nickname"
-        placeholder="닉네임 입력하기"
-        value={form.name}
-        onChange={({ target }) => setName(target.value)}
-      />
+      <NickNameInput aria-label="nickname" value={userInfo?.nickname ?? ''} readOnly />
       <Textarea
         aria-label="message"
         placeholder="응원메세지 작성하기"
