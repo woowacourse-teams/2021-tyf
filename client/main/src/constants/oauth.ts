@@ -1,4 +1,5 @@
 export const AUTH_CODE = 'code';
+export const REDIRECT_TO_AFTER_LOGIN = 'redirectTo';
 
 const origin =
   process.env.NODE_ENV === 'production' ? 'https://thankyou-for.com' : 'http://localhost:9000';

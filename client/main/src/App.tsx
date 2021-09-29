@@ -90,7 +90,7 @@ const App = () => {
           path="/mypoint"
           component={MyPointPage}
           isAuthed={!!accessToken}
-          redirectTo="/login"
+          redirectTo="/login?redirectTo=/mypoint"
         />
 
         <PrivateRoute
