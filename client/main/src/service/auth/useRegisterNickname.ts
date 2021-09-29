@@ -24,9 +24,9 @@ const nicknameValidation = async (nickname: string) => {
   }
 
   // 한글, 영어, 한자, 일본어, 숫자 매칭
-  const regExp = /^[a-zA-Z0-9가-힇ㄱ-ㅎㅏ-ㅣぁ-ゔァ-ヴー々〆〤一-龥]*$/;
+  const regExp = /^[a-zA-Z0-9가-힇ㄱ-ㅎㅏ-ㅣ]*$/;
   if (!regExp.test(nickname)) {
-    return '닉네임은 한글, 영어, 한자, 일본어, 숫자만 가능합니다.';
+    return '닉네임은 한글, 영어, 숫자만 가능합니다.';
   }
 
   try {
