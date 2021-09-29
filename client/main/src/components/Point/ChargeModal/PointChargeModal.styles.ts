@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SIZE } from '../../../constants/device';
+import { DEVICE, SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button.styles';
 import Container from '../../@atom/Container/Container.styles';
@@ -7,24 +7,39 @@ import Modal from '../../@atom/Modal/Modal';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 
 export const StyledModal = styled(Modal)`
-  border-radius: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 40rem;
-  padding: 3.5rem;
+  padding: 1.5rem;
+  border-radius: 0.625rem 0.625rem 0 0;
+
+  @media ${DEVICE.DESKTOP} {
+    position: static;
+    width: auto;
+    border-radius: 1rem;
+    justify-content: center;
+
+    min-height: 40rem;
+    padding: 3.5rem;
+  }
 `;
 
 export const ButtonContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   row-gap: 1.5rem;
   column-gap: 1.5rem;
 
   margin-top: 5rem;
   margin-bottom: 1.25rem;
+
+  @media ${DEVICE.DESKTOP} {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 export const CheckboxContainerList = styled.div`
