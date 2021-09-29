@@ -21,6 +21,11 @@ export const DescriptionContainer = styled(Container)`
   padding: 1rem;
   color: ${PALETTE.GRAY_500};
   min-height: 6rem;
+  line-height: 1.25;
+
+  p {
+    text-align: center;
+  }
 `;
 
 export const StyledButton = styled(Button)``;
