@@ -35,9 +35,7 @@ const SettlementPage = () => {
       <StyledTitle>정산 관리</StyledTitle>
       <section>
         <Suspense fallback={Spinner}>
-          <Transition>
-            <Settlement />
-          </Transition>
+          <Settlement />
         </Suspense>
       </section>
     </StyledTemplate>

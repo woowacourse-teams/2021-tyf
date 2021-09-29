@@ -1,22 +1,41 @@
 import styled from 'styled-components';
+import { DEVICE } from '../../../constants/device';
 
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
 import OutlineButton from '../../@molecule/OutlineButton/OutlineButton.styles';
 
 export const StyledSettlementAccountForm = styled.form`
-  padding: 3rem;
-  width: 37rem;
+  @media ${DEVICE.DESKTOP} {
+    padding: 3rem;
+    width: 32rem;
+  }
 `;
 
 export const SettlementAccountTitle = styled(Title)`
   margin-bottom: 6.5rem;
+  font-size: 1.75rem;
+
+  span {
+    display: block;
+  }
+
+  @media ${DEVICE.DESKTOP} {
+    font-size: 2rem;
+
+    span {
+      display: inline;
+    }
+  }
 `;
 
 export const StyledSubTitle = styled(SubTitle)`
   text-align: left;
   margin-bottom: 2.25rem;
-  font-size: 1.5rem;
+
+  @media ${DEVICE.DESKTOP} {
+    font-size: 1.5rem;
+  }
 `;
 
 export const InputContainer = styled.div`
