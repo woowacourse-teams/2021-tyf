@@ -17,7 +17,7 @@ const useDonationMessage = (creatorId: CreatorId) => {
 
       history.push(`/donation/${creatorId}/success`);
     } catch (error) {
-      alert('메세지 전송에 실패했습니다.');
+      alert('도네이션 메세지 전송에 실패했습니다. 잠시후 다시 시도해주세요.');
     }
   };
 

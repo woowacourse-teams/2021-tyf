@@ -37,7 +37,6 @@ const useRegisterOauthEffect = () => {
         return;
       }
 
-      console.error(message);
       history.push('/register');
     }
   };
