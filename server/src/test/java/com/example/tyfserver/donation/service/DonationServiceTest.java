@@ -10,6 +10,7 @@ import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.Point;
+import com.example.tyfserver.member.exception.WrongDonationOwnerException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.repository.PaymentRepository;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 
@@ -115,6 +117,20 @@ class DonationServiceTest {
         Donation donation = donationRepository.findById(donationResponse.getDonationId()).get();
         assertThat(donation.getName()).isEqualTo("donator");
         assertThat(donation.getMessage()).isEqualTo("message");
+    }
+
+    @Test
+    @DisplayName("addMessageToDonation - Wrong Owner Case")
+    public void addMessageToDonationNotOwnerCase() {
+        //given
+        DonationRequest request = new DonationRequest(creator.getPageName(), 1000L);
+        DonationResponse donationResponse = donationService.createDonation(request, donator.getId());
+        DonationMessageRequest donationMessageRequest = new DonationMessageRequest("message", false);
+
+        // when & then
+        assertThatThrownBy(() -> {
+            donationService.addMessageToDonation(creator.getId(), donationResponse.getDonationId(), donationMessageRequest);
+        }).isInstanceOf(WrongDonationOwnerException.class);
     }
 
     @Test
