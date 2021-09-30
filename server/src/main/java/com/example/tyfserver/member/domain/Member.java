@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.member.exception.NotEnoughPointException;
+import com.example.tyfserver.member.exception.WrongDonationOwnerException;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -154,5 +155,12 @@ public class Member extends BaseTimeEntity {
 
     public void addAvailablePoint(Long amount) {
         this.point.add(amount);
+    }
+
+    public void validateMemberGivingDonation(Donation donation) {
+        if (this.getGivingDonations().contains(donation)) {
+            return;
+        }
+        throw new WrongDonationOwnerException();
     }
 }

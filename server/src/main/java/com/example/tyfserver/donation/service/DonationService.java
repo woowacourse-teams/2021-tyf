@@ -27,8 +27,8 @@ public class DonationService {
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
 
-    public DonationResponse createDonation(DonationRequest donationRequest, long id) {
-        Member donator = findMember(id);
+    public DonationResponse createDonation(DonationRequest donationRequest, long donatorId) {
+        Member donator = findMember(donatorId);
         Member creator = memberRepository.findByPageName(donationRequest.getPageName())
                 .orElseThrow(MemberNotFoundException::new);
 
@@ -41,14 +41,17 @@ public class DonationService {
         creator.addGivenDonation(savedDonation);
         donator.addGivingDonation(savedDonation);
 
-        return new DonationResponse(savedDonation);
+        return new DonationResponse(savedDonation, donator.getPageName());
     }
 
-    public void addMessageToDonation(final Long donationId, final DonationMessageRequest donationMessageRequest) {
+    public void addMessageToDonation(final Long requestMemberId,
+                                     final Long donationId, final DonationMessageRequest donationMessageRequest) {
+        Member requestMember = findMember(requestMemberId);
         Donation donation = donationRepository.findById(donationId)
                 .orElseThrow(DonationNotFoundException::new);
+        requestMember.validateMemberGivingDonation(donation);
 
-        donation.addMessage(donationMessageRequest.toEntity());
+        donation.addMessage(donationMessageRequest.toEntity(requestMember.getNickname()));
     }
 
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
