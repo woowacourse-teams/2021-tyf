@@ -1,7 +1,6 @@
 package com.example.tyfserver.donation.service;
 
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.dto.DonationMessageRequest;
 import com.example.tyfserver.donation.dto.DonationRequest;
@@ -12,6 +11,7 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +41,7 @@ public class DonationService {
         creator.addGivenDonation(savedDonation);
         donator.addGivingDonation(savedDonation);
 
-        return new DonationResponse(savedDonation, donator.getPageName());
+        return new DonationResponse(savedDonation);
     }
 
     public void addMessageToDonation(final Long requestMemberId,
@@ -57,23 +57,18 @@ public class DonationService {
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
         Member findMember = findMember(memberId);
 
-        List<Donation> donations = donationRepository.findDonationByCreatorAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED, pageable);
-
-        return privateDonationResponses(donations);
-    }
-
-    private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(MemberNotFoundException::new);
+        return privateDonationResponses(
+                donationRepository.findDonationByCreator(findMember, pageable)
+        );
     }
 
     public List<DonationResponse> findPublicDonations(String pageName) {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findFirst5ByCreatorAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED);
-
-        return publicDonationResponses(donations);
+        return publicDonationResponses(
+                donationRepository.findDonationByCreator(findMember, PageRequest.of(0, 5))
+        );
     }
 
     private List<DonationResponse> privateDonationResponses(List<Donation> donations) {
@@ -86,5 +81,10 @@ public class DonationService {
         return donations.stream()
                 .map(DonationResponse::forPublic)
                 .collect(Collectors.toList());
+    }
+
+    private Member findMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }
