@@ -34,7 +34,7 @@ const DesktopSettlementInfo = () => {
           <span>
             <Amount>{toCommaSeparatedString(exchangeablePoint ?? 0)}</Amount>원
           </span>
-          <Caution>오늘 요청시 환급일 2021/{nextMonth}/28</Caution>
+          <Caution>오늘 요청시 환급일 2021 / {nextMonth} / 7</Caution>
         </AmountContainer>
         <Button onClick={applySettlement}>정산 신청하기</Button>
       </InfoContainer>

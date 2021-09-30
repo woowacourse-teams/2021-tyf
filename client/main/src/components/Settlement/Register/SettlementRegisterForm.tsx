@@ -37,7 +37,9 @@ const SettlementRegisterForm = () => {
 
   return (
     <StyledSettlementAccountForm onSubmit={onSubmit}>
-      <SettlementAccountTitle>정산 받을 계좌 인증하기</SettlementAccountTitle>
+      <SettlementAccountTitle>
+        <span>정산 받을 계좌</span> <span>인증하기</span>
+      </SettlementAccountTitle>
 
       <InputContainer>
         <StyledSubTitle>이름</StyledSubTitle>

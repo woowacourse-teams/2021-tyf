@@ -26,6 +26,7 @@ import { useWindowResize } from './utils/useWindowResize';
 import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
 import MyPointPage from './pages/MyPoint/MyPointPage';
+import FeeGuide from './pages/FeeGuide/FeeGuide';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -90,7 +91,7 @@ const App = () => {
           path="/mypoint"
           component={MyPointPage}
           isAuthed={!!accessToken}
-          redirectTo="/login"
+          redirectTo="/login?redirectTo=/mypoint"
         />
 
         <PrivateRoute
@@ -117,6 +118,8 @@ const App = () => {
         <Route path="/refund" component={RefundApplyPage} exact />
         <Route path="/refund/cert" component={RefundCertificationPage} />
         <Route path="/refund/confirm" component={RefundConfirmPage} />
+
+        <Route path="/fee-guide" component={FeeGuide} />
 
         <Redirect from="*" to="/" />
       </Switch>

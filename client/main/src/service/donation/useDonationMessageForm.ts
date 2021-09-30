@@ -4,7 +4,7 @@ import { MAX_MESSAGE_LENGTH } from '../../constants/donation';
 import { DonationMessage } from '../../types';
 
 const useDonationMessageForm = () => {
-  const [form, setForm] = useState<DonationMessage>({ name: '', message: '' });
+  const [form, setForm] = useState<DonationMessage>({ message: '' });
   const [isPrivate, setIsPrivate] = useState(false);
 
   const setMessage = (message: string) => {
@@ -13,11 +13,7 @@ const useDonationMessageForm = () => {
     setForm({ ...form, message });
   };
 
-  const setName = (name: string) => {
-    setForm({ ...form, name });
-  };
-
-  return { form, isPrivate, setMessage, setName, setIsPrivate };
+  return { form, isPrivate, setMessage, setIsPrivate };
 };
 
 export default useDonationMessageForm;

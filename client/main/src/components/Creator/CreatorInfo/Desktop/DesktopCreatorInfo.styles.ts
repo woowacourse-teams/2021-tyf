@@ -58,12 +58,15 @@ export const StyledButton = styled(Button)`
 `;
 
 export const DescriptionContainer = styled(Container)`
-  @media ${DEVICE.DESKTOP} {
-    margin-top: 2rem;
-    border-top: 1px solid ${({ theme }) => theme.color.border};
-    border-bottom: 1px solid ${({ theme }) => theme.color.border};
-    color: ${PALETTE.GRAY_500};
-    min-height: 6rem;
-    padding: 1rem 3rem;
+  line-height: 1.25;
+  margin-top: 2rem;
+  border-top: 1px solid ${({ theme }) => theme.color.border};
+  border-bottom: 1px solid ${({ theme }) => theme.color.border};
+  color: ${PALETTE.GRAY_500};
+  min-height: 6rem;
+  padding: 1rem 3rem;
+
+  p {
+    text-align: center;
   }
 `;

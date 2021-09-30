@@ -7,6 +7,7 @@ export const StyledCheckbox = styled.input`
   width: 1rem;
   height: 1rem;
   cursor: inherit;
+  flex-shrink: 0;
 
   &:after {
     content: '';

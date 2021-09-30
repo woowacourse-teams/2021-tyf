@@ -6,12 +6,14 @@ import { ParamTypes } from '../../App';
 import { OAuthProvider } from '../../types';
 import { getQueryVariable } from '../../utils/queryString';
 import { AUTH_CODE, OAUTH_ERROR, OAUTH_ERROR_DESC } from '../../constants/oauth';
+import { AUTH_ERROR, AUTH_ERROR_MESSAGE } from '../../constants/error';
 import { requestOAuthRegister } from '../@request/register';
 import { newUserState } from '../@state/register';
-import { AUTH_ERROR, AUTH_ERROR_MESSAGE } from '../../constants/error';
+import useAccessToken from '../@shared/useAccessToken';
 
 const useRegisterOauthEffect = () => {
   const history = useHistory();
+  const { storeAccessToken } = useAccessToken();
   const [user, setUser] = useRecoilState(newUserState);
   const { oauthProvider } = useParams<ParamTypes>();
 
@@ -21,11 +23,17 @@ const useRegisterOauthEffect = () => {
 
       setUser({ ...user, email, oauthType });
     } catch (error) {
-      const { message, errorCode } = error.response.data;
+      const { message, errorCode, token } = error.response.data;
 
       if (errorCode === AUTH_ERROR.ALREADY_REGISTER) {
         alert(AUTH_ERROR_MESSAGE[AUTH_ERROR.ALREADY_REGISTER]);
-        history.push('/login');
+
+        if (!token) {
+          history.push('/login');
+          return;
+        }
+
+        storeAccessToken(token);
         return;
       }
 

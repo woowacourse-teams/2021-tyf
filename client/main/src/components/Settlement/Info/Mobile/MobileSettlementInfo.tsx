@@ -34,7 +34,7 @@ const MobileSettlementInfo = () => {
           <AmountContainer>
             <Amount>{toCommaSeparatedString(exchangeablePoint ?? 0)}</Amount>원
           </AmountContainer>
-          <Caution>오늘 요청시 환급일 2021/{nextMonth}/28</Caution>
+          <Caution>오늘 요청시 환급일 2021 / {nextMonth} / 7</Caution>
         </InfoContainer>
         <InfoContainer>
           <StyledSubTitle>현재까지 정산 받은 금액은</StyledSubTitle>

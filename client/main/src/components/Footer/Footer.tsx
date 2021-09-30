@@ -11,8 +11,11 @@ const Footer = () => {
       </p>
       <p>
         [고객센터] 전화번호 070 - 8098 - 2158 | 이메일
-        <a href="mailto://thank.you.for.tyf@gmail.com"> thank.you.for.tyf@gmail.com</a> |
-        <Anchor to="/refund"> 도네이션 환불하기</Anchor>
+        <a href="mailto://thank.you.for.tyf@gmail.com"> thank.you.for.tyf@gmail.com</a>
+        &nbsp;|&nbsp;
+        <Anchor to="/refund">충전금액 환불</Anchor>
+        &nbsp;|&nbsp;
+        <Anchor to="/fee-guide">정산 수수료 안내</Anchor>
       </p>
       <p>© Thank You For ___ all rights reserved</p>
     </StyledFooter>
