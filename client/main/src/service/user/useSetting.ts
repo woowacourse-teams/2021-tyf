@@ -1,3 +1,4 @@
+import { SETTING_ERROR_MESSAGE } from '../../constants/error';
 import { requestUpdateBio, requestUpdateNickname, requestUpdateProfileImg } from '../@request/user';
 import useAccessToken from '../@shared/useAccessToken';
 import useUserInfo from './useUserInfo';
@@ -29,7 +30,11 @@ const useSetting = () => {
 
       window.location.reload();
     } catch (error) {
-      alert('사용자 정보 변경에 실패했습니다.');
+      const { errorCode }: { errorCode: keyof typeof SETTING_ERROR_MESSAGE } = error.response.data;
+      const errorMessage =
+        SETTING_ERROR_MESSAGE[errorCode] ??
+        '사용자 정보 변경에 실패했습니다. 문제가 지속되면 고객센터로 문의해주세요.';
+      alert(errorMessage);
     }
   };
 
