@@ -197,7 +197,6 @@ class MemberServiceTest {
         //then
         DetailedPointResponse response = memberService.detailedPoint(member.getId());
         assertThat(response.getCurrentPoint()).isEqualTo(5000);
-        assertThat(response.getExchangeablePoint()).isEqualTo(5000L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
     }
 

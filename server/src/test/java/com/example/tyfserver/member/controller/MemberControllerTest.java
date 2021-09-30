@@ -978,7 +978,7 @@ class MemberControllerTest {
     @DisplayName("GET - /me/detailedPoint - success")
     public void detailedPoint() throws Exception {
         //given
-        DetailedPointResponse response = new DetailedPointResponse(1000L, 1000L, 100L);
+        DetailedPointResponse response = new DetailedPointResponse(1000L, 100L);
 
         //when
         when(memberService.detailedPoint(any())).thenReturn(response);

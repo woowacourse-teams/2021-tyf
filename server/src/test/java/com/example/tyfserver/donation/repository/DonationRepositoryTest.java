@@ -100,8 +100,8 @@ class DonationRepositoryTest {
         donation4.toExchanged();
         donation7.toExchanged();
 
-        Long member1ExchangeablePoint = donationRepository.exchangeablePoint(member1.getId());
-        Long member2ExchangeablePoint = donationRepository.exchangeablePoint(member2.getId());
+        Long member1ExchangeablePoint = donationRepository.currentPoint(member1.getId());
+        Long member2ExchangeablePoint = donationRepository.currentPoint(member2.getId());
 
         assertThat(member1ExchangeablePoint).isEqualTo(11000L);
         assertThat(member2ExchangeablePoint).isEqualTo(0L);
@@ -115,16 +115,5 @@ class DonationRepositoryTest {
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
 
         assertThat(exchangedTotalPoint).isEqualTo(2000L);
-    }
-
-    @Test
-    @DisplayName("정산 가능 + 정산 불가 총 포인트를 조회한다.")
-    public void currentPoint() {
-        donation1.toExchanged();
-        donation2.toExchanged();
-
-        Long exchangedTotalPoint = donationRepository.currentPoint(member1.getId());
-
-        assertThat(exchangedTotalPoint).isEqualTo(25000L);
     }
 }
