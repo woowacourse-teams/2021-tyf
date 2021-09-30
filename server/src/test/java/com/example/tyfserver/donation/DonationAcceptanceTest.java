@@ -38,7 +38,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 후원_메세지_생성(Long donationId, String name, String message, boolean secret, String token) {
-        return authPost("/donations/" + donationId + "/messages", token, new DonationMessageRequest(name, message, secret)).extract();
+        return authPost("/donations/" + donationId + "/messages", token, new DonationMessageRequest(message, secret)).extract();
     }
 
     public static ExtractableResponse<Response> 총_후원목록(String token) {

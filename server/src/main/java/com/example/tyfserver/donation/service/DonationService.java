@@ -59,7 +59,7 @@ public class DonationService {
         Member findMember = findMember(memberId);
 
         return privateDonationResponses(
-                donationRepository.findDonationByCreator(findMember, pageable)
+                donationRepository.findDonationByCreatorOrderByCreatedAtDesc(findMember, pageable)
         );
     }
 
@@ -68,7 +68,7 @@ public class DonationService {
                 .orElseThrow(MemberNotFoundException::new);
 
         return publicDonationResponses(
-                donationRepository.findDonationByCreator(findMember, PageRequest.of(0, 5))
+                donationRepository.findDonationByCreatorOrderByCreatedAtDesc(findMember, PageRequest.of(0, 5))
         );
     }
 

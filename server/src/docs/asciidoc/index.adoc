@@ -296,6 +296,11 @@ include::{snippets}/addDonationMessageDonationNotFoundFailed/http-response.adoc[
 include::{snippets}/addDonationMessageRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/addDonationMessageRequestFailed/http-response.adoc[]
+=== 후원 메세지 전송 - Donation의 주인이 아닌 경우
+==== Request
+include::{snippets}/addDonationMessageNotOwner/http-request.adoc[]
+==== Response
+include::{snippets}/addDonationMessageNotOwner/http-response.adoc[]
 === 전체 후원 리스트 - 성공
 ==== Request
 include::{snippets}/totalDonations/http-request.adoc[]
