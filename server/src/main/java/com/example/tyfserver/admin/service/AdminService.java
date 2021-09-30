@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -90,7 +89,7 @@ public class AdminService {
 
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
-        List<Donation> donations = donationRepository.findDonationByStatusAndMember(DonationStatus.EXCHANGEABLE, member);
+        List<Donation> donations = donationRepository.findDonationByStatusAndCreator(DonationStatus.EXCHANGEABLE, member);
         for (Donation donation : donations) {
             donation.toExchanged();
         }

@@ -38,7 +38,8 @@ public class DonationService {
         Donation creatorDonation = new Donation(message, donationRequest.getPoint());
         Donation savedDonation = donationRepository.save(creatorDonation);
         donator.reducePoint(donationRequest.getPoint());
-        creator.addDonation(savedDonation);
+        creator.addGivenDonation(savedDonation);
+        donator.addGivingDonation(savedDonation);
 
         return new DonationResponse(savedDonation);
     }
@@ -53,7 +54,7 @@ public class DonationService {
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
         Member findMember = findMember(memberId);
 
-        List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED, pageable);
+        List<Donation> donations = donationRepository.findDonationByCreatorAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED, pageable);
 
         return privateDonationResponses(donations);
     }
@@ -67,7 +68,7 @@ public class DonationService {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
 
-        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED);
+        List<Donation> donations = donationRepository.findFirst5ByCreatorAndStatusNotOrderByCreatedAtDesc(findMember, DonationStatus.CANCELLED);
 
         return publicDonationResponses(donations);
     }

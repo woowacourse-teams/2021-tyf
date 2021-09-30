@@ -25,8 +25,12 @@ public class Donation extends BaseTimeEntity {
     private long point;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "donator_id")
+    private Member donator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    private Member creator;
 
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.REFUNDABLE;
@@ -41,8 +45,12 @@ public class Donation extends BaseTimeEntity {
         this.point = point;
     }
 
-    public void to(final Member member) {
-        this.member = member;
+    public void to(final Member creator) {
+        this.creator = creator;
+    }
+
+    public void from(final Member donator) {
+        this.donator = donator;
     }
 
     public void addMessage(Message message) {

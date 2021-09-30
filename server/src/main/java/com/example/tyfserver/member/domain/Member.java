@@ -51,8 +51,11 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private final List<Payment> payments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private final List<Donation> donations = new ArrayList<>();
+    @OneToMany(mappedBy = "creator")
+    private final List<Donation> givenDonations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "donator")
+    private final List<Donation> givingDonations = new ArrayList<>();
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
                   Point point) {
@@ -72,9 +75,14 @@ public class Member extends BaseTimeEntity {
         this(email, nickname, pageName, oauth2Type, null);
     }
 
-    public void addDonation(Donation donation) {
-        this.donations.add(donation);
+    public void addGivenDonation(Donation donation) {
+        this.givenDonations.add(donation);
         donation.to(this);
+    }
+
+    public void addGivingDonation(Donation donation) {
+        this.givingDonations.add(donation);
+        donation.from(this);
     }
 
     public void addPayment(Payment payment) {

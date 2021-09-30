@@ -83,19 +83,22 @@ class DonationServiceTest {
         memberRepository.save(creator);
 
         DonationRequest request = new DonationRequest(creator.getPageName(), 1000L);
+        Member donator = memberRepository.findById(member.getId()).get();
 
         //when
-        DonationResponse response = donationService.createDonation(request, member.getId());
+        assertThat(donator.getGivingDonations()).hasSize(0);
+        DonationResponse response = donationService.createDonation(request, donator.getId());
 
         //then
         assertThat(response.getDonationId()).isNotNull();
 
-        Member member = memberRepository.findById(this.member.getId()).get();
+        Member member = memberRepository.findById(donator.getId()).get();
         assertThat(member.getPoint()).isEqualTo(5000L - request.getPoint());
 
         Member saveCreator = memberRepository.findById(creator.getId()).get();
-        assertThat(saveCreator.getDonations()).hasSize(1);
+        assertThat(saveCreator.getGivenDonations()).hasSize(1);
         assertThat(donationRepository.currentPoint(saveCreator.getId())).isEqualTo(request.getPoint());
+        assertThat(donator.getGivingDonations()).hasSize(1);
     }
 
     @Test
