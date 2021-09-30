@@ -2,12 +2,10 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -30,9 +27,6 @@ class DonationRepositoryTest {
 
     @Autowired
     private DonationRepository donationRepository;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
 
     private Member member1;
     private Member member2;
@@ -69,18 +63,9 @@ class DonationRepositoryTest {
     }
 
     @Test
-    @DisplayName("해당 Member가 받은 secret false인 최신 5개의 도네이션을 가져온다.")
-    public void findPublicDonations() {
-        List<Donation> donations = donationRepository.findPublicDonations(member1, false, PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdAt")));
-        assertThat(donations).containsExactlyInAnyOrder(
-                donation7, donation2, donation3, donation4, donation6
-        );
-    }
-
-    @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
     public void findTop5ByMember() {
-        List<Donation> donations = donationRepository.findFirst5ByCreatorAndStatusNotOrderByCreatedAtDesc(member1, DonationStatus.CANCELLED);
+        List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(member1, PageRequest.of(0, 5));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation6, donation5, donation4, donation3
         );
@@ -89,8 +74,8 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
     public void findDonationByMemberOrderByCreatedAtDesc() {
-        List<Donation> donations = donationRepository.findDonationByCreatorAndStatusNotOrderByCreatedAtDesc(
-                member1, DonationStatus.CANCELLED, PageRequest.of(1, 3));
+        List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(
+                member1, PageRequest.of(1, 3));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation4, donation3, donation2
         );

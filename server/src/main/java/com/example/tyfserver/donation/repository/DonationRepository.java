@@ -13,12 +13,8 @@ import java.util.List;
 
 public interface DonationRepository extends JpaRepository<Donation, Long>, DonationQueryRepository {
 
-    @Query("select d from Donation d where d.creator =:member and d.message.secret =:secret")
-    List<Donation> findPublicDonations(
-            @Param("member") Member member, @Param("secret") boolean secret, Pageable pageable);
-
     @EntityGraph(attributePaths = "creator")
-    List<Donation> findDonationByCreator(Member member, Pageable pageable);
+    List<Donation> findDonationByCreatorOrderByCreatedAtDesc(Member member, Pageable pageable);
 
     @EntityGraph(attributePaths = "creator")
     List<Donation> findDonationByStatusAndCreator(DonationStatus status, Member member);
