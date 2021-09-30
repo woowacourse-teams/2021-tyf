@@ -249,9 +249,9 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 이하인 경우")
+    @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 미만인 경우")
     public void exchangeLessThanLimitAmount() {
-        initDonation(10000L);
+        initDonation(9000L);
 
         assertThatThrownBy(() -> memberService.exchange(member.getId()))
                 .isInstanceOf(ExchangeAmountException.class);

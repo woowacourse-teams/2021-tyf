@@ -139,7 +139,7 @@ public class MemberService {
         if (exchangeRepository.existsByPageName(member.getPageName())) {
             throw new AlreadyRequestExchangeException();
         }
-        if (exchangeablePoint <= 10000) {
+        if (exchangeablePoint < 10000) {
             throw new ExchangeAmountException();
         }
     }
