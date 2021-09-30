@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -137,8 +138,12 @@ public class Member extends BaseTimeEntity {
         return this.account.getStatus();
     }
 
+    public void increasePoint(Long amount) {
+        this.point.add(amount);
+    }
+
     public void reducePoint(long amount) {
-        point.reduce(amount);
+        this.point.reduce(amount);
     }
 
     public void approveAccount() {
@@ -162,5 +167,18 @@ public class Member extends BaseTimeEntity {
             return;
         }
         throw new WrongDonationOwnerException();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

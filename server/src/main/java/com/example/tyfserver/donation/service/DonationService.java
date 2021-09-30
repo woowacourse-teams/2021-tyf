@@ -38,6 +38,7 @@ public class DonationService {
         Donation creatorDonation = new Donation(message, donationRequest.getPoint());
         Donation savedDonation = donationRepository.save(creatorDonation);
         donator.reducePoint(donationRequest.getPoint());
+        creator.increasePoint(donationRequest.getPoint());
         creator.addGivenDonation(savedDonation);
         donator.addGivingDonation(savedDonation);
 
