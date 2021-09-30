@@ -41,7 +41,7 @@ export interface Donation {
   createdAt: Date;
 }
 
-export type DonationMessage = Pick<Donation, 'name' | 'message'>;
+export type DonationMessage = Pick<Donation, 'message'>;
 
 // PAYMENT
 

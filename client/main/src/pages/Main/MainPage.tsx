@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import CreatorList from '../../components/Main/CreatorList/CreatorList';
 import Spinner from '../../components/Spinner/Spinner';
@@ -18,6 +18,7 @@ import HeroContentDesktop from '../../assets/images/hero-content-desktop.svg';
 import Logo from '../../components/@molecule/Logo/Logo';
 import MainImage from '../../assets/images/hero-content.svg';
 import Transition from '../../components/@atom/Transition/Transition.styles';
+import HelpButton from '../../components/Help/HelpButton/HelpButton';
 
 const MainPage = () => {
   const history = useHistory();
@@ -65,6 +66,7 @@ const MainPage = () => {
           </Transition>
         </section>
       )}
+      <HelpButton />
       <DownIcon />
     </MainTemplate>
   );

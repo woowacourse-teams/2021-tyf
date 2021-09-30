@@ -14,7 +14,14 @@ const MobileCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage
     <StyledCreatorInfo>
       <Profile />
       <DescriptionContainer>
-        <p>{creator.bio}</p>
+        <p>
+          {creator.bio.split('\n').map((line) => (
+            <>
+              {line}
+              <br />
+            </>
+          ))}
+        </p>
       </DescriptionContainer>
       {isAdmin ? (
         <StyledButton onClick={shareUrl}>내 페이지 공유하기</StyledButton>

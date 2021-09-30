@@ -32,9 +32,9 @@ const LoginForm = () => {
         <GoogleBarButton onClick={() => routeToOAuthPage('GOOGLE', 'LOGIN')}>
           구글 로그인
         </GoogleBarButton>
-        <NaverBarButton onClick={() => routeToOAuthPage('NAVER', 'LOGIN')}>
+        {/* <NaverBarButton onClick={() => alert('현재 서비스 준비중입니다.')} disabled>
           네이버 로그인
-        </NaverBarButton>
+        </NaverBarButton> */}
         <KakaoBarButton onClick={() => routeToOAuthPage('KAKAO', 'LOGIN')}>
           카카오 로그인
         </KakaoBarButton>

@@ -47,6 +47,7 @@ export const ProfileImg = styled.img`
   transform: translateX(-50%);
   z-index: ${Z_INDEX.MIDGROUND};
   top: 1.5rem;
+  background-color: white;
 
   @media ${DEVICE.DESKTOP_LARGE} {
     width: 5.625rem;

@@ -32,7 +32,14 @@ const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPag
         </StyledInfo>
 
         <DescriptionContainer>
-          <p>{creator.bio}</p>
+          <p>
+            {creator.bio.split('\n').map((line) => (
+              <>
+                {line}
+                <br />
+              </>
+            ))}
+          </p>
         </DescriptionContainer>
       </InfoContainer>
     </StyledCreatorInfo>

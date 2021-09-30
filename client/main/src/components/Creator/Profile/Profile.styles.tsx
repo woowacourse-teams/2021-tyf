@@ -7,6 +7,7 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
   margin-bottom: 1rem;
   object-fit: cover;
+  background-color: white;
 `;
 
 export const NickName = styled.p`
