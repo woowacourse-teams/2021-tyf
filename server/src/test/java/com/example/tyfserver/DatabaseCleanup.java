@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
-@Profile("test")
 public class DatabaseCleanup implements InitializingBean {
 
     private final EntityManager entityManager;
