@@ -10,25 +10,18 @@ import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationNotFoundException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
-import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.exception.NotEnoughPointException;
-import com.example.tyfserver.payment.domain.Item;
-import com.example.tyfserver.payment.dto.PaymentCompleteRequest;
-import com.example.tyfserver.payment.dto.PaymentCompleteResponse;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
-import com.example.tyfserver.payment.exception.PaymentNotFoundException;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
-import static com.example.tyfserver.payment.PaymentAcceptanceTest.*;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.충전완료_된_사용자;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DonationAcceptanceTest extends AcceptanceTest {

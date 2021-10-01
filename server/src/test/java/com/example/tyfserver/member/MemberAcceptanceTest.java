@@ -6,11 +6,9 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.payment.domain.Item;
-import com.example.tyfserver.payment.dto.PaymentCompleteResponse;
 import com.example.tyfserver.payment.dto.PaymentPendingResponse;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
@@ -31,7 +29,8 @@ import static com.example.tyfserver.admin.AdminAcceptanceTest.요청_계좌_승�
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
 import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
-import static com.example.tyfserver.payment.PaymentAcceptanceTest.*;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.충전완료_된_사용자;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.페이먼트_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {

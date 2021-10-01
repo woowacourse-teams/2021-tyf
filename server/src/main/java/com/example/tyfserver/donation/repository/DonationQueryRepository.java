@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface DonationQueryRepository {
     Long exchangeablePoint(Long memberId);
+
     Long exchangedTotalPoint(Long memberId);
+
     Long currentPoint(Long memberId);
+
     List<Donation> findDonationsToExchange(Member member, YearMonth exchangeOn);
 }
