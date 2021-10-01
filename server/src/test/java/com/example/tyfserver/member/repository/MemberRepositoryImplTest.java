@@ -46,7 +46,7 @@ class MemberRepositoryImplTest {
 
     @BeforeEach
     void setUp() {
-        testMember1 = memberRepository.save(MemberTest.testMember(1));
+        testMember1 = memberRepository.save(MemberTest.testMember());
         testMember2 = memberRepository.save(MemberTest.testMember(2));
     }
 
@@ -74,7 +74,7 @@ class MemberRepositoryImplTest {
 
     @ParameterizedTest
     @CsvSource(value = {"tyf@gmail.com,NAVER,false", "invalid,NAVER,true", "tyf@gmail.com,GOOGLE,true"})
-    @DisplayName("findByEmail Test")
+    @DisplayName("findByEmailAndOauth2Type Test")
     public void findByEmailAndOauth2TypeTest(String email, String oauthType, boolean result) {
         //given & when
         Optional<Member> findMember = memberRepository.findByEmailAndOauth2Type(email, Oauth2Type.findOauth2Type(oauthType));

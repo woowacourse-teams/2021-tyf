@@ -29,6 +29,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.YearMonth;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,6 +54,8 @@ class AdminServiceTest {
     private DonationRepository donationRepository;
 
     @MockBean
+    private DonationRepository mockedDonationRepository;
+    @MockBean
     private S3Connector s3Connector;
     @MockBean
     private SmtpMailConnector mailConnector;
@@ -62,14 +65,12 @@ class AdminServiceTest {
     private Aes256Util aes256Util;
 
     private Member registeredMember;
-    private Member unregisteredMember;
     private Member requestingMember;
 
     @BeforeEach
     void setUp() {
         registeredMember = initMember(1, AccountStatus.REGISTERED);
-        unregisteredMember = initMember(2, AccountStatus.UNREGISTERED);
-        requestingMember = initMember(3, AccountStatus.REQUESTING);
+        requestingMember = initMember(2, AccountStatus.REQUESTING);
     }
 
     private Member initMember(int i, AccountStatus accountStatus) {
@@ -125,13 +126,14 @@ class AdminServiceTest {
         Exchange exchange = initExchange(13000L, registeredMember);
 
         //when
+        when(mockedDonationRepository.findDonationsToExchange(any(Member.class), any(YearMonth.class)))
+                .thenReturn(Collections.singletonList(donation));
         doNothing().when(mailConnector).sendExchangeApprove(anyString());
         adminService.approveExchange(registeredMember.getPageName());
 
         //then
         assertThat(donation.getStatus()).isEqualTo(DonationStatus.EXCHANGED);
         assertThat(exchange.getStatus()).isEqualTo(ExchangeStatus.APPROVED);
-//        assertThat(exchangeRepository.existsByPageName("pagename")).isFalse();
     }
 
     @Test
@@ -154,7 +156,6 @@ class AdminServiceTest {
         adminService.rejectExchange(registeredMember.getPageName(), "just denied");
 
         //then
-//        assertThat(exchangeRepository.existsByPageName(member.getPageName())).isFalse();
         assertThat(donation.getStatus()).isEqualTo(DonationStatus.EXCHANGEABLE);
     }
 
