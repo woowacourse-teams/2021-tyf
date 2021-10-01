@@ -19,7 +19,7 @@ const useRegister = () => {
       const { email, nickname, oauthType, pageName } = user;
 
       if (!(email && nickname && oauthType && pageName)) {
-        throw Error('비정상적인 회원가입 절차입니다.');
+        throw Error();
       }
 
       const { token } = await requestRegister(user);
@@ -28,6 +28,7 @@ const useRegister = () => {
 
       history.push('/register/success');
     } catch (error) {
+      alert('비정상적인 회원가입 절차입니다. 잠시후 다시 시도해주세요.');
       history.push('/');
     }
   };

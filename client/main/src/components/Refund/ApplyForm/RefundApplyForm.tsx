@@ -22,9 +22,9 @@ const RefundApplyForm = () => {
     <StyledRefundApplyForm onSubmit={onSubmit}>
       <Title>환불신청</Title>
       <Container>
-        <SubTitle>주문번호</SubTitle>
+        <SubTitle>결제번호</SubTitle>
         <Input
-          placeholder="주문번호 입력하기"
+          placeholder="결제번호 입력하기"
           value={merchantUid}
           onChange={({ target }) => setMerchantUid(target.value)}
         />
@@ -35,8 +35,9 @@ const RefundApplyForm = () => {
         <TextButton>인증 메일 보내기</TextButton>
       )}
       <CautionContainer>
-        <p>결제일로부터 7일이내 요청에 대해서만 환불이 가능합니다.</p>
-        <p>이후 환불건에 대해서는 도네이션을 받은 창작자와 협의가 필요합니다.</p>
+        <p>미사용 포인트는 결제일로부터 7일이내 요청에 대해서 카드 취소 환불이 가능합니다.</p>
+        <p>이외의 환불 문의에 대해서는 고객센터로 문의해주세요.</p>
+        <p>사용한 포인트에 대해서는 환불이 불가능합니다.</p>
       </CautionContainer>
     </StyledRefundApplyForm>
   );

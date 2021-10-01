@@ -95,9 +95,8 @@ public class MemberService {
 
     public DetailedPointResponse detailedPoint(Long id) {
         Long currentPoint = donationRepository.currentPoint(id);
-        Long exchangeablePoint = donationRepository.exchangeablePoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
-        return new DetailedPointResponse(currentPoint, exchangeablePoint, exchangedTotalPoint);
+        return new DetailedPointResponse(currentPoint, exchangedTotalPoint);
     }
 
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
@@ -127,7 +126,7 @@ public class MemberService {
 
     public void exchange(Long id) {
         Member member = findMember(id);
-        Long exchangeablePoint = donationRepository.exchangeablePoint(id);
+        Long exchangeablePoint = donationRepository.currentPoint(id);
         validateExchangeable(member, exchangeablePoint);
 
         Exchange exchange =
@@ -140,7 +139,7 @@ public class MemberService {
         if (exchangeRepository.existsByPageName(member.getPageName())) {
             throw new AlreadyRequestExchangeException();
         }
-        if (exchangeablePoint <= 10000) {
+        if (exchangeablePoint < 10000) {
             throw new ExchangeAmountException();
         }
     }

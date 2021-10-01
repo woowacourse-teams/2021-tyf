@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Transition from '../../components/@atom/Transition/Transition.styles';
+import HelpButton from '../../components/Help/HelpButton/HelpButton';
 
 import SettlementInfo from '../../components/Settlement/Info/SettlementInfo';
 import SettlementRegisterForm from '../../components/Settlement/Register/SettlementRegisterForm';
@@ -35,10 +36,9 @@ const SettlementPage = () => {
       <StyledTitle>정산 관리</StyledTitle>
       <section>
         <Suspense fallback={Spinner}>
-          <Transition>
-            <Settlement />
-          </Transition>
+          <Settlement />
         </Suspense>
+        <HelpButton />
       </section>
     </StyledTemplate>
   );

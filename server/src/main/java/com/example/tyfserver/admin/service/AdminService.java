@@ -68,7 +68,7 @@ public class AdminService {
             String decryptedAccountNumber = aes256Util.decrypt(account.getAccountNumber());
             requestingAccountResponses.add(new RequestingAccountResponse(member.getId(), member.getEmail(),
                     member.getNickname(), member.getPageName(), account.getAccountHolder(), decryptedAccountNumber,
-                    account.getBank(),account.getBankbookUrl()));
+                    account.getBank(), account.getBankbookUrl()));
         }
 
         return requestingAccountResponses;
@@ -89,7 +89,7 @@ public class AdminService {
 
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
-        List<Donation> donations = donationRepository.findDonationByStatusAndCreator(DonationStatus.EXCHANGEABLE, member);
+        List<Donation> donations = donationRepository.findDonationByStatusAndCreator(DonationStatus.WAITING_FOR_EXCHANGE, member);
         for (Donation donation : donations) {
             donation.toExchanged();
         }

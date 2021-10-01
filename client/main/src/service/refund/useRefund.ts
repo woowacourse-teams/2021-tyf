@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { AUTH_ERROR_MESSAGE, PAYMENT_ERROR, PAYMENT_ERROR_MESSAGE } from '../../constants/error';
+import {
+  AUTH_ERROR_MESSAGE,
+  PAYMENT_ERROR,
+  PAYMENT_ERROR_MESSAGE,
+  REFUND_ERROR_MESSAGE,
+} from '../../constants/error';
 import { requestRefund, requestVerify, requestVerifyMerchantUid } from '../@request/refund';
 import { refundState } from '../@state/refund';
 
@@ -37,19 +42,10 @@ const useRefund = () => {
       alert('이메일이 전송되었습니다.');
       history.push('/refund/cert');
     } catch (error) {
-      switch (error.response.data.errorCode) {
-        case PAYMENT_ERROR.EXCEED_TRY_COUNT:
-          alert(PAYMENT_ERROR_MESSAGE[PAYMENT_ERROR.EXCEED_TRY_COUNT]);
-          break;
-        case PAYMENT_ERROR.PENDING:
-          alert(PAYMENT_ERROR_MESSAGE[PAYMENT_ERROR.PENDING]);
-          break;
-        case PAYMENT_ERROR.NOT_READY:
-          alert(PAYMENT_ERROR_MESSAGE[PAYMENT_ERROR.NOT_READY]);
-          break;
-        default:
-          alert('유효하지 않은 주문번호입니다.');
-      }
+      const { errorCode }: { errorCode: keyof typeof PAYMENT_ERROR_MESSAGE } = error.response.data;
+      const errorMessage = PAYMENT_ERROR_MESSAGE[errorCode] ?? '유효하지 않은 주문번호입니다.';
+
+      alert(errorMessage);
     }
 
     setIsVerificationEmailSending(false);
@@ -61,7 +57,11 @@ const useRefund = () => {
       alert('환불 신청이 완료 되었습니다.');
       history.push('/');
     } catch (error) {
-      alert('환불 신청에 실패했습니다.');
+      const { errorCode }: { errorCode: keyof typeof REFUND_ERROR_MESSAGE } = error.response.data;
+      const errorMessage =
+        REFUND_ERROR_MESSAGE[errorCode] ??
+        '환불 신청에 실패했습니다. 문제가 지속되면 고객센터로 문의해주세요.';
+      alert(errorMessage);
     }
   };
 
