@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { DONATION_ERROR_MESSAGE } from '../../constants/error';
 
 import { CreatorId } from '../../types';
 import { requestDonation } from '../@request/donation';
@@ -20,7 +21,9 @@ const useDonation = () => {
 
       history.push(`/donation/${creatorId}/message`);
     } catch (error) {
-      alert('도네이션에 실패했습니다.');
+      const { errorCode }: { errorCode: keyof typeof DONATION_ERROR_MESSAGE } = error.response.data;
+      const errorMessage = DONATION_ERROR_MESSAGE[errorCode] ?? '도네이션에 실패했습니다.';
+      alert(errorMessage);
     }
   };
 

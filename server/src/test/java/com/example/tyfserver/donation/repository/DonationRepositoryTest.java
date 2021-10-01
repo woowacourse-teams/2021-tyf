@@ -2,12 +2,10 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,9 +32,6 @@ class DonationRepositoryTest {
 
     @Autowired
     private DonationRepository donationRepository;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
 
     private Member member1;
     private Member member2;
@@ -92,7 +87,7 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
     public void findTop5ByMember() {
-        List<Donation> donations = donationRepository.findFirst5ByMemberAndStatusNotOrderByCreatedAtDesc(member1, DonationStatus.CANCELLED);
+        List<Donation> donations = donationRepository.findFirst5ByMemberOrderByCreatedAtDesc(member1);
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation6, donation5, donation4, donation3
         );
@@ -101,8 +96,8 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
     public void findDonationByMemberOrderByCreatedAtDesc() {
-        List<Donation> donations = donationRepository.findDonationByMemberAndStatusNotOrderByCreatedAtDesc(
-                member1, DonationStatus.CANCELLED, PageRequest.of(1, 3));
+        List<Donation> donations = donationRepository.findDonationByMemberOrderByCreatedAtDesc(
+                member1, PageRequest.of(1, 3));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation4, donation3, donation2
         );
@@ -111,15 +106,14 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("정산 가능 포인트를 조회한다.")
     public void exchangeablePoint() {
-        donation1.toCancelled();
+        donation1.toExchanged();
         donation2.toExchanged();
-        donation3.toCancelled();
-        donation4.toCancelled();
-        donation5.toExchangeable();
-        donation6.toExchangeable();
+        donation3.toExchanged();
+        donation4.toExchanged();
+        donation7.toExchanged();
 
-        Long member1ExchangeablePoint = donationRepository.exchangeablePoint(member1.getId());
-        Long member2ExchangeablePoint = donationRepository.exchangeablePoint(member2.getId());
+        Long member1ExchangeablePoint = donationRepository.currentPoint(member1.getId());
+        Long member2ExchangeablePoint = donationRepository.currentPoint(member2.getId());
 
         assertThat(member1ExchangeablePoint).isEqualTo(11000L);
         assertThat(member2ExchangeablePoint).isEqualTo(0L);
@@ -128,25 +122,11 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("정산 완료 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {
-        donation1.toCancelled();
         donation2.toExchanged();
-        donation3.toCancelled();
-        donation4.toCancelled();
 
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
 
         assertThat(exchangedTotalPoint).isEqualTo(2000L);
-    }
-
-    @Test
-    @DisplayName("정산 가능 + 정산 불가 총 포인트를 조회한다.")
-    public void currentPoint() {
-        donation1.toExchanged();
-        donation2.toExchanged();
-
-        Long exchangedTotalPoint = donationRepository.currentPoint(member1.getId());
-
-        assertThat(exchangedTotalPoint).isEqualTo(25000L);
     }
 
     @Test

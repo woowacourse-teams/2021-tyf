@@ -20,7 +20,6 @@ import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +40,6 @@ public class AdminService {
     private final SmtpMailConnector smtpMailConnector;
     private final AdminAccount adminAccount;
     private final AuthenticationService authenticationService;
-
-    @Autowired
     private final Aes256Util aes256Util;
 
     public void approveAccount(Long memberId) {

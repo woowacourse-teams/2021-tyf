@@ -21,28 +21,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         queryFactory = new JPAQueryFactory(em);
     }
 
-    public Long exchangeablePoint(Long memberId) {
-        Long result = queryFactory
-                .select(donation.point.sum())
-                .from(donation)
-                .where(exchangeableStatus(memberId))
-                .groupBy(donation.member)
-                .fetchOne();
-
-        return Objects.requireNonNullElse(result, 0L);
-    }
-
-    public Long exchangedTotalPoint(Long memberId) {
-        Long result = queryFactory
-                .select(donation.point.sum())
-                .from(donation)
-                .where(exchangedStatus(memberId))
-                .groupBy(donation.member)
-                .fetchOne();
-
-        return Objects.requireNonNullElse(result, 0L);
-    }
-
+    @Override
     public Long currentPoint(Long memberId) {
         Long result = queryFactory
                 .select(donation.point.sum())
@@ -54,20 +33,26 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         return Objects.requireNonNullElse(result, 0L);
     }
 
-    private BooleanExpression exchangeableStatus(Long memberId) {
+    @Override
+    public Long exchangedTotalPoint(Long memberId) {
+        Long result = queryFactory
+                .select(donation.point.sum())
+                .from(donation)
+                .where(exchangedStatus(memberId))
+                .groupBy(donation.member)
+                .fetchOne();
+
+        return Objects.requireNonNullElse(result, 0L);
+    }
+
+    private BooleanExpression currentStatus(Long memberId) {
         return donation.member.id.eq(memberId)
-                .and(donation.status.eq(DonationStatus.EXCHANGEABLE));
+                .and(donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE));
     }
 
     private BooleanExpression exchangedStatus(Long memberId) {
         return donation.member.id.eq(memberId)
                 .and(donation.status.eq(DonationStatus.EXCHANGED));
-    }
-
-    private BooleanExpression currentStatus(Long memberId) {
-        return donation.member.id.eq(memberId)
-                .and(donation.status.ne(DonationStatus.CANCELLED))
-                .and(donation.status.ne(DonationStatus.EXCHANGED));
     }
 
     @Override

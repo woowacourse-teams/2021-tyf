@@ -148,7 +148,6 @@ class AdminServiceTest {
     public void rejectExchange() {
         //given
         Donation donation = initDonation(13000L);
-        donation.toExchangeable();
         Exchange exchange = initExchange(13000L, registeredMember);
 
         //when
@@ -156,7 +155,8 @@ class AdminServiceTest {
         adminService.rejectExchange(registeredMember.getPageName(), "just denied");
 
         //then
-        assertThat(donation.getStatus()).isEqualTo(DonationStatus.EXCHANGEABLE);
+        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+        assertThat(exchange.getStatus()).isEqualTo(ExchangeStatus.REJECTED);
     }
 
     @Test

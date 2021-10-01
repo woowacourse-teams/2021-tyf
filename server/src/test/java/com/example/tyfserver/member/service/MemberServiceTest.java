@@ -13,7 +13,6 @@ import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
-import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,9 +52,6 @@ class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
 
     @Autowired
     private DonationRepository donationRepository;
@@ -190,17 +186,14 @@ class MemberServiceTest {
     public void detailedPointTest() {
         //given & when
         Donation donation1 = initDonation(1000L);
-        Donation donation2 = initDonation(2000L);
-        Donation donation3 = initDonation(3000L);
-        Donation donation4 = initDonation(4000L);
+        initDonation(2000L);
+        initDonation(3000L);
 
         donation1.toExchanged();
-        donation4.toCancelled();
 
         //then
         DetailedPointResponse response = memberService.detailedPoint(member.getId());
         assertThat(response.getCurrentPoint()).isEqualTo(5000);
-        assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
     }
 
@@ -222,7 +215,6 @@ class MemberServiceTest {
         //when
         memberService.registerAccount(loginMember, test);
 
-
         //then
         Account account = member.getAccount();
         assertThat(account.getStatus()).isEqualTo(AccountStatus.REQUESTING);
@@ -234,8 +226,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("정산을 신청한다")
     public void exchange() {
-        Donation donation = initDonation(20000L);
-        donation.toExchangeable();
+        initDonation(20000L);
 
         memberService.exchange(member.getId());
         List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
@@ -248,8 +239,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("정산을 신청한다 - 이미 신청해놓은 경우")
     public void exchangeAlreadyRequest() {
-        Donation donation = initDonation(11000L);
-        donation.toExchangeable();
+        initDonation(11000L);
 
         memberService.exchange(member.getId());
 
@@ -258,11 +248,9 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 이하인 경우")
+    @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 미만인 경우")
     public void exchangeLessThanLimitAmount() {
-        Donation donation1 = initDonation(9999L);
-        Donation donation2 = initDonation(11000L);
-        donation1.toExchangeable();
+        initDonation(9999L);
 
         assertThatThrownBy(() -> memberService.exchange(member.getId()))
                 .isExactlyInstanceOf(ExchangeAmountException.class);
