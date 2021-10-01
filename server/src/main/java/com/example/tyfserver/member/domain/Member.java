@@ -77,12 +77,12 @@ public class Member extends BaseTimeEntity {
         this(email, nickname, pageName, oauth2Type, null);
     }
 
-    public void addGivenDonation(Donation donation) {
+    public void receiveDonation(Donation donation) {
         this.givenDonations.add(donation);
         donation.to(this);
     }
 
-    public void addGivingDonation(Donation donation) {
+    public void donate(Donation donation) {
         this.givingDonations.add(donation);
         donation.from(this);
     }

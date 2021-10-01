@@ -57,7 +57,7 @@ class DonationRepositoryTest {
 
     private Donation initDonation(Long point, boolean secret) {
         Donation donation = new Donation(new Message("name", "message", secret), point);
-        member1.addGivenDonation(donation);
+        member1.receiveDonation(donation);
         donationRepository.save(donation);
         return donation;
     }

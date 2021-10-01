@@ -39,8 +39,8 @@ public class DonationService {
         Donation savedDonation = donationRepository.save(creatorDonation);
         donator.reducePoint(donationRequest.getPoint());
         creator.increasePoint(donationRequest.getPoint());
-        creator.addGivenDonation(savedDonation);
-        donator.addGivingDonation(savedDonation);
+        creator.receiveDonation(savedDonation);
+        donator.donate(savedDonation);
 
         return new DonationResponse(savedDonation);
     }

@@ -36,7 +36,7 @@ public class MemberTest {
         Donation donation = new Donation(new Message("name", "message", false), 1_000L);
 
         //when
-        member.addGivenDonation(donation);
+        member.receiveDonation(donation);
 
         //then
         assertThat(member.getGivenDonations()).isNotEmpty();
