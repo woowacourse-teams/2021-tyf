@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 public class DetailedPointResponse {
 
     private Long currentPoint;
-    private Long exchangeablePoint;
     private Long exchangedTotalPoint;
 
-    public DetailedPointResponse(Long currentPoint, Long exchangeablePoint, Long exchangedTotalPoint) {
+    public DetailedPointResponse(Long currentPoint, Long exchangedTotalPoint) {
         this.currentPoint = currentPoint;
-        this.exchangeablePoint = exchangeablePoint;
         this.exchangedTotalPoint = exchangedTotalPoint;
     }
 }
