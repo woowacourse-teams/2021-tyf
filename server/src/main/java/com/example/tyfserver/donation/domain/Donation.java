@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,12 +33,6 @@ public class Donation extends BaseTimeEntity {
 
     public Donation(Message message, long point) {
         this(null, message, point);
-    }
-
-    public Donation(Message message, long point, LocalDateTime createdAt) {
-        super(createdAt);
-        this.message = message;
-        this.point = point;
     }
 
     public Donation(Long id, Message message, long point) {

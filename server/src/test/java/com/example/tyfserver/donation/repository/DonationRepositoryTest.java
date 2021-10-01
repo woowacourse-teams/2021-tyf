@@ -20,6 +20,8 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,9 +72,10 @@ class DonationRepositoryTest {
         return donation;
     }
 
-    private Donation initDonation(long point, Member member, LocalDateTime createAt) {
-        Donation donation = new Donation(new Message("name", "message", false), point, createAt);
+    private Donation initDonation(Member member, LocalDateTime createAt) {
+        Donation donation = new Donation(new Message("name", "message", false), 5000);
         member.addDonation(donation);
+        donation.setCreatedAt(createAt);
         donationRepository.save(donation);
         return donation;
     }
@@ -155,18 +158,25 @@ class DonationRepositoryTest {
         memberRepository.save(member3);
         memberRepository.save(member4);
 
-        Donation donation1 = initDonation(5000L, member3, createdAt(1, 1));
-        Donation donation2 = initDonation(5000L, member4, createdAt(1, 1));
-//        Donation donation3 = initDonation(5000L, member3, createdAt(2, 1));
-//        Donation donation4 = initDonation(5000L, member4, createdAt(2, 1));
+        Donation donation1 = initDonation(member3, createdAt(1, 1));
+        Donation donation2 = initDonation(member4, createdAt(1, 1));
+        Donation donation3 = initDonation(member3, createdAt(2, 1));
+        Donation donation4 = initDonation(member4, createdAt(2, 1));
+        Donation donation5 = initDonation(member3, createdAt(3, 1));
+        Donation donation6 = initDonation(member4, createdAt(3, 1));
 
-        Donation donation5 = initDonation(5000L, member3, createdAt(1, 31));
+        Donation donation7 = initDonation(member3, createdAt(1, 31));
 
         // when
         List<Donation> donations = donationRepository.findDonationsToExchange(member3, YearMonth.of(2021, 2));
 
         // then
-        assertThat(donations).containsExactlyInAnyOrder(donation1, donation5);
+        List<Long> expectedDonationIds = Stream.of(donation1, donation3, donation7)
+                .map(Donation::getId)
+                .collect(Collectors.toList());
+
+        assertThat(donations).hasSize(expectedDonationIds.size());
+        donations.forEach(donation -> assertThat(donation.getId()).isIn(expectedDonationIds));
     }
 
     private LocalDateTime createdAt(int month, int dayOfMonth) {
