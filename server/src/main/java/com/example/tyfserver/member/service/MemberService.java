@@ -6,6 +6,7 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Exchange;
+import com.example.tyfserver.member.domain.ExchangeStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -130,17 +132,15 @@ public class MemberService {
         Long exchangeablePoint = donationRepository.exchangeablePoint(id);
         validateExchangeable(member, exchangeablePoint);
 
-        Exchange exchange =
-                new Exchange(member.getAccount().getAccountHolder(), member.getEmail(), exchangeablePoint,
-                        member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
+        Exchange exchange = new Exchange(exchangeablePoint, YearMonth.now(), member);
         exchangeRepository.save(exchange);
     }
 
     private void validateExchangeable(Member member, Long exchangeablePoint) {
-        if (exchangeRepository.existsByPageName(member.getPageName())) {
+        if (!exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member).isEmpty()) {
             throw new AlreadyRequestExchangeException();
         }
-        if (exchangeablePoint <= 10000) {
+        if (exchangeablePoint < 10000) {
             throw new ExchangeAmountException();
         }
     }

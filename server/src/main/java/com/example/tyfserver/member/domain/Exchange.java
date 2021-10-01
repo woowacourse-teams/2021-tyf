@@ -5,10 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.YearMonth;
 
 @Entity
 @Getter
@@ -19,24 +17,34 @@ public class Exchange extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String email;
-
     private Long exchangeAmount;
 
-    private String accountNumber;
+    // 정산신청 연/월. 엔티티를 생성하는 시점(createdAt)과 정산하고자하는 달은 다를수 있다고 생각함.
+    private YearMonth exchangeOn;
 
-    private String nickname;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    private String pageName;
+    @Enumerated(value = EnumType.STRING)
+    private ExchangeStatus status = ExchangeStatus.WAITING;
 
-    public Exchange(String name, String email, Long exchangeAmount, String accountNumber, String nickname, String pageName) {
-        this.name = name;
-        this.email = email;
+    public Exchange(Long id, Long exchangeAmount, YearMonth exchangeOn, Member member) {
+        this.id = id;
         this.exchangeAmount = exchangeAmount;
-        this.accountNumber = accountNumber;
-        this.nickname = nickname;
-        this.pageName = pageName;
+        this.exchangeOn = exchangeOn;
+        this.member = member;
+    }
+
+    public Exchange(Long exchangeAmount, YearMonth exchangeOn, Member member) {
+        this(null, exchangeAmount, exchangeOn, member);
+    }
+
+    public void toApproved() {
+        status = ExchangeStatus.APPROVED;
+    }
+
+    public void toRejected() {
+        status = ExchangeStatus.REJECTED;
     }
 }

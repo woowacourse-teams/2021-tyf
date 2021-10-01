@@ -24,11 +24,6 @@ public class ExchangeResponse {
 
     private LocalDateTime createdAt;
 
-    public ExchangeResponse(Exchange exchange) {
-        this(exchange.getName(), exchange.getEmail(), exchange.getExchangeAmount(), exchange.getAccountNumber(),
-                exchange.getNickname(), exchange.getPageName(), exchange.getCreatedAt());
-    }
-
     public ExchangeResponse(String name, String email, Long exchangeAmount, String accountNumber, String nickname, String pageName, LocalDateTime createdAt) {
         this.name = name;
         this.email = email;
@@ -37,5 +32,18 @@ public class ExchangeResponse {
         this.nickname = nickname;
         this.pageName = pageName;
         this.createdAt = createdAt;
+    }
+
+    // todo getMember(), getAccount() N+1 문제 발생하지 않을까?
+    public ExchangeResponse(Exchange exchange, String decryptedAccountNumber) {
+        this(
+                exchange.getMember().getAccount().getAccountHolder(),
+                exchange.getMember().getEmail(),
+                exchange.getExchangeAmount(),
+                decryptedAccountNumber,
+                exchange.getMember().getNickname(),
+                exchange.getMember().getPageName(),
+                exchange.getCreatedAt()
+        );
     }
 }

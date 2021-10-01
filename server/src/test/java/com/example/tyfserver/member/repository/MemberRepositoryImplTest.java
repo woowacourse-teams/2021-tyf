@@ -46,10 +46,9 @@ class MemberRepositoryImplTest {
 
     @BeforeEach
     void setUp() {
-        testMember1 = memberRepository.save(MemberTest.testMember());
-        testMember2 = memberRepository.save(MemberTest.testMember2());
+        testMember1 = memberRepository.save(MemberTest.testMember(1));
+        testMember2 = memberRepository.save(MemberTest.testMember(2));
     }
-
 
     @Test
     @DisplayName("자기소개는 500자 까지만 저장가능하다.")

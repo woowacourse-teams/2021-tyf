@@ -7,10 +7,7 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.AccountStatus;
-import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.domain.Point;
+import com.example.tyfserver.member.domain.*;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.AccountRepository;
@@ -42,7 +39,7 @@ class MemberServiceTest {
     private static final String EMAIL = "email";
     private static final String NICKNAME = "nickname";
     private static final String PAGENAME = "pagename";
-    private static final String 제_페이지에_와주셔서_감사합니다 = "제 페이지에 와주셔서 감사합니다!";
+    private static final String BIO = "제 페이지에 와주셔서 감사합니다!";
     private static final String PROFILE = "profile";
     private static final long POINT = 10000L;
     private static final String DONATOR_NAME = "후원자";
@@ -103,7 +100,7 @@ class MemberServiceTest {
         MemberResponse response = memberService.findMemberByPageName(PAGENAME);
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, 제_페이지에_와주셔서_감사합니다, PROFILE, POINT, false));
+                .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, BIO, PROFILE, POINT, false));
 
         assertThatThrownBy(() -> memberService.findMemberByPageName("asdf"))
                 .isInstanceOf(MemberNotFoundException.class);
@@ -116,7 +113,7 @@ class MemberServiceTest {
         MemberResponse response = memberService.findMemberById(member.getId());
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, 제_페이지에_와주셔서_감사합니다, PROFILE, POINT, false));
+                .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, BIO, PROFILE, POINT, false));
 
         assertThatThrownBy(() -> memberService.findMemberById(INVALID_ID))
                 .isInstanceOf(MemberNotFoundException.class);
@@ -241,9 +238,11 @@ class MemberServiceTest {
         donation.toExchangeable();
 
         memberService.exchange(member.getId());
-        boolean result = exchangeRepository.existsByPageName(member.getPageName());
+        List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
 
-        assertThat(result).isTrue();
+        assertThat(exchanges).hasSize(1);
+        Exchange exchange = exchanges.get(0);
+        assertThat(exchange.getExchangeAmount()).isEqualTo(20000L);
     }
 
     @Test
@@ -255,17 +254,17 @@ class MemberServiceTest {
         memberService.exchange(member.getId());
 
         assertThatThrownBy(() -> memberService.exchange(member.getId()))
-                .isInstanceOf(AlreadyRequestExchangeException.class);
+                .isExactlyInstanceOf(AlreadyRequestExchangeException.class);
     }
 
     @Test
     @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 이하인 경우")
     public void exchangeLessThanLimitAmount() {
-        Donation donation1 = initDonation(10000L);
+        Donation donation1 = initDonation(9999L);
         Donation donation2 = initDonation(11000L);
         donation1.toExchangeable();
 
         assertThatThrownBy(() -> memberService.exchange(member.getId()))
-                .isInstanceOf(ExchangeAmountException.class);
+                .isExactlyInstanceOf(ExchangeAmountException.class);
     }
 }

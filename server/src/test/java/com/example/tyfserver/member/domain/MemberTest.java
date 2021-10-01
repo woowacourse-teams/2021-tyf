@@ -25,6 +25,10 @@ public class MemberTest {
         return new Member(EMAIL, NICKNAME, PAGE_NAME, Oauth2Type.NAVER);
     }
 
+    public static Member testMember(int i) {
+        return new Member(EMAIL + i, NICKNAME + i, PAGE_NAME + i, Oauth2Type.NAVER);
+    }
+
     public static Member testMember2() {
         return new Member("tyf2@gmail.com", "nickname2", "pageName2", Oauth2Type.NAVER);
     }

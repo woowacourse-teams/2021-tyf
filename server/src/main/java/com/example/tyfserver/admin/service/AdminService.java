@@ -11,21 +11,22 @@ import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Exchange;
+import com.example.tyfserver.member.domain.ExchangeStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,6 +41,8 @@ public class AdminService {
     private final SmtpMailConnector smtpMailConnector;
     private final AdminAccount adminAccount;
     private final AuthenticationService authenticationService;
+
+    @Autowired
     private final Aes256Util aes256Util;
 
     public void approveAccount(Long memberId) {
@@ -69,20 +72,18 @@ public class AdminService {
             String decryptedAccountNumber = aes256Util.decrypt(account.getAccountNumber());
             requestingAccountResponses.add(new RequestingAccountResponse(member.getId(), member.getEmail(),
                     member.getNickname(), member.getPageName(), account.getAccountHolder(), decryptedAccountNumber,
-                    account.getBank(),account.getBankbookUrl()));
+                    account.getBank(), account.getBankbookUrl()));
         }
 
         return requestingAccountResponses;
     }
 
     public List<ExchangeResponse> exchangeList() {
-        List<Exchange> exchanges = exchangeRepository.findAll();
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
 
-        for (Exchange exchange : exchanges) {
-            String decryptedAccountNumber = aes256Util.decrypt(exchange.getAccountNumber());
-            exchangeResponses.add(new ExchangeResponse(exchange.getName(), exchange.getEmail(), exchange.getExchangeAmount(),
-                    decryptedAccountNumber, exchange.getNickname(), exchange.getPageName(), exchange.getCreatedAt()));
+        for (Exchange exchange : exchangeRepository.findByStatus(ExchangeStatus.WAITING)) { // todo 이제 findAll() 아님
+            String decryptedAccountNumber = aes256Util.decrypt(exchange.getMember().getAccount().getAccountNumber());
+            exchangeResponses.add(new ExchangeResponse(exchange, decryptedAccountNumber));
         }
 
         return exchangeResponses;
@@ -90,17 +91,44 @@ public class AdminService {
 
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
-        List<Donation> donations = donationRepository.findDonationByStatusAndMember(DonationStatus.EXCHANGEABLE, member);
-        for (Donation donation : donations) {
-            donation.toExchanged();
+
+        Exchange exchange = findExchangeToApprove(member);
+        YearMonth exchangeOn = exchange.getExchangeOn();
+
+        List<Donation> donations = donationRepository.findDonationsToExchange(member, exchangeOn);
+
+        long sum = donations.stream()
+                .mapToLong(Donation::getPoint)
+                .sum();
+
+        if (exchange.getExchangeAmount() != sum) {
+            throw new RuntimeException("서버오류: 정산신청 금액과 실제 후원금액이 맞지 않음");
         }
+
+        exchange.toApproved();
+        donations.forEach(Donation::toExchanged);
+
         mailConnector.sendExchangeApprove(member.getEmail());
-        exchangeRepository.deleteByPageName(pageName);
+    }
+
+    private Exchange findExchangeToApprove(Member member) {
+        List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
+        if (exchanges.isEmpty()) {
+            throw new RuntimeException("정산신청하지 않았음"); // todo Runtime 예외 제거
+        }
+        if (exchanges.size() > 1) {
+            throw new RuntimeException("서버오류: 대기중인 정산이 2개 이상임");
+        }
+        return exchanges.get(0);
     }
 
     public void rejectExchange(String pageName, String rejectReason) {
         Member member = findMember(pageName);
-        exchangeRepository.deleteByPageName(pageName);
+
+        // todo approveExchange 와 같은 이슈
+        exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member)
+                .forEach(Exchange::toRejected);
+
         mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
     }
 
