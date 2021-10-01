@@ -60,7 +60,6 @@ class MemberRepositoryImplTest {
         }).isInstanceOf(RuntimeException.class);
     }
 
-
     @ParameterizedTest
     @CsvSource(value = {"tyf@gmail.com,false", "invalid,true"})
     @DisplayName("findByEmail Test")

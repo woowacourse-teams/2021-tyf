@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class AdminService {
     public List<ExchangeResponse> exchangeList() {
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
 
-        for (Exchange exchange : exchangeRepository.findByStatus(ExchangeStatus.WAITING)) { // todo 이제 findAll() 아님
+        for (Exchange exchange : exchangeRepository.findByStatus(ExchangeStatus.WAITING)) {
             String decryptedAccountNumber = aes256Util.decrypt(exchange.getMember().getAccount().getAccountNumber());
             exchangeResponses.add(new ExchangeResponse(exchange, decryptedAccountNumber));
         }
@@ -88,19 +87,10 @@ public class AdminService {
 
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
-
         Exchange exchange = findExchangeToApprove(member);
-        YearMonth exchangeOn = exchange.getExchangeOn();
 
-        List<Donation> donations = donationRepository.findDonationsToExchange(member, exchangeOn);
-
-        long sum = donations.stream()
-                .mapToLong(Donation::getPoint)
-                .sum();
-
-        if (exchange.getExchangeAmount() != sum) {
-            throw new RuntimeException("서버오류: 정산신청 금액과 실제 후원금액이 맞지 않음");
-        }
+        List<Donation> donations = donationRepository.findDonationsToExchange(member, exchange.getExchangeOn());
+        validateAmount(exchange, donations);
 
         exchange.toApproved();
         donations.forEach(Donation::toExchanged);
@@ -108,10 +98,18 @@ public class AdminService {
         mailConnector.sendExchangeApprove(member.getEmail());
     }
 
+    public void rejectExchange(String pageName, String rejectReason) {
+        Member member = findMember(pageName);
+        Exchange exchange = findExchangeToApprove(member);
+        exchange.toRejected();
+
+        mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
+    }
+
     private Exchange findExchangeToApprove(Member member) {
         List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
         if (exchanges.isEmpty()) {
-            throw new RuntimeException("정산신청하지 않았음"); // todo Runtime 예외 제거
+            throw new RuntimeException("사용자오류: 정산신청하지 않았음"); // todo Runtime 예외 제거
         }
         if (exchanges.size() > 1) {
             throw new RuntimeException("서버오류: 대기중인 정산이 2개 이상임");
@@ -119,14 +117,14 @@ public class AdminService {
         return exchanges.get(0);
     }
 
-    public void rejectExchange(String pageName, String rejectReason) {
-        Member member = findMember(pageName);
+    private void validateAmount(Exchange exchange, List<Donation> donations) {
+        long donationAmountSum = donations.stream()
+                .mapToLong(Donation::getPoint)
+                .sum();
 
-        // todo approveExchange 와 같은 이슈
-        exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member)
-                .forEach(Exchange::toRejected);
-
-        mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
+        if (exchange.getExchangeAmount() != donationAmountSum) {
+            throw new RuntimeException("서버오류: 정산신청 금액과 실제 후원금액이 맞지 않음");
+        }
     }
 
     private Member findMember(String pageName) {
