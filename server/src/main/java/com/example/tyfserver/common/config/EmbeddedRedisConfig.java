@@ -31,11 +31,7 @@ public class EmbeddedRedisConfig {
             port = findAvailablePort();
         }
 
-        if (isArmMac()) {
-            redisServer = new RedisServer(Objects.requireNonNull(getRedisFileForArmMac()), port);
-        } else {
-            redisServer = new RedisServer(port);
-        }
+        redisServer = new RedisServer(port);
         redisServer.start();
     }
 
