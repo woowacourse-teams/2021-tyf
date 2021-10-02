@@ -136,7 +136,7 @@ public class MemberService {
     }
 
     private void validateExchangeable(Member member, Long exchangeablePoint) {
-        if (!exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member).isEmpty()) {
+        if (exchangeRepository.existsByStatusAndMember(ExchangeStatus.WAITING, member)) {
             throw new AlreadyRequestExchangeException();
         }
         if (exchangeablePoint < 10000) {

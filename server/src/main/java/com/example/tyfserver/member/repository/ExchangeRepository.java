@@ -9,8 +9,9 @@ import java.util.List;
 
 public interface ExchangeRepository extends JpaRepository<Exchange, Long> {
 
-//    @EntityGraph(attributePaths = {"member"}) // todo N+1 문제 확인 필요
     List<Exchange> findByStatusAndMember(ExchangeStatus status, Member member);
 
     List<Exchange> findByStatus(ExchangeStatus status);
+
+    Boolean existsByStatusAndMember(ExchangeStatus status, Member member);
 }
