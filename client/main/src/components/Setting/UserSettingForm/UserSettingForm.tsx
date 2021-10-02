@@ -18,6 +18,7 @@ import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import useUserInfo from '../../../service//user/useUserInfo';
 import useRegisterNickname from '../../../service/auth/useRegisterNickname';
 import useSettingForm from '../../../service//user/useSettingForm';
+import Input from '../../@atom/Input/Input.styles';
 
 const UserSettingForm = () => {
   const { userInfo } = useUserInfo();
@@ -76,6 +77,12 @@ const UserSettingForm = () => {
           failureMessage={nicknameErrorMessage}
         />
       </NickNameInputContainer>
+
+      <NickNameInputContainer>
+        <StyledSubTitle>이메일</StyledSubTitle>
+        <Input value={userInfo?.email} readOnly />
+      </NickNameInputContainer>
+
       <IntroductionTextareaContainer>
         <StyledSubTitle>자기소개</StyledSubTitle>
         <Textarea
