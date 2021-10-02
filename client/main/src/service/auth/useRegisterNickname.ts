@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { REGISTER_ERROR_MESSAGE } from '../../constants/error';
 
 import { REGISTER } from '../../constants/register';
 import { debounceGenerator } from '../../utils/debounce';
@@ -34,7 +35,13 @@ const nicknameValidation = async (nickname: string) => {
 
     return '';
   } catch (error) {
-    return error.response.data.message;
+    const { errorCode } = error.response.data;
+
+    const errorMessage =
+      REGISTER_ERROR_MESSAGE[errorCode as keyof typeof REGISTER_ERROR_MESSAGE] ??
+      '오류가 발생했습니다. 잠시 후 다시 시도 해주세요.';
+
+    return errorMessage;
   }
 };
 
