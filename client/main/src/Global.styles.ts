@@ -9,11 +9,6 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     padding: 0;
     margin:0;
-    user-select: none;
-  }
-
-  input, textarea {
-    user-select: auto;
   }
 
   a {
