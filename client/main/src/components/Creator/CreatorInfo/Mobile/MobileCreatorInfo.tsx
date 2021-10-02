@@ -24,7 +24,7 @@ const MobileCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage
         </p>
       </DescriptionContainer>
       {isAdmin ? (
-        <StyledButton onClick={shareUrl}>내 페이지 공유하기</StyledButton>
+        <StyledButton onClick={shareUrl}>후원링크 공유하기</StyledButton>
       ) : (
         <StyledButton onClick={popupDonationAmountPage}>도네이션하기</StyledButton>
       )}
