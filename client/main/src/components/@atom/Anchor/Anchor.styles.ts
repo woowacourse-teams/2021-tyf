@@ -7,4 +7,5 @@ export const StyledAnchor = styled(Link)`
   font-weight: 700;
   color: ${PALETTE.BLACK_400};
   cursor: pointer;
+  user-select: none;
 `;
