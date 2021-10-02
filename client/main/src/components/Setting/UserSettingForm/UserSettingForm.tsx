@@ -6,7 +6,7 @@ import {
   StyledUserSettingForm,
   ProfileImg,
   StyledSubTitle,
-  NickNameInputContainer,
+  InputContainer,
   IntroductionTextareaContainer,
   TextareaLengthLimit,
 } from './UserSettingForm.styles';
@@ -65,7 +65,7 @@ const UserSettingForm = () => {
         />
       </ProfileImgInputLabel>
 
-      <NickNameInputContainer>
+      <InputContainer>
         <StyledSubTitle>닉네임</StyledSubTitle>
         <ValidationInput
           aria-label="nickname"
@@ -76,12 +76,12 @@ const UserSettingForm = () => {
           successMessage="좋은 닉네임이네요!"
           failureMessage={nicknameErrorMessage}
         />
-      </NickNameInputContainer>
+      </InputContainer>
 
-      <NickNameInputContainer>
+      <InputContainer>
         <StyledSubTitle>이메일</StyledSubTitle>
         <Input value={userInfo?.email} readOnly />
-      </NickNameInputContainer>
+      </InputContainer>
 
       <IntroductionTextareaContainer>
         <StyledSubTitle>자기소개</StyledSubTitle>
