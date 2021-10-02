@@ -5,7 +5,7 @@ import useDonationMessage from '../../../service//donation/useDonationMessage';
 import useDonationMessageForm from '../../../service//donation/useDonationMessageForm';
 import useUserInfo from '../../../service/user/useUserInfo';
 import { CreatorId } from '../../../types';
-import Checkbox from '../../@atom/Checkbox/Checkbox';
+import Checkbox from '../../@atom/Checkbox/Checkbox.styles';
 import Textarea from '../../@atom/Textarea/Textarea';
 import {
   StyledMessageForm,

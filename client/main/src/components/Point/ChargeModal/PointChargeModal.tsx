@@ -7,7 +7,7 @@ import useLoadScriptEffect from '../../../service/myPoint/useLoadScriptEffect';
 import usePointChargeForm from '../../../service/myPoint/usePointChargeForm';
 import { pay } from '../../../service/payment/payment';
 import { toCommaSeparatedString } from '../../../utils/format';
-import Checkbox from '../../@atom/Checkbox/Checkbox';
+import Checkbox from '../../@atom/Checkbox/Checkbox.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Transition from '../../@atom/Transition/Transition.styles';
 import IconOutlineBarButton from '../../@molecule/IconOutlineBarButton/IconOutlineBarButton';
@@ -38,7 +38,7 @@ const pointOptions = [
   { id: 'ITEM_100', point: 100000, price: 100000 },
 ];
 
-const selectedTotalPrice = (selectedId: string) => {
+const totalPrice = (selectedId: string) => {
   const FEE_RATE = 0.1;
   const selectedPrice = pointOptions.find(({ id }) => id === selectedId)?.price || 0;
 
@@ -131,7 +131,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
                 checked={isHowToAgreed}
                 onChange={({ target }) => setIsHowToAgreed(target.checked)}
               />
-              <span>충전 금액과 방법에 대해 확인 및 동의합니다.</span>
+              충전 금액과 방법에 대해 확인 및 동의합니다.
             </CheckboxContainer>
             <CheckboxContainer>
               <Checkbox
@@ -142,7 +142,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
             </CheckboxContainer>
           </CheckboxContainerList>
           <PaymentReadyButton onClick={onPaymentReady} disabled={!isValid}>
-            {toCommaSeparatedString(selectedTotalPrice(selectedItemId))}원 결제하기
+            {toCommaSeparatedString(totalPrice(selectedItemId))}원 결제하기
           </PaymentReadyButton>
         </>
       )}

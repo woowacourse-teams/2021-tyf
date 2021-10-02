@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import checkIcon from '../../../assets/icons/check.svg';
 
-export const StyledCheckbox = styled.input`
+const Checkbox = styled.input.attrs({ type: 'checkbox' as string })`
   position: relative;
   appearance: none;
   width: 1rem;
@@ -33,3 +33,5 @@ export const StyledCheckbox = styled.input`
     border: 1px solid ${({ theme }) => theme.primary.base};
   }
 `;
+
+export default Checkbox;
