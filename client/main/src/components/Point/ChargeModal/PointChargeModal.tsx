@@ -30,13 +30,20 @@ export interface PointChargeModalProps {
 }
 
 const pointOptions = [
-  { id: 'ITEM_1', value: 1000 },
-  { id: 'ITEM_3', value: 3000 },
-  { id: 'ITEM_5', value: 5000 },
-  { id: 'ITEM_10', value: 10000 },
-  { id: 'ITEM_50', value: 50000 },
-  { id: 'ITEM_100', value: 100000 },
+  { id: 'ITEM_1', point: 1000, price: 1000 },
+  { id: 'ITEM_3', point: 3000, price: 3000 },
+  { id: 'ITEM_5', point: 5000, price: 5000 },
+  { id: 'ITEM_10', point: 10000, price: 10000 },
+  { id: 'ITEM_50', point: 50000, price: 50000 },
+  { id: 'ITEM_100', point: 100000, price: 100000 },
 ];
+
+const selectedTotalPrice = (selectedId: string) => {
+  const FEE_RATE = 0.1;
+  const selectedPrice = pointOptions.find(({ id }) => id === selectedId)?.price || 0;
+
+  return Math.floor(selectedPrice * (1 + FEE_RATE));
+};
 
 const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
   const { accessToken } = useAccessToken();
@@ -90,9 +97,9 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
           <SubTitle>충전 포인트 선택</SubTitle>
           <div>
             <ButtonContainer onChange={onOptionChange}>
-              {pointOptions.map(({ id, value }) => (
+              {pointOptions.map(({ id, point }) => (
                 <PointRadio key={id} id={id} value={id}>
-                  {toCommaSeparatedString(value)} tp
+                  {toCommaSeparatedString(point)} tp
                 </PointRadio>
               ))}
             </ButtonContainer>
@@ -135,7 +142,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
             </CheckboxContainer>
           </CheckboxContainerList>
           <PaymentReadyButton onClick={onPaymentReady} disabled={!isValid}>
-            ${}원 결제하기
+            {toCommaSeparatedString(selectedTotalPrice(selectedItemId))}원 결제하기
           </PaymentReadyButton>
         </>
       )}
