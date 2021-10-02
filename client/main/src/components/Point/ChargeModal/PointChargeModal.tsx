@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
 import { popupTerms } from '../../../service/@shared/popupTerms';
 import useAccessToken from '../../../service/@shared/useAccessToken';
+import useLoadScriptEffect from '../../../service/myPoint/useLoadScriptEffect';
 import usePointChargeForm from '../../../service/myPoint/usePointChargeForm';
 import { pay } from '../../../service/payment/payment';
-import { loadScript } from '../../../utils/dynamicImport';
 import { toCommaSeparatedString } from '../../../utils/format';
 import Checkbox from '../../@atom/Checkbox/Checkbox';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
@@ -41,6 +41,7 @@ const pointOptions = [
 const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
   const { accessToken } = useAccessToken();
   const [isNext, setIsNext] = useState(false);
+
   const {
     form,
     isAllChecked,
@@ -64,13 +65,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
     setIsNext(true);
   };
 
-  useEffect(() => {
-    const JQUERY = 'https://code.jquery.com/jquery-1.12.4.min.js';
-    const IAMPORT = 'https://cdn.iamport.kr/js/iamport.payment-1.1.5.js';
-
-    loadScript(JQUERY);
-    loadScript(IAMPORT);
-  }, []);
+  useLoadScriptEffect();
 
   return (
     <StyledModal onClose={closeModal}>
@@ -92,12 +87,12 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
         </Transition>
       ) : (
         <>
-          <SubTitle>충전 금액 선택</SubTitle>
+          <SubTitle>충전 포인트 선택</SubTitle>
           <div>
             <ButtonContainer onChange={onOptionChange}>
               {pointOptions.map(({ id, value }) => (
                 <PointRadio key={id} id={id} value={id}>
-                  {toCommaSeparatedString(value)}tp
+                  {toCommaSeparatedString(value)} tp
                 </PointRadio>
               ))}
             </ButtonContainer>
@@ -140,7 +135,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
             </CheckboxContainer>
           </CheckboxContainerList>
           <PaymentReadyButton onClick={onPaymentReady} disabled={!isValid}>
-            결제하기
+            ${}원 결제하기
           </PaymentReadyButton>
         </>
       )}
