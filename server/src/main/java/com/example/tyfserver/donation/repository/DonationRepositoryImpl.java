@@ -22,7 +22,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .select(donation.point.sum())
                 .from(donation)
                 .where(exchangeableStatus(memberId))
-                .groupBy(donation.member)
+                .groupBy(donation.creator)
                 .fetchOne();
 
         return Objects.requireNonNullElse(result, 0L);
@@ -33,19 +33,19 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .select(donation.point.sum())
                 .from(donation)
                 .where(exchangedStatus(memberId))
-                .groupBy(donation.member)
+                .groupBy(donation.creator)
                 .fetchOne();
 
         return Objects.requireNonNullElse(result, 0L);
     }
 
     private BooleanExpression exchangeableStatus(Long memberId) {
-        return donation.member.id.eq(memberId)
+        return donation.creator.id.eq(memberId)
                 .and(donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE));
     }
 
     private BooleanExpression exchangedStatus(Long memberId) {
-        return donation.member.id.eq(memberId)
+        return donation.creator.id.eq(memberId)
                 .and(donation.status.eq(DonationStatus.EXCHANGED));
     }
 }

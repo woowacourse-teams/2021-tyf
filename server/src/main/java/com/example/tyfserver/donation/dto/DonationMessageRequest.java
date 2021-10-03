@@ -14,25 +14,21 @@ import javax.validation.constraints.NotNull;
 public class DonationMessageRequest {
 
     @NotBlank
-    @Length(max = 20)
-    private String name; // todo 멤버의 닉네임을 사용해야함
-    @NotBlank
     @Length(min = 1, max = 200)
     private String message;
     @NotNull
     private boolean secret;
 
-    public DonationMessageRequest(String name, String message) {
-        this(name, message, true);
+    public DonationMessageRequest(String message) {
+        this(message, true);
     }
 
-    public DonationMessageRequest(String name, String message, boolean secret) {
-        this.name = name;
+    public DonationMessageRequest(String message, boolean secret) {
         this.message = message;
         this.secret = secret;
     }
 
-    public Message toEntity() {
+    public Message toEntity(String name) {
         return new Message(name, message, secret);
     }
 }

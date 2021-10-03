@@ -36,10 +36,10 @@ public class MemberTest {
         Donation donation = new Donation(new Message("name", "message", false), 1_000L);
 
         //when
-        member.addDonation(donation);
+        member.receiveDonation(donation);
 
         //then
-        assertThat(member.getDonations()).isNotEmpty();
+        assertThat(member.getReceivedDonations()).isNotEmpty();
     }
 
     @Test

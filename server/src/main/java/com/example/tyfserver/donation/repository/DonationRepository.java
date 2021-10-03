@@ -6,21 +6,14 @@ import com.example.tyfserver.member.domain.Member;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface DonationRepository extends JpaRepository<Donation, Long>, DonationQueryRepository {
 
-    @Query("select d from Donation d where d.member =:member and d.message.secret =:secret")
-    List<Donation> findPublicDonations(
-            @Param("member") Member member, @Param("secret") boolean secret, Pageable pageable);
+    @EntityGraph(attributePaths = "creator")
+    List<Donation> findDonationByCreatorOrderByCreatedAtDesc(Member member, Pageable pageable);
 
-    List<Donation> findFirst5ByMemberOrderByCreatedAtDesc(Member member);
-
-    List<Donation> findDonationByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
-
-    @EntityGraph(attributePaths = "member")
-    List<Donation> findDonationByStatusAndMember(DonationStatus status, Member member);
+    @EntityGraph(attributePaths = "creator")
+    List<Donation> findDonationByStatusAndCreator(DonationStatus status, Member member);
 }
