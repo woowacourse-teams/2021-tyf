@@ -7,6 +7,10 @@ public class DonationTest {
     public static final String MESSAGE = "응원합니다";
     public static final long DONATION_AMOUNT = 1000L;
 
+    public static Message testMessage() {
+        return new Message("test", Message.DEFAULT_MESSAGE, false);
+    }
+
     public static DonationMessageRequest testMessageRequest() {
         return new DonationMessageRequest(MESSAGE, false);
     }

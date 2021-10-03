@@ -5,6 +5,7 @@ import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
+import com.example.tyfserver.admin.exception.ExchangeDoesNotAppliedException;
 import com.example.tyfserver.admin.exception.InvalidAdminException;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.common.util.Aes256Util;
@@ -12,7 +13,7 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
-import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.*;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
@@ -28,8 +29,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,6 +40,10 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @Transactional
 class AdminServiceTest {
+
+    private static final YearMonth EXCHANGE_ON_2021_1 = YearMonth.of(2021, 1);
+    private static final LocalDateTime DONATION_CREATED_AT_2021_1_1 = LocalDateTime.of(2021, 1, 1, 0, 0);
+    private static final long DEFAULT_AMOUNT = 10000L;
 
     @Autowired
     private AdminService adminService;
@@ -53,8 +58,6 @@ class AdminServiceTest {
     @Autowired
     private DonationRepository donationRepository;
 
-    @MockBean
-    private DonationRepository mockedDonationRepository;
     @MockBean
     private S3Connector s3Connector;
     @MockBean
@@ -80,32 +83,33 @@ class AdminServiceTest {
         return member;
     }
 
-    private Donation initDonation(Long point) {
-        Donation donation = new Donation(new Message("name", "message", false), point);
+    private Donation initDonation(LocalDateTime createdAt) {
+        Donation donation = new Donation(DonationTest.testMessage(), 10000, createdAt);
         registeredMember.receiveDonation(donation);
-        donationRepository.save(donation);
-        return donation;
+        return donationRepository.save(donation);
     }
 
     private Exchange initExchange(long amount, Member member) {
-        Exchange exchange = new Exchange(amount, YearMonth.of(2021, 1), member);
-        exchangeRepository.save(exchange);
-        return exchange;
+        Exchange exchange = new Exchange(amount, EXCHANGE_ON_2021_1, member);
+        return exchangeRepository.save(exchange);
     }
 
     @Test
     @DisplayName("정산 목록 조회")
     public void exchangeList() {
+        //given
         Member member4 = initMember(4, AccountStatus.REGISTERED);
         Member member5 = initMember(5, AccountStatus.REGISTERED);
-        Exchange exchange1 = initExchange(12000L, registeredMember);
-        Exchange exchange2 = initExchange(21000L, member4);
-        Exchange exchange3 = initExchange(31000L, member5);
+        Exchange exchange1 = initExchange(11000L, registeredMember);
+        Exchange exchange2 = initExchange(12000L, member4);
+        Exchange exchange3 = initExchange(13000L, member5);
 
         when(aes256Util.decrypt(anyString())).thenReturn("123-456-789");
 
+        //when
         List<ExchangeResponse> responses = adminService.exchangeList();
 
+        //then
         assertThat(responses).usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
                         new ExchangeResponse(exchange1, "123-456-789"),
@@ -118,36 +122,57 @@ class AdminServiceTest {
     @DisplayName("정산 승인")
     public void approveExchange() {
         //given
-        Donation donation = initDonation(13000L);
-        Exchange exchange = initExchange(13000L, registeredMember);
+        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+        Donation donationNextMonth = initDonation(LocalDateTime.of(2021, 2, 1, 0, 0));
+        Exchange exchange = initExchange(DEFAULT_AMOUNT, registeredMember);
+
+        doNothing().when(mailConnector).sendExchangeApprove(anyString());
 
         //when
-        when(mockedDonationRepository.findDonationsToExchange(any(Member.class), any(YearMonth.class)))
-                .thenReturn(Collections.singletonList(donation));
-        doNothing().when(mailConnector).sendExchangeApprove(anyString());
         adminService.approveExchange(registeredMember.getPageName());
 
         //then
         assertThat(donation.getStatus()).isEqualTo(DonationStatus.EXCHANGED);
+        assertThat(donationNextMonth.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
         assertThat(exchange.getStatus()).isEqualTo(ExchangeStatus.APPROVED);
     }
 
     @Test
+    @DisplayName("정산 승인 - 요청된 정산이 없을 경우")
+    public void approveExchange_ExchangeDoesNotApplied() {
+        //given
+        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+
+        //when
+        //then
+        assertThatThrownBy(() -> adminService.approveExchange(registeredMember.getPageName()))
+                .isExactlyInstanceOf(ExchangeDoesNotAppliedException.class);
+        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+    }
+
+    @Test
     @DisplayName("정산 승인 - 회원을 찾을 수 없는 경우")
-    public void approveExchangeMemberNotFound() {
+    public void approveExchange_MemberNotFound() {
+        //given
+        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+
+        //when
+        //then
         assertThatThrownBy(() -> adminService.approveExchange("any"))
-                .isInstanceOf(MemberNotFoundException.class);
+                .isExactlyInstanceOf(MemberNotFoundException.class);
+        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
     }
 
     @Test
     @DisplayName("정산 거절")
     public void rejectExchange() {
         //given
-        Donation donation = initDonation(13000L);
-        Exchange exchange = initExchange(13000L, registeredMember);
+        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+        Exchange exchange = initExchange(DEFAULT_AMOUNT, registeredMember);
+
+        doNothing().when(mailConnector).sendExchangeReject(anyString(), anyString());
 
         //when
-        doNothing().when(mailConnector).sendExchangeReject(anyString(), anyString());
         adminService.rejectExchange(registeredMember.getPageName(), "just denied");
 
         //then
@@ -156,14 +181,27 @@ class AdminServiceTest {
     }
 
     @Test
+    @DisplayName("정산 거절 - 요청된 정산이 없을 경우")
+    public void rejectExchange_ExchangeDoesNotApplied() {
+        //given
+        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+
+        //when
+        //then
+        assertThatThrownBy(() -> adminService.rejectExchange(registeredMember.getPageName(), "just denied"))
+                .isExactlyInstanceOf(ExchangeDoesNotAppliedException.class);
+        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+    }
+
+    @Test
     @DisplayName("정산 거절 - 회원을 찾을 수 없는 경우")
     public void rejectExchangeMemberNotFound() {
         assertThatThrownBy(() -> adminService.rejectExchange("any", "just denied"))
-                .isInstanceOf(MemberNotFoundException.class);
+                .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
-    @DisplayName("유효하지 않은 관리자 계정으로 로그인 요청을 한 경우")
     @Test
+    @DisplayName("관리자 계정으로 로그인")
     void adminLogin() {
         //given
         doNothing().when(adminAccount).validateLogin(anyString(), anyString());
@@ -175,14 +213,15 @@ class AdminServiceTest {
         assertThat(tokenResponse).isNotNull();
     }
 
-    @DisplayName("유효하지 않은 관리자 계정으로 로그인 요청을 한 경우")
     @Test
-    void adminLoginInvalidAdminAccount() {
+    @DisplayName("유효하지 않은 관리자 계정으로 로그인 요청을 한 경우")
+    void adminLogin_InvalidAdminAccount() {
         //given
         doThrow(InvalidAdminException.class)
                 .when(adminAccount).validateLogin(anyString(), anyString());
 
-        //when //then
+        //when
+        //then
         assertThatThrownBy(() -> adminService.login(new AdminLoginRequest("tyf-id", "tyf-password")))
                 .isExactlyInstanceOf(InvalidAdminException.class);
     }
@@ -203,11 +242,12 @@ class AdminServiceTest {
 
     @Test
     @DisplayName("결제 계좌요청을 반려한다. 데이터는 지우지 않음")
-    public void cancelAccount() {
+    public void rejectAccount() {
         //given
-        //when
         doNothing().when(s3Connector).delete(anyString());
         doNothing().when(mailConnector).sendAccountApprove(requestingMember.getEmail());
+
+        //when
         adminService.rejectAccount(requestingMember.getId(), new AccountRejectRequest("just denied"));
 
         //then
@@ -216,13 +256,13 @@ class AdminServiceTest {
 
     @Test
     @DisplayName("계좌 승인 요청중 목록을 반환한다.")
-    public void requestingAccounts() {
+    public void findRequestingAccounts() {
         //given
-        //when
         doNothing().when(s3Connector).delete(anyString());
         doNothing().when(mailConnector).sendAccountApprove(this.registeredMember.getEmail());
         when(aes256Util.decrypt(anyString())).thenReturn("123-456-789");
 
+        //when
         List<RequestingAccountResponse> requestingAccounts = adminService.findRequestingAccounts();
 
         //then

@@ -3,7 +3,7 @@ package com.example.tyfserver.member.repository;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.MessageTest;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
@@ -173,7 +173,7 @@ class MemberRepositoryImplTest {
     }
 
     private void initDonation(Member member, long amount) {
-        Donation donation = new Donation(MessageTest.testMessage(), amount);
+        Donation donation = new Donation(DonationTest.testMessage(), amount);
         member.receiveDonation(donation);
         em.persist(donation);
     }
