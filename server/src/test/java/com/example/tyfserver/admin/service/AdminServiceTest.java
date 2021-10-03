@@ -80,13 +80,9 @@ class AdminServiceTest {
         return member;
     }
 
-    private Member initMember(Member member) {
-        return member;
-    }
-
     private Donation initDonation(Long point) {
         Donation donation = new Donation(new Message("name", "message", false), point);
-        registeredMember.addDonation(donation);
+        registeredMember.receiveDonation(donation);
         donationRepository.save(donation);
         return donation;
     }

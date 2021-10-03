@@ -199,7 +199,7 @@ class MemberServiceTest {
 
     private Donation initDonation(long point) {
         Donation donation = new Donation(new Message(DONATOR_NAME), point);
-        member.addDonation(donation);
+        member.receiveDonation(donation);
         donationRepository.save(donation);
         return donation;
     }

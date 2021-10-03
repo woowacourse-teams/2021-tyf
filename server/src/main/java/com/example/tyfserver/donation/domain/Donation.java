@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -25,8 +26,12 @@ public class Donation extends BaseTimeEntity {
     private long point;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "donator_id")
+    private Member donator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    private Member creator;
 
     @Enumerated(value = EnumType.STRING)
     private DonationStatus status = DonationStatus.WAITING_FOR_EXCHANGE;
@@ -41,8 +46,17 @@ public class Donation extends BaseTimeEntity {
         this.point = point;
     }
 
-    public void to(final Member member) {
-        this.member = member;
+    public void donate(Member donator, Member creator) {
+        donator.donateDonation(this);
+        creator.receiveDonation(this);
+    }
+
+    public void to(final Member creator) {
+        this.creator = creator;
+    }
+
+    public void from(final Member donator) {
+        this.donator = donator;
     }
 
     public void addMessage(Message message) {
@@ -63,5 +77,18 @@ public class Donation extends BaseTimeEntity {
 
     public boolean isSecret() {
         return message.isSecret();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Donation donation = (Donation) o;
+        return Objects.equals(id, donation.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -26,9 +26,9 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
                 .select(
                         new QCurationsResponse(member.nickname, donation.point.sum(), member.pageName, member.profileImage, member.bio))
                 .from(member)
-                .leftJoin(member.donations, donation)
+                .leftJoin(member.receivedDonations, donation)
                 .groupBy(member.nickname)
-                .orderBy(donation.point.sum().desc()) // todo 개선 필요 : 도네이션 합계 쿼리시 모든 도네이션을 계산중임. CANCELLED 같은 애들은 빼고 정상적인 도네이션만 쿼리 필요.
+                .orderBy(donation.point.sum().desc())
                 .offset(0)
                 .limit(10)
                 .fetch();

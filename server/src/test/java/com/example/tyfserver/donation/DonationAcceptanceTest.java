@@ -30,8 +30,8 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         return authPost("/donations", token, new DonationRequest(pageName, point)).extract();
     }
 
-    public static ExtractableResponse<Response> 후원_메세지_생성(Long donationId, String name, String message, boolean secret, String token) {
-        return authPost("/donations/" + donationId + "/messages", token, new DonationMessageRequest(name, message, secret)).extract();
+    public static ExtractableResponse<Response> 후원_메세지_생성(Long donationId, String message, boolean secret, String token) {
+        return authPost("/donations/" + donationId + "/messages", token, new DonationMessageRequest(message, secret)).extract();
     }
 
     public static ExtractableResponse<Response> 총_후원목록(String token) {
@@ -99,7 +99,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
 
         //when
-        ExtractableResponse<Response> response = 후원_메세지_생성(donationId, "bepoz", "positive", false, signUpResponse.getToken());
+        ExtractableResponse<Response> response = 후원_메세지_생성(donationId, "positive", false, signUpResponse.getToken());
 
         //then
         assertThat(response.statusCode()).isEqualTo(201);
@@ -114,7 +114,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
 
         //when
-        ErrorResponse errorResponse = 후원_메세지_생성(donationId, "", "positive", false, signUpResponse.getToken())
+        ErrorResponse errorResponse = 후원_메세지_생성(donationId, "", false, signUpResponse.getToken())
                 .as(ErrorResponse.class);
 
         //then
@@ -128,7 +128,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "donator");
 
         //when
-        ErrorResponse errorResponse = 후원_메세지_생성(1L, "bepoz", "positive", false, signUpResponse.getToken())
+        ErrorResponse errorResponse = 후원_메세지_생성(1L,"positive", false, signUpResponse.getToken())
                 .as(ErrorResponse.class);
 
         //then
@@ -143,7 +143,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         SignUpResponse creatorSignUpResponse = 회원가입_후_로그인되어_있음("creator@gmail.com", "KAKAO", "creator", "creator");
 
         Long donationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        후원_메세지_생성(donationId, "donator", "thisismessage", true, signUpResponse.getToken());
+        후원_메세지_생성(donationId,"thisismessage", true, signUpResponse.getToken());
 
         //when
         List<DonationResponse> responses = 총_후원목록(creatorSignUpResponse.getToken())
@@ -162,10 +162,10 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         회원생성을_요청("creator@gmail.com", "KAKAO", "creator", "creator");
 
         Long publicDonationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        후원_메세지_생성(publicDonationId, "donator", "thisismessage", false, signUpResponse.getToken());
+        후원_메세지_생성(publicDonationId, "thisismessage", false, signUpResponse.getToken());
 
         Long secretDonationId = 후원_생성("creator", 10000L, signUpResponse.getToken()).as(DonationResponse.class).getDonationId();
-        후원_메세지_생성(secretDonationId, "donator", "thisismessage", true, signUpResponse.getToken());
+        후원_메세지_생성(secretDonationId, "thisismessage", true, signUpResponse.getToken());
 
         //when
         List<DonationResponse> responses = 공개_후원목록("creator")

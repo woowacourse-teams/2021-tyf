@@ -174,7 +174,7 @@ class MemberRepositoryImplTest {
 
     private void initDonation(Member member, long amount) {
         Donation donation = new Donation(MessageTest.testMessage(), amount);
-        member.addDonation(donation);
+        member.receiveDonation(donation);
         em.persist(donation);
     }
 
