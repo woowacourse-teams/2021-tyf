@@ -46,6 +46,11 @@ public class Donation extends BaseTimeEntity {
         this.point = point;
     }
 
+    public void donate(Member donator, Member creator) {
+        donator.donateDonation(this);
+        creator.receiveDonation(this);
+    }
+
     public void to(final Member creator) {
         this.creator = creator;
     }

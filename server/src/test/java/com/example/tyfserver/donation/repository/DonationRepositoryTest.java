@@ -28,8 +28,8 @@ class DonationRepositoryTest {
     @Autowired
     private DonationRepository donationRepository;
 
-    private Member member1;
-    private Member member2;
+    private Member creator;
+    private Member donator;
     private Donation donation1;
     private Donation donation2;
     private Donation donation3;
@@ -40,10 +40,11 @@ class DonationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member1 = MemberTest.testMember();
-        member2 = MemberTest.testMember2();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        creator = MemberTest.testMember();
+        donator = MemberTest.testMember2();
+        donator.increasePoint(100000L);
+        memberRepository.save(creator);
+        memberRepository.save(donator);
 
         // 총 28000 포인트
         donation1 = initDonation(1000L, false);
@@ -57,7 +58,7 @@ class DonationRepositoryTest {
 
     private Donation initDonation(Long point, boolean secret) {
         Donation donation = new Donation(new Message("name", "message", secret), point);
-        member1.receiveDonation(donation);
+        donation.donate(donator, creator);
         donationRepository.save(donation);
         return donation;
     }
@@ -65,7 +66,7 @@ class DonationRepositoryTest {
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
     public void findTop5ByMember() {
-        List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(member1, PageRequest.of(0, 5));
+        List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(creator, PageRequest.of(0, 5));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation7, donation6, donation5, donation4, donation3
         );
@@ -75,7 +76,7 @@ class DonationRepositoryTest {
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
     public void findDonationByMemberOrderByCreatedAtDesc() {
         List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(
-                member1, PageRequest.of(1, 3));
+                creator, PageRequest.of(1, 3));
         assertThat(donations).containsExactlyInAnyOrder(
                 donation4, donation3, donation2
         );
@@ -90,8 +91,8 @@ class DonationRepositoryTest {
         donation4.toExchanged();
         donation7.toExchanged();
 
-        Long member1ExchangeablePoint = donationRepository.currentPoint(member1.getId());
-        Long member2ExchangeablePoint = donationRepository.currentPoint(member2.getId());
+        Long member1ExchangeablePoint = donationRepository.currentPoint(creator.getId());
+        Long member2ExchangeablePoint = donationRepository.currentPoint(donator.getId());
 
         assertThat(member1ExchangeablePoint).isEqualTo(11000L);
         assertThat(member2ExchangeablePoint).isEqualTo(0L);
@@ -102,7 +103,7 @@ class DonationRepositoryTest {
     public void exchangedTotalPoint() {
         donation2.toExchanged();
 
-        Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(member1.getId());
+        Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(creator.getId());
 
         assertThat(exchangedTotalPoint).isEqualTo(2000L);
     }

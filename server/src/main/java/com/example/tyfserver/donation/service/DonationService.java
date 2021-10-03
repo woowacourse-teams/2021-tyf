@@ -35,12 +35,8 @@ public class DonationService {
         donator.validateEnoughPoint(donationRequest.getPoint());
 
         Message message = new Message(donator.getNickname());
-        Donation creatorDonation = new Donation(message, donationRequest.getPoint());
-        Donation savedDonation = donationRepository.save(creatorDonation);
-        donator.reducePoint(donationRequest.getPoint());
-        creator.increasePoint(donationRequest.getPoint());
-        creator.receiveDonation(savedDonation);
-        donator.donate(savedDonation);
+        Donation savedDonation = donationRepository.save(new Donation(message, donationRequest.getPoint()));
+        savedDonation.donate(donator, creator);
 
         return new DonationResponse(savedDonation);
     }
