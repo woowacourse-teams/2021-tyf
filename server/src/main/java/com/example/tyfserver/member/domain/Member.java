@@ -80,7 +80,6 @@ public class Member extends BaseTimeEntity {
     public void receiveDonation(Donation donation) {
         this.givenDonations.add(donation);
         donation.to(this);
-        increasePoint(donation.getPoint());
     }
 
     public void donateDonation(Donation donation) {
@@ -158,10 +157,6 @@ public class Member extends BaseTimeEntity {
 
     public String getBankBookUrl() {
         return this.account.getBankbookUrl();
-    }
-
-    public void addAvailablePoint(Long amount) {
-        this.point.add(amount);
     }
 
     public void validateMemberGivingDonation(Donation donation) {

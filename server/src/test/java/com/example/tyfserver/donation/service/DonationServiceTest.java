@@ -97,7 +97,6 @@ class DonationServiceTest {
         assertThat(findDonator.getPoint()).isEqualTo(4000L);
         assertThat(findDonator.getGivingDonations()).hasSize(1);
 
-        assertThat(findCreator.getPoint()).isEqualTo(request.getPoint());
         assertThat(findCreator.getGivenDonations()).hasSize(1);
     }
 
