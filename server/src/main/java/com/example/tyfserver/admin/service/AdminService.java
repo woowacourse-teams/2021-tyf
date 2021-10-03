@@ -124,6 +124,7 @@ public class AdminService {
                 .sum();
 
         if (exchange.getExchangeAmount() != actualTotalDonationPoint) {
+            // todo 실제후원금액대로 정산을 진행시켜야하나?
             throw new RuntimeException("서버오류: 정산신청 금액과 실제 후원금액이 맞지 않음");
         }
     }

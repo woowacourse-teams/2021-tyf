@@ -63,7 +63,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .where(
                         donation.creator.eq(creator),
                         donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE),
-                        // 다음달 1월1일 00:00 이전
+                        // 정산신청일자 다음달 1월1일 00:00 이전
                         donation.createdAt.before(exchangeOn.plusMonths(1).atDay(1).atStartOfDay())
                 )
                 .fetch();

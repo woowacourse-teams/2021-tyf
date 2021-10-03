@@ -19,7 +19,6 @@ public class Exchange extends BaseTimeEntity {
 
     private Long exchangeAmount;
 
-    // 정산신청 연/월. 엔티티를 생성하는 시점(createdAt)과 정산하고자하는 달은 다를수 있다고 생각함.
     private YearMonth exchangeOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
