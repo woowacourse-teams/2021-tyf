@@ -79,15 +79,15 @@ class DonationServiceTest {
     @DisplayName("createDonation")
     public void createDonationTest() {
         //given
-        DonationRequest request = new DonationRequest(creator.getPageName(), 1000L);
+        DonationRequest donationRequest = donationRequest(creator, 1000L);
 
         //when
         assertThat(donator.getGivingDonations()).hasSize(0);
         assertThat(creator.getGivenDonations()).hasSize(0);
-        DonationResponse response = donationService.createDonation(request, donator.getId());
+        DonationResponse donationResponse = createDonation(donationRequest, donator);
 
         //then
-        assertThat(response.getDonationId()).isNotNull();
+        assertThat(donationResponse.getDonationId()).isNotNull();
         em.flush();
         em.clear();
 
@@ -104,8 +104,8 @@ class DonationServiceTest {
     @DisplayName("addMessageToDonation")
     public void addMessageToDonationTest() {
         //given
-        DonationRequest request = new DonationRequest(creator.getPageName(), 1000L);
-        DonationResponse donationResponse = donationService.createDonation(request, donator.getId());
+        DonationRequest donationRequest = donationRequest(creator, 1000L);
+        DonationResponse donationResponse = createDonation(donationRequest, donator);
         DonationMessageRequest donationMessageRequest = new DonationMessageRequest("message", false);
         assertThat(donationResponse.getMessage()).isEqualTo(Message.DEFAULT_MESSAGE);
 
@@ -122,8 +122,8 @@ class DonationServiceTest {
     @DisplayName("addMessageToDonation - Wrong Owner Case")
     public void addMessageToDonationNotOwnerCase() {
         //given
-        DonationRequest request = new DonationRequest(creator.getPageName(), 1000L);
-        DonationResponse donationResponse = donationService.createDonation(request, donator.getId());
+        DonationRequest donationRequest = donationRequest(creator, 1000L);
+        DonationResponse donationResponse = createDonation(donationRequest, donator);
         DonationMessageRequest donationMessageRequest = new DonationMessageRequest("message", false);
 
         // when & then
@@ -138,8 +138,8 @@ class DonationServiceTest {
         //given
         List<DonationResponse> donationsBefore = donationService.findMyDonations(creator.getId(), PageRequest.of(0, 1));
         assertThat(donationsBefore).hasSize(0);
-        DonationRequest request = new DonationRequest(creator.getPageName(), 1000L);
-        donationService.createDonation(request, donator.getId());
+        DonationRequest donationRequest = donationRequest(creator, 1000L);
+        donationService.createDonation(donationRequest, donator.getId());
 
         //when
         List<DonationResponse> donationsAfter = donationService.findMyDonations(creator.getId(), PageRequest.of(0, 1));
@@ -155,13 +155,13 @@ class DonationServiceTest {
         List<DonationResponse> publicDonationsBefore = donationService.findPublicDonations(creator.getPageName());
         assertThat(publicDonationsBefore).hasSize(0);
 
-        DonationRequest donationRequest = new DonationRequest(creator.getPageName(), 1000L);
-        DonationResponse donationResponse = donationService.createDonation(donationRequest, donator.getId());
+        DonationRequest donationRequest = donationRequest(creator, 1000L);
+        DonationResponse donationResponse = createDonation(donationRequest, donator);
         DonationMessageRequest secretMessageRequest = new DonationMessageRequest("secretMessage", true);
         donationService.addMessageToDonation(donator.getId(), donationResponse.getDonationId(), secretMessageRequest);
 
-        DonationRequest donationRequest2 = new DonationRequest(creator.getPageName(), 1000L);
-        DonationResponse donationResponse2 = donationService.createDonation(donationRequest2, donator.getId());
+        DonationRequest donationRequest2 = donationRequest(creator, 1000L);
+        DonationResponse donationResponse2 = createDonation(donationRequest, donator);
         DonationMessageRequest nonSecretMessageRequest = new DonationMessageRequest("nonSecretMessage", false);
         donationService.addMessageToDonation(donator.getId(), donationResponse2.getDonationId(), nonSecretMessageRequest);
 
@@ -174,5 +174,13 @@ class DonationServiceTest {
         assertThat(publicDonationsAfter.get(1).getName()).isEqualTo(Message.SECRET_NAME);
         assertThat(publicDonationsAfter.get(0).getMessage()).isEqualTo(nonSecretMessageRequest.getMessage());
         assertThat(publicDonationsAfter.get(0).getName()).isEqualTo(donator.getNickname());
+    }
+
+    private DonationRequest donationRequest(Member member, Long point) {
+        return new DonationRequest(member.getPageName(), point);
+    }
+
+    private DonationResponse createDonation(DonationRequest request, Member member) {
+        return donationService.createDonation(request, member.getId());
     }
 }
