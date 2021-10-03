@@ -54,10 +54,10 @@ public class Member extends BaseTimeEntity {
     private final List<Payment> payments = new ArrayList<>();
 
     @OneToMany(mappedBy = "creator")
-    private final List<Donation> givenDonations = new ArrayList<>();
+    private final List<Donation> receivedDonations = new ArrayList<>();
 
     @OneToMany(mappedBy = "donator")
-    private final List<Donation> givingDonations = new ArrayList<>();
+    private final List<Donation> givenDonations = new ArrayList<>();
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
                   Point point) {
@@ -78,12 +78,12 @@ public class Member extends BaseTimeEntity {
     }
 
     public void receiveDonation(Donation donation) {
-        this.givenDonations.add(donation);
+        this.receivedDonations.add(donation);
         donation.to(this);
     }
 
     public void donateDonation(Donation donation) {
-        this.givingDonations.add(donation);
+        this.givenDonations.add(donation);
         donation.from(this);
         reducePoint(donation.getPoint());
     }
@@ -159,8 +159,8 @@ public class Member extends BaseTimeEntity {
         return this.account.getBankbookUrl();
     }
 
-    public void validateMemberGivingDonation(Donation donation) {
-        if (givingDonations.contains(donation)) {
+    public void validateMemberGivenDonation(Donation donation) {
+        if (givenDonations.contains(donation)) {
             return;
         }
         throw new WrongDonationOwnerException();

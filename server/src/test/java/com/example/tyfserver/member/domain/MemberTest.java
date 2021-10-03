@@ -39,7 +39,7 @@ public class MemberTest {
         member.receiveDonation(donation);
 
         //then
-        assertThat(member.getGivenDonations()).isNotEmpty();
+        assertThat(member.getReceivedDonations()).isNotEmpty();
     }
 
     @Test

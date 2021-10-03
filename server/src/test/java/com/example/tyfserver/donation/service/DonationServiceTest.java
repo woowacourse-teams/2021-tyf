@@ -82,8 +82,8 @@ class DonationServiceTest {
         DonationRequest donationRequest = donationRequest(creator, 1000L);
 
         //when
-        assertThat(donator.getGivingDonations()).hasSize(0);
-        assertThat(creator.getGivenDonations()).hasSize(0);
+        assertThat(donator.getGivenDonations()).hasSize(0);
+        assertThat(creator.getReceivedDonations()).hasSize(0);
         DonationResponse donationResponse = createDonation(donationRequest, donator);
 
         //then
@@ -95,9 +95,9 @@ class DonationServiceTest {
         Member findCreator = memberRepository.findById(creator.getId()).get();
 
         assertThat(findDonator.getPoint()).isEqualTo(4000L);
-        assertThat(findDonator.getGivingDonations()).hasSize(1);
+        assertThat(findDonator.getGivenDonations()).hasSize(1);
 
-        assertThat(findCreator.getGivenDonations()).hasSize(1);
+        assertThat(findCreator.getReceivedDonations()).hasSize(1);
     }
 
     @Test

@@ -46,7 +46,7 @@ public class DonationService {
         Member requestMember = findMember(requestMemberId);
         Donation donation = donationRepository.findById(donationId)
                 .orElseThrow(DonationNotFoundException::new);
-        requestMember.validateMemberGivingDonation(donation);
+        requestMember.validateMemberGivenDonation(donation);
 
         donation.addMessage(donationMessageRequest.toEntity(requestMember.getNickname()));
     }
