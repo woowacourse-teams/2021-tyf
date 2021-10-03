@@ -10,18 +10,18 @@ const useSettlementAccountForm = () => {
     bankbookImage: null,
   });
 
-  const setAccountHolder = (accountHolder: string) => {
-    setForm({ ...form, accountHolder });
+  const setAccountHolder = (value: string) => {
+    setForm({ ...form, accountHolder: value.trim() });
   };
 
   const setBank = (bank: string) => {
     setForm({ ...form, bank });
   };
 
-  const setAccountNumber = (accountNumber: string) => {
-    if (isNaN(Number(accountNumber))) return;
+  const setAccountNumber = (value: string) => {
+    if (isNaN(Number(value))) return;
 
-    setForm({ ...form, accountNumber });
+    setForm({ ...form, accountNumber: value.trim() });
   };
 
   const setBankbookImage = (bankbookImage: File) => {

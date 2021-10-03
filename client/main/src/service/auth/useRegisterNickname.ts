@@ -66,7 +66,7 @@ const useRegisterNickname = () => {
   }, [nickname]);
 
   const setNickname = (value: string) => {
-    setUser({ ...user, nickname: value });
+    setUser({ ...user, nickname: value.trim() });
   };
 
   return {
