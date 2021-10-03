@@ -79,8 +79,7 @@ class AdminServiceTest {
     private Member initMember(int i, AccountStatus accountStatus) {
         Member member = MemberTest.testMemberWithAccount(i, accountStatus);
         accountRepository.save(member.getAccount());
-        memberRepository.save(member);
-        return member;
+        return memberRepository.save(member);
     }
 
     private Donation initDonation(LocalDateTime createdAt) {

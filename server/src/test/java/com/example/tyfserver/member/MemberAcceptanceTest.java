@@ -6,12 +6,9 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.payment.domain.Item;
-import com.example.tyfserver.payment.dto.PaymentCompleteResponse;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
@@ -336,11 +333,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com",
                 "KAKAO", "nickname", "pagename");
 
-        MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
-                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
-                .controlName("bankbookImage")
-                .fileName("bankbook.jpg")
-                .build();
+        MultiPartSpecification multiPartSpecification = generateMultiPartSpecification();
 
         계좌_등록(multiPartSpecification, "name", "1234-5678-1234", "bank", signUpResponse.getToken());
 
@@ -359,11 +352,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void registerAccount() {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
 
-        MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
-                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
-                .controlName("bankbookImage")
-                .fileName("bankbook.jpg")
-                .build();
+        MultiPartSpecification multiPartSpecification = generateMultiPartSpecification();
 
         ExtractableResponse<Response> response = 계좌_등록(multiPartSpecification, "실명",
                 "1234-5678-1234", "은행", signUpResponse.getToken());
@@ -384,5 +373,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(errorResponse.getErrorCode()).isEqualTo(ExchangeAmountException.ERROR_CODE);
+    }
+
+    private MultiPartSpecification generateMultiPartSpecification() {
+        return new MultiPartSpecBuilder("testImageBinary".getBytes())
+                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
+                .controlName("bankbookImage")
+                .fileName("bankbook.jpg")
+                .build();
     }
 }
