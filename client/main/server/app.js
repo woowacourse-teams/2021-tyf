@@ -25,6 +25,7 @@ app.use('/', expressStaticGzip(path.resolve('dist', 'compressed')));
 app.use('/', express.static(path.resolve('dist')));
 
 app.get('/*', (req, res) => {
+  res.setHeader('Cache-control', 'public, max-age=31536000');
   res.sendFile(path.resolve('dist', 'index.html'));
 });
 
