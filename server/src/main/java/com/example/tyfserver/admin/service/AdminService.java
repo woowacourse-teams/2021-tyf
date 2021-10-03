@@ -5,6 +5,7 @@ import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
+import com.example.tyfserver.admin.exception.ExchangeDoesNotAppliedException;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.util.Aes256Util;
@@ -109,7 +110,7 @@ public class AdminService {
     private Exchange findExchangeToApprove(Member member) {
         List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
         if (exchanges.isEmpty()) {
-            throw new RuntimeException("사용자오류: 정산신청하지 않았음"); // todo Runtime 예외 제거
+            throw new ExchangeDoesNotAppliedException();
         }
         if (exchanges.size() > 1) {
             throw new RuntimeException("서버오류: 대기중인 정산이 2개 이상임");
@@ -118,11 +119,11 @@ public class AdminService {
     }
 
     private void validateAmount(Exchange exchange, List<Donation> donations) {
-        long donationAmountSum = donations.stream()
+        long actualTotalDonationPoint = donations.stream()
                 .mapToLong(Donation::getPoint)
                 .sum();
 
-        if (exchange.getExchangeAmount() != donationAmountSum) {
+        if (exchange.getExchangeAmount() != actualTotalDonationPoint) {
             throw new RuntimeException("서버오류: 정산신청 금액과 실제 후원금액이 맞지 않음");
         }
     }
