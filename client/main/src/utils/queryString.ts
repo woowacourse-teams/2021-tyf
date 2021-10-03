@@ -1,4 +1,4 @@
-export const getQueryVariable = (target: string) => {
+export const getQueryVariable = (targetKey: string) => {
   const queryString = window.location.search?.substring(1);
 
   if (!queryString) return null;
@@ -6,7 +6,7 @@ export const getQueryVariable = (target: string) => {
   const found = queryString.split('&').find((query) => {
     const [key] = query.split('=');
 
-    return key === target;
+    return key === targetKey;
   });
 
   return found ? found.split('=')[1] : null;

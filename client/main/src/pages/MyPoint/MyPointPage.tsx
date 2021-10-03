@@ -10,10 +10,18 @@ import useUserInfo from '../../service/user/useUserInfo';
 import PointChargeModal from '../../components/Point/ChargeModal/PointChargeModal';
 import useModal from '../../utils/useModal';
 import Transition from '../../components/@atom/Transition/Transition.styles';
+import { getQueryVariable } from '../../utils/queryString';
+import { useEffect } from 'react';
 
 const MyPointPage = () => {
   const { userInfo } = useUserInfo();
   const { isOpen, openModal, closeModal } = useModal();
+
+  useEffect(() => {
+    const isChargeModalOpen = getQueryVariable('isChargeModalOpen');
+
+    if (isChargeModalOpen === 'true') openModal();
+  }, []);
 
   return (
     <StyledTemplate>
