@@ -160,7 +160,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void validateMemberGivingDonation(Donation donation) {
-        if (this.getGivingDonations().contains(donation)) {
+        if (givingDonations.contains(donation)) {
             return;
         }
         throw new WrongDonationOwnerException();

@@ -154,18 +154,25 @@ class DonationServiceTest {
         //given
         List<DonationResponse> publicDonationsBefore = donationService.findPublicDonations(creator.getPageName());
         assertThat(publicDonationsBefore).hasSize(0);
+
         DonationRequest donationRequest = new DonationRequest(creator.getPageName(), 1000L);
         DonationResponse donationResponse = donationService.createDonation(donationRequest, donator.getId());
+        DonationMessageRequest secretMessageRequest = new DonationMessageRequest("secretMessage", true);
+        donationService.addMessageToDonation(donator.getId(), donationResponse.getDonationId(), secretMessageRequest);
 
-        DonationMessageRequest messageRequest = new DonationMessageRequest("secretMessage", true);
-        donationService.addMessageToDonation(donator.getId(), donationResponse.getDonationId(), messageRequest);
+        DonationRequest donationRequest2 = new DonationRequest(creator.getPageName(), 1000L);
+        DonationResponse donationResponse2 = donationService.createDonation(donationRequest2, donator.getId());
+        DonationMessageRequest nonSecretMessageRequest = new DonationMessageRequest("nonSecretMessage", false);
+        donationService.addMessageToDonation(donator.getId(), donationResponse2.getDonationId(), nonSecretMessageRequest);
 
         //when
         List<DonationResponse> publicDonationsAfter = donationService.findPublicDonations(creator.getPageName());
 
         //then
-        assertThat(publicDonationsAfter).hasSize(1);
-        assertThat(publicDonationsAfter.get(0).getMessage()).isEqualTo(Message.SECRET_MESSAGE);
-        assertThat(publicDonationsAfter.get(0).getName()).isEqualTo(Message.SECRET_NAME);
+        assertThat(publicDonationsAfter).hasSize(2);
+        assertThat(publicDonationsAfter.get(1).getMessage()).isEqualTo(Message.SECRET_MESSAGE);
+        assertThat(publicDonationsAfter.get(1).getName()).isEqualTo(Message.SECRET_NAME);
+        assertThat(publicDonationsAfter.get(0).getMessage()).isEqualTo(nonSecretMessageRequest.getMessage());
+        assertThat(publicDonationsAfter.get(0).getName()).isEqualTo(donator.getNickname());
     }
 }
