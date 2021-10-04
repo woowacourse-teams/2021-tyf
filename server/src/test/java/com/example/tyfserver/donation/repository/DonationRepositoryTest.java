@@ -63,16 +63,13 @@ class DonationRepositoryTest {
     private Donation initDonation(Long point, boolean secret) {
         Donation donation = new Donation(new Message("name", "message", secret), point);
         donation.donate(donator, creator);
-        donationRepository.save(donation);
-        return donation;
+        return donationRepository.save(donation);
     }
 
     private Donation initDonation(Member creator, LocalDateTime createAt) {
-        Donation donation = new Donation(new Message("name", "message", false), 5000);
+        Donation donation = new Donation(new Message("name", "message", false), 5000, createAt);
         creator.receiveDonation(donation);
-        donation.setCreatedAt(createAt);
-        donationRepository.save(donation);
-        return donation;
+        return donationRepository.save(donation);
     }
 
     @Test

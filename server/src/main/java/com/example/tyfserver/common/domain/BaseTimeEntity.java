@@ -13,11 +13,9 @@ import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 public abstract class BaseTimeEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
