@@ -128,10 +128,10 @@ public class MemberService {
 
     public void exchange(Long id) {
         Member member = findMember(id);
-        Long exchangeablePoint = donationRepository.currentPoint(id);
-        validateExchangeable(member, exchangeablePoint);
+        Long currentPoint = donationRepository.currentPoint(id);
+        validateExchangeable(member, currentPoint); // todo 금액 검증 꼭 필요한가?
 
-        Exchange exchange = new Exchange(exchangeablePoint, YearMonth.now(), member);
+        Exchange exchange = new Exchange(currentPoint, YearMonth.now(), member);
         exchangeRepository.save(exchange);
     }
 

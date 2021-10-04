@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.service;
 
-import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
@@ -35,14 +34,9 @@ import static org.mockito.Mockito.when;
 @Transactional
 class MemberServiceTest {
 
-    private static final String EMAIL = "email";
-    private static final String NICKNAME = "nickname";
-    private static final String PAGENAME = "pagename";
-    private static final String BIO = "제 페이지에 와주셔서 감사합니다!";
-    private static final String PROFILE = "profile";
     private static final long POINT = 10000L;
-    private static final String DONATOR_NAME = "후원자";
     private static final long INVALID_ID = -1L;
+    private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME";
 
     @Autowired
     private AccountRepository accountRepository;
@@ -65,54 +59,71 @@ class MemberServiceTest {
     @MockBean
     private S3Connector s3Connector;
 
-    private Member member = new Member(EMAIL, NICKNAME, PAGENAME, Oauth2Type.GOOGLE, PROFILE, new Point(POINT));
+    private Member member = MemberTest.testMemberWithAvailablePoint(POINT);
+    private Member registeredCreator = MemberTest.testMemberWithAccount(1, AccountStatus.REGISTERED);
+    private Member unregisteredCreator = MemberTest.testMemberWithAccount(2, AccountStatus.UNREGISTERED);
 
     @BeforeEach
     void setUp() {
-        Member savedMember = memberRepository.save(member);
-        savedMember.addInitialAccount(accountRepository.save(new Account()));
+        member.addInitialAccount(new Account());
+        initMember(member);
+        initMember(registeredCreator);
+        initMember(unregisteredCreator);
+    }
+
+    private Member initMember(Member member) {
+        accountRepository.save(member.getAccount());
+        return memberRepository.save(member);
+    }
+
+    private Donation initDonation(long point) {
+        Donation donation = new Donation(new Message("후원자"), point);
+        member.receiveDonation(donation);
+        return donationRepository.save(donation);
     }
 
     @Test
     @DisplayName("validatePageName")
-    public void validatePageNameTest() {
-        assertThatThrownBy(() ->
-                memberService.validatePageName(new PageNameRequest(PAGENAME))
-        ).isInstanceOf(DuplicatedPageNameException.class);
+    public void validatePageName() {
+        assertThatThrownBy(() -> memberService.validatePageName(new PageNameRequest(member.getPageName())))
+                .isExactlyInstanceOf(DuplicatedPageNameException.class);
     }
 
     @Test
     @DisplayName("validateNickname")
-    public void validateNicknameTest() {
-        assertThatThrownBy(() ->
-                memberService.validateNickname(new NicknameRequest(NICKNAME))
-        ).isInstanceOf(DuplicatedNicknameException.class);
+    public void validateNickname() {
+        assertThatThrownBy(() -> memberService.validateNickname(new NicknameRequest(member.getNickname())))
+                .isExactlyInstanceOf(DuplicatedNicknameException.class);
     }
 
     @Test
-    @DisplayName("findMember")
-    public void findMemberTest() {
+    @DisplayName("findMemberByPageName")
+    public void findMemberByPageName() {
         //given & when
-        MemberResponse response = memberService.findMemberByPageName(PAGENAME);
+        MemberResponse response = memberService.findMemberByPageName(member.getPageName());
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, BIO, PROFILE, POINT, false));
+                .isEqualTo(new MemberResponse(
+                        member.getEmail(), member.getNickname(), member.getPageName(), member.getBio(),
+                        member.getProfileImage(), member.getPoint(), false));
 
-        assertThatThrownBy(() -> memberService.findMemberByPageName("asdf"))
-                .isInstanceOf(MemberNotFoundException.class);
+        assertThatThrownBy(() -> memberService.findMemberByPageName(INVALID_PAGE_NAME))
+                .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
     @Test
-    @DisplayName("findMemberDetail")
-    public void findMemberDetailTest() {
+    @DisplayName("findMemberById")
+    public void findMemberById() {
         //given & when
         MemberResponse response = memberService.findMemberById(member.getId());
         //then
         assertThat(response).usingRecursiveComparison()
-                .isEqualTo(new MemberResponse(EMAIL, NICKNAME, PAGENAME, BIO, PROFILE, POINT, false));
+                .isEqualTo(new MemberResponse(
+                        member.getEmail(), member.getNickname(), member.getPageName(), member.getBio(),
+                        member.getProfileImage(), member.getPoint(), false));
 
         assertThatThrownBy(() -> memberService.findMemberById(INVALID_ID))
-                .isInstanceOf(MemberNotFoundException.class);
+                .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
     @Test
@@ -125,14 +136,14 @@ class MemberServiceTest {
                 .isEqualTo(new PointResponse(0L));
 
         assertThatThrownBy(() -> memberService.findMemberPoint(INVALID_ID))
-                .isInstanceOf(MemberNotFoundException.class);
+                .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
     @Test
     @DisplayName("findCurations")
     public void findCurationsTest() {
         List<CurationsResponse> curations = memberService.findCurations();
-        assertThat(curations).hasSize(1);
+        assertThat(curations).hasSize(3);
     }
 
     @Test
@@ -184,24 +195,17 @@ class MemberServiceTest {
     @Test
     @DisplayName("detailedPoint")
     public void detailedPointTest() {
-        //given & when
-        Donation donation1 = initDonation(1000L);
+        //given
+        initDonation(1000L).toExchanged();
         initDonation(2000L);
         initDonation(3000L);
 
-        donation1.toExchanged();
+        //when
+        DetailedPointResponse response = memberService.detailedPoint(member.getId());
 
         //then
-        DetailedPointResponse response = memberService.detailedPoint(member.getId());
         assertThat(response.getCurrentPoint()).isEqualTo(5000);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(1000);
-    }
-
-    private Donation initDonation(long point) {
-        Donation donation = new Donation(new Message(DONATOR_NAME), point);
-        member.receiveDonation(donation);
-        donationRepository.save(donation);
-        return donation;
     }
 
     @Test
@@ -226,20 +230,20 @@ class MemberServiceTest {
     @Test
     @DisplayName("정산을 신청한다")
     public void exchange() {
-        initDonation(20000L);
+        initDonation(10000L);
 
         memberService.exchange(member.getId());
         List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
 
         assertThat(exchanges).hasSize(1);
         Exchange exchange = exchanges.get(0);
-        assertThat(exchange.getExchangeAmount()).isEqualTo(20000L);
+        assertThat(exchange.getExchangeAmount()).isEqualTo(10000L);
     }
 
     @Test
     @DisplayName("정산을 신청한다 - 이미 신청해놓은 경우")
     public void exchangeAlreadyRequest() {
-        initDonation(11000L);
+        initDonation(10000L);
 
         memberService.exchange(member.getId());
 
