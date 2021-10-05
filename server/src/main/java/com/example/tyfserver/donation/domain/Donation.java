@@ -48,9 +48,14 @@ public class Donation extends BaseTimeEntity {
     }
 
     public Donation(Message message, long point, LocalDateTime createdAt) {
+        this(message, point, DonationStatus.WAITING_FOR_EXCHANGE, createdAt);
+    }
+
+    public Donation(Message message, long point, DonationStatus status, LocalDateTime createdAt) {
         super(createdAt);
         this.message = message;
         this.point = point;
+        this.status = status;
     }
 
     public void donate(Member donator, Member creator) {

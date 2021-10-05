@@ -2,7 +2,8 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
@@ -28,7 +30,6 @@ class DonationRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private DonationRepository donationRepository;
 
@@ -44,11 +45,9 @@ class DonationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        creator = MemberTest.testMember(1);
-        donator = MemberTest.testMember(2);
+        creator = initMember(1);
+        donator = initMember(2);
         donator.increasePoint(100000L);
-        memberRepository.save(creator);
-        memberRepository.save(donator);
 
         // 총 28000 포인트
         donation1 = initDonation(1000L, false);
@@ -60,14 +59,25 @@ class DonationRepositoryTest {
         donation7 = initDonation(7000L, false);
     }
 
+    private Member initMember(int i) {
+        Member member = MemberTest.testMember(i);
+        return memberRepository.save(member);
+    }
+
     private Donation initDonation(Long point, boolean secret) {
-        Donation donation = new Donation(new Message("name", "message", secret), point);
+        Donation donation = new Donation(DonationTest.testMessage(secret), point);
         donation.donate(donator, creator);
         return donationRepository.save(donation);
     }
 
     private Donation initDonation(Member creator, LocalDateTime createAt) {
-        Donation donation = new Donation(new Message("name", "message", false), 5000, createAt);
+        Donation donation = new Donation(DonationTest.testMessage(), 5000, createAt);
+        creator.receiveDonation(donation);
+        return donationRepository.save(donation);
+    }
+
+    private Donation initDonation(Member creator, LocalDateTime createAt, DonationStatus status) {
+        Donation donation = new Donation(DonationTest.testMessage(), 5000, status, createAt);
         creator.receiveDonation(donation);
         return donationRepository.save(donation);
     }
@@ -120,25 +130,24 @@ class DonationRepositoryTest {
     @DisplayName("정산해야하는 도네이션들을 조회한다.")
     void findDonationsToExchange() {
         // given
-        Member creator3 = MemberTest.testMember(3);
-        Member creator4 = MemberTest.testMember(4);
-        memberRepository.save(creator3);
-        memberRepository.save(creator4);
+        Member creator1 = initMember(3);
+        Member creator2 = initMember(4);
 
-        Donation donation1 = initDonation(creator3, createdAt(1, 1));
-        Donation donation2 = initDonation(creator4, createdAt(1, 1));
-        Donation donation3 = initDonation(creator3, createdAt(2, 1));
-        Donation donation4 = initDonation(creator4, createdAt(2, 1));
-        Donation donation5 = initDonation(creator3, createdAt(3, 1));
-        Donation donation6 = initDonation(creator4, createdAt(3, 1));
+        Donation donation1 = initDonation(creator1, createdAt(1, 1));
+        Donation donation2 = initDonation(creator1, createdAt(2, 1));
+        Donation donation3 = initDonation(creator1, LocalDateTime.of(2021, 2, 28, 23, 59));
 
-        Donation donation7 = initDonation(creator3, createdAt(1, 31));
+        initDonation(creator2, createdAt(1, 1));
+        initDonation(creator1, createdAt(3, 1));
+        initDonation(creator1, createdAt(12, 31));
+        initDonation(creator1, createdAt(1, 1), DonationStatus.EXCHANGED);
+
 
         // when
-        List<Donation> donations = donationRepository.findDonationsToExchange(creator3, YearMonth.of(2021, 2));
+        List<Donation> donations = donationRepository.findDonationsToExchange(creator1, YearMonth.of(2021, 2));
 
         // then
-        List<Long> expectedDonationIds = Stream.of(donation1, donation3, donation7)
+        List<Long> expectedDonationIds = Stream.of(donation1, donation2, donation3)
                 .map(Donation::getId)
                 .collect(Collectors.toList());
 
@@ -147,6 +156,6 @@ class DonationRepositoryTest {
     }
 
     private LocalDateTime createdAt(int month, int dayOfMonth) {
-        return LocalDateTime.of(2021, month, dayOfMonth, 0, 0);
+        return LocalDate.of(2021, month, dayOfMonth).atStartOfDay();
     }
 }

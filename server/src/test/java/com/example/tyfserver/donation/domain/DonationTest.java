@@ -4,11 +4,14 @@ import com.example.tyfserver.donation.dto.DonationMessageRequest;
 
 public class DonationTest {
 
-    public static final String MESSAGE = "응원합니다";
-    public static final long DONATION_AMOUNT = 1000L;
+    private static final String MESSAGE = "응원합니다";
 
     public static Message testMessage() {
-        return new Message("test", Message.DEFAULT_MESSAGE, false);
+        return testMessage(false);
+    }
+
+    public static Message testMessage(boolean secret) {
+        return new Message("test", MESSAGE, secret);
     }
 
     public static DonationMessageRequest testMessageRequest() {
