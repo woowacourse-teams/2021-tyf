@@ -86,6 +86,9 @@ public class AdminService {
         return exchangeResponses;
     }
 
+    // todo pageName말고 exchange id로 받으면 좋을듯.
+    //  이 api전에 exchangeList() api가 호출되고 List<ExchangeResponse>를 반환하는데, 이때 exchangeId 주면 됨
+    //  rejectExchange() 도 마찬가지.
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
         Exchange exchange = findExchangeToApprove(member);
