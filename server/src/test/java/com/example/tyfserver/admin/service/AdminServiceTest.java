@@ -29,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
@@ -44,6 +45,9 @@ class AdminServiceTest {
     private static final YearMonth EXCHANGE_ON_2021_1 = YearMonth.of(2021, 1);
     private static final LocalDateTime DONATION_CREATED_AT_2021_1_1 = LocalDateTime.of(2021, 1, 1, 0, 0);
     private static final long DEFAULT_AMOUNT = 10000L;
+
+    @Autowired
+    private EntityManager em;
 
     @Autowired
     private AdminService adminService;
@@ -93,6 +97,23 @@ class AdminServiceTest {
         return exchangeRepository.save(exchange);
     }
 
+    private Donation find(Donation donation) {
+        return donationRepository.findById(donation.getId()).get();
+    }
+
+    private Member find(Member member) {
+        return memberRepository.findById(member.getId()).get();
+    }
+
+    private Exchange find(Exchange exchange) {
+        return exchangeRepository.findById(exchange.getId()).get();
+    }
+
+    private void flushAndClear() {
+        em.flush();
+        em.clear();
+    }
+
     @Test
     @DisplayName("정산 목록 조회")
     public void exchangeList() {
@@ -104,6 +125,8 @@ class AdminServiceTest {
         Exchange exchange3 = initExchange(13000L, member5);
 
         when(aes256Util.decrypt(anyString())).thenReturn("123-456-789");
+
+        flushAndClear();
 
         //when
         List<ExchangeResponse> responses = adminService.exchangeList();
@@ -127,13 +150,15 @@ class AdminServiceTest {
 
         doNothing().when(mailConnector).sendExchangeApprove(anyString());
 
+        flushAndClear();
+
         //when
         adminService.approveExchange(registeredMember.getPageName());
 
         //then
-        assertThat(donation.getStatus()).isEqualTo(DonationStatus.EXCHANGED);
-        assertThat(donationNextMonth.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
-        assertThat(exchange.getStatus()).isEqualTo(ExchangeStatus.APPROVED);
+        assertThat(find(donation).getStatus()).isEqualTo(DonationStatus.EXCHANGED);
+        assertThat(find(donationNextMonth).getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+        assertThat(find(exchange).getStatus()).isEqualTo(ExchangeStatus.APPROVED);
     }
 
     @Test
@@ -142,11 +167,13 @@ class AdminServiceTest {
         //given
         Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
 
+        flushAndClear();
+
         //when
         //then
         assertThatThrownBy(() -> adminService.approveExchange(registeredMember.getPageName()))
                 .isExactlyInstanceOf(ExchangeDoesNotAppliedException.class);
-        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+        assertThat(find(donation).getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
     }
 
     @Test
@@ -155,11 +182,13 @@ class AdminServiceTest {
         //given
         Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
 
+        flushAndClear();
+
         //when
         //then
         assertThatThrownBy(() -> adminService.approveExchange("any"))
                 .isExactlyInstanceOf(MemberNotFoundException.class);
-        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+        assertThat(find(donation).getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
     }
 
     @Test
@@ -171,12 +200,14 @@ class AdminServiceTest {
 
         doNothing().when(mailConnector).sendExchangeReject(anyString(), anyString());
 
+        flushAndClear();
+
         //when
         adminService.rejectExchange(registeredMember.getPageName(), "just denied");
 
         //then
-        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
-        assertThat(exchange.getStatus()).isEqualTo(ExchangeStatus.REJECTED);
+        assertThat(find(donation).getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+        assertThat(find(exchange).getStatus()).isEqualTo(ExchangeStatus.REJECTED);
     }
 
     @Test
@@ -185,11 +216,13 @@ class AdminServiceTest {
         //given
         Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
 
+        flushAndClear();
+
         //when
         //then
         assertThatThrownBy(() -> adminService.rejectExchange(registeredMember.getPageName(), "just denied"))
                 .isExactlyInstanceOf(ExchangeDoesNotAppliedException.class);
-        assertThat(donation.getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
+        assertThat(find(donation).getStatus()).isEqualTo(DonationStatus.WAITING_FOR_EXCHANGE);
     }
 
     @Test
@@ -233,10 +266,12 @@ class AdminServiceTest {
         doNothing().when(s3Connector).delete(anyString());
         doNothing().when(mailConnector).sendAccountApprove(requestingMember.getEmail());
 
+        flushAndClear();
+
         adminService.approveAccount(requestingMember.getId());
 
         //then
-        assertThat(requestingMember.getAccountStatus()).isEqualTo(AccountStatus.REGISTERED);
+        assertThat(find(requestingMember).getAccountStatus()).isEqualTo(AccountStatus.REGISTERED);
     }
 
     @Test
@@ -246,11 +281,13 @@ class AdminServiceTest {
         doNothing().when(s3Connector).delete(anyString());
         doNothing().when(mailConnector).sendAccountApprove(requestingMember.getEmail());
 
+        flushAndClear();
+
         //when
         adminService.rejectAccount(requestingMember.getId(), new AccountRejectRequest("just denied"));
 
         //then
-        assertThat(requestingMember.getAccountStatus()).isEqualTo(AccountStatus.REJECTED);
+        assertThat(find(requestingMember).getAccountStatus()).isEqualTo(AccountStatus.REJECTED);
     }
 
     @Test
@@ -261,6 +298,8 @@ class AdminServiceTest {
         doNothing().when(mailConnector).sendAccountApprove(this.registeredMember.getEmail());
         when(aes256Util.decrypt(anyString())).thenReturn("123-456-789");
 
+        flushAndClear();
+
         //when
         List<RequestingAccountResponse> requestingAccounts = adminService.findRequestingAccounts();
 
@@ -268,12 +307,14 @@ class AdminServiceTest {
         assertThat(requestingAccounts).hasSize(1);
 
         RequestingAccountResponse response = requestingAccounts.get(0);
-        assertThat(response.getMemberId()).isEqualTo(requestingMember.getId());
-        assertThat(response.getNickname()).isEqualTo(requestingMember.getNickname());
-        assertThat(response.getPageName()).isEqualTo(requestingMember.getPageName());
-        assertThat(response.getAccountHolder()).isEqualTo(requestingMember.getAccount().getAccountHolder());
+        Member findRequestingMember = find(requestingMember);
+
+        assertThat(response.getMemberId()).isEqualTo(findRequestingMember.getId());
+        assertThat(response.getNickname()).isEqualTo(findRequestingMember.getNickname());
+        assertThat(response.getPageName()).isEqualTo(findRequestingMember.getPageName());
+        assertThat(response.getAccountHolder()).isEqualTo(findRequestingMember.getAccount().getAccountHolder());
         assertThat(response.getAccountNumber()).isEqualTo("123-456-789");
-        assertThat(response.getBank()).isEqualTo(requestingMember.getAccount().getBank());
-        assertThat(response.getBankbookImageUrl()).isEqualTo(requestingMember.getAccount().getBankbookUrl());
+        assertThat(response.getBank()).isEqualTo(findRequestingMember.getAccount().getBank());
+        assertThat(response.getBankbookImageUrl()).isEqualTo(findRequestingMember.getAccount().getBankbookUrl());
     }
 }
