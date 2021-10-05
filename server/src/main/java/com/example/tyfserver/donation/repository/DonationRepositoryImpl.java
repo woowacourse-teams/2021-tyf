@@ -22,36 +22,36 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     }
 
     @Override
-    public Long currentPoint(Long memberId) {
+    public Long waitingTotalPoint(Long creatorId) {
         Long result = queryFactory
                 .select(donation.point.sum())
                 .from(donation)
-                .where(currentStatus(memberId))
+                .where(waitingStatus(creatorId))
                 .groupBy(donation.creator)
                 .fetchOne();
 
         return Objects.requireNonNullElse(result, 0L);
     }
 
-    @Override
-    public Long exchangedTotalPoint(Long memberId) {
-        Long result = queryFactory
-                .select(donation.point.sum())
-                .from(donation)
-                .where(exchangedStatus(memberId))
-                .groupBy(donation.creator)
-                .fetchOne();
-
-        return Objects.requireNonNullElse(result, 0L);
-    }
-
-    private BooleanExpression currentStatus(Long memberId) {
-        return donation.creator.id.eq(memberId)
+    private BooleanExpression waitingStatus(Long creatorId) {
+        return donation.creator.id.eq(creatorId)
                 .and(donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE));
     }
 
-    private BooleanExpression exchangedStatus(Long memberId) {
-        return donation.creator.id.eq(memberId)
+    @Override
+    public Long exchangedTotalPoint(Long creatorId) {
+        Long result = queryFactory
+                .select(donation.point.sum())
+                .from(donation)
+                .where(exchangedStatus(creatorId))
+                .groupBy(donation.creator)
+                .fetchOne();
+
+        return Objects.requireNonNullElse(result, 0L);
+    }
+
+    private BooleanExpression exchangedStatus(Long creatorId) {
+        return donation.creator.id.eq(creatorId)
                 .and(donation.status.eq(DonationStatus.EXCHANGED));
     }
 

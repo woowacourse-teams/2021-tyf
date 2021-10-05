@@ -56,7 +56,7 @@ public class MemberService {
 
     public PointResponse findMemberPoint(Long id) {
         Member member = findMember(id);
-        return new PointResponse(donationRepository.currentPoint(member.getId()));
+        return new PointResponse(donationRepository.waitingTotalPoint(member.getId()));
     }
 
     public List<CurationsResponse> findCurations() {
@@ -97,7 +97,7 @@ public class MemberService {
 
     // todo 메서드 이름 변경
     public DetailedPointResponse detailedPoint(Long id) {
-        Long currentPoint = donationRepository.currentPoint(id);
+        Long currentPoint = donationRepository.waitingTotalPoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
         return new DetailedPointResponse(currentPoint, exchangedTotalPoint);
     }
@@ -129,7 +129,7 @@ public class MemberService {
 
     public void exchange(Long id) {
         Member member = findMember(id);
-        Long currentPoint = donationRepository.currentPoint(id);
+        Long currentPoint = donationRepository.waitingTotalPoint(id);
         validateExchangeable(member, currentPoint); // todo 금액 검증 꼭 필요한가?
 
         Exchange exchange = new Exchange(YearMonth.now(), member);

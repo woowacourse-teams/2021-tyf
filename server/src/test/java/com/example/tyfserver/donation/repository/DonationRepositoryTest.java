@@ -91,23 +91,23 @@ class DonationRepositoryTest {
     }
 
     @Test
-    @DisplayName("정산 가능 포인트를 조회한다.")
-    public void currentPoint() {
+    @DisplayName("정산되지 않은 총 포인트를 조회한다.")
+    public void waitingTotalPoint() {
         donation1.toExchanged();
         donation2.toExchanged();
         donation3.toExchanged();
         donation4.toExchanged();
         donation7.toExchanged();
 
-        Long member1ExchangeablePoint = donationRepository.currentPoint(creator.getId());
-        Long member2ExchangeablePoint = donationRepository.currentPoint(donator.getId());
+        Long member1ExchangeablePoint = donationRepository.waitingTotalPoint(creator.getId());
+        Long member2ExchangeablePoint = donationRepository.waitingTotalPoint(donator.getId());
 
         assertThat(member1ExchangeablePoint).isEqualTo(11000L);
         assertThat(member2ExchangeablePoint).isEqualTo(0L);
     }
 
     @Test
-    @DisplayName("정산 완료 총 포인트를 조회한다.")
+    @DisplayName("정산이 완료된 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {
         donation2.toExchanged();
 

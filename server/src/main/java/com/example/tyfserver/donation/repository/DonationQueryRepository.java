@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DonationQueryRepository {
 
-    Long currentPoint(Long memberId);
+    Long waitingTotalPoint(Long creatorId);
 
-    Long exchangedTotalPoint(Long memberId);
+    Long exchangedTotalPoint(Long creatorId);
 
-    List<Donation> findDonationsToExchange(Member member, YearMonth exchangeOn);
+    List<Donation> findDonationsToExchange(Member creator, YearMonth exchangeOn);
 }

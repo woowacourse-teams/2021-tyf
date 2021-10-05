@@ -11,5 +11,5 @@ import java.util.List;
 public interface DonationRepository extends JpaRepository<Donation, Long>, DonationQueryRepository {
 
     @EntityGraph(attributePaths = "creator")
-    List<Donation> findDonationByCreatorOrderByCreatedAtDesc(Member member, Pageable pageable);
+    List<Donation> findDonationByCreatorOrderByCreatedAtDesc(Member creator, Pageable pageable);
 }
