@@ -116,7 +116,7 @@ public class AdminService {
             throw new ExchangeDoesNotAppliedException();
         }
         if (exchanges.size() > 1) {
-            throw new RuntimeException("서버오류: 대기중인 정산이 2개 이상임");
+            throw new RuntimeException("서버오류: 대기중인 정산이 2개 이상임"); // todo 클라이언트에게 예외 포맷대로 알려주기
         }
         return exchanges.get(0);
     }
