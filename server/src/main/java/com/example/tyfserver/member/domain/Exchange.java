@@ -39,6 +39,10 @@ public class Exchange extends BaseTimeEntity {
         this(null, exchangeAmount, exchangeOn, member);
     }
 
+    public Exchange(YearMonth exchangeOn, Member member) {
+        this(null, 0L, exchangeOn, member);
+    }
+
     public void toApproved() {
         status = ExchangeStatus.APPROVED;
     }

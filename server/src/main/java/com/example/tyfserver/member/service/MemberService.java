@@ -95,6 +95,7 @@ public class MemberService {
         member.deleteProfile();
     }
 
+    // todo 메서드 이름 변경
     public DetailedPointResponse detailedPoint(Long id) {
         Long currentPoint = donationRepository.currentPoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
@@ -131,7 +132,7 @@ public class MemberService {
         Long currentPoint = donationRepository.currentPoint(id);
         validateExchangeable(member, currentPoint); // todo 금액 검증 꼭 필요한가?
 
-        Exchange exchange = new Exchange(currentPoint, YearMonth.now(), member);
+        Exchange exchange = new Exchange(YearMonth.now(), member);
         exchangeRepository.save(exchange);
     }
 

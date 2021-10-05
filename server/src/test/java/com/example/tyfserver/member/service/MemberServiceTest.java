@@ -237,7 +237,7 @@ class MemberServiceTest {
 
         assertThat(exchanges).hasSize(1);
         Exchange exchange = exchanges.get(0);
-        assertThat(exchange.getExchangeAmount()).isEqualTo(10000L);
+        assertThat(exchange.getExchangeAmount()).isEqualTo(0);
     }
 
     @Test
