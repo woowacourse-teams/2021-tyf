@@ -23,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,32 +35,28 @@ import static org.mockito.Mockito.when;
 @Transactional
 class MemberServiceTest {
 
-    private static final long POINT = 10000L;
     private static final long INVALID_ID = -1L;
-    private static final String INVALID_PAGE_NAME = "INVALID_PAGE_NAME";
+
+    @Autowired
+    private EntityManager em;
 
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private MemberService memberService;
-
     @Autowired
     private DonationRepository donationRepository;
-
     @Autowired
     private ExchangeRepository exchangeRepository;
-
     @Autowired
     private Aes256Util aes256Util;
 
     @MockBean
     private S3Connector s3Connector;
 
-    private Member member = MemberTest.testMemberWithAvailablePoint(POINT);
+    private Member member = MemberTest.testMemberWithAvailablePoint(10000L);
     private Member registeredCreator = MemberTest.testMemberWithAccount(1, AccountStatus.REGISTERED);
     private Member unregisteredCreator = MemberTest.testMemberWithAccount(2, AccountStatus.UNREGISTERED);
 
@@ -76,10 +73,19 @@ class MemberServiceTest {
         return memberRepository.save(member);
     }
 
-    private Donation initDonation(long point) {
+    private Donation initDonation(long point, Member creator) {
         Donation donation = new Donation(new Message("후원자"), point);
-        member.receiveDonation(donation);
+        creator.receiveDonation(donation);
         return donationRepository.save(donation);
+    }
+
+    private Member find(Member member) {
+        return memberRepository.findById(member.getId()).get();
+    }
+
+    private void flushAndClear() {
+        em.flush();
+        em.clear();
     }
 
     @Test
@@ -107,7 +113,7 @@ class MemberServiceTest {
                         member.getEmail(), member.getNickname(), member.getPageName(), member.getBio(),
                         member.getProfileImage(), member.getPoint(), false));
 
-        assertThatThrownBy(() -> memberService.findMemberByPageName(INVALID_PAGE_NAME))
+        assertThatThrownBy(() -> memberService.findMemberByPageName("INVALID_PAGE_NAME"))
                 .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
@@ -196,12 +202,13 @@ class MemberServiceTest {
     @DisplayName("detailedPoint")
     public void detailedPointTest() {
         //given
-        initDonation(1000L).toExchanged();
-        initDonation(2000L);
-        initDonation(3000L);
+        initDonation(1000L, registeredCreator).toExchanged();
+        initDonation(2000L, registeredCreator);
+        initDonation(3000L, registeredCreator);
+        flushAndClear();
 
         //when
-        DetailedPointResponse response = memberService.detailedPoint(member.getId());
+        DetailedPointResponse response = memberService.detailedPoint(registeredCreator.getId());
 
         //then
         assertThat(response.getCurrentPoint()).isEqualTo(5000);
@@ -215,12 +222,13 @@ class MemberServiceTest {
         LoginMember loginMember = new LoginMember(member.getId(), member.getEmail());
         final AccountRegisterRequest test = new AccountRegisterRequest("test",
                 "1234-5678-1234", null, "하나");
+        flushAndClear();
 
         //when
         memberService.registerAccount(loginMember, test);
 
         //then
-        Account account = member.getAccount();
+        Account account = find(member).getAccount();
         assertThat(account.getStatus()).isEqualTo(AccountStatus.REQUESTING);
         assertThat(account.getAccountHolder()).isEqualTo(test.getAccountHolder());
         assertThat(account.getBank()).isEqualTo(test.getBank());
@@ -230,10 +238,15 @@ class MemberServiceTest {
     @Test
     @DisplayName("정산을 신청한다")
     public void exchange() {
-        initDonation(10000L);
+        //given
+        initDonation(10000L, registeredCreator);
+        flushAndClear();
 
-        memberService.exchange(member.getId());
-        List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
+        //when
+        memberService.exchange(registeredCreator.getId());
+
+        //then
+        List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, registeredCreator);
 
         assertThat(exchanges).hasSize(1);
         Exchange exchange = exchanges.get(0);
@@ -243,20 +256,27 @@ class MemberServiceTest {
     @Test
     @DisplayName("정산을 신청한다 - 이미 신청해놓은 경우")
     public void exchangeAlreadyRequest() {
-        initDonation(10000L);
+        //given
+        initDonation(10000L, registeredCreator);
+        memberService.exchange(registeredCreator.getId());
+        flushAndClear();
 
-        memberService.exchange(member.getId());
-
-        assertThatThrownBy(() -> memberService.exchange(member.getId()))
+        //when
+        //then
+        assertThatThrownBy(() -> memberService.exchange(registeredCreator.getId()))
                 .isExactlyInstanceOf(AlreadyRequestExchangeException.class);
     }
 
     @Test
     @DisplayName("정산을 신청한다 - 정산 가능한 금액이 만원 미만인 경우")
     public void exchangeLessThanLimitAmount() {
-        initDonation(9999L);
+        //given
+        initDonation(9999L, registeredCreator);
+        flushAndClear();
 
-        assertThatThrownBy(() -> memberService.exchange(member.getId()))
+        //when
+        //then
+        assertThatThrownBy(() -> memberService.exchange(registeredCreator.getId()))
                 .isExactlyInstanceOf(ExchangeAmountException.class);
     }
 }

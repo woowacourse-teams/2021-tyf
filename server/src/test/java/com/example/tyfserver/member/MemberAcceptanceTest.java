@@ -361,12 +361,14 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("정산 요청 - 정산 금액이 만원 이하인 경우")
+    @DisplayName("정산 요청 - 정산 금액이 만원 미만인 경우")
     public void requestExchangeAmountLessThanLimit() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+        요청_계좌_승인(1L, token);
         페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken());
-        후원_생성("pagename", 10000L, signUpResponse.getToken());
+        후원_생성("pagename", 9999L, signUpResponse.getToken());
 
         //when
         ErrorResponse errorResponse = 정산_요청(signUpResponse.getToken()).as(ErrorResponse.class);
