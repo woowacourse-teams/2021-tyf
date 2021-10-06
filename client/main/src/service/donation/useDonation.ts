@@ -22,7 +22,9 @@ const useDonation = () => {
       history.push(`/donation/${creatorId}/message`);
     } catch (error) {
       const { errorCode }: { errorCode: keyof typeof DONATION_ERROR_MESSAGE } = error.response.data;
-      const errorMessage = DONATION_ERROR_MESSAGE[errorCode] ?? '도네이션에 실패했습니다.';
+      const errorMessage =
+        DONATION_ERROR_MESSAGE[errorCode] ?? '도네이션에 실패했습니다. 잠시 후 다시 시도해주세요.';
+
       alert(errorMessage);
     }
   };
