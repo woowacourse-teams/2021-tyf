@@ -4,6 +4,7 @@ import Template from '../../components/@atom/Template/Template';
 import Button from '../../components/@atom/Button/Button.styles';
 import { DEVICE } from '../../constants/device';
 import PALETTE from '../../constants/palette';
+import Title from '../../components/@atom/Title/Title.styles';
 
 export const StyledTemplate = styled(Template)`
   display: flex;
@@ -44,7 +45,7 @@ export const StyledContainer = styled.div`
   }
 `;
 
-export const StyledTitle = styled.h1`
+export const StyledTitle = styled(Title)`
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 6rem;

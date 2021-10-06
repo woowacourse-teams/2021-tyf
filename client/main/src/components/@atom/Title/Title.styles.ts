@@ -9,6 +9,7 @@ const Title = styled.h2`
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
+  user-select: none;
 
   @media ${DEVICE.DESKTOP_LARGE} {
     font-size: 2.25rem;

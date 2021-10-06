@@ -8,6 +8,7 @@ export const StyledIconButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
+  user-select: none;
 `;
 
 export const Icon = styled.img`
