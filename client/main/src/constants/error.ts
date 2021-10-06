@@ -1,3 +1,11 @@
+export enum REGISTER_ERROR {
+  DUPLICATE_NICKNAME = 'member-005',
+}
+
+export const REGISTER_ERROR_MESSAGE = {
+  [REGISTER_ERROR.DUPLICATE_NICKNAME]: '이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요.',
+} as const;
+
 export enum AUTH_ERROR {
   INVALID_TOKEN = 'auth-002',
   ALREADY_REGISTER = 'auth-004',

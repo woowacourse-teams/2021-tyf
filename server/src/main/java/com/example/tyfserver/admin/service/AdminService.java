@@ -89,7 +89,7 @@ public class AdminService {
 
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
-        List<Donation> donations = donationRepository.findDonationByStatusAndMember(DonationStatus.WAITING_FOR_EXCHANGE, member);
+        List<Donation> donations = donationRepository.findDonationByStatusAndCreator(DonationStatus.WAITING_FOR_EXCHANGE, member);
         for (Donation donation : donations) {
             donation.toExchanged();
         }

@@ -6,6 +6,7 @@ const SubTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 700;
   text-align: center;
+  user-select: none;
 
   @media ${DEVICE.DESKTOP_LARGE} {
     font-size: 1.75rem;
