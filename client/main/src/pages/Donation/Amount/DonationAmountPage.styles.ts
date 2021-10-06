@@ -17,11 +17,23 @@ export const DonationAmountPageTemplate = styled(Template)`
 
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
-  padding-top: 5rem;
+  padding-top: 3rem;
 
   section:nth-of-type(1) {
-    margin-bottom: 3rem;
+    width: 100%;
+    margin-bottom: 5rem;
+    margin-right: 2rem;
+    display: flex;
+    justify-content: flex-end;
   }
+
+  section:nth-of-type(2) {
+    margin-bottom: 5rem;
+  }
+`;
+
+export const PointAnchor = styled.a`
+  font-weight: 600;
+  font-size: 1.125rem;
 `;
