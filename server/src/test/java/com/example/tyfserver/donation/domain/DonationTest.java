@@ -1,17 +1,14 @@
 package com.example.tyfserver.donation.domain;
 
-import com.example.tyfserver.donation.dto.DonationMessageRequest;
-
 public class DonationTest {
 
-    public static final String MESSAGE = "응원합니다";
-    public static final long DONATION_AMOUNT = 1000L;
+    private static final String MESSAGE = "응원합니다";
 
-    public static DonationMessageRequest testMessageRequest() {
-        return new DonationMessageRequest(MESSAGE, false);
+    public static Message testMessage() {
+        return testMessage(false);
     }
 
-    public static DonationMessageRequest testSecretMessageRequest() {
-        return new DonationMessageRequest(MESSAGE, true);
+    public static Message testMessage(boolean secret) {
+        return new Message("test", MESSAGE, secret);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.tyfserver.member.service;
 
+import com.example.tyfserver.admin.exception.NotRegisteredAccountException;
 import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Exchange;
+import com.example.tyfserver.member.domain.ExchangeStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
@@ -54,7 +56,7 @@ public class MemberService {
 
     public PointResponse findMemberPoint(Long id) {
         Member member = findMember(id);
-        return new PointResponse(donationRepository.currentPoint(member.getId()));
+        return new PointResponse(donationRepository.waitingTotalPoint(member.getId()));
     }
 
     public List<CurationsResponse> findCurations() {
@@ -93,10 +95,11 @@ public class MemberService {
         member.deleteProfile();
     }
 
+    // todo 메서드 이름 변경. 한눈에 알아보거나, 어디서 쓰이는지 유추하기 힘듬. 정산관련 포인트 합계? 그런 의미를 담고 있으면 좋을 듯.
     public DetailedPointResponse detailedPoint(Long id) {
-        Long currentPoint = donationRepository.currentPoint(id);
+        Long waitingTotalPoint = donationRepository.waitingTotalPoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
-        return new DetailedPointResponse(currentPoint, exchangedTotalPoint);
+        return new DetailedPointResponse(waitingTotalPoint, exchangedTotalPoint);
     }
 
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
@@ -126,17 +129,22 @@ public class MemberService {
 
     public void exchange(Long id) {
         Member member = findMember(id);
-        Long exchangeablePoint = donationRepository.currentPoint(id);
-        validateExchangeable(member, exchangeablePoint);
+        validateRegisteredAccount(member);
+        Long waitingTotalPoint = donationRepository.waitingTotalPoint(id);
+        validateExchangeable(member, waitingTotalPoint);
 
-        Exchange exchange =
-                new Exchange(member.getAccount().getAccountHolder(), member.getEmail(), exchangeablePoint,
-                        member.getAccount().getAccountNumber(), member.getNickname(), member.getPageName());
+        Exchange exchange = new Exchange(member);
         exchangeRepository.save(exchange);
     }
 
+    private void validateRegisteredAccount(Member member) {
+        if (member.isAccountNotRegistered()) {
+            throw new NotRegisteredAccountException();
+        }
+    }
+
     private void validateExchangeable(Member member, Long exchangeablePoint) {
-        if (exchangeRepository.existsByPageName(member.getPageName())) {
+        if (exchangeRepository.existsByStatusAndMember(ExchangeStatus.WAITING, member)) {
             throw new AlreadyRequestExchangeException();
         }
         if (exchangeablePoint < 10000) {

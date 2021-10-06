@@ -19,10 +19,6 @@ public class DonationMessageRequest {
     @NotNull
     private boolean secret;
 
-    public DonationMessageRequest(String message) {
-        this(message, true);
-    }
-
     public DonationMessageRequest(String message, boolean secret) {
         this.message = message;
         this.secret = secret;
