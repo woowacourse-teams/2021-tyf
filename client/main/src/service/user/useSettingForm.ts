@@ -18,8 +18,8 @@ const useSettingForm = () => {
   });
   const { userInfo } = useUserInfo();
 
-  const setNickname = (nickname: string) => {
-    setForm({ ...form, nickname });
+  const setNickname = (value: string) => {
+    setForm({ ...form, nickname: value.trim() });
   };
 
   const setBio = (bio: string) => {
