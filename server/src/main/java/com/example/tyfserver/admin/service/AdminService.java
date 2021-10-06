@@ -111,7 +111,7 @@ public class AdminService {
     }
 
     private void validateRegisteredAccount(Member member) {
-        if (member.getAccount().getStatus() != AccountStatus.REGISTERED) {
+        if (member.isAccountNotRegistered()) {
             throw new NotRegisteredAccountException();
         }
     }

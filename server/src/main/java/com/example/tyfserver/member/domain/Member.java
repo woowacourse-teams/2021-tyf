@@ -166,6 +166,10 @@ public class Member extends BaseTimeEntity {
         throw new WrongDonationOwnerException();
     }
 
+    public boolean isAccountNotRegistered() {
+        return account.getStatus() != AccountStatus.REGISTERED;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -5,7 +5,10 @@ import com.example.tyfserver.auth.dto.LoginMember;
 import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.*;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.Exchange;
+import com.example.tyfserver.member.domain.ExchangeStatus;
+import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.ExchangeRepository;
@@ -135,7 +138,7 @@ public class MemberService {
     }
 
     private void validateRegisteredAccount(Member member) {
-        if (member.getAccount().getStatus() != AccountStatus.REGISTERED) {
+        if (member.isAccountNotRegistered()) {
             throw new NotRegisteredAccountException();
         }
     }
