@@ -27,6 +27,7 @@ import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
 import MyPointPage from './pages/MyPoint/MyPointPage';
 import FeeGuide from './pages/FeeGuide/FeeGuide';
+import CreatorGuide from './pages/Guide/Creator/CreatorGuide';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -120,6 +121,7 @@ const App = () => {
         <Route path="/refund/confirm" component={RefundConfirmPage} />
 
         <Route path="/fee-guide" component={FeeGuide} />
+        <Route path="/guide/creator" component={CreatorGuide} />
 
         <Redirect from="*" to="/" />
       </Switch>
