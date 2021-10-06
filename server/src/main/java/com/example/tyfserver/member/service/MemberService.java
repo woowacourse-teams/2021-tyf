@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -93,11 +92,11 @@ public class MemberService {
         member.deleteProfile();
     }
 
-    // todo 메서드 이름 변경
+    // todo 메서드 이름 변경. 한눈에 알아보거나, 어디서 쓰이는지 유추하기 힘듬. 정산관련 포인트 합계? 그런 의미를 담고 있으면 좋을 듯.
     public DetailedPointResponse detailedPoint(Long id) {
-        Long currentPoint = donationRepository.waitingTotalPoint(id);
+        Long waitingTotalPoint = donationRepository.waitingTotalPoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);
-        return new DetailedPointResponse(currentPoint, exchangedTotalPoint);
+        return new DetailedPointResponse(waitingTotalPoint, exchangedTotalPoint);
     }
 
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
@@ -131,7 +130,7 @@ public class MemberService {
         Long waitingTotalPoint = donationRepository.waitingTotalPoint(id);
         validateExchangeable(member, waitingTotalPoint);
 
-        Exchange exchange = new Exchange(YearMonth.now(), member);
+        Exchange exchange = new Exchange(member);
         exchangeRepository.save(exchange);
     }
 

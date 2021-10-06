@@ -49,14 +49,12 @@ class ExchangeRepositoryTest {
     private Member initMember(int i) {
         Member member = MemberTest.testMemberWithAccount(i, AccountStatus.REGISTERED);
         accountRepository.save(member.getAccount());
-        memberRepository.save(member);
-        return member;
+        return memberRepository.save(member);
     }
 
     private Exchange initExchange(long amount, Member member) {
         Exchange exchange = new Exchange(amount, YearMonth.of(2021, 1), member);
-        exchangeRepository.save(exchange);
-        return exchange;
+        return exchangeRepository.save(exchange);
     }
 
     @Test
@@ -64,13 +62,6 @@ class ExchangeRepositoryTest {
     void findByStatusAndMember() {
         List<Exchange> exchanges = exchangeRepository
                 .findByStatusAndMember(ExchangeStatus.WAITING, exchange.getMember());
-
-        exchanges.stream()
-                .map(exchange1 -> new ExchangeResponse(exchange1, "123123"))
-                .forEach(exchangeResponse -> {
-                    System.out.println(exchangeResponse.getEmail());
-                    System.out.println(exchangeResponse.getAccountNumber());
-                });
 
         assertThat(exchanges).hasSize(1);
         Exchange exchange = exchanges.get(0);

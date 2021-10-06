@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.YearMonth;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -39,8 +40,15 @@ public class Exchange extends BaseTimeEntity {
         this(null, exchangeAmount, exchangeOn, member);
     }
 
-    public Exchange(YearMonth exchangeOn, Member member) {
-        this(null, 0L, exchangeOn, member);
+    public Exchange(Member member) {
+        this(0L, null, member);
+    }
+
+    @PrePersist
+    private void exchangeOn() {
+        if (Objects.isNull(exchangeOn)) {
+            exchangeOn = YearMonth.now();
+        }
     }
 
     public void toApproved() {

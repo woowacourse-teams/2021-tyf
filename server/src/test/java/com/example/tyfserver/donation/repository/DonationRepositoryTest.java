@@ -71,9 +71,7 @@ class DonationRepositoryTest {
     }
 
     private Donation initDonation(Member creator, LocalDateTime createAt) {
-        Donation donation = new Donation(DonationTest.testMessage(), 5000, createAt);
-        creator.receiveDonation(donation);
-        return donationRepository.save(donation);
+        return initDonation(creator, createAt, DonationStatus.WAITING_FOR_EXCHANGE);
     }
 
     private Donation initDonation(Member creator, LocalDateTime createAt, DonationStatus status) {
@@ -109,11 +107,11 @@ class DonationRepositoryTest {
         donation4.toExchanged();
         donation7.toExchanged();
 
-        Long member1ExchangeablePoint = donationRepository.waitingTotalPoint(creator.getId());
-        Long member2ExchangeablePoint = donationRepository.waitingTotalPoint(donator.getId());
+        Long waitingTotalPoint1 = donationRepository.waitingTotalPoint(creator.getId());
+        Long waitingTotalPoint2 = donationRepository.waitingTotalPoint(donator.getId());
 
-        assertThat(member1ExchangeablePoint).isEqualTo(11000L);
-        assertThat(member2ExchangeablePoint).isEqualTo(0L);
+        assertThat(waitingTotalPoint1).isEqualTo(11000L);
+        assertThat(waitingTotalPoint2).isEqualTo(0L);
     }
 
     @Test
