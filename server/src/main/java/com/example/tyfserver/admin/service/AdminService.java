@@ -6,6 +6,7 @@ import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.admin.exception.ExchangeDoesNotAppliedException;
+import com.example.tyfserver.admin.exception.NotRegisteredAccountException;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.util.Aes256Util;
@@ -13,10 +14,7 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.Exchange;
-import com.example.tyfserver.member.domain.ExchangeStatus;
-import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.*;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -91,6 +89,7 @@ public class AdminService {
     //  rejectExchange() 도 마찬가지.
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
+        validateRegisteredAccount(member);
         Exchange exchange = findExchangeToApprove(member);
 
         List<Donation> donations = donationRepository.findDonationsToExchange(member, exchange.getExchangeOn());
@@ -104,10 +103,17 @@ public class AdminService {
 
     public void rejectExchange(String pageName, String rejectReason) {
         Member member = findMember(pageName);
+        validateRegisteredAccount(member);
         Exchange exchange = findExchangeToApprove(member);
         exchange.toRejected();
 
         mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
+    }
+
+    private void validateRegisteredAccount(Member member) {
+        if (member.getAccount().getStatus() != AccountStatus.REGISTERED) {
+            throw new NotRegisteredAccountException();
+        }
     }
 
     private Exchange findExchangeToApprove(Member member) {
