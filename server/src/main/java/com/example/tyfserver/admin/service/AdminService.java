@@ -152,7 +152,7 @@ public class AdminService {
 
     @Scheduled(cron = "0 0 0 1 * *")
     public void calculateExchangeAmount() {
-        exchangeRepository.findByStatus(ExchangeStatus.WAITING).stream().forEach(exchange -> {
+        exchangeRepository.findByStatus(ExchangeStatus.WAITING).forEach(exchange -> {
             Long exchangeAmount = donationRepository
                     .calculateExchangeAmountFromDonation(exchange.getMember(), exchange.getExchangeOn());
             exchange.registerExchangeAmount(exchangeAmount);
