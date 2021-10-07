@@ -51,6 +51,10 @@ public class Exchange extends BaseTimeEntity {
         }
     }
 
+    public void registerExchangeAmount(Long exchangeAmount) {
+        this.exchangeAmount = exchangeAmount;
+    }
+
     public void toApproved() {
         status = ExchangeStatus.APPROVED;
     }

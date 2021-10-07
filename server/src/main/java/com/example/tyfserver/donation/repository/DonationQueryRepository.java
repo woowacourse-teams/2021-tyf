@@ -13,4 +13,6 @@ public interface DonationQueryRepository {
     Long exchangedTotalPoint(Long creatorId);
 
     List<Donation> findDonationsToExchange(Member creator, YearMonth exchangeOn);
+
+    Long calculateExchangeAmountFromDonation(Member creator, YearMonth exchangeOn);
 }

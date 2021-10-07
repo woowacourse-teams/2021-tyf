@@ -126,7 +126,7 @@ class DonationRepositoryTest {
 
     @Test
     @DisplayName("정산해야하는 도네이션들을 조회한다.")
-    void findDonationsToExchange() {
+    public void findDonationsToExchange() {
         // given
         Member creator1 = initMember(3);
         Member creator2 = initMember(4);
@@ -152,6 +152,29 @@ class DonationRepositoryTest {
         assertThat(donations).hasSize(expectedDonationIds.size());
         donations.forEach(donation -> assertThat(donation.getId()).isIn(expectedDonationIds));
     }
+
+
+    @Test
+    @DisplayName("정산해야 하는 도네이션들의 총 정산금액을 계산한다.")
+    public void calculateExchangeAmountFromDonation() {
+        // given
+        Member creator1 = initMember(3);
+        Long exchangeAmount = 0L;
+        exchangeAmount += initDonation(creator1, createdAt(1, 1)).getPoint();
+        exchangeAmount += initDonation(creator1, createdAt(2, 1)).getPoint();
+        exchangeAmount += initDonation(creator1, LocalDateTime.of(2021, 2, 28, 23, 59)).getPoint();
+
+        initDonation(creator1, createdAt(12, 31)).getPoint();
+        initDonation(creator1, createdAt(3, 1));
+        initDonation(creator1, createdAt(1, 1), DonationStatus.EXCHANGED);
+
+        // when
+        Long amount = donationRepository.calculateExchangeAmountFromDonation(creator1, YearMonth.of(2021, 2));
+
+        // then
+        assertThat(amount).isEqualTo(exchangeAmount);
+    }
+
 
     private LocalDateTime createdAt(int month, int dayOfMonth) {
         return LocalDate.of(2021, month, dayOfMonth).atStartOfDay();

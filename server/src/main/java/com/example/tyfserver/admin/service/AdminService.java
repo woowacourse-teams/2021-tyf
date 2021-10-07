@@ -148,4 +148,12 @@ public class AdminService {
         String token = authenticationService.createAdminToken(adminLoginRequest.getId());
         return new TokenResponse(token);
     }
+    
+    public void calculateExchange() {
+        exchangeRepository.findByStatus(ExchangeStatus.WAITING).stream().forEach(exchange -> {
+            Long exchangeAmount = donationRepository
+                    .calculateExchangeAmountFromDonation(exchange.getMember(), exchange.getExchangeOn());
+            exchange.registerExchangeAmount(exchangeAmount);
+        });
+    }
 }
