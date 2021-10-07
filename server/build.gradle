@@ -72,6 +72,9 @@ dependencies {
 
     //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    //flyway
+    implementation 'org.flywaydb:flyway-core:6.4.2'
 }
 
 test {
