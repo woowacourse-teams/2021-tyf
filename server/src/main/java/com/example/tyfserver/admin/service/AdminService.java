@@ -19,6 +19,7 @@ import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,8 +149,9 @@ public class AdminService {
         String token = authenticationService.createAdminToken(adminLoginRequest.getId());
         return new TokenResponse(token);
     }
-    
-    public void calculateExchange() {
+
+    @Scheduled(cron = "0 0 0 1 * *")
+    public void calculateExchangeAmount() {
         exchangeRepository.findByStatus(ExchangeStatus.WAITING).stream().forEach(exchange -> {
             Long exchangeAmount = donationRepository
                     .calculateExchangeAmountFromDonation(exchange.getMember(), exchange.getExchangeOn());

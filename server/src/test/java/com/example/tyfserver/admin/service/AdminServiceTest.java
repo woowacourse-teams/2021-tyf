@@ -21,12 +21,15 @@ import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.repository.PaymentRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.scheduling.config.CronTask;
+import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -61,6 +64,8 @@ class AdminServiceTest {
     private PaymentRepository paymentRepository;
     @Autowired
     private DonationRepository donationRepository;
+    @Autowired
+    private ScheduledTaskHolder scheduledTaskHolder;
 
     @MockBean
     private S3Connector s3Connector;
@@ -316,5 +321,20 @@ class AdminServiceTest {
         assertThat(response.getAccountNumber()).isEqualTo("123-456-789");
         assertThat(response.getBank()).isEqualTo(findRequestingMember.getAccount().getBank());
         assertThat(response.getBankbookImageUrl()).isEqualTo(findRequestingMember.getAccount().getBankbookUrl());
+    }
+
+    @Test
+    @DisplayName("매달 1일 00:00에 정산금액을 계산한다.")
+    public void calculateExchangeAmount() {
+        String methodName = AdminService.class.getName() + ".calculateExchangeAmount";
+        String cron = "0 0 0 1 * *";
+
+        long count = scheduledTaskHolder.getScheduledTasks().stream()
+                .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
+                .map(scheduledTask -> (CronTask) scheduledTask.getTask())
+                .filter(cronTask -> cronTask.getExpression().equals(cron) && cronTask.toString().equals(methodName))
+                .count();
+
+        Assertions.assertThat(count).isEqualTo(1L);
     }
 }
