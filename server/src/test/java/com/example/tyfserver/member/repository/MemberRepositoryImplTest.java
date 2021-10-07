@@ -3,6 +3,7 @@ package com.example.tyfserver.member.repository;
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -170,6 +172,12 @@ class MemberRepositoryImplTest {
         member.updateBio("I am test");
         em.persist(member);
         return member;
+    }
+
+    private void initDonation(Member member, long amount, DonationStatus status, LocalDateTime createAt) {
+        Donation donation = new Donation(DonationTest.testMessage(), amount, status, createAt);
+        member.receiveDonation(donation);
+        em.persist(donation);
     }
 
     private void initDonation(Member member, long amount) {

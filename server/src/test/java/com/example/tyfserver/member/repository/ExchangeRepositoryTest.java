@@ -1,8 +1,12 @@
 package com.example.tyfserver.member.repository;
 
-import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.common.config.JpaAuditingConfig;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.*;
+import com.example.tyfserver.member.dto.ExchangeAmountDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -21,6 +27,8 @@ class ExchangeRepositoryTest {
 
     @Autowired
     private ExchangeRepository exchangeRepository;
+    @Autowired
+    private DonationRepository donationRepository;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
@@ -68,4 +76,43 @@ class ExchangeRepositoryTest {
         assertThat(exchange.getMember()).isEqualTo(member);
         assertThat(exchange.getExchangeAmount()).isEqualTo(10000);
     }
+
+    @Test
+    @DisplayName("정산해야 하는 도네이션들의 총 정산금액을 계산한다.")
+    public void calculateExchangeAmountFromDonation() {
+        //given
+        Member member = initMember(5);
+        member.receiveDonation(
+                donationRepository.save(new Donation(new Message(""), 5000, createdAt(1, 1))));
+        member.receiveDonation(
+                donationRepository.save(new Donation(new Message(""), 5000, createdAt(2, 1))));
+        member.receiveDonation(
+                donationRepository.save(new Donation(new Message(""), 5000,
+                LocalDateTime.of(2021, 2, 28, 23, 59))));
+
+        member.receiveDonation(donationRepository.save(new Donation(new Message(""), 5000,
+                createdAt(3, 1))));
+        member.receiveDonation(donationRepository.save(new Donation(new Message(""), 5000,
+                createdAt(12, 31))));
+        member.receiveDonation(donationRepository.save(new Donation(new Message(""), 5000, DonationStatus.EXCHANGED,
+                createdAt(1, 1))));
+
+        memberRepository.save(member);
+
+        Exchange exchange = new Exchange(0L, YearMonth.of(2021, 1), member);
+        exchangeRepository.save(exchange);
+        //when
+        List<ExchangeAmountDto> exchangeAmountDtos = exchangeRepository.calculateExchangeAmountFromDonation(YearMonth.of(2021, 2));
+
+        //then
+        assertThat(exchangeAmountDtos).hasSize(1);
+        assertThat(exchangeAmountDtos.get(0).getExchangeId()).isEqualTo(exchange.getId());
+        assertThat(exchangeAmountDtos.get(0).getExchangeAmount()).isEqualTo(15000);
+    }
+
+    private LocalDateTime createdAt(int month, int dayOfMonth) {
+        return LocalDate.of(2021, month, dayOfMonth).atStartOfDay();
+    }
+
+
 }
