@@ -1,3 +1,11 @@
+export enum REGISTER_ERROR {
+  DUPLICATE_NICKNAME = 'member-005',
+}
+
+export const REGISTER_ERROR_MESSAGE = {
+  [REGISTER_ERROR.DUPLICATE_NICKNAME]: '이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요.',
+} as const;
+
 export enum AUTH_ERROR {
   INVALID_TOKEN = 'auth-002',
   ALREADY_REGISTER = 'auth-004',
@@ -29,7 +37,7 @@ export enum DONATION_ERROR {
 
 export const DONATION_ERROR_MESSAGE = {
   [DONATION_ERROR.INVALID_USER]: '존재하지 않는 창작자 입니다.',
-  [DONATION_ERROR.NOT_ENOUGH_POINT]: '보유 포인트가 충분하지 않습니다.',
+  [DONATION_ERROR.NOT_ENOUGH_POINT]: '보유 포인트가 충분하지 않습니다. 포인트를 충전하시겠습니까?',
 } as const;
 
 export enum CHARGE_ERROR {

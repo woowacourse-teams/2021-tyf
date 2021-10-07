@@ -2,7 +2,8 @@ package com.example.tyfserver.donation.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.domain.DonationStatus;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -14,7 +15,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +30,6 @@ class DonationRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private DonationRepository donationRepository;
 
@@ -40,11 +45,9 @@ class DonationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        creator = MemberTest.testMember();
-        donator = MemberTest.testMember2();
+        creator = initMember(1);
+        donator = initMember(2);
         donator.increasePoint(100000L);
-        memberRepository.save(creator);
-        memberRepository.save(donator);
 
         // 총 28000 포인트
         donation1 = initDonation(1000L, false);
@@ -56,55 +59,101 @@ class DonationRepositoryTest {
         donation7 = initDonation(7000L, false);
     }
 
+    private Member initMember(int i) {
+        Member member = MemberTest.testMember(i);
+        return memberRepository.save(member);
+    }
+
     private Donation initDonation(Long point, boolean secret) {
-        Donation donation = new Donation(new Message("name", "message", secret), point);
+        Donation donation = new Donation(DonationTest.testMessage(secret), point);
         donation.donate(donator, creator);
-        donationRepository.save(donation);
-        return donation;
+        return donationRepository.save(donation);
+    }
+
+    private Donation initDonation(Member creator, LocalDateTime createAt) {
+        return initDonation(creator, createAt, DonationStatus.WAITING_FOR_EXCHANGE);
+    }
+
+    private Donation initDonation(Member creator, LocalDateTime createAt, DonationStatus status) {
+        Donation donation = new Donation(DonationTest.testMessage(), 5000, status, createAt);
+        creator.receiveDonation(donation);
+        return donationRepository.save(donation);
     }
 
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
-    public void findTop5ByMember() {
-        List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(creator, PageRequest.of(0, 5));
-        assertThat(donations).containsExactlyInAnyOrder(
-                donation7, donation6, donation5, donation4, donation3
-        );
+    public void findDonationByCreatorOrderByCreatedAtDesc() {
+        List<Donation> donations = donationRepository
+                .findDonationByCreatorOrderByCreatedAtDesc(creator, PageRequest.of(0, 5));
+
+        assertThat(donations).containsExactlyInAnyOrder(donation7, donation6, donation5, donation4, donation3);
     }
 
     @Test
     @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
-    public void findDonationByMemberOrderByCreatedAtDesc() {
-        List<Donation> donations = donationRepository.findDonationByCreatorOrderByCreatedAtDesc(
-                creator, PageRequest.of(1, 3));
-        assertThat(donations).containsExactlyInAnyOrder(
-                donation4, donation3, donation2
-        );
+    public void findDonationByCreatorOrderByCreatedAtDesc_2() {
+        List<Donation> donations = donationRepository
+                .findDonationByCreatorOrderByCreatedAtDesc(creator, PageRequest.of(1, 3));
+
+        assertThat(donations).containsExactlyInAnyOrder(donation4, donation3, donation2);
     }
 
     @Test
-    @DisplayName("정산 가능 포인트를 조회한다.")
-    public void exchangeablePoint() {
+    @DisplayName("정산되지 않은 총 포인트를 조회한다.")
+    public void waitingTotalPoint() {
         donation1.toExchanged();
         donation2.toExchanged();
         donation3.toExchanged();
         donation4.toExchanged();
         donation7.toExchanged();
 
-        Long member1ExchangeablePoint = donationRepository.currentPoint(creator.getId());
-        Long member2ExchangeablePoint = donationRepository.currentPoint(donator.getId());
+        Long waitingTotalPoint1 = donationRepository.waitingTotalPoint(creator.getId());
+        Long waitingTotalPoint2 = donationRepository.waitingTotalPoint(donator.getId());
 
-        assertThat(member1ExchangeablePoint).isEqualTo(11000L);
-        assertThat(member2ExchangeablePoint).isEqualTo(0L);
+        assertThat(waitingTotalPoint1).isEqualTo(11000L);
+        assertThat(waitingTotalPoint2).isEqualTo(0L);
     }
 
     @Test
-    @DisplayName("정산 완료 총 포인트를 조회한다.")
+    @DisplayName("정산이 완료된 총 포인트를 조회한다.")
     public void exchangedTotalPoint() {
         donation2.toExchanged();
 
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(creator.getId());
 
         assertThat(exchangedTotalPoint).isEqualTo(2000L);
+    }
+
+    @Test
+    @DisplayName("정산해야하는 도네이션들을 조회한다.")
+    void findDonationsToExchange() {
+        // given
+        Member creator1 = initMember(3);
+        Member creator2 = initMember(4);
+
+        Donation donation1 = initDonation(creator1, createdAt(1, 1));
+        Donation donation2 = initDonation(creator1, createdAt(2, 1));
+        Donation donation3 = initDonation(creator1, LocalDateTime.of(2021, 2, 28, 23, 59));
+
+        initDonation(creator2, createdAt(1, 1));
+        initDonation(creator1, createdAt(3, 1));
+        initDonation(creator1, createdAt(12, 31));
+        initDonation(creator1, createdAt(1, 1), DonationStatus.EXCHANGED);
+
+
+        // when
+        List<Donation> donations = donationRepository.findDonationsToExchange(creator1, YearMonth.of(2021, 2));
+
+        // then
+        List<Long> expectedDonationIds = Stream.of(donation1, donation2, donation3)
+                .map(Donation::getId)
+                .collect(Collectors.toList());
+
+        assertThat(donations).hasSize(expectedDonationIds.size());
+        donations.forEach(donation -> assertThat(donation.getId()).isIn(expectedDonationIds));
+    }
+
+    private LocalDateTime createdAt(int month, int dayOfMonth) {
+        return LocalDate.of(2021, month, dayOfMonth).atStartOfDay();
     }
 }

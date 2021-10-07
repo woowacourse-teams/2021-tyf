@@ -53,7 +53,6 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         assertThat(list).hasSize(0);
     }
 
-
     @Test
     @DisplayName("승인 요청된 계좌목록을 조회 한다.")
     public void requestingAccounts() {
@@ -61,7 +60,6 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
         계좌_등록(generateMultiPartSpecification(), "test", "1234-1234-1234", "bank", signUpResponse.getToken());
         String token = 관리자_로그인("test-id", "test-password").getToken();
-
 
         //when
         List<RequestingAccountResponse> result = 요청_계좌_목록_조회(token).body().jsonPath().getList(".", RequestingAccountResponse.class);
@@ -82,7 +80,6 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음(DEFAULT_EMAIL, "KAKAO", "nickname", "pagename");
         계좌_등록(generateMultiPartSpecification(), "test", "1234-1234-1234", "bank", signUpResponse.getToken());
         String token = 관리자_로그인("test-id", "test-password").getToken();
-
 
         List<RequestingAccountResponse> requestingAccounts =
                 요청_계좌_목록_조회(token).body().jsonPath().getList(".", RequestingAccountResponse.class);
@@ -105,7 +102,6 @@ public class AdminAcceptanceTest extends AcceptanceTest {
         //when
         assertThat(요청_계좌_반려(requestingAccounts.get(0).getMemberId(), token).statusCode()).isEqualTo(200);
     }
-
 
     private MultiPartSpecification generateMultiPartSpecification() {
         return new MultiPartSpecBuilder("testImageBinary".getBytes())

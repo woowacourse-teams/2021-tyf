@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import PALETTE from './constants/palette';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -9,11 +10,11 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     padding: 0;
     margin:0;
-    user-select: none;
   }
 
-  input, textarea {
-    user-select: auto;
+  *::selection {
+    color: ${PALETTE.WHITE_400};
+    background: ${({ theme }) => theme.primary.base};
   }
 
   a {

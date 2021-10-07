@@ -5,17 +5,16 @@ import com.example.tyfserver.admin.dto.AccountRejectRequest;
 import com.example.tyfserver.admin.dto.AdminLoginRequest;
 import com.example.tyfserver.admin.dto.ExchangeResponse;
 import com.example.tyfserver.admin.dto.RequestingAccountResponse;
+import com.example.tyfserver.admin.exception.ExchangeDoesNotAppliedException;
+import com.example.tyfserver.admin.exception.NotRegisteredAccountException;
 import com.example.tyfserver.auth.dto.TokenResponse;
 import com.example.tyfserver.auth.service.AuthenticationService;
 import com.example.tyfserver.common.util.Aes256Util;
 import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.Exchange;
-import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.domain.*;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -75,32 +74,68 @@ public class AdminService {
     }
 
     public List<ExchangeResponse> exchangeList() {
-        List<Exchange> exchanges = exchangeRepository.findAll();
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
 
-        for (Exchange exchange : exchanges) {
-            String decryptedAccountNumber = aes256Util.decrypt(exchange.getAccountNumber());
-            exchangeResponses.add(new ExchangeResponse(exchange.getName(), exchange.getEmail(), exchange.getExchangeAmount(),
-                    decryptedAccountNumber, exchange.getNickname(), exchange.getPageName(), exchange.getCreatedAt()));
+        for (Exchange exchange : exchangeRepository.findByStatus(ExchangeStatus.WAITING)) {
+            String decryptedAccountNumber = aes256Util.decrypt(exchange.getMember().getAccount().getAccountNumber());
+            exchangeResponses.add(new ExchangeResponse(exchange, decryptedAccountNumber));
         }
 
         return exchangeResponses;
     }
 
+    // todo pageName말고 exchange id로 받으면 좋을듯.
+    //  이 api전에 exchangeList() api가 호출되고 List<ExchangeResponse>를 반환하는데, 이때 exchangeId 주면 됨
+    //  rejectExchange() 도 마찬가지.
     public void approveExchange(String pageName) {
         Member member = findMember(pageName);
-        List<Donation> donations = donationRepository.findDonationByStatusAndCreator(DonationStatus.WAITING_FOR_EXCHANGE, member);
-        for (Donation donation : donations) {
-            donation.toExchanged();
-        }
+        validateRegisteredAccount(member);
+        Exchange exchange = findExchangeToApprove(member);
+
+        List<Donation> donations = donationRepository.findDonationsToExchange(member, exchange.getExchangeOn());
+        validateAmount(exchange, donations);
+
+        exchange.toApproved();
+        donations.forEach(Donation::toExchanged);
+
         mailConnector.sendExchangeApprove(member.getEmail());
-        exchangeRepository.deleteByPageName(pageName);
     }
 
     public void rejectExchange(String pageName, String rejectReason) {
         Member member = findMember(pageName);
-        exchangeRepository.deleteByPageName(pageName);
+        validateRegisteredAccount(member);
+        Exchange exchange = findExchangeToApprove(member);
+        exchange.toRejected();
+
         mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
+    }
+
+    private void validateRegisteredAccount(Member member) {
+        if (member.isAccountNotRegistered()) {
+            throw new NotRegisteredAccountException();
+        }
+    }
+
+    private Exchange findExchangeToApprove(Member member) {
+        List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, member);
+        if (exchanges.isEmpty()) {
+            throw new ExchangeDoesNotAppliedException();
+        }
+        if (exchanges.size() > 1) {
+            throw new RuntimeException("서버오류: 대기중인 정산이 2개 이상임"); // todo 클라이언트에게 예외 포맷대로 알려주기
+        }
+        return exchanges.get(0);
+    }
+
+    private void validateAmount(Exchange exchange, List<Donation> donations) {
+        long actualTotalDonationPoint = donations.stream()
+                .mapToLong(Donation::getPoint)
+                .sum();
+
+        if (exchange.getExchangeAmount() != actualTotalDonationPoint) {
+            // todo 실제후원금액대로 정산을 진행시켜야하나?
+            throw new RuntimeException("서버오류: 정산신청 금액과 실제 후원금액이 맞지 않음");
+        }
     }
 
     private Member findMember(String pageName) {

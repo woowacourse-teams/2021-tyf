@@ -11,31 +11,32 @@ import java.time.LocalDateTime;
 public class ExchangeResponse {
 
     private String name;
-
     private String email;
-
+    private String nickname;
+    private String pageName;
     private Long exchangeAmount;
-
+    private LocalDateTime createdAt;
     private String accountNumber;
 
-    private String nickname;
-
-    private String pageName;
-
-    private LocalDateTime createdAt;
-
-    public ExchangeResponse(Exchange exchange) {
-        this(exchange.getName(), exchange.getEmail(), exchange.getExchangeAmount(), exchange.getAccountNumber(),
-                exchange.getNickname(), exchange.getPageName(), exchange.getCreatedAt());
+    public ExchangeResponse(Exchange exchange, String decryptedAccountNumber) {
+        this(
+                exchange.getMember().getAccount().getAccountHolder(),
+                exchange.getMember().getEmail(),
+                exchange.getMember().getNickname(),
+                exchange.getMember().getPageName(),
+                exchange.getExchangeAmount(),
+                exchange.getCreatedAt(),
+                decryptedAccountNumber
+        );
     }
 
-    public ExchangeResponse(String name, String email, Long exchangeAmount, String accountNumber, String nickname, String pageName, LocalDateTime createdAt) {
+    public ExchangeResponse(String name, String email, String nickname, String pageName, Long exchangeAmount, LocalDateTime createdAt, String accountNumber) {
         this.name = name;
         this.email = email;
-        this.exchangeAmount = exchangeAmount;
-        this.accountNumber = accountNumber;
         this.nickname = nickname;
         this.pageName = pageName;
+        this.exchangeAmount = exchangeAmount;
         this.createdAt = createdAt;
+        this.accountNumber = accountNumber;
     }
 }

@@ -2,14 +2,14 @@ package com.example.tyfserver;
 
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,22 +26,30 @@ public class DatabaseCleanup implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         tableNames = entityManager.getMetamodel().getEntities().stream()
-                .filter(entity -> Objects.nonNull(entity.getJavaType().getAnnotation(Entity.class)))
-                .map(entity -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entity.getName()))
+                .filter(entityType -> entityType.getJavaType().isAnnotationPresent(Entity.class))
+                .map(entityType -> {
+                    if (entityType.getJavaType().isAnnotationPresent(Table.class)) {
+                        return entityType.getJavaType().getAnnotation(Table.class).name();
+                    }
+                    return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entityType.getName());
+                })
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public void cleanUp() {
         entityManager.flush();
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
+
+        List<String> cleanUpSql = new ArrayList<>();
+        cleanUpSql.add("SET REFERENTIAL_INTEGRITY FALSE");
 
         for (String tableName : tableNames) {
-            entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
-            entityManager.createNativeQuery("ALTER TABLE " + tableName +
-                    " ALTER COLUMN ID RESTART WITH 1").executeUpdate();
+            cleanUpSql.add("TRUNCATE TABLE " + tableName);
+            cleanUpSql.add("ALTER TABLE " + tableName + " ALTER COLUMN ID RESTART WITH 1");
         }
 
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        cleanUpSql.add("SET REFERENTIAL_INTEGRITY TRUE");
+
+        entityManager.createNativeQuery(String.join("; ", cleanUpSql)).executeUpdate();
     }
 }

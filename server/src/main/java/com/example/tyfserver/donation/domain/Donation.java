@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -44,6 +45,17 @@ public class Donation extends BaseTimeEntity {
         this.id = id;
         this.message = message;
         this.point = point;
+    }
+
+    public Donation(Message message, long point, LocalDateTime createdAt) {
+        this(message, point, DonationStatus.WAITING_FOR_EXCHANGE, createdAt);
+    }
+
+    public Donation(Message message, long point, DonationStatus status, LocalDateTime createdAt) {
+        super(createdAt);
+        this.message = message;
+        this.point = point;
+        this.status = status;
     }
 
     public void donate(Member donator, Member creator) {
