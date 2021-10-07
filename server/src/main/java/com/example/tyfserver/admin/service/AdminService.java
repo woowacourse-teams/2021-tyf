@@ -14,7 +14,11 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.*;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.Exchange;
+import com.example.tyfserver.member.domain.ExchangeStatus;
+import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.dto.ExchangeAmountDto;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -23,6 +27,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,10 +157,14 @@ public class AdminService {
 
     @Scheduled(cron = "0 0 0 1 * *")
     public void calculateExchangeAmount() {
-        exchangeRepository.findByStatus(ExchangeStatus.WAITING).forEach(exchange -> {
-            Long exchangeAmount = donationRepository
-                    .calculateExchangeAmountFromDonation(exchange.getMember(), exchange.getExchangeOn());
-            exchange.registerExchangeAmount(exchangeAmount);
+        List<ExchangeAmountDto> exchangeAmountDtos = exchangeRepository.calculateExchangeAmountFromDonation(YearMonth.now());
+
+        exchangeAmountDtos.forEach(exchangeAmountDto -> {
+            exchangeRepository.findById(exchangeAmountDto.getExchangeId())
+                    .ifPresentOrElse(exchange -> exchange.registerExchangeAmount(exchangeAmountDto.getExchangeAmount()),
+                            () -> {
+                                throw new NotRegisteredAccountException();
+                            });
         });
     }
 }
