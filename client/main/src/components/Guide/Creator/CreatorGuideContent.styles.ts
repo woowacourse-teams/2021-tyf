@@ -6,17 +6,19 @@ export const StyledCreatorGuideContent = styled.div`
   width: 100%;
 `;
 
-export const StyledContentContainer = styled.div``;
+export const StyledContentContainer = styled.div`
+  margin-bottom: 5rem;
+`;
 
 export const StyledTitle = styled(Title)`
   padding: 0;
   text-align: left;
-  margin-bottom: 2.5rem;
+  margin-bottom: 5rem;
 `;
 
 export const StyledSubTitle = styled(SubTitle)`
   text-align: left;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
 `;
 
 export const StyledContents = styled.div`
@@ -24,6 +26,7 @@ export const StyledContents = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2.5rem;
+  padding-left: 3rem;
 `;
 
 export const StyledImage = styled.div`
@@ -35,4 +38,13 @@ export const StyledImage = styled.div`
   }
 `;
 
-export const StyledContent = styled.div``;
+export const StyledContent = styled.div`
+  width: 100%;
+  padding-left: 3rem;
+
+  p {
+    width: 100%;
+    line-height: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+`;
