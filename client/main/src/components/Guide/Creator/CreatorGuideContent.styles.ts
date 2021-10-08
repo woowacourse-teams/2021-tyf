@@ -28,26 +28,33 @@ export const StyledContents = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 5rem;
 
-  @media ${DEVICE.DESKTOP} {
+  @media ${DEVICE.DESKTOP_LARGE} {
     flex-direction: row;
     padding-left: 3rem;
+    margin-bottom: 2.5rem;
   }
 `;
 
 export const StyledImage = styled.div`
   width: 50%;
   background-color: ${PALETTE.GRAY_200};
+  margin-bottom: 1.5rem;
 
   img {
     width: 100%;
     object-fit: contain;
   }
+
+  @media ${DEVICE.DESKTOP_LARGE} {
+    margin-bottom: 0;
+  }
 `;
 
 export const StyledContent = styled.div`
   width: 100%;
+  text-align: center;
 
   p {
     width: 100%;
@@ -55,7 +62,7 @@ export const StyledContent = styled.div`
     margin-bottom: 0.5rem;
   }
 
-  @media ${DEVICE.DESKTOP} {
+  @media ${DEVICE.DESKTOP_LARGE} {
     padding-left: 3rem;
   }
 `;
