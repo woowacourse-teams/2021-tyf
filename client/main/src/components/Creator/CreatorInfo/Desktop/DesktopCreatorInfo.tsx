@@ -25,7 +25,7 @@ const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPag
         <StyledInfo>
           <NickName>{creator.nickname}</NickName>
           {isAdmin ? (
-            <StyledButton onClick={shareUrl}>후원링크 공유하기</StyledButton>
+            <StyledButton onClick={shareUrl}>도네이션 주소 공유하기</StyledButton>
           ) : (
             <StyledButton onClick={popupDonationAmountPage}>도네이션하기</StyledButton>
           )}
