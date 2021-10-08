@@ -15,7 +15,7 @@ spring:
       ddl-auto: validate
 
   profiles:
-    include: prod-secret
+    include: performance-secret
 
   config:
     use-legacy-processing: true
@@ -26,8 +26,3 @@ logging:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
-
-
-cloudwatch:
-  log_group:
-    /tyf/logs/app/prod
