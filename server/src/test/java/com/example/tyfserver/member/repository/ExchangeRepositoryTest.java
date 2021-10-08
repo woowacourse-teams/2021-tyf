@@ -2,8 +2,7 @@ package com.example.tyfserver.member.repository;
 
 import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
-import com.example.tyfserver.donation.domain.DonationStatus;
-import com.example.tyfserver.donation.domain.Message;
+import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.repository.DonationRepository;
 import com.example.tyfserver.member.domain.*;
 import com.example.tyfserver.member.dto.ExchangeAmountDto;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -24,6 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
 class ExchangeRepositoryTest {
+
+    @Autowired
+    private EntityManager em;
 
     @Autowired
     private ExchangeRepository exchangeRepository;
@@ -65,12 +68,30 @@ class ExchangeRepositoryTest {
         return exchangeRepository.save(exchange);
     }
 
+    private Exchange initExchange(long amount, Member member, YearMonth exchangeOn) {
+        Exchange exchange = new Exchange(amount, exchangeOn, member);
+        return exchangeRepository.save(exchange);
+    }
+
+    private Donation initDonation(LocalDateTime createdAt) {
+        Donation donation = new Donation(DonationTest.testMessage(), 5000, createdAt);
+        return donationRepository.save(donation);
+    }
+
+    private void flushAndClear() {
+        em.flush();
+        em.clear();
+    }
+
     @Test
     @DisplayName("ExchangeStatus와 Member로 Exchange 조회")
     void findByStatusAndMember() {
-        List<Exchange> exchanges = exchangeRepository
-                .findByStatusAndMember(ExchangeStatus.WAITING, exchange.getMember());
+        //when
+        flushAndClear();
+        List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, exchange.getMember());
+        flushAndClear();
 
+        //then
         assertThat(exchanges).hasSize(1);
         Exchange exchange = exchanges.get(0);
         assertThat(exchange.getMember()).isEqualTo(member);
@@ -82,27 +103,22 @@ class ExchangeRepositoryTest {
     public void calculateExchangeAmountFromDonation() {
         //given
         Member member = initMember(5);
-        member.receiveDonation(
-                donationRepository.save(new Donation(new Message(""), 5000, createdAt(1, 1))));
-        member.receiveDonation(
-                donationRepository.save(new Donation(new Message(""), 5000, createdAt(2, 1))));
-        member.receiveDonation(
-                donationRepository.save(new Donation(new Message(""), 5000,
-                LocalDateTime.of(2021, 2, 28, 23, 59))));
+        member.receiveDonation(initDonation(createdAt(1, 1)));
+        member.receiveDonation(initDonation(createdAt(2, 1)));
+        member.receiveDonation(initDonation(LocalDateTime.of(2021, 2, 28, 23, 59)));
 
-        member.receiveDonation(donationRepository.save(new Donation(new Message(""), 5000,
-                createdAt(3, 1))));
-        member.receiveDonation(donationRepository.save(new Donation(new Message(""), 5000,
-                createdAt(12, 31))));
-        member.receiveDonation(donationRepository.save(new Donation(new Message(""), 5000, DonationStatus.EXCHANGED,
-                createdAt(1, 1))));
+        member.receiveDonation(initDonation(createdAt(3, 1)));
+        member.receiveDonation(initDonation(createdAt(12, 31)));
+        Donation donation = initDonation(createdAt(1, 1));
+        donation.toExchanged();
+        member.receiveDonation(donation);
 
-        memberRepository.save(member);
+        Exchange exchange = initExchange(0L, member, YearMonth.of(2021, 1));
 
-        Exchange exchange = new Exchange(0L, YearMonth.of(2021, 1), member);
-        exchangeRepository.save(exchange);
         //when
-        List<ExchangeAmountDto> exchangeAmountDtos = exchangeRepository.calculateExchangeAmountFromDonation(YearMonth.of(2021, 2));
+        flushAndClear();
+        List<ExchangeAmountDto> exchangeAmountDtos = exchangeRepository.calculateExchangeAmountFromDonation(YearMonth.of(2021, 3));
+        flushAndClear();
 
         //then
         assertThat(exchangeAmountDtos).hasSize(1);
@@ -113,6 +129,4 @@ class ExchangeRepositoryTest {
     private LocalDateTime createdAt(int month, int dayOfMonth) {
         return LocalDate.of(2021, month, dayOfMonth).atStartOfDay();
     }
-
-
 }
