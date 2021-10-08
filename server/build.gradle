@@ -101,7 +101,8 @@ build {
 processResources.dependsOn('copySecret')
 
 task copySecret(type: Copy) {
-    from 'securityKey/application-dev-secret.yml', 'securityKey/application-prod-secret.yml'
+    from 'securityKey/application-dev-secret.yml', 'securityKey/application-prod-secret.yml',
+            'securityKey/application-performance-secret.yml'
     into 'src/main/resources'
 }
 
