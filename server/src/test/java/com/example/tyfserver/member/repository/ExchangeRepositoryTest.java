@@ -89,12 +89,11 @@ class ExchangeRepositoryTest {
         //when
         flushAndClear();
         List<Exchange> exchanges = exchangeRepository.findByStatusAndMember(ExchangeStatus.WAITING, exchange.getMember());
-        flushAndClear();
 
         //then
         assertThat(exchanges).hasSize(1);
         Exchange exchange = exchanges.get(0);
-        assertThat(exchange.getMember()).isEqualTo(member);
+        assertThat(exchange.getMember().getId()).isEqualTo(member.getId());
         assertThat(exchange.getExchangeAmount()).isEqualTo(10000);
     }
 

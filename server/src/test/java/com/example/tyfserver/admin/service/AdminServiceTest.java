@@ -326,7 +326,7 @@ class AdminServiceTest {
     @Test
     @DisplayName("매달 1일 00:00에 정산금액을 계산한다.")
     public void updateExchangeAmount_scheduler() {
-        String methodName = AdminService.class.getName() + ".calculateExchangeAmount";
+        String methodName = AdminService.class.getName() + ".updateExchangeAmount";
         String cron = "0 0 0 1 * *";
 
         long count = scheduledTaskHolder.getScheduledTasks().stream()
