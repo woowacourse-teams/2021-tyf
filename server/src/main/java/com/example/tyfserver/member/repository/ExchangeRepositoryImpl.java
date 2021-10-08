@@ -15,7 +15,7 @@ import java.util.List;
 import static com.example.tyfserver.donation.domain.QDonation.donation;
 import static com.example.tyfserver.member.domain.QExchange.exchange;
 
-public class ExchangeRepositoryImpl implements ExchangeQueryRepository{
+public class ExchangeRepositoryImpl implements ExchangeQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -24,16 +24,16 @@ public class ExchangeRepositoryImpl implements ExchangeQueryRepository{
     }
 
     @Override
-    public List<ExchangeAmountDto> calculateExchangeAmountFromDonation(YearMonth exchangeOn) {
+    public List<ExchangeAmountDto> calculateExchangeAmountFromDonation(YearMonth exchangeApproveOn) {
         return queryFactory
                 .select(new QExchangeAmountDto(exchange.id, donation.point.sum()))
                 .from(exchange)
                 .leftJoin(exchange.member.receivedDonations, donation)
                 .groupBy(exchange.id)
                 .where(
-                        exchange.status.eq(ExchangeStatus.WAITING),
+                        waitingStatus(),
                         waitingForExchangeStatus(),
-                        beforeStartOfNextMonth(exchangeOn)
+                        beforeStartOfThisMonth(exchangeApproveOn)
                 )
                 .fetch();
     }
@@ -42,9 +42,13 @@ public class ExchangeRepositoryImpl implements ExchangeQueryRepository{
         return donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE);
     }
 
-    private BooleanExpression beforeStartOfNextMonth(YearMonth exchangeOn) {
-        // 정산신청일자 다음달 1일 00:00 이전
-        LocalDateTime startOfNextMonth = exchangeOn.plusMonths(1).atDay(1).atStartOfDay();
+    private BooleanExpression waitingStatus() {
+        return exchange.status.eq(ExchangeStatus.WAITING);
+    }
+
+    private BooleanExpression beforeStartOfThisMonth(YearMonth exchangeApproveOn) {
+        // 정산승인월 1일 00:00 이전
+        LocalDateTime startOfNextMonth = exchangeApproveOn.atDay(1).atStartOfDay();
         return donation.createdAt.before(startOfNextMonth);
     }
 }

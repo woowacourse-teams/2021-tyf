@@ -51,7 +51,7 @@ public class Exchange extends BaseTimeEntity {
         }
     }
 
-    public void registerExchangeAmount(Long exchangeAmount) {
+    public void updateExchangeAmount(Long exchangeAmount) {
         this.exchangeAmount = exchangeAmount;
     }
 

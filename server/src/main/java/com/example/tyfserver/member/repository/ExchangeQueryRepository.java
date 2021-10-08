@@ -6,5 +6,6 @@ import java.time.YearMonth;
 import java.util.List;
 
 public interface ExchangeQueryRepository {
-    List<ExchangeAmountDto> calculateExchangeAmountFromDonation(YearMonth exchangeOn);
+
+    List<ExchangeAmountDto> calculateExchangeAmountFromDonation(YearMonth exchangeApproveOn);
 }

@@ -30,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -156,15 +158,13 @@ public class AdminService {
     }
 
     @Scheduled(cron = "0 0 0 1 * *")
-    public void calculateExchangeAmount() {
+    public void updateExchangeAmount() {
         List<ExchangeAmountDto> exchangeAmountDtos = exchangeRepository.calculateExchangeAmountFromDonation(YearMonth.now());
 
-        exchangeAmountDtos.forEach(exchangeAmountDto -> {
-            exchangeRepository.findById(exchangeAmountDto.getExchangeId())
-                    .ifPresentOrElse(exchange -> exchange.registerExchangeAmount(exchangeAmountDto.getExchangeAmount()),
-                            () -> {
-                                throw new NotRegisteredAccountException();
-                            });
-        });
+        Map<Long, Long> idAmountMap = exchangeAmountDtos.stream()
+                .collect(Collectors.toMap(ExchangeAmountDto::getExchangeId, ExchangeAmountDto::getExchangeAmount));
+
+        exchangeRepository.findAllById(idAmountMap.keySet())
+                .forEach(exchange -> exchange.updateExchangeAmount(idAmountMap.get(exchange.getId())));
     }
 }
