@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DEVICE } from '../../../constants/device';
+import PALETTE from '../../../constants/palette';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
 
@@ -37,6 +38,7 @@ export const StyledContents = styled.div`
 
 export const StyledImage = styled.div`
   width: 50%;
+  background-color: ${PALETTE.GRAY_200};
 
   img {
     width: 100%;
