@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    baseline-version: 0
+    baseline-on-migrate: true
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+
+  profiles:
+    include: prod-secret
+
+  config:
+    use-legacy-processing: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+
+cloudwatch:
+  log_group:
+    /tyf/logs/app/prod
