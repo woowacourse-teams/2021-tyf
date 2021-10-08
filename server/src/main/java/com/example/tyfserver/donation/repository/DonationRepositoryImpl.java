@@ -65,6 +65,19 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .fetch();
     }
 
+    @Override
+    public Long calculateExchangeAmountFromDonation(Member creator, YearMonth exchangeOn) {
+        return queryFactory
+                .select(donation.point.sum())
+                .from(donation)
+                .where(
+                        donationOwner(creator.getId()),
+                        waitingForExchangeStatus(),
+                        beforeStartOfNextMonth(exchangeOn)
+                )
+                .fetchOne();
+    }
+
     private BooleanExpression waitingForExchangeStatus() {
         return donation.status.eq(DonationStatus.WAITING_FOR_EXCHANGE);
     }

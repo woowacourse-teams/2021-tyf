@@ -14,16 +14,24 @@ import com.example.tyfserver.common.util.S3Connector;
 import com.example.tyfserver.common.util.SmtpMailConnector;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.repository.DonationRepository;
-import com.example.tyfserver.member.domain.*;
+import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.Exchange;
+import com.example.tyfserver.member.domain.ExchangeStatus;
+import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.member.dto.ExchangeAmountDto;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -147,5 +155,16 @@ public class AdminService {
         adminAccount.validateLogin(adminLoginRequest.getId(), adminLoginRequest.getPassword());
         String token = authenticationService.createAdminToken(adminLoginRequest.getId());
         return new TokenResponse(token);
+    }
+
+    @Scheduled(cron = "0 0 0 1 * *")
+    public void updateExchangeAmount() {
+        List<ExchangeAmountDto> exchangeAmountDtos = exchangeRepository.calculateExchangeAmountFromDonation(YearMonth.now());
+
+        Map<Long, Long> idAmountMap = exchangeAmountDtos.stream()
+                .collect(Collectors.toMap(ExchangeAmountDto::getExchangeId, ExchangeAmountDto::getExchangeAmount));
+
+        exchangeRepository.findAllById(idAmountMap.keySet())
+                .forEach(exchange -> exchange.updateExchangeAmount(idAmountMap.get(exchange.getId())));
     }
 }

@@ -21,12 +21,15 @@ import com.example.tyfserver.member.repository.AccountRepository;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.repository.PaymentRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.scheduling.config.CronTask;
+import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -61,6 +64,8 @@ class AdminServiceTest {
     private PaymentRepository paymentRepository;
     @Autowired
     private DonationRepository donationRepository;
+    @Autowired
+    private ScheduledTaskHolder scheduledTaskHolder;
 
     @MockBean
     private S3Connector s3Connector;
@@ -86,9 +91,9 @@ class AdminServiceTest {
         return memberRepository.save(member);
     }
 
-    private Donation initDonation(LocalDateTime createdAt) {
+    private Donation initDonation(Member creator, LocalDateTime createdAt) {
         Donation donation = new Donation(DonationTest.testMessage(), 10000, createdAt);
-        registeredMember.receiveDonation(donation);
+        creator.receiveDonation(donation);
         return donationRepository.save(donation);
     }
 
@@ -144,8 +149,8 @@ class AdminServiceTest {
     @DisplayName("정산 승인")
     public void approveExchange() {
         //given
-        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
-        Donation donationNextMonth = initDonation(LocalDateTime.of(2021, 2, 1, 0, 0));
+        Donation donation = initDonation(registeredMember, DONATION_CREATED_AT_2021_1_1);
+        Donation donationNextMonth = initDonation(registeredMember, LocalDateTime.of(2021, 2, 1, 0, 0));
         Exchange exchange = initExchange(DEFAULT_AMOUNT, registeredMember);
 
         doNothing().when(mailConnector).sendExchangeApprove(anyString());
@@ -165,7 +170,7 @@ class AdminServiceTest {
     @DisplayName("정산 승인 - 요청된 정산이 없을 경우")
     public void approveExchange_ExchangeDoesNotApplied() {
         //given
-        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+        Donation donation = initDonation(registeredMember, DONATION_CREATED_AT_2021_1_1);
 
         flushAndClear();
 
@@ -180,7 +185,7 @@ class AdminServiceTest {
     @DisplayName("정산 승인 - 회원을 찾을 수 없는 경우")
     public void approveExchange_MemberNotFound() {
         //given
-        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+        Donation donation = initDonation(registeredMember, DONATION_CREATED_AT_2021_1_1);
 
         flushAndClear();
 
@@ -195,7 +200,7 @@ class AdminServiceTest {
     @DisplayName("정산 거절")
     public void rejectExchange() {
         //given
-        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+        Donation donation = initDonation(registeredMember, DONATION_CREATED_AT_2021_1_1);
         Exchange exchange = initExchange(DEFAULT_AMOUNT, registeredMember);
 
         doNothing().when(mailConnector).sendExchangeReject(anyString(), anyString());
@@ -214,7 +219,7 @@ class AdminServiceTest {
     @DisplayName("정산 거절 - 요청된 정산이 없을 경우")
     public void rejectExchange_ExchangeDoesNotApplied() {
         //given
-        Donation donation = initDonation(DONATION_CREATED_AT_2021_1_1);
+        Donation donation = initDonation(registeredMember, DONATION_CREATED_AT_2021_1_1);
 
         flushAndClear();
 
@@ -316,5 +321,52 @@ class AdminServiceTest {
         assertThat(response.getAccountNumber()).isEqualTo("123-456-789");
         assertThat(response.getBank()).isEqualTo(findRequestingMember.getAccount().getBank());
         assertThat(response.getBankbookImageUrl()).isEqualTo(findRequestingMember.getAccount().getBankbookUrl());
+    }
+
+    @Test
+    @DisplayName("매달 1일 00:00에 정산금액을 계산한다.")
+    public void updateExchangeAmount_scheduler() {
+        String methodName = AdminService.class.getName() + ".calculateExchangeAmount";
+        String cron = "0 0 0 1 * *";
+
+        long count = scheduledTaskHolder.getScheduledTasks().stream()
+                .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
+                .map(scheduledTask -> (CronTask) scheduledTask.getTask())
+                .filter(cronTask -> cronTask.getExpression().equals(cron) && cronTask.toString().equals(methodName))
+                .count();
+
+        Assertions.assertThat(count).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("정산승인월 1일 00:00에 생성된 정산의 금액을 갱신한다.")
+    void updateExchangeAmount() {
+        // given
+        YearMonth exchangeApproveOn = YearMonth.now();
+        Member creator1 = initMember(3, AccountStatus.REGISTERED);
+        Member creator2 = initMember(4, AccountStatus.REGISTERED);
+
+        // O
+        initDonation(creator1, exchangeApproveOn.minusMonths(2).atDay(1).atStartOfDay());
+        initDonation(creator1, exchangeApproveOn.minusMonths(2).atDay(1).atStartOfDay());
+        initDonation(creator2, exchangeApproveOn.minusMonths(1).atDay(1).atStartOfDay());
+        initDonation(creator2, exchangeApproveOn.minusMonths(1).atEndOfMonth().atTime(23, 59, 59));
+
+        // X
+        Donation donation = initDonation(creator1, exchangeApproveOn.minusMonths(2).atDay(1).atStartOfDay());
+        donation.toExchanged();
+        initDonation(creator2, exchangeApproveOn.atDay(1).atStartOfDay());
+
+        Exchange exchange1 = initExchange(0, creator1);
+        Exchange exchange2 = initExchange(0, creator2);
+
+        // when
+        flushAndClear();
+        adminService.updateExchangeAmount();
+        flushAndClear();
+
+        // then
+        assertThat(find(exchange1).getExchangeAmount()).isEqualTo(20000);
+        assertThat(find(exchange2).getExchangeAmount()).isEqualTo(20000);
     }
 }

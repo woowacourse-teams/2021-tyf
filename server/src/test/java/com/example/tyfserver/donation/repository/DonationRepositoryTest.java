@@ -126,7 +126,7 @@ class DonationRepositoryTest {
 
     @Test
     @DisplayName("정산해야하는 도네이션들을 조회한다.")
-    void findDonationsToExchange() {
+    public void findDonationsToExchange() {
         // given
         Member creator1 = initMember(3);
         Member creator2 = initMember(4);
