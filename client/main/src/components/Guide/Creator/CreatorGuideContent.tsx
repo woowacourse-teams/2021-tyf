@@ -22,7 +22,7 @@ const CreatorGuideContent = () => {
             />
           </StyledImage>
           <StyledContent>
-            <p>1. 좌측 메뉴바에서 [정산 관리] 를 선택하세요.</p>
+            <p>1. 우측 메뉴바에서 [정산 관리] 를 선택하세요.</p>
           </StyledContent>
         </StyledContents>
         <StyledContents>

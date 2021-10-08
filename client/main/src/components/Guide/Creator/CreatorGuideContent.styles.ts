@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DEVICE } from '../../../constants/device';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
 
@@ -23,10 +24,15 @@ export const StyledSubTitle = styled(SubTitle)`
 
 export const StyledContents = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2.5rem;
-  padding-left: 3rem;
+
+  @media ${DEVICE.DESKTOP} {
+    flex-direction: row;
+    padding-left: 3rem;
+  }
 `;
 
 export const StyledImage = styled.div`
@@ -40,11 +46,14 @@ export const StyledImage = styled.div`
 
 export const StyledContent = styled.div`
   width: 100%;
-  padding-left: 3rem;
 
   p {
     width: 100%;
     line-height: 1.5rem;
     margin-bottom: 0.5rem;
+  }
+
+  @media ${DEVICE.DESKTOP} {
+    padding-left: 3rem;
   }
 `;
