@@ -42,7 +42,7 @@ const useSettlement = () => {
     try {
       await requestRegisterSettlementAccount(form, accessToken);
 
-      alert('계좌정보 등록에 성공했습니다!');
+      alert('계좌정보 등록에 전송되었습니다. 검토에는 2~3일정도 소요됩니다.');
       history.push('/');
     } catch (error) {
       const { errorCode }: { errorCode: keyof typeof SETTLEMENT_ACCOUNT_ERROR_MESSAGE } =
