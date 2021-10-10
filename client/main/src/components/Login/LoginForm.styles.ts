@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PALETTE from '../../constants/palette';
 
-import Checkbox from '../../components/@atom/Checkbox/Checkbox';
+import Checkbox from '../../components/@atom/Checkbox/Checkbox.styles';
 import Container from '../../components/@atom/Container/Container.styles';
 import Title from '../../components/@atom/Title/Title.styles';
 
