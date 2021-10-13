@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { DEVICE, SIZE } from '../../../constants/device';
 import { MIN_PAGE_HEIGHT } from '../../../constants/style';
-import Checkbox from '../../@atom/Checkbox/Checkbox';
+import Checkbox from '../../@atom/Checkbox/Checkbox.styles';
 import Container from '../../@atom/Container/Container.styles';
 import Title from '../../@atom/Title/Title.styles';
 

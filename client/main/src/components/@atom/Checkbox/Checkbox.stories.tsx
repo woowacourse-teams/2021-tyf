@@ -1,6 +1,7 @@
 import { Meta, Story } from '@storybook/react';
+import { InputHTMLAttributes } from 'react';
 
-import Checkbox, { CheckboxProps } from './Checkbox';
+import Checkbox from './Checkbox.styles';
 
 export default {
   title: 'components/atom/Checkbox',
@@ -8,7 +9,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-const Template: Story<CheckboxProps> = (args) => <Checkbox {...args} />;
+const Template: Story<InputHTMLAttributes<HTMLInputElement>> = (args) => <Checkbox {...args} />;
 
 export const Default = Template.bind({});
 

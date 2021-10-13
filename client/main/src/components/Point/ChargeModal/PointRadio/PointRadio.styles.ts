@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PALETTE from '../../../../constants/palette';
+import { theme } from '../../../../theme';
 
 export const StyledPointSelect = styled.div`
   input[type='radio'] {
@@ -8,12 +9,13 @@ export const StyledPointSelect = styled.div`
 
   label {
     cursor: pointer;
-    display: inline-block;
+    display: flex;
     text-align: center;
     font-weight: 700;
     width: 7rem;
     height: 2.25rem;
-    line-height: 2.25rem;
+    align-items: center;
+    justify-content: center;
     border: 1px solid ${PALETTE.GRAY_300};
     border-radius: 0.5rem;
 
@@ -23,6 +25,6 @@ export const StyledPointSelect = styled.div`
   }
 
   input[type='radio']:checked + label {
-    background: ${PALETTE.GRAY_300};
+    border: 2px solid ${PALETTE.CORAL_300};
   }
 `;
