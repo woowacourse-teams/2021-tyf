@@ -14,6 +14,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create
+    generate-ddl: true
 
   profiles:
     include: performance-secret
