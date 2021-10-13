@@ -9,7 +9,7 @@ const guidePage = [
   { name: '회원가입 방법', href: '/' },
   { name: '도네이션 하는 방법', href: '/' },
   { name: '도네이션 받는 방법', href: '/guide/creator' },
-  { name: '문의하기', href: '/' },
+  { name: '문의하기', href: '/guide/contact' },
 ];
 
 const GuideHeader = () => {

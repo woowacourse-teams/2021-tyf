@@ -28,6 +28,7 @@ import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegist
 import MyPointPage from './pages/MyPoint/MyPointPage';
 import FeeGuide from './pages/FeeGuide/FeeGuide';
 import CreatorGuide from './pages/Guide/Creator/CreatorGuide';
+import Contact from './pages/Guide/Contact/Contact';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -122,6 +123,7 @@ const App = () => {
 
         <Route path="/fee-guide" component={FeeGuide} />
         <Route path="/guide/creator" component={CreatorGuide} />
+        <Route path="/guide/contact" component={Contact} />
 
         <Redirect from="*" to="/" />
       </Switch>
