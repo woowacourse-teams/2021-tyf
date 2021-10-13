@@ -21,9 +21,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: none
+#    generate-ddl: true
+#    hibernate:
+#      ddl-auto: none
 
   redis:
     host: localhost

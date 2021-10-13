@@ -5,7 +5,6 @@ spring:
   flyway:
     baseline-version: 0
     baseline-on-migrate: true
-    enabled: false
 
   jpa:
     properties:
@@ -13,8 +12,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
-    generate-ddl: true
+      ddl-auto: none
 
   profiles:
     include: performance-secret
