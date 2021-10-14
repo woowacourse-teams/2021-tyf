@@ -59,7 +59,7 @@ export const StyledSubTitle = styled(SubTitle)`
   text-align: left;
 `;
 
-export const NickNameInputContainer = styled.div`
+export const InputContainer = styled.div`
   width: 100%;
   margin-bottom: 4.875rem;
 `;

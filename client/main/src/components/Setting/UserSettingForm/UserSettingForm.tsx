@@ -6,7 +6,7 @@ import {
   StyledUserSettingForm,
   ProfileImg,
   StyledSubTitle,
-  NickNameInputContainer,
+  InputContainer,
   IntroductionTextareaContainer,
   TextareaLengthLimit,
 } from './UserSettingForm.styles';
@@ -18,6 +18,7 @@ import ValidationInput from '../../@molecule/ValidationInput/ValidationInput';
 import useUserInfo from '../../../service//user/useUserInfo';
 import useRegisterNickname from '../../../service/auth/useRegisterNickname';
 import useSettingForm from '../../../service//user/useSettingForm';
+import Input from '../../@atom/Input/Input.styles';
 
 const UserSettingForm = () => {
   const { userInfo } = useUserInfo();
@@ -64,7 +65,7 @@ const UserSettingForm = () => {
         />
       </ProfileImgInputLabel>
 
-      <NickNameInputContainer>
+      <InputContainer>
         <StyledSubTitle>닉네임</StyledSubTitle>
         <ValidationInput
           aria-label="nickname"
@@ -75,7 +76,13 @@ const UserSettingForm = () => {
           successMessage="좋은 닉네임이네요!"
           failureMessage={nicknameErrorMessage}
         />
-      </NickNameInputContainer>
+      </InputContainer>
+
+      <InputContainer>
+        <StyledSubTitle>이메일</StyledSubTitle>
+        <Input value={userInfo?.email} readOnly />
+      </InputContainer>
+
       <IntroductionTextareaContainer>
         <StyledSubTitle>자기소개</StyledSubTitle>
         <Textarea
