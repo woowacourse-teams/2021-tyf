@@ -3,12 +3,7 @@ import useUserInfo from '../../../service/user/useUserInfo';
 import Button from '../../@atom/Button/Button.styles';
 import Input from '../../@atom/Input/Input.styles';
 import Textarea from '../../@atom/Textarea/Textarea';
-import {
-  InputTitle,
-  InputWrapper,
-  StyledContactContent,
-  StyledTitle,
-} from './ContactContent.styles';
+import { InputTitle, InputWrapper, StyledContactContent, StyledTitle } from './ContactFormstyles';
 
 const ContactContent = () => {
   const { userInfo } = useUserInfo();

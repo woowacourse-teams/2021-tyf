@@ -1,5 +1,4 @@
-import styled from '@emotion/styled-base';
-
+import styled from 'styled-components';
 import Template from '../../components/@atom/Template/Template';
 
 export const StyledTemplate = styled(Template)`

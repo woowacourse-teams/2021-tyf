@@ -6,9 +6,9 @@ import {
   StyledContents,
   StyledImage,
   StyledContent,
-} from './CreatorGuideContent.styles';
+} from './CreatorGuide.styles';
 
-const CreatorGuideContent = () => {
+const CreatorGuide = () => {
   return (
     <StyledCreatorGuideContent>
       <StyledTitle>도네이션 받는 방법</StyledTitle>
@@ -77,4 +77,4 @@ const CreatorGuideContent = () => {
   );
 };
 
-export default CreatorGuideContent;
+export default CreatorGuide;
