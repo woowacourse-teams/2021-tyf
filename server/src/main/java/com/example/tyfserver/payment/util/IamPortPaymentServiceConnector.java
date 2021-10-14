@@ -19,9 +19,7 @@ import java.util.UUID;
 public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private static final String MODULE_NAME = "아임포트";
-
-    @Value("${iamport.rest_api_url}")
-    private String impApiUrl;
+    private static final String IAMPORT_API_URL = "https://api.iamport.kr";
 
     @Value("${iamport.rest_api_key}")
     private String impKey;
@@ -39,7 +37,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private IamPortPaymentInfo requestPaymentInfo(UUID merchantUid, String accessToken) {
         return ApiSender.send(
-                impApiUrl + "/payments/find/" + merchantUid,
+                IAMPORT_API_URL + "/payments/find/" + merchantUid,
                 HttpMethod.POST,
                 paymentInfoRequest(accessToken),
                 IamPortPaymentInfo.class
@@ -64,7 +62,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private IamPortPaymentInfo requestPaymentCancel(UUID merchantUid, String accessToken) {
         return ApiSender.send(
-                impApiUrl + "/payments/cancel",
+                IAMPORT_API_URL + "/payments/cancel",
                 HttpMethod.POST,
                 paymentCancelRequest(accessToken, merchantUid),
                 IamPortPaymentInfo.class
@@ -84,7 +82,7 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private String getAccessToken() {
         String body = ApiSender.send(
-                impApiUrl + "/users/getToken",
+                IAMPORT_API_URL + "/users/getToken",
                 HttpMethod.POST,
                 accessTokenRequest()
         );
