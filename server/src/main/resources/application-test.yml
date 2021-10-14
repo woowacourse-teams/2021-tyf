@@ -35,6 +35,7 @@ jwt:
 iamport:
   rest_api_key: apiKey
   rest_api_secret: apiSecret
+  rest_api_url: apiUrl
 
 admin:
   id: test-id
