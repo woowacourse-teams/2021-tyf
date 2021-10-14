@@ -33,6 +33,7 @@ const ContactContent = () => {
   };
 
   const isDisabled = Object.values(contactInfo).some((item) => item === '');
+
   return (
     <StyledContactContent onSubmit={onSubmit}>
       <StyledTitle>문의하기</StyledTitle>

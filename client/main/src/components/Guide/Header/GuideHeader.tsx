@@ -17,7 +17,7 @@ const guidePage = [
   { name: '도네이션 하는 방법', href: '/guide/donator' },
   { name: '도네이션 받는 방법', href: '/guide/creator' },
   { name: '정산 수수료 안내', href: '/guide/fee' },
-  { name: '문의하기', href: '/guide/contact' },
+  // { name: '문의하기', href: '/guide/contact' },
 ];
 
 const GuideHeader = () => {
