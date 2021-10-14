@@ -36,6 +36,7 @@ public class DummyDataService {
 
             batchDataRepository.saveAllAccount(accounts);
             batchDataRepository.saveAllMember(members, idx - batchSize);
+            accounts.clear();
             members.clear();
         }
     }
