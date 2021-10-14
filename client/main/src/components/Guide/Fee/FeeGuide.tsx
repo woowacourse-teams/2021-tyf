@@ -1,12 +1,7 @@
-import { useHistory } from 'react-router';
-import SubTitle from '../../components/@atom/SubTitle/SubTitle.styles';
-import Title from '../../components/@atom/Title/Title.styles';
-import OutlineButton from '../../components/@molecule/OutlineButton/OutlineButton.styles';
-import { StyledTemplate, FeeTable, KakaoIcon } from './FeeGuide.styles';
+import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
+import { FeeTable, KakaoIcon, StyledTemplate } from './FeeGuide.styles';
 
 const FeeGuide = () => {
-  const history = useHistory();
-
   return (
     <StyledTemplate>
       <SubTitle>정산 시 수수료 안내</SubTitle>
@@ -34,7 +29,6 @@ const FeeGuide = () => {
           </tr>
         </tbody>
       </FeeTable>
-      <OutlineButton onClick={history.goBack}>돌아가기</OutlineButton>
     </StyledTemplate>
   );
 };

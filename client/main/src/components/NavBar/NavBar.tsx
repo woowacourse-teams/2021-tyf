@@ -30,7 +30,13 @@ const NavBar = () => {
             <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
           </>
         ) : (
-          <LoginButton to={`/login?redirectTo=${window.location.pathname}`}>로그인</LoginButton>
+          <>
+            <LoginButton to={`/login?redirectTo=${window.location.pathname}`}>로그인</LoginButton>
+            &nbsp;/&nbsp;
+            <LoginButton to={`/register?redirectTo=${window.location.pathname}`}>
+              회원가입
+            </LoginButton>
+          </>
         )}
       </StyledNavBar>
       <NavBarArea />

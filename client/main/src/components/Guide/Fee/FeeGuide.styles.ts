@@ -1,15 +1,12 @@
 import styled from 'styled-components';
+import Kakaopay from '../../../assets/icons/kakao-pay.svg';
 
-import Template from '../../components/@atom/Template/Template';
-import Kakaopay from '../../assets/icons/kakao-pay.svg';
-
-export const StyledTemplate = styled(Template)`
+export const StyledTemplate = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 3.5rem);
   justify-content: center;
-  max-width: 30rem;
+  margin-top: 10rem;
 `;
 
 export const FeeTable = styled.table`

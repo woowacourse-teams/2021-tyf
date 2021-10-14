@@ -26,7 +26,9 @@ import { useWindowResize } from './utils/useWindowResize';
 import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
 import MyPointPage from './pages/MyPoint/MyPointPage';
-import FeeGuide from './pages/FeeGuide/FeeGuide';
+import GuidePage from './pages/Guide/GuidePage';
+// import CreatorGuide from './pages/Guide/Creator/CreatorGuide';
+// import Contact from './pages/Guide/Contact/Contact';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -119,7 +121,7 @@ const App = () => {
         <Route path="/refund/cert" component={RefundCertificationPage} />
         <Route path="/refund/confirm" component={RefundConfirmPage} />
 
-        <Route path="/fee-guide" component={FeeGuide} />
+        <Route path="/guide" component={GuidePage} />
 
         <Redirect from="*" to="/" />
       </Switch>
