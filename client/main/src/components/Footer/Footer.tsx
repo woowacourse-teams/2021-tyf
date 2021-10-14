@@ -15,7 +15,7 @@ const Footer = () => {
         &nbsp;|&nbsp;
         <Anchor to="/refund">충전금액 환불</Anchor>
         &nbsp;|&nbsp;
-        <Anchor to="/fee-guide">정산 수수료 안내</Anchor>
+        <Anchor to="/guide/fee">정산 수수료 안내</Anchor>
       </p>
       <p>© Thank You For ___ all rights reserved</p>
     </StyledFooter>

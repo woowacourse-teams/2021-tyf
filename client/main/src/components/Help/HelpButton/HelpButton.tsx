@@ -4,7 +4,7 @@ import { StyledHelpButton } from './HelpButton.styles';
 
 const HelpButton = () => {
   return (
-    <Link to="/fee-guide">
+    <Link to="/guide/contact">
       <StyledHelpButton />
     </Link>
   );

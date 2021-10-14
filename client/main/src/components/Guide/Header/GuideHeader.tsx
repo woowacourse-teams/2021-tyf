@@ -6,9 +6,10 @@ import Select from '../../@atom/Select/Select';
 import { GuideListItem, GuideList, StyledNavigation, StyledTitle } from './GuideHeader.styles';
 
 const guidePage = [
-  { name: '회원가입 방법', href: '/' },
-  { name: '도네이션 하는 방법', href: '/' },
+  { name: '회원가입 방법', href: '/guide/sign-up' },
+  { name: '도네이션 하는 방법', href: '/guide/donator' },
   { name: '도네이션 받는 방법', href: '/guide/creator' },
+  { name: '정산 수수료 안내', href: '/guide/fee' },
   { name: '문의하기', href: '/guide/contact' },
 ];
 
@@ -27,7 +28,9 @@ const GuideHeader = () => {
     setCurrentGuidePage(value);
     history.push(routeTo.href);
   };
+
   const isDesktop = windowWidth > SIZE.DESKTOP_LARGE;
+
   return (
     <>
       <StyledTitle>고객센터</StyledTitle>
