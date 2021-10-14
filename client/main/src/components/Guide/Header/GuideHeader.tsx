@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SIZE } from '../../../constants/device';
 import { useWindowResize } from '../../../utils/useWindowResize';
+import Anchor from '../../@atom/Anchor/Anchor';
 import Select from '../../@atom/Select/Select';
-import { GuideListItem, GuideList, StyledNavigation, StyledTitle } from './GuideHeader.styles';
+import {
+  GuideListItem,
+  GuideList,
+  StyledNavigation,
+  StyledTitle,
+  StyledAnchor,
+} from './GuideHeader.styles';
 
 const guidePage = [
   { name: '회원가입 방법', href: '/guide/sign-up' },
@@ -39,7 +46,9 @@ const GuideHeader = () => {
           <GuideList>
             {guidePage.map(({ name, href }, index) => (
               <GuideListItem key={index}>
-                <Link to={href}>{name}</Link>
+                <StyledAnchor to={href} isCurrentContent={href === window.location.pathname}>
+                  {name}
+                </StyledAnchor>
               </GuideListItem>
             ))}
           </GuideList>

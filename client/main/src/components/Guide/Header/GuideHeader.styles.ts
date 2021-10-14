@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
+import Anchor from '../../@atom/Anchor/Anchor';
 import Title from '../../@atom/Title/Title.styles';
 
 export const StyledTitle = styled(Title)`
@@ -23,14 +24,18 @@ export const GuideList = styled.ul`
 export const GuideListItem = styled.li`
   width: 100%;
   height: 100%;
+`;
 
-  a {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    color: ${PALETTE.GRAY_400};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+interface StyledAnchorProps {
+  isCurrentContent: boolean;
+}
+
+export const StyledAnchor = styled(Anchor)<StyledAnchorProps>`
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  color: ${({ isCurrentContent }) => (isCurrentContent ? PALETTE.BLACK_400 : PALETTE.GRAY_400)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
