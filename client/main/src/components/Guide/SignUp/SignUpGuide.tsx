@@ -16,7 +16,7 @@ const SignUpGuide = () => {
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/1.png"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/sign-up-1.png"
               alt="회원가입 버튼"
             />
           </StyledImage>
@@ -27,7 +27,7 @@ const SignUpGuide = () => {
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/2.png"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/sign-up-2.png"
               alt="회원가입에 이용할 서비스 목록"
             />
           </StyledImage>
@@ -37,7 +37,10 @@ const SignUpGuide = () => {
         </StyledContents>
         <StyledContents>
           <StyledImage>
-            <img src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/3.png" alt="약관 목록" />
+            <img
+              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/sign-up-3.png"
+              alt="약관 목록"
+            />
           </StyledImage>
           <StyledContent>
             <p>
@@ -50,7 +53,7 @@ const SignUpGuide = () => {
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/4.png"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/sign-up/sign-up-4.png"
               alt="내 페이지 주소 입력"
             />
           </StyledImage>
@@ -61,7 +64,7 @@ const SignUpGuide = () => {
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/guides/sign-up/5.png"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/guides/sign-up/sign-up-5.png"
               alt="내 닉네임 입력"
             />
           </StyledImage>
@@ -72,7 +75,7 @@ const SignUpGuide = () => {
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/guides/sign-up/6.png"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/guides/sign-up/sign-up-6.png"
               alt="회원가입 완료"
             />
           </StyledImage>

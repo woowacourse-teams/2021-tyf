@@ -13,53 +13,46 @@ const DonatorGuide = () => {
     <StyledCreatorGuideContent>
       <StyledTitle>도네이션 하는 방법</StyledTitle>
       <StyledContentContainer>
-        <StyledSubTitle>1. 계좌 인증하기</StyledSubTitle>
+        <StyledSubTitle>1. 포인트 충전하기</StyledSubTitle>
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/account_1.png"
-              alt="정산 관리 버튼 선택 이미지"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/charge_1.png"
+              alt="내 포인트 버튼 선택 "
             />
           </StyledImage>
           <StyledContent>
-            <p>1. 우측 메뉴바에서 [정산 관리] 를 선택하세요.</p>
+            <p>1. 우측 메뉴바에서 [내 포인트] 를 선택하세요.</p>
           </StyledContent>
         </StyledContents>
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/account_2.png"
-              alt="정산 계좌 등록 이미지"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/charge_2.png"
+              alt="내 포인트 페이지"
             />
           </StyledImage>
           <StyledContent>
-            <p>2. 본인 명의 계좌 정보를 입력해주세요.</p>
-            <p>3. 작성한 계좌 정보를 제출하세요.</p>
+            <p>2. [ 충전하기 ] 를 선택해주세요</p>
           </StyledContent>
         </StyledContents>
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/account_3.png"
-              alt="등록 요청 확인 이미지"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/charge_3.png"
+              alt="충전 금액 선택 페이지"
             />
           </StyledImage>
           <StyledContent>
-            <p>
-              4. 제출된 요청이 승인될때까지 기다려주세요.
-              <br />
-              &nbsp;&nbsp;[정산 관리] 페이지에서 승인 여부를 확인할 수 있습니다.
-            </p>
+            <p>3. 충전할 포인트를 선택해주세요.</p>
+            <p>4. 약관에 동의해주세요.</p>
+            <p>5. [ 결제하기 ] 를 선택해주세요.</p>
           </StyledContent>
         </StyledContents>
-      </StyledContentContainer>
-
-      <StyledContentContainer>
-        <StyledSubTitle>2. 정산 신청하기</StyledSubTitle>
         <StyledContents>
           <StyledImage>
             <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/settlement_1.png"
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/charge_4.png"
               alt="정산 신청하기 이미지"
             />
           </StyledImage>
@@ -70,6 +63,43 @@ const DonatorGuide = () => {
             </p>
 
             <p>2. 제출된 요청이 승인될때까지 기다려주세요.</p>
+          </StyledContent>
+        </StyledContents>
+      </StyledContentContainer>
+
+      <StyledContentContainer>
+        <StyledSubTitle>2. 도네이션하기</StyledSubTitle>
+        <StyledContents>
+          <StyledImage>
+            <img
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/donation_1.png"
+              alt="창작자 페이지"
+            />
+          </StyledImage>
+          <StyledContent>
+            <p>1. 창작제의 페이지에서 [ 도네이션하기 ] 를 선택합니다.</p>
+          </StyledContent>
+        </StyledContents>
+        <StyledContents>
+          <StyledImage>
+            <img
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/donation_2.png"
+              alt="도네이션 페이지"
+            />
+          </StyledImage>
+          <StyledContent>
+            <p>2. 도네이션할 포인트를 입력 후, [ 도네이션 ] 을 선택합니다.</p>
+          </StyledContent>
+        </StyledContents>
+        <StyledContents>
+          <StyledImage>
+            <img
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/donation_3.png"
+              alt="도네이션 페이지"
+            />
+          </StyledImage>
+          <StyledContent>
+            <p>2. 도네이션할 포인트를 입력 후, [ 도네이션 ] 을 선택합니다.</p>
           </StyledContent>
         </StyledContents>
       </StyledContentContainer>
