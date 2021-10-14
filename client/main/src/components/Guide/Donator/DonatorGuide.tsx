@@ -95,11 +95,23 @@ const DonatorGuide = () => {
           <StyledImage>
             <img
               src="https://de56jrhz7aye2.cloudfront.net/guides/donator/donation_3.png"
-              alt="도네이션 페이지"
+              alt="응원 메세지 페이지"
             />
           </StyledImage>
           <StyledContent>
-            <p>2. 도네이션할 포인트를 입력 후, [ 도네이션 ] 을 선택합니다.</p>
+            <p>3. 응원 메시지를 입력합니다.</p>
+            <p>4. 메시지가 창작자에게만 보이도록 설정할 수 있습니다.</p>
+          </StyledContent>
+        </StyledContents>
+        <StyledContents>
+          <StyledImage>
+            <img
+              src="https://de56jrhz7aye2.cloudfront.net/guides/donator/donation_4.png"
+              alt="도네이션 완료 페이지"
+            />
+          </StyledImage>
+          <StyledContent>
+            <p>5. 도네이션이 완료되었습니다!</p>
           </StyledContent>
         </StyledContents>
       </StyledContentContainer>
