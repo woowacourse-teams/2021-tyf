@@ -15,7 +15,7 @@ const contentMap: Record<string, () => JSX.Element> = {
 };
 
 const GuidePage = () => {
-  const GuideContent = contentMap[window.location.pathname] ?? CreatorGuideContent;
+  const GuideContent = contentMap[window.location.pathname] ?? SignUpGuide;
 
   return (
     <StyledTemplate>
