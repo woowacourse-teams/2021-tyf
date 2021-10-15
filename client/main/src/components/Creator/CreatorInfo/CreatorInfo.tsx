@@ -13,9 +13,10 @@ interface CreatorInfoProps {
   isAdmin: boolean;
   creatorId: string;
   toggleModal: () => void;
+  bankRegistered: boolean;
 }
 
-const CreatorInfo = ({ isAdmin, creatorId, toggleModal }: CreatorInfoProps) => {
+const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: CreatorInfoProps) => {
   const history = useHistory();
   const creator = useCreator(creatorId);
   const { windowWidth } = useWindowResize();

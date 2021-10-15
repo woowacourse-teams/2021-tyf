@@ -12,7 +12,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
 
   profiles:
     include: prod-secret
