@@ -4,6 +4,7 @@ import com.example.tyfserver.common.util.ApiSender;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +18,8 @@ import java.util.UUID;
 @Profile("performance")
 public class MockPaymentServiceConnector implements PaymentServiceConnector {
 
-    private static final String TYF_PAY_API_URL = "http://13.124.232.206:8080/tyfpay";
+    @Value("${tyf_pay_api_url}")
+    private String TYF_PAY_API_URL;
 
     @Override
     public PaymentInfo requestPaymentInfo(UUID merchantUid) {
