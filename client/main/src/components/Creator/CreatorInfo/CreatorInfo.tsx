@@ -13,10 +13,9 @@ interface CreatorInfoProps {
   isAdmin: boolean;
   creatorId: string;
   toggleModal: () => void;
-  bankRegistered: boolean;
 }
 
-const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: CreatorInfoProps) => {
+const CreatorInfo = ({ isAdmin, creatorId, toggleModal }: CreatorInfoProps) => {
   const history = useHistory();
   const creator = useCreator(creatorId);
   const { windowWidth } = useWindowResize();
@@ -48,7 +47,7 @@ const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: Creato
       creator={creator}
       isAdmin={isAdmin}
       shareUrl={openShareURLModal}
-      bankRegistered={bankRegistered}
+      bankRegistered={creator.bankRegistered}
       popupDonationAmountPage={popupDonationAmountPage}
     />
   ) : (
@@ -56,7 +55,7 @@ const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: Creato
       creator={creator}
       isAdmin={isAdmin}
       shareUrl={onMobileShare}
-      bankRegistered={bankRegistered}
+      bankRegistered={creator.bankRegistered}
       popupDonationAmountPage={popupDonationAmountPage}
     />
   );
