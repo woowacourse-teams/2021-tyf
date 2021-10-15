@@ -8,6 +8,7 @@ import { DEVICE, SIZE } from '../../constants/device';
 import TextButton from '../@atom/TextButton/TextButton.styles';
 import { Z_INDEX } from '../../constants/style';
 import PALETTE from '../../constants/palette';
+import DropDown from '../../assets/icons/drop-down.svg';
 
 const NavBarHeightStyle = css`
   height: 3.5rem;
@@ -72,7 +73,8 @@ export const StyledTextButton = styled(TextButton)`
     font-size: 1.125rem;
     white-space: nowrap;
     max-width: 10rem;
-    overflow: auto;
+    /* overflow: auto; */
+    overflow: hidden;
   }
 `;
 
@@ -97,4 +99,23 @@ export const StyledPoint = styled(TextButton)`
     margin: 0 0.5rem;
     color: ${PALETTE.GRAY_400};
   }
+`;
+
+const UpSide = css`
+  transform: rotate(180deg);
+  top: 0;
+`;
+
+interface DropDownIconProps {
+  isOpen: boolean;
+}
+
+export const DropDownIcon = styled.img.attrs({ src: DropDown })<DropDownIconProps>`
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  top: 0.25rem;
+
+  ${({ isOpen }) => isOpen && UpSide}
+  transition: all 0.4s ease-in-out;
 `;

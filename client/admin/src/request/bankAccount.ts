@@ -11,7 +11,9 @@ export const requestBankAccountList = async (accessToken: string) => {
     return response.json();
   }
 
-  throw Error('계좌 신청목록을 불러오는데 실패했습니다!');
+  return response.text().then((error) => {
+    throw JSON.parse(error);
+  });
 };
 
 export const requestAgreeBankAccount = async (userId: number, accessToken: string) => {
