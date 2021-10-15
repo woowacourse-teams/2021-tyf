@@ -11,6 +11,7 @@ import Checkbox from '../../@atom/Checkbox/Checkbox.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Transition from '../../@atom/Transition/Transition.styles';
 import IconOutlineBarButton from '../../@molecule/IconOutlineBarButton/IconOutlineBarButton';
+import Spinner from '../../Spinner/Spinner';
 import {
   StyledModal,
   ButtonContainer,
@@ -48,6 +49,7 @@ const totalPrice = (selectedId: string) => {
 const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
   const { accessToken } = useAccessToken();
   const [isNext, setIsNext] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
 
   const {
     form,
@@ -82,11 +84,13 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
           <PaymentButtonContainer>
             <IconOutlineBarButton
               src={KakaoPay}
-              onClick={() =>
+              onClick={() => {
+                setIsPaying(true);
                 pay('kakaopay', selectedItemId, accessToken, () => {
+                  setIsPaying(false);
                   window.location.reload();
-                })
-              }
+                });
+              }}
             >
               카카오페이
             </IconOutlineBarButton>
@@ -146,6 +150,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
           </PaymentReadyButton>
         </>
       )}
+      {isPaying && <Spinner />}
     </StyledModal>
   );
 };

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { DEVICE } from '../../../../constants/device';
 
 import Container from '../../../@atom/Container/Container.styles';
 import IconButton from '../../../@atom/IconButton/IconButton';
@@ -27,9 +28,13 @@ export const List = styled.ul`
 export const ItemContainer = styled(Container)`
   flex-direction: row;
   justify-content: flex-start;
-  max-width: 45rem;
   overflow: hidden;
   padding: 0.5rem 0;
+  max-width: 45rem;
+
+  @media ${DEVICE.DESKTOP_EXTRA} {
+    max-width: 60rem;
+  }
 `;
 
 const ArrowStyle = css`

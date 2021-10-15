@@ -27,9 +27,7 @@ const ldsEllipsis3 = keyframes`
     }
 `;
 
-export const StyledSpinner = styled.div.attrs({
-  className: 'spinner',
-})`
+export const StyledSpinner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
