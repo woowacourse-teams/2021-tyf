@@ -19,7 +19,7 @@ describe('donationAmount', () => {
       name: 'money',
     })) as HTMLInputElement;
     const $donateButton = await screen.findByRole('button', {
-      name: '도네이션',
+      name: '도네이션 하기',
     });
     expect($donateButton).toBeDisabled();
     expect($amountInput.value).toBe('');
