@@ -1,5 +1,6 @@
 package com.example.tyfserver.common.repository;
 
+import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
@@ -156,16 +157,14 @@ public class DummyDataRepository {
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        System.out.println("startIdx = " + startIdx);
-                        System.out.println("i = " + i);
                         ps.setString(1, LocalDateTime.now().toString());
                         ps.setLong(2, payments.get(i).getAmount());
                         ps.setString(3, "e1@test.com");
                         ps.setString(4, payments.get(i).getImpUid());
                         ps.setString(5, payments.get(i).getItemName());
-                        ps.setObject(6, payments.get(i).getMerchantUid());
+                        ps.setString(6, "123-123");
                         ps.setString(7, payments.get(i).getStatus().name());
-                        ps.setLong(8, 1);
+                        ps.setLong(8, startIdx + i);
                         ps.setLong(9, startIdx + i);
                     }
 
@@ -175,6 +174,46 @@ public class DummyDataRepository {
                     }
                 });
         payments.clear();
+        batchCount++;
+        return batchCount;
+    }
+
+    public void saveAllDonation(List<Donation> donations) {
+        int batchCount = 0;
+        List<Donation> subItems = new ArrayList<>();
+        for (int i = 0; i < donations.size(); i++) {
+            subItems.add(donations.get(i));
+            if ((i + 1) % batchSize == 0) {
+                batchCount = batchInsertDonation(batchCount, subItems);
+            }
+        }
+        if (!subItems.isEmpty()) {
+            batchCount = batchInsertDonation(batchCount, subItems);
+        }
+    }
+
+    private int batchInsertDonation(int batchCount, List<Donation> donations) {
+        jdbcTemplate.batchUpdate("INSERT INTO donation (created_at, message, name, secret, point, " +
+                        "status, creator_id, donator_id) VALUES (?,?,?,?,?,?,?,?)",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setString(1, LocalDateTime.now().toString());
+                        ps.setString(2, "message");
+                        ps.setString(3, "n1");
+                        ps.setBoolean(4, false);
+                        ps.setLong(5, donations.get(i).getPoint());
+                        ps.setString(6, "WAITING_FOR_EXCHANGE");
+                        ps.setLong(7, 1);
+                        ps.setLong(8, 2);
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return donations.size();
+                    }
+                });
+        donations.clear();
         batchCount++;
         return batchCount;
     }

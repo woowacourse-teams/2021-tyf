@@ -2,6 +2,8 @@ package com.example.tyfserver.common.service;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.repository.DummyDataRepository;
+import com.example.tyfserver.donation.domain.Donation;
+import com.example.tyfserver.donation.domain.Message;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.payment.domain.Payment;
@@ -44,7 +46,7 @@ public class DummyDataService {
         }
     }
 
-    public void putPaymentAndRefundFailiure() {
+    public void putPaymentAndRefundFailiureDummyData() {
         List<RefundFailure> refundFailures = new ArrayList<>();
         List<Payment> payments = new ArrayList<>();
         int idx = 1;
@@ -61,6 +63,20 @@ public class DummyDataService {
             batchDataRepository.saveAllPayment(payments, idx - batchSize);
             refundFailures.clear();
             payments.clear();
+        }
+    }
+
+    public void putDonationDummyData() {
+        List<Donation> donations = new ArrayList<>();
+        int idx = 1;
+        for (int i = 0; i < 1000; i++) {
+            for (int j = 0; j < batchSize; j++) {
+                donations.add(new Donation(new Message("n1"), 1000));
+                idx++;
+            }
+
+            batchDataRepository.saveAllDonation(donations);
+            donations.clear();
         }
     }
 }

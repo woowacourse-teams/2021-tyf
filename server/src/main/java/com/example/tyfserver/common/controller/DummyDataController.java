@@ -23,9 +23,14 @@ public class DummyDataController {
         dummyDataService.putMemberDummyData();
     }
 
-    @GetMapping("/payment")
-    public void putPaymentAndRefundFailure() {
-        dummyDataService.putPaymentAndRefundFailiure();
+    @GetMapping("/payments")
+    public void putPaymentAndRefundFailureDummyData() {
+        dummyDataService.putPaymentAndRefundFailiureDummyData();
+    }
+
+    @GetMapping("/donations")
+    public void putDonationDummyData() {
+        dummyDataService.putDonationDummyData();
     }
 
     @PostMapping("/master-token/{memberId}")
