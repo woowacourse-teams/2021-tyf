@@ -9,5 +9,5 @@ export const SIZE = {
 export const DEVICE = {
   DESKTOP: `(min-width: ${SIZE.MOBILE_MAX}px)`,
   DESKTOP_LARGE: `(min-width: ${SIZE.DESKTOP_LARGE}px)`,
-  DESKTOP_EXTRA: `(min-width: ${SIZE.DESKTOP_LARGE}px)`,
+  DESKTOP_EXTRA: `(min-width: ${SIZE.DESKTOP_EXTRA}px)`,
 };
