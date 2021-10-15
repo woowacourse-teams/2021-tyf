@@ -12,7 +12,9 @@ export const requestExchangeList = async (accessToken: string) => {
     return response.json();
   }
 
-  throw Error('정산 신청목록을 불러오는데 실패했습니다!');
+  return response.text().then((error) => {
+    throw JSON.parse(error);
+  });
 };
 
 export const requestAgreeExchange = async (pageName: string, accessToken: string) => {

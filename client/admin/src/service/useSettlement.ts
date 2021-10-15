@@ -18,10 +18,11 @@ const useSettlement = () => {
   const getExchangeList = async () => {
     try {
       const data: Exchange[] = await requestExchangeList(accessToken);
-      console.log(data);
+
       setExchangeList(data);
     } catch (error) {
       alert(error.message);
+
       if (error.errorCode === 'auth-002') {
         history.push('/');
       }
