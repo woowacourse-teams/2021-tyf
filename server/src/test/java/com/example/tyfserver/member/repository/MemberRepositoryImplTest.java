@@ -141,23 +141,23 @@ class MemberRepositoryImplTest {
 
         // then
         assertThat(curations.get(0)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member6, 13000L)
+                curationsResponseFromMember(member6)
         );
 
         assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member3, 7000L)
+                curationsResponseFromMember(member3)
         );
 
         assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member5, 5000L)
+                curationsResponseFromMember(member5)
         );
 
         assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member2, 2000L)
+                curationsResponseFromMember(member2)
         );
 
         assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member1, 1000L)
+                curationsResponseFromMember(member1)
         );
 
         // todo 개선 되면 위 두개 지우고 이거 통과해야함
@@ -186,8 +186,8 @@ class MemberRepositoryImplTest {
         em.persist(donation);
     }
 
-    private CurationsResponse curationsResponseFromMember(Member member6, long donationAmount) {
-        return new CurationsResponse(member6.getNickname(), donationAmount, member6.getPageName(),
+    private CurationsResponse curationsResponseFromMember(Member member6) {
+        return new CurationsResponse(member6.getNickname(),  member6.getPageName(),
                 member6.getProfileImage(), member6.getBio());
     }
 
