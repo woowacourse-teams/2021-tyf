@@ -13,7 +13,7 @@ const useDonationMessage = (creatorId: CreatorId) => {
     const finalMessage = message || donation.message;
 
     try {
-      await requestSendDonationMessage(donation.donationId, donation.name, finalMessage, isSecret);
+      await requestSendDonationMessage(donation.donationId, finalMessage, isSecret);
 
       history.push(`/donation/${creatorId}/success`);
     } catch (error) {

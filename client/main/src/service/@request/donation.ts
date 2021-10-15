@@ -15,9 +15,8 @@ export const requestDonation = (
 
 export const requestSendDonationMessage = (
   donationId: DonationId,
-  name: string,
   message: string,
   secret: boolean
 ) => {
-  return apiClient.post(`/donations/${donationId}/messages`, { name, message, secret });
+  return apiClient.post(`/donations/${donationId}/messages`, { message, secret });
 };
