@@ -27,7 +27,7 @@ export const List = styled.ul`
 export const ItemContainer = styled(Container)`
   flex-direction: row;
   justify-content: flex-start;
-  max-width: 45rem;
+  max-width: 60rem;
   overflow: hidden;
   padding: 0.5rem 0;
 `;
