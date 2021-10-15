@@ -17,4 +17,9 @@ public class DummyDataController {
     public void putMemberDummyData() {
         dummyDataService.putMemberDummyData();
     }
+
+    @GetMapping("/payment")
+    public void putPaymentAndRefundFailure() {
+        dummyDataService.putPaymentAndRefundFailiure();
+    }
 }

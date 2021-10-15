@@ -2,6 +2,8 @@ package com.example.tyfserver.common.repository;
 
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.domain.RefundFailure;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -29,13 +31,12 @@ public class DummyDataRepository {
         for (int i = 0; i < members.size(); i++) {
             subItems.add(members.get(i));
             if ((i + 1) % batchSize == 0) {
-                batchCount = batchInsertMember(batchSize, batchCount, subItems, startIdx);
+                batchCount = batchInsertMember(batchCount, subItems, startIdx);
             }
         }
         if (!subItems.isEmpty()) {
-            batchCount = batchInsertMember(batchSize, batchCount, subItems, startIdx);
+            batchCount = batchInsertMember(batchCount, subItems, startIdx);
         }
-        System.out.println("batchCount: " + batchCount);
     }
 
     public void saveAllAccount(List<Account> accounts) {
@@ -44,17 +45,16 @@ public class DummyDataRepository {
         for (int i = 0; i < accounts.size(); i++) {
             subItems.add(accounts.get(i));
             if ((i + 1) % batchSize == 0) {
-                batchCount = batchInsertAccount(batchSize, batchCount, subItems);
+                batchCount = batchInsertAccount(batchCount, subItems);
             }
         }
         if (!subItems.isEmpty()) {
-            batchCount = batchInsertAccount(batchSize, batchCount, subItems);
+            batchCount = batchInsertAccount(batchCount, subItems);
         }
-        System.out.println("batchCount: " + batchCount);
     }
 
 
-    private int batchInsertAccount(int batchSize, int batchCount, List<Account> accounts) {
+    private int batchInsertAccount(int batchCount, List<Account> accounts) {
         jdbcTemplate.batchUpdate("INSERT INTO account (created_at, account_holder, account_number, bank, bankbook_url, status) VALUES (?,?,?,?,?,?)",
                 new BatchPreparedStatementSetter() {
                     @Override
@@ -77,7 +77,7 @@ public class DummyDataRepository {
         return batchCount;
     }
 
-    private int batchInsertMember(int batchSize, int batchCount, List<Member> members, int startIdx) {
+    private int batchInsertMember(int batchCount, List<Member> members, int startIdx) {
         jdbcTemplate.batchUpdate("INSERT INTO member (created_at, bio, email, nickname, oauth2type, page_name, point, profile_image, account_id) VALUES (?,?,?,?,?,?,?,?,?)",
                 new BatchPreparedStatementSetter() {
                     @Override
@@ -103,4 +103,79 @@ public class DummyDataRepository {
         return batchCount;
     }
 
+    public void saveAllRefundFailure(List<RefundFailure> refundFailures) {
+        int batchCount = 0;
+        List<RefundFailure> subItems = new ArrayList<>();
+        for (int i = 0; i < refundFailures.size(); i++) {
+            subItems.add(refundFailures.get(i));
+            if ((i + 1) % batchSize == 0) {
+                batchCount = batchInsertRefundFailure(batchCount, subItems);
+            }
+        }
+        if (!subItems.isEmpty()) {
+            batchCount = batchInsertRefundFailure(batchCount, subItems);
+        }
+    }
+
+    private int batchInsertRefundFailure(int batchCount, List<RefundFailure> refundFailures) {
+        jdbcTemplate.batchUpdate("INSERT INTO refund_failure (created_at, remain_try_count) VALUES (?,?)",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setString(1, LocalDateTime.now().toString());
+                        ps.setInt(2, refundFailures.get(i).getRemainTryCount());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return refundFailures.size();
+                    }
+                });
+        refundFailures.clear();
+        batchCount++;
+        return batchCount;
+    }
+
+    public void saveAllPayment(List<Payment> payments, int startIdx) {
+        int batchCount = 0;
+        List<Payment> subItems = new ArrayList<>();
+        for (int i = 0; i < payments.size(); i++) {
+            subItems.add(payments.get(i));
+            if ((i + 1) % batchSize == 0) {
+                batchCount = batchInsertPayment(batchCount, subItems, startIdx);
+            }
+        }
+        if (!subItems.isEmpty()) {
+            batchCount = batchInsertPayment(batchCount, subItems, startIdx);
+        }
+    }
+
+    private int batchInsertPayment(int batchCount, List<Payment> payments, int startIdx) {
+        jdbcTemplate.batchUpdate("INSERT INTO payment (created_at, amount, email, imp_uid, item_name, " +
+                        "merchant_uid, status, member_id, refund_failure_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        System.out.println("startIdx = " + startIdx);
+                        System.out.println("i = " + i);
+                        ps.setString(1, LocalDateTime.now().toString());
+                        ps.setLong(2, payments.get(i).getAmount());
+                        ps.setString(3, "e1@test.com");
+                        ps.setString(4, payments.get(i).getImpUid());
+                        ps.setString(5, payments.get(i).getItemName());
+                        ps.setObject(6, payments.get(i).getMerchantUid());
+                        ps.setString(7, payments.get(i).getStatus().name());
+                        ps.setLong(8, 1);
+                        ps.setLong(9, startIdx + i);
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return payments.size();
+                    }
+                });
+        payments.clear();
+        batchCount++;
+        return batchCount;
+    }
 }

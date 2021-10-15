@@ -4,6 +4,9 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.repository.DummyDataRepository;
 import com.example.tyfserver.member.domain.Account;
 import com.example.tyfserver.member.domain.Member;
+import com.example.tyfserver.payment.domain.Payment;
+import com.example.tyfserver.payment.domain.PaymentStatus;
+import com.example.tyfserver.payment.domain.RefundFailure;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -26,9 +30,8 @@ public class DummyDataService {
         List<Member> members = new ArrayList<>();
         List<Account> accounts = new ArrayList<>();
         int idx = 1;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             for (int j = 0; j < batchSize; j++) {
-                System.out.println("account number :" + idx);
                 accounts.add(new Account("test", String.valueOf(idx), "bank", null));
                 members.add(new Member("e" + idx + "@test.com", "n" + idx,  "p" + idx, Oauth2Type.KAKAO));
                 idx++;
@@ -41,4 +44,23 @@ public class DummyDataService {
         }
     }
 
+    public void putPaymentAndRefundFailiure() {
+        List<RefundFailure> refundFailures = new ArrayList<>();
+        List<Payment> payments = new ArrayList<>();
+        int idx = 1;
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < batchSize; j++) {
+                refundFailures.add(new RefundFailure());
+                Payment payment = new Payment(10_0000_0000L, "10000포인트 충전", "123-123", UUID.randomUUID());
+                payment.updateStatus(PaymentStatus.PAID);
+                payments.add(payment);
+                idx++;
+            }
+
+            batchDataRepository.saveAllRefundFailure(refundFailures);
+            batchDataRepository.saveAllPayment(payments, idx - batchSize);
+            refundFailures.clear();
+            payments.clear();
+        }
+    }
 }
