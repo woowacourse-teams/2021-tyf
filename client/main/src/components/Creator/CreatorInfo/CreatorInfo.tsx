@@ -48,7 +48,7 @@ const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: Creato
       creator={creator}
       isAdmin={isAdmin}
       shareUrl={openShareURLModal}
-      bankRegistered={bankRegistered}
+      bankRegistered={creator.bankRegistered}
       popupDonationAmountPage={popupDonationAmountPage}
     />
   ) : (
@@ -56,7 +56,7 @@ const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: Creato
       creator={creator}
       isAdmin={isAdmin}
       shareUrl={onMobileShare}
-      bankRegistered={bankRegistered}
+      bankRegistered={creator.bankRegistered}
       popupDonationAmountPage={popupDonationAmountPage}
     />
   );
