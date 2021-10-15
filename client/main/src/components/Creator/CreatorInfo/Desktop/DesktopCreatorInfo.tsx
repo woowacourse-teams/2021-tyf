@@ -13,11 +13,18 @@ import {
 interface Props {
   creator: Creator;
   isAdmin: boolean;
+  bankRegistered: boolean;
   shareUrl: () => void;
   popupDonationAmountPage: () => void;
 }
 
-const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage }: Props) => {
+const DesktopCreatorInfo = ({
+  creator,
+  isAdmin,
+  bankRegistered,
+  shareUrl,
+  popupDonationAmountPage,
+}: Props) => {
   return (
     <StyledCreatorInfo>
       <ProfileImg alt="profile" src={creator.profileImage || DefaultProfileImg} />
@@ -27,7 +34,9 @@ const DesktopCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPag
           {isAdmin ? (
             <StyledButton onClick={shareUrl}>도네이션 주소 공유하기</StyledButton>
           ) : (
-            <StyledButton onClick={popupDonationAmountPage}>도네이션하기</StyledButton>
+            <StyledButton onClick={popupDonationAmountPage} disabled={!bankRegistered}>
+              도네이션하기
+            </StyledButton>
           )}
         </StyledInfo>
 

@@ -8,6 +8,7 @@ export const creatorListMock: Creator[] = [
     bio: '빈칸아님',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
+    bankRegistered: false,
   },
   {
     nickname: 'asdf',
@@ -15,6 +16,7 @@ export const creatorListMock: Creator[] = [
     bio: '',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
+    bankRegistered: true,
   },
   {
     nickname: 'asdf',
@@ -22,6 +24,7 @@ export const creatorListMock: Creator[] = [
     bio: '안녕하세요~',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
+    bankRegistered: false,
   },
   {
     nickname: 'asdf',
@@ -29,6 +32,7 @@ export const creatorListMock: Creator[] = [
     bio: '',
     pageName: 'pageName',
     email: 'jho2301@gmail.com',
+    bankRegistered: false,
   },
 ];
 
@@ -39,6 +43,7 @@ export const userInfoMock: UserInfo = {
   pageName: 'inchpage',
   email: 'jho2301@gmail.com',
   point: 1234,
+  bankRegistered: false,
 };
 
 export const donationMessageListMock: Donation[] = [

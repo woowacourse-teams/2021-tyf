@@ -54,7 +54,7 @@ const DonationAmountForm = ({ creatorId }: DonationAmountFormProps) => {
           +{toCommaSeparatedString(3000)}tp
         </MoneyAddButton>
       </ButtonContainer>
-      <Button disabled={!isDonationAmountInValidRange}>도네이션</Button>
+      <Button disabled={!isDonationAmountInValidRange}>도네이션 하기</Button>
     </StyledDonationAmountForm>
   );
 };

@@ -18,6 +18,7 @@ export interface Creator {
   profileImage: string;
   bio: string;
   email: string;
+  bankRegistered: boolean;
 }
 
 export interface Register extends Pick<Creator, 'pageName' | 'nickname' | 'email'> {
