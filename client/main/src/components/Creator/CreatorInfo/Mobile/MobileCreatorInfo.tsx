@@ -5,11 +5,18 @@ import { DescriptionContainer, StyledButton, StyledCreatorInfo } from './MobileC
 interface Props {
   creator: Creator;
   isAdmin: boolean;
+  bankRegistered: boolean;
   shareUrl: () => void;
   popupDonationAmountPage: () => void;
 }
 
-const MobileCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage }: Props) => {
+const MobileCreatorInfo = ({
+  creator,
+  isAdmin,
+  shareUrl,
+  bankRegistered,
+  popupDonationAmountPage,
+}: Props) => {
   return (
     <StyledCreatorInfo>
       <Profile />
@@ -26,7 +33,9 @@ const MobileCreatorInfo = ({ creator, isAdmin, shareUrl, popupDonationAmountPage
       {isAdmin ? (
         <StyledButton onClick={shareUrl}>도네이션 주소 공유하기</StyledButton>
       ) : (
-        <StyledButton onClick={popupDonationAmountPage}>도네이션하기</StyledButton>
+        <StyledButton onClick={popupDonationAmountPage} disabled={!bankRegistered}>
+          도네이션하기
+        </StyledButton>
       )}
     </StyledCreatorInfo>
   );
