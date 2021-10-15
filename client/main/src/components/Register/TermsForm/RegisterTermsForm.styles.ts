@@ -49,13 +49,13 @@ export const RegisterTermsTitle = styled(Title)`
 
 export const TermLabel = styled.label`
   padding: 0.5rem;
-  cursor: pointer;
   display: flex;
   align-items: center;
 `;
 
 export const TermCheckbox = styled(Checkbox)`
   margin-right: 1rem;
+  cursor: pointer;
 `;
 
 export const Divider = styled.hr`
