@@ -24,10 +24,10 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
     public List<CurationsResponse> findCurations() {
         return queryFactory
                 .select(
-                        new QCurationsResponse(member.nickname, donation.point.sum(), member.pageName, member.profileImage, member.bio))
+                        new QCurationsResponse(member.nickname, member.pageName, member.profileImage, member.bio))
                 .from(member)
                 .leftJoin(member.receivedDonations, donation)
-                .groupBy(member.nickname)
+                .groupBy(member)
                 .orderBy(donation.point.sum().desc())
                 .offset(0)
                 .limit(10)
