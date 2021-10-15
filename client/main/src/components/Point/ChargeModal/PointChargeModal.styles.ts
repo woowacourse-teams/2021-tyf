@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { DEVICE, SIZE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
 import Button from '../../@atom/Button/Button.styles';
+import Checkbox from '../../@atom/Checkbox/Checkbox.styles';
 import Container from '../../@atom/Container/Container.styles';
 import Modal from '../../@atom/Modal/Modal';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
@@ -46,7 +47,7 @@ export const CheckboxContainerList = styled.div`
   margin: 4rem 0 3rem;
 `;
 
-export const CheckboxContainer = styled.div`
+export const CheckboxContainer = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
@@ -57,8 +58,8 @@ export const CheckboxContainer = styled.div`
     border-bottom: 1px solid ${PALETTE.GRAY_200};
   }
 
-  & > span {
-    margin-left: 1rem;
+  ${Checkbox} {
+    margin-right: 1rem;
   }
 `;
 

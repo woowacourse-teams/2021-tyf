@@ -1,16 +1,29 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:~/tyfH2Db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    url: jdbc:mysql://localhost:13306/flywaytest?serverTimezone=UTC&characterEncoding=UTF-8
     username: sa
     password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  flyway:
+    baseline-version: 0
+    baseline-on-migrate: true
 
   jpa:
     properties:
       hibernate:
         format_sql: true
-    hibernate:
-      ddl-auto: create
+#    generate-ddl: true
+#    hibernate:
+#      ddl-auto: none
 
   redis:
     host: localhost
@@ -58,3 +71,5 @@ admin:
 aes:
   secret:
     tyftesttyftesttyftesttyftesttyft
+
+batch_size: 1000

@@ -4,6 +4,7 @@ import com.example.tyfserver.auth.domain.Oauth2Type;
 import com.example.tyfserver.common.domain.BaseTimeEntity;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.member.exception.NotEnoughPointException;
+import com.example.tyfserver.member.exception.WrongDonationOwnerException;
 import com.example.tyfserver.payment.domain.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -51,8 +53,11 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private final List<Payment> payments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private final List<Donation> donations = new ArrayList<>();
+    @OneToMany(mappedBy = "creator")
+    private final List<Donation> receivedDonations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "donator")
+    private final List<Donation> givenDonations = new ArrayList<>();
 
     public Member(String email, String nickname, String pageName, Oauth2Type oauth2Type, String profileImage,
                   Point point) {
@@ -72,9 +77,15 @@ public class Member extends BaseTimeEntity {
         this(email, nickname, pageName, oauth2Type, null);
     }
 
-    public void addDonation(Donation donation) {
-        this.donations.add(donation);
+    public void receiveDonation(Donation donation) {
+        this.receivedDonations.add(donation);
         donation.to(this);
+    }
+
+    public void donateDonation(Donation donation) {
+        this.givenDonations.add(donation);
+        donation.from(this);
+        reducePoint(donation.getPoint());
     }
 
     public void addPayment(Payment payment) {
@@ -128,8 +139,12 @@ public class Member extends BaseTimeEntity {
         return this.account.getStatus();
     }
 
+    public void increasePoint(Long amount) {
+        this.point.add(amount);
+    }
+
     public void reducePoint(long amount) {
-        point.reduce(amount);
+        this.point.reduce(amount);
     }
 
     public void approveAccount() {
@@ -144,7 +159,27 @@ public class Member extends BaseTimeEntity {
         return this.account.getBankbookUrl();
     }
 
-    public void addAvailablePoint(Long amount) {
-        this.point.add(amount);
+    public void validateMemberGivenDonation(Donation donation) {
+        if (givenDonations.contains(donation)) {
+            return;
+        }
+        throw new WrongDonationOwnerException();
+    }
+
+    public boolean isAccountNotRegistered() {
+        return account.getStatus() != AccountStatus.REGISTERED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

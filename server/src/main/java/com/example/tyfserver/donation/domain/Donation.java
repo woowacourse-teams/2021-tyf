@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -25,11 +27,15 @@ public class Donation extends BaseTimeEntity {
     private long point;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "donator_id")
+    private Member donator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    private Member creator;
 
     @Enumerated(value = EnumType.STRING)
-    private DonationStatus status = DonationStatus.REFUNDABLE;
+    private DonationStatus status = DonationStatus.WAITING_FOR_EXCHANGE;
 
     public Donation(Message message, long point) {
         this(null, message, point);
@@ -41,26 +47,36 @@ public class Donation extends BaseTimeEntity {
         this.point = point;
     }
 
-    public void to(final Member member) {
-        this.member = member;
+    public Donation(Message message, long point, LocalDateTime createdAt) {
+        this(message, point, DonationStatus.WAITING_FOR_EXCHANGE, createdAt);
+    }
+
+    public Donation(Message message, long point, DonationStatus status, LocalDateTime createdAt) {
+        super(createdAt);
+        this.message = message;
+        this.point = point;
+        this.status = status;
+    }
+
+    public void donate(Member donator, Member creator) {
+        donator.donateDonation(this);
+        creator.receiveDonation(this);
+    }
+
+    public void to(final Member creator) {
+        this.creator = creator;
+    }
+
+    public void from(final Member donator) {
+        this.donator = donator;
     }
 
     public void addMessage(Message message) {
         this.message = message;
     }
 
-    // todo 테스트 코드에서만 사용중
-    public void toCancelled() {
-        status = DonationStatus.CANCELLED;
-    }
-
     public void toExchanged() {
         status = DonationStatus.EXCHANGED;
-    }
-
-    // todo 테스트 코드에서만 사용중 : 스케줄러 적용시 사용
-    public void toExchangeable() {
-        status = DonationStatus.EXCHANGEABLE;
     }
 
     public String getName() {
@@ -73,5 +89,18 @@ public class Donation extends BaseTimeEntity {
 
     public boolean isSecret() {
         return message.isSecret();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Donation donation = (Donation) o;
+        return Objects.equals(id, donation.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

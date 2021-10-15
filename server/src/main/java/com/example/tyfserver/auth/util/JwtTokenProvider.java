@@ -54,6 +54,19 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String createMasterToken(long id, String email) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24시간
+
+        return Jwts.builder()
+                .claim("id", id)
+                .claim("email", email)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secreteKey)
+                .compact();
+    }
+
     public void validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secreteKey).parseClaimsJws(token);

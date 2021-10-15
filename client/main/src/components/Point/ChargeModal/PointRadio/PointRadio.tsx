@@ -1,6 +1,11 @@
+import React, { InputHTMLAttributes } from 'react';
 import { StyledPointSelect } from './PointRadio.styles';
 
-const PointRadio = ({ children, id, value }: any) => {
+interface PointRadioProps extends InputHTMLAttributes<HTMLInputElement> {
+  children: React.ReactNode;
+}
+
+const PointRadio = ({ children, id, value }: PointRadioProps) => {
   return (
     <StyledPointSelect>
       <input type="radio" name="point" id={id} value={value} />

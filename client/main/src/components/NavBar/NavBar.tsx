@@ -11,6 +11,7 @@ import {
   StyledTextButton,
   StyledPoint,
   NavBarArea,
+  DropDownIcon,
 } from './NavBar.styles';
 
 const NavBar = () => {
@@ -27,10 +28,18 @@ const NavBar = () => {
             <StyledPoint onClick={() => history.push('/mypoint')}>
               {userInfo?.point && toCommaSeparatedString(userInfo.point)} tp
             </StyledPoint>
-            <StyledTextButton onClick={toggleModal}>{userInfo.nickname}</StyledTextButton>
+            <StyledTextButton onClick={toggleModal}>
+              {userInfo.nickname} <DropDownIcon isOpen={isOpen} />
+            </StyledTextButton>
           </>
         ) : (
-          <LoginButton to={`/login?redirectTo=${window.location.pathname}`}>로그인</LoginButton>
+          <>
+            <LoginButton to={`/login?redirectTo=${window.location.pathname}`}>로그인</LoginButton>
+            &nbsp;/&nbsp;
+            <LoginButton to={`/register?redirectTo=${window.location.pathname}`}>
+              회원가입
+            </LoginButton>
+          </>
         )}
       </StyledNavBar>
       <NavBarArea />

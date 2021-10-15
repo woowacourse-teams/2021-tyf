@@ -40,7 +40,7 @@ public class Payment extends BaseTimeEntity {
 
     private String impUid;
 
-    @Column(nullable = false, columnDefinition = "BINARY(16)")
+    @Column(nullable = false, columnDefinition = "varbinary")
     private UUID merchantUid;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -93,7 +93,7 @@ public class Payment extends BaseTimeEntity {
         validatePaymentComplete(paymentInfo);
         this.impUid = paymentInfo.getImpUid();
         this.status = PaymentStatus.PAID;
-        this.member.addAvailablePoint(TaxIncludedCalculator.detachTax(paymentInfo.getAmount()));
+        this.member.increasePoint(TaxIncludedCalculator.detachTax(paymentInfo.getAmount()));
     }
 
     private void validatePaymentComplete(PaymentInfo paymentInfo) {

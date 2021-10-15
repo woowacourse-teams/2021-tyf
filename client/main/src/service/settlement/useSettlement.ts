@@ -11,6 +11,7 @@ import {
   settlementAccountQuery,
 } from '../@state/settlement';
 import useAccessToken from '../@shared/useAccessToken';
+import { SETTLEMENT_ACCOUNT_ERROR_MESSAGE, SETTLEMENT_ERROR_MESSAGE } from '../../constants/error';
 
 const useSettlement = () => {
   const { accessToken } = useAccessToken();
@@ -28,7 +29,12 @@ const useSettlement = () => {
       alert('정산신청이 완료됐습니다.');
       history.push('/');
     } catch (error) {
-      alert('등록에 실패했습니다');
+      const { errorCode }: { errorCode: keyof typeof SETTLEMENT_ERROR_MESSAGE } =
+        error.response.data;
+      const errorMessage =
+        SETTLEMENT_ERROR_MESSAGE[errorCode] ??
+        '정산 신청에 실패했습니다. 문제가 지속되면 고객센터로 문의해주세요.';
+      alert(errorMessage);
     }
   };
 
@@ -36,10 +42,15 @@ const useSettlement = () => {
     try {
       await requestRegisterSettlementAccount(form, accessToken);
 
-      alert('계정정보 등록에 성공했습니다!');
+      alert('계좌정보 등록에 전송되었습니다. 검토에는 2~3일정도 소요됩니다.');
       history.push('/');
     } catch (error) {
-      alert('계좌정보를 등록하는데 실패했습니다.');
+      const { errorCode }: { errorCode: keyof typeof SETTLEMENT_ACCOUNT_ERROR_MESSAGE } =
+        error.response.data;
+      const errorMessage =
+        SETTLEMENT_ACCOUNT_ERROR_MESSAGE[errorCode] ??
+        '계좌정보를 등록하는데 실패했습니다. 문제가 지속되면 고객센터로 문의해주세요.';
+      alert(errorMessage);
     }
   };
 

@@ -1,4 +1,4 @@
 export const DONATION_POPUP = {
-  WIDTH: 460,
-  HEIGHT: 900,
+  WIDTH: 490,
+  HEIGHT: 800,
 };

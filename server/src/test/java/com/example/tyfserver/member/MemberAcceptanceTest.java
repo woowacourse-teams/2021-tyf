@@ -6,12 +6,9 @@ import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
 import com.example.tyfserver.donation.dto.DonationResponse;
 import com.example.tyfserver.member.domain.Account;
-import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.payment.domain.Item;
-import com.example.tyfserver.payment.dto.PaymentCompleteResponse;
-import com.example.tyfserver.payment.dto.PaymentPendingResponse;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
@@ -31,7 +28,8 @@ import static com.example.tyfserver.admin.AdminAcceptanceTest.요청_계좌_승�
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
 import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
-import static com.example.tyfserver.payment.PaymentAcceptanceTest.*;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.충전완료_된_사용자;
+import static com.example.tyfserver.payment.PaymentAcceptanceTest.페이먼트_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
@@ -314,7 +312,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(response.getCurrentPoint()).isEqualTo(10000L);
-        assertThat(response.getExchangeablePoint()).isEqualTo(0L);
         assertThat(response.getExchangedTotalPoint()).isEqualTo(0L);
     }
 
@@ -336,11 +333,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com",
                 "KAKAO", "nickname", "pagename");
 
-        MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
-                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
-                .controlName("bankbookImage")
-                .fileName("bankbook.jpg")
-                .build();
+        MultiPartSpecification multiPartSpecification = generateMultiPartSpecification();
 
         계좌_등록(multiPartSpecification, "name", "1234-5678-1234", "bank", signUpResponse.getToken());
 
@@ -359,11 +352,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public void registerAccount() {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
 
-        MultiPartSpecification multiPartSpecification = new MultiPartSpecBuilder("testImageBinary".getBytes())
-                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
-                .controlName("bankbookImage")
-                .fileName("bankbook.jpg")
-                .build();
+        MultiPartSpecification multiPartSpecification = generateMultiPartSpecification();
 
         ExtractableResponse<Response> response = 계좌_등록(multiPartSpecification, "실명",
                 "1234-5678-1234", "은행", signUpResponse.getToken());
@@ -372,17 +361,27 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("정산 요청 - 정산 금액이 만원 이하인 경우")
+    @DisplayName("정산 요청 - 정산 금액이 만원 미만인 경우")
     public void requestExchangeAmountLessThanLimit() {
         //given
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");
-        PaymentPendingResponse pendingResponse = 페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken()).as(PaymentPendingResponse.class);
-        후원_생성("pagename", 10000L, signUpResponse.getToken());
+        String token = 관리자_로그인("test-id", "test-password").getToken();
+        요청_계좌_승인(1L, token);
+        페이먼트_생성(Item.ITEM_1.name(), signUpResponse.getToken());
+        후원_생성("pagename", 9999L, signUpResponse.getToken());
 
         //when
         ErrorResponse errorResponse = 정산_요청(signUpResponse.getToken()).as(ErrorResponse.class);
 
         //then
         assertThat(errorResponse.getErrorCode()).isEqualTo(ExchangeAmountException.ERROR_CODE);
+    }
+
+    private MultiPartSpecification generateMultiPartSpecification() {
+        return new MultiPartSpecBuilder("testImageBinary".getBytes())
+                .mimeType(MimeTypeUtils.IMAGE_JPEG.toString())
+                .controlName("bankbookImage")
+                .fileName("bankbook.jpg")
+                .build();
     }
 }

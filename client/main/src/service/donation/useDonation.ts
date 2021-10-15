@@ -1,7 +1,9 @@
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { DONATION_ERROR, DONATION_ERROR_MESSAGE } from '../../constants/error';
 
 import { CreatorId } from '../../types';
+import { popupWindow } from '../../utils/popup';
 import { requestDonation } from '../@request/donation';
 import useAccessToken from '../@shared/useAccessToken';
 import { donationState } from '../@state/donation';
@@ -20,7 +22,22 @@ const useDonation = () => {
 
       history.push(`/donation/${creatorId}/message`);
     } catch (error) {
-      alert('도네이션에 실패했습니다.');
+      const { errorCode }: { errorCode: keyof typeof DONATION_ERROR_MESSAGE } = error.response.data;
+
+      const errorMessage = DONATION_ERROR_MESSAGE[errorCode] ?? '도네이션에 실패했습니다. 잠시 후 다시 시도해주세요.';
+
+      if (errorCode === DONATION_ERROR.NOT_ENOUGH_POINT) {
+        if (!window.confirm(errorMessage)) return;
+
+        popupWindow(`${window.location.origin}/mypoint?isChargeModalOpen=true`, {
+          width: 600,
+          height: 800,
+        });
+
+        return;
+      }
+
+      alert(errorMessage);
     }
   };
 

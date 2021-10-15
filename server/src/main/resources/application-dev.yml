@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:~/tyfH2Db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
 
@@ -12,12 +12,16 @@ spring:
       settings:
         web-allow-others: true
 
+  flyway:
+    baseline-version: 0
+    baseline-on-migrate: true
+
   jpa:
     properties:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 
   profiles:
     include: dev-secret, aws

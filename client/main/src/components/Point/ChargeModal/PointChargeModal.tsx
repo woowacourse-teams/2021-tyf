@@ -1,16 +1,17 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import KakaoPay from '../../../assets/icons/kakao-pay.svg';
 import { popupTerms } from '../../../service/@shared/popupTerms';
 import useAccessToken from '../../../service/@shared/useAccessToken';
+import useLoadScriptEffect from '../../../service/myPoint/useLoadScriptEffect';
 import usePointChargeForm from '../../../service/myPoint/usePointChargeForm';
 import { pay } from '../../../service/payment/payment';
-import { loadScript } from '../../../utils/dynamicImport';
 import { toCommaSeparatedString } from '../../../utils/format';
-import Checkbox from '../../@atom/Checkbox/Checkbox';
+import Checkbox from '../../@atom/Checkbox/Checkbox.styles';
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Transition from '../../@atom/Transition/Transition.styles';
 import IconOutlineBarButton from '../../@molecule/IconOutlineBarButton/IconOutlineBarButton';
+import Spinner from '../../Spinner/Spinner';
 import {
   StyledModal,
   ButtonContainer,
@@ -30,17 +31,26 @@ export interface PointChargeModalProps {
 }
 
 const pointOptions = [
-  { id: 'ITEM_1', value: 1000 },
-  { id: 'ITEM_3', value: 3000 },
-  { id: 'ITEM_5', value: 5000 },
-  { id: 'ITEM_10', value: 10000 },
-  { id: 'ITEM_50', value: 50000 },
-  { id: 'ITEM_100', value: 100000 },
+  { id: 'ITEM_1', point: 1000, price: 1000 },
+  { id: 'ITEM_3', point: 3000, price: 3000 },
+  { id: 'ITEM_5', point: 5000, price: 5000 },
+  { id: 'ITEM_10', point: 10000, price: 10000 },
+  { id: 'ITEM_50', point: 50000, price: 50000 },
+  { id: 'ITEM_100', point: 100000, price: 100000 },
 ];
+
+const totalPrice = (selectedId: string) => {
+  const FEE_RATE = 0.1;
+  const selectedPrice = pointOptions.find(({ id }) => id === selectedId)?.price || 0;
+
+  return Math.floor(selectedPrice * (1 + FEE_RATE));
+};
 
 const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
   const { accessToken } = useAccessToken();
   const [isNext, setIsNext] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+
   const {
     form,
     isAllChecked,
@@ -64,13 +74,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
     setIsNext(true);
   };
 
-  useEffect(() => {
-    const JQUERY = 'https://code.jquery.com/jquery-1.12.4.min.js';
-    const IAMPORT = 'https://cdn.iamport.kr/js/iamport.payment-1.1.5.js';
-
-    loadScript(JQUERY);
-    loadScript(IAMPORT);
-  }, []);
+  useLoadScriptEffect();
 
   return (
     <StyledModal onClose={closeModal}>
@@ -80,11 +84,13 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
           <PaymentButtonContainer>
             <IconOutlineBarButton
               src={KakaoPay}
-              onClick={() =>
+              onClick={() => {
+                setIsPaying(true);
                 pay('kakaopay', selectedItemId, accessToken, () => {
+                  setIsPaying(false);
                   window.location.reload();
-                })
-              }
+                });
+              }}
             >
               카카오페이
             </IconOutlineBarButton>
@@ -92,12 +98,12 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
         </Transition>
       ) : (
         <>
-          <SubTitle>충전 금액 선택</SubTitle>
+          <SubTitle>충전 포인트 선택</SubTitle>
           <div>
             <ButtonContainer onChange={onOptionChange}>
-              {pointOptions.map(({ id, value }) => (
+              {pointOptions.map(({ id, point }) => (
                 <PointRadio key={id} id={id} value={id}>
-                  {toCommaSeparatedString(value)}tp
+                  {toCommaSeparatedString(point)} tp
                 </PointRadio>
               ))}
             </ButtonContainer>
@@ -129,7 +135,7 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
                 checked={isHowToAgreed}
                 onChange={({ target }) => setIsHowToAgreed(target.checked)}
               />
-              <span>충전 금액과 방법에 대해 확인 및 동의합니다.</span>
+              충전 금액과 방법에 대해 확인 및 동의합니다.
             </CheckboxContainer>
             <CheckboxContainer>
               <Checkbox
@@ -140,10 +146,11 @@ const PointChargeModal = ({ closeModal }: PointChargeModalProps) => {
             </CheckboxContainer>
           </CheckboxContainerList>
           <PaymentReadyButton onClick={onPaymentReady} disabled={!isValid}>
-            결제하기
+            {toCommaSeparatedString(totalPrice(selectedItemId))}원 결제하기
           </PaymentReadyButton>
         </>
       )}
+      {isPaying && <Spinner />}
     </StyledModal>
   );
 };

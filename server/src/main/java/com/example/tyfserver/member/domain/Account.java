@@ -28,11 +28,16 @@ public class Account extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private AccountStatus status = AccountStatus.UNREGISTERED;
 
-    public Account(String accountHolder, String accountNumber, String bankbookUrl, String bank) {
+    public Account(String accountHolder, String accountNumber, String bank, String bankbookUrl, AccountStatus status) {
         this.accountHolder = accountHolder;
         this.accountNumber = accountNumber;
-        this.bankbookUrl = bankbookUrl;
         this.bank = bank;
+        this.bankbookUrl = bankbookUrl;
+        this.status = status;
+    }
+
+    public Account(String accountHolder, String accountNumber, String bankbookUrl, String bank) {
+        this(accountHolder, accountNumber, bank, bankbookUrl, AccountStatus.UNREGISTERED);
     }
 
     public void register(String accountHolder, String accountNumber, String bank, String bankbookUrl) {

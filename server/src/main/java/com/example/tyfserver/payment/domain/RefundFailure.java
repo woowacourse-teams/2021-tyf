@@ -12,12 +12,12 @@ public class RefundFailure extends BaseTimeEntity {
     public static final int DEFAULT_TRY_COUNT = 10;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private int remainTryCount;
 
-    public RefundFailure(Integer id, int remainTryCount) {
+    public RefundFailure(Long id, int remainTryCount) {
         this.id = id;
         this.remainTryCount = remainTryCount;
     }

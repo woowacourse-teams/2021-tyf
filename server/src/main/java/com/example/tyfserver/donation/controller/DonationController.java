@@ -34,14 +34,13 @@ public class DonationController {
                 .body(donationService.createDonation(donationRequest, loginMember.getId()));
     }
 
-    // todo LoginMember 받아야하지 않나? A로 로그인하고 B가 C한테 보낸 후원의 메시지를 작성할 수도 있자나? 도네이션의 주인이 맞는지 검증필요할듯
     @PostMapping("/{donationId}/messages")
-    public ResponseEntity<Void> addDonationMessage(@PathVariable Long donationId,
+    public ResponseEntity<Void> addDonationMessage(LoginMember loginMember, @PathVariable Long donationId,
                                                    @Valid @RequestBody DonationMessageRequest donationMessageRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new DonationMessageRequestException();
         }
-        donationService.addMessageToDonation(donationId, donationMessageRequest);
+        donationService.addMessageToDonation(loginMember.getId(), donationId, donationMessageRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

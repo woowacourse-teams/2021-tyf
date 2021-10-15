@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 @RequiredArgsConstructor
 public class SmtpMailConnector {
+    // todo 메일 전송 시간이 김. 비동기로 해볼까?
 
     private static final String PREFIX_SUBJECT = "[Thank You For]";
 

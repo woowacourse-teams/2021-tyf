@@ -65,7 +65,7 @@ const useRegisterPageName = () => {
   }, [pageName]);
 
   const setPageName = (value: string) => {
-    setUser({ ...user, pageName: value });
+    setUser({ ...user, pageName: value.trim() });
   };
 
   return { pageName, addressErrorMessage, isValidAddress, setPageName };

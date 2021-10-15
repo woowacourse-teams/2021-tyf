@@ -22,6 +22,7 @@ const useBankAccount = () => {
       setBankAccountList(data);
     } catch (error) {
       alert(error.message);
+
       if (error.errorCode === 'auth-002') {
         history.push('/');
       }

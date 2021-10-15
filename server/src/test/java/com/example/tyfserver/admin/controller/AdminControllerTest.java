@@ -153,7 +153,7 @@ class AdminControllerTest {
         when(authenticationInterceptor.preHandle(any(), any(), any())).thenReturn(true);
         when(adminService.exchangeList())
                 .thenReturn(singletonList(
-                        new ExchangeResponse("승윤", "tyf@gmail.com", 10000L, "123-123", "nickname", "pagename", LocalDateTime.now())
+                        new ExchangeResponse("승윤", "tyf@gmail.com", "nickname", "pagename", 10000L, LocalDateTime.now(), "123-123")
                 ));
 
         mockMvc.perform(get("/admin/list/exchange")

@@ -7,6 +7,7 @@ import com.example.tyfserver.payment.domain.PaymentStatus;
 import com.example.tyfserver.payment.dto.IamPortPaymentInfo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
+@Profile("!performance")
 public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
     private static final String MODULE_NAME = "아임포트";
