@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { STORAGE_KEY } from '../constants/storage';
 
 import { requestLogin } from '../request/login';
 import { LoginResponse } from '../type';
+import { setLocalStorageItem } from '../utils/storage';
 import { accessTokenState } from './@state/login';
 
 const useLogin = () => {
@@ -15,6 +17,7 @@ const useLogin = () => {
       const { token }: LoginResponse = await requestLogin(id, pwd);
 
       setAccessToken(token);
+      setLocalStorageItem(STORAGE_KEY.ACCESS_TOKEN, token);
 
       history.push('/bankAccount');
     } catch (error) {
@@ -25,6 +28,7 @@ const useLogin = () => {
   useEffect(() => {
     if (!accessToken) return;
 
+    localStorage.removeItem(STORAGE_KEY.ACCESS_TOKEN);
     setAccessToken('');
   }, []);
 
