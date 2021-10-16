@@ -9,14 +9,15 @@ import MobileCreatorInfo from './Mobile/MobileCreatorInfo';
 import useAccessToken from '../../../service/@shared/useAccessToken';
 import { useHistory } from 'react-router';
 
+const SETTLEMENT_CONFIRM_MESSAGE = '아직 계좌인증이 되지 않았습니다. 계좌 인증을 진행하시겠습니까?';
+
 interface CreatorInfoProps {
   isAdmin: boolean;
   creatorId: string;
   toggleModal: () => void;
-  bankRegistered: boolean;
 }
 
-const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: CreatorInfoProps) => {
+const CreatorInfo = ({ isAdmin, creatorId, toggleModal }: CreatorInfoProps) => {
   const history = useHistory();
   const creator = useCreator(creatorId);
   const { windowWidth } = useWindowResize();
@@ -36,10 +37,20 @@ const CreatorInfo = ({ isAdmin, creatorId, bankRegistered, toggleModal }: Creato
   };
 
   const onMobileShare = () => {
+    if (!creator.bankRegistered && confirm(SETTLEMENT_CONFIRM_MESSAGE)) {
+      history.push(`/creator/${creatorId}/settlement`);
+      return;
+    }
+
     donationUrlShare(creator.nickname, creatorId);
   };
 
   const openShareURLModal = () => {
+    if (!creator.bankRegistered && confirm(SETTLEMENT_CONFIRM_MESSAGE)) {
+      history.push(`/creator/${creatorId}/settlement`);
+      return;
+    }
+
     toggleModal();
   };
 
