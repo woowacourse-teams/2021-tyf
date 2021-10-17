@@ -13,12 +13,23 @@ import {
   UploadLabel,
   FileName,
   UploadLabelButton,
+  RegistrationNumberContainer,
+  RegistrationNumberInput,
+  RegistrationNumberSeparator,
 } from './SettlementRegisterForm.styles';
 import useSettlement from '../../../service/settlement/useSettlement';
 
 const SettlementRegisterForm = () => {
-  const { form, setBank, setAccountNumber, setAccountHolder, setBankbookImage, isFormValid } =
-    useSettlementAccountForm();
+  const {
+    form,
+    setBank,
+    setAccountNumber,
+    setAccountHolder,
+    setBankbookImage,
+    setResidentRegistrationNumberFront,
+    setResidentRegistrationNumberRear,
+    isFormValid,
+  } = useSettlementAccountForm();
 
   const { registerSettlementAccount } = useSettlement();
 
@@ -48,6 +59,20 @@ const SettlementRegisterForm = () => {
           value={form.accountHolder}
           onChange={({ target }) => setAccountHolder(target.value)}
         />
+      </InputContainer>
+      <InputContainer>
+        <StyledSubTitle>주민등록번호</StyledSubTitle>
+        <RegistrationNumberContainer>
+          <RegistrationNumberInput
+            value={form.residentRegistrationNumber[0]}
+            onChange={({ target }) => setResidentRegistrationNumberFront(target.value)}
+          />
+          <RegistrationNumberSeparator>{'-'}</RegistrationNumberSeparator>
+          <RegistrationNumberInput
+            value={form.residentRegistrationNumber[1]}
+            onChange={({ target }) => setResidentRegistrationNumberRear(target.value)}
+          />
+        </RegistrationNumberContainer>
       </InputContainer>
       <InputContainer>
         <StyledSubTitle>은행</StyledSubTitle>
