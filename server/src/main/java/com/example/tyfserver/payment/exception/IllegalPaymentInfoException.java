@@ -3,6 +3,7 @@ package com.example.tyfserver.payment.exception;
 import com.example.tyfserver.common.exception.BaseException;
 
 public class IllegalPaymentInfoException extends BaseException {
+
     public static final String ERROR_CODE_NOT_PAID = "payment-002";
     private static final String MESSAGE_NOT_PAID = "결제가 완료되지 않았습니다.";
 

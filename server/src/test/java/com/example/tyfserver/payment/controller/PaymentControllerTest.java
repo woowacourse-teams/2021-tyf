@@ -12,6 +12,7 @@ import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.Payment;
 import com.example.tyfserver.payment.domain.PaymentTest;
 import com.example.tyfserver.payment.dto.*;
+import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.exception.PaymentCompleteRequestException;
 import com.example.tyfserver.payment.exception.PaymentPendingRequestException;
 import com.example.tyfserver.payment.service.PaymentService;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static com.example.tyfserver.payment.exception.IllegalPaymentInfoException.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -44,6 +46,7 @@ public class PaymentControllerTest {
     private static final Item ITEM = Item.ITEM_1;
     private static final long AMOUNT = Item.ITEM_1.getItemPrice();
     private static final String IMP_UID = "imp_uid";
+    private static final String MODULE = "테스트모듈";
 
     @Autowired
     private MockMvc mockMvc;
@@ -79,8 +82,8 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/charge/ready")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pendingRequest)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("merchantUid").value(payment.getMerchantUid().toString()))
                 .andExpect(jsonPath("itemName").value(payment.getItemName()))
@@ -106,8 +109,8 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/charge/ready")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pendingRequest)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("paymentReadyMemberNotFoundFailed",
@@ -127,8 +130,8 @@ public class PaymentControllerTest {
 
         //when //then
         mockMvc.perform(post("/payments/charge/ready")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pendingRequest)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pendingRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentPendingRequestException.ERROR_CODE))
                 .andDo(document("paymentReadyRequestFailed",
@@ -152,8 +155,8 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/charge")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("point").value(AMOUNT))
                 .andDo(document("createPayment",
@@ -174,11 +177,95 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/charge")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentCompleteRequestException.ERROR_CODE))
                 .andDo(document("createPaymentRequestFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/charge - 실 결제 정보 상태가 PAID가 아닐경우")
+    public void createDonationFailedStatusNotPaid() throws Exception {
+        //given
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        //when
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_NOT_PAID, "테스트모듈"))
+                .when(paymentService).completePayment(any(PaymentCompleteRequest.class));
+
+        //then
+        mockMvc.perform(post("/payments/charge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_NOT_PAID))
+                .andDo(document("createPaymentFailedStatusNotPaid",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/charge - 실 결제 정보의 id와 저장된 결제정보의 id가 일치하지 않을 경우")
+    public void createDonationFailedInvalidId() throws Exception {
+        //given
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        //when
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
+                .when(paymentService).completePayment(any(PaymentCompleteRequest.class));
+
+        //then
+        mockMvc.perform(post("/payments/charge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_ID))
+                .andDo(document("createPaymentFailedStatusInvalidId",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/charge - 실 결제 정보의 Amount와 저장된 결제정보의 Amount가 일치하지 않을 경우")
+    public void createDonationFailedInvalidAmount() throws Exception {
+        //given
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        //when
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, MODULE))
+                .when(paymentService).completePayment(any(PaymentCompleteRequest.class));
+
+        //then
+        mockMvc.perform(post("/payments/charge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_AMOUNT))
+                .andDo(document("createPaymentFailedInvalidAmount",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/charge - 실 결제 정보의 PageName과 저장된 결제정보의 PageName이 일치하지 않을 경우")
+    public void createDonationFailedInvalidPageName() throws Exception {
+        //given
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        //when
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, MODULE))
+                .when(paymentService).completePayment(any(PaymentCompleteRequest.class));
+
+        //then
+        mockMvc.perform(post("/payments/charge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_CREATOR))
+                .andDo(document("createPaymentFailedInvalidPageName",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
@@ -197,8 +284,8 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/refund/verification/ready")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("refundVerificationReady",
                         preprocessRequest(prettyPrint()),
@@ -220,8 +307,8 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/refund/verification")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(document("refundVerification",
                         preprocessRequest(prettyPrint()),
@@ -243,9 +330,9 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(get("/payments/refund/info")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer {refundAccessToken}")
-                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer {refundAccessToken}")
+        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("point").value(refundInfoResponse.getPoint()))
                 .andExpect(jsonPath("price").value(refundInfoResponse.getPrice()))
@@ -265,8 +352,8 @@ public class PaymentControllerTest {
 
         //then
         mockMvc.perform(post("/payments/refund")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer {refundAccessToken}"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer {refundAccessToken}"))
                 .andExpect(status().isOk())
                 .andDo(document("refundPayment",
                         preprocessRequest(prettyPrint()),
