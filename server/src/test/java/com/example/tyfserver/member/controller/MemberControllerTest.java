@@ -758,7 +758,7 @@ class MemberControllerTest {
     void getAccountInfo() throws Exception {
         //given
         AccountInfoResponse accountInfoResponse =
-                AccountInfoResponse.of(new Account("", "", "", ""));
+                AccountInfoResponse.of(new Account("", "", "", "", ""));
 
         //when
         when(memberService.accountInfo(Mockito.any())).thenReturn(accountInfoResponse);

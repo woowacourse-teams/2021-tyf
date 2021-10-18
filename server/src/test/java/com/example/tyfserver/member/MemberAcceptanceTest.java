@@ -96,6 +96,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("accountHolder", name);
         requestBody.put("accountNumber", account);
+        requestBody.put("residentRegistrationNumber", "900101-1000000"); //todo: 값 받도록 수정하기!
         requestBody.put("bank", bank);
 
         return RestAssured

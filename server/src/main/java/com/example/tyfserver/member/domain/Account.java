@@ -21,6 +21,9 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String accountNumber;
 
+    @Column(unique = true) //todo: 현재 unique 속성을 걸면 이전 계정들이 다 문제가 생기는데 이 부분은 빼고 생각해야할까? (batch쪽도 문제 생김)
+    private String residentRegistrationNumber;
+
     private String bank;
 
     private String bankbookUrl;
@@ -28,22 +31,24 @@ public class Account extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private AccountStatus status = AccountStatus.UNREGISTERED;
 
-    public Account(String accountHolder, String accountNumber, String bank, String bankbookUrl, AccountStatus status) {
+    public Account(String accountHolder, String accountNumber, String residentRegistrationNumber, String bank, String bankbookUrl, AccountStatus status) {
         this.accountHolder = accountHolder;
         this.accountNumber = accountNumber;
+        this.residentRegistrationNumber = residentRegistrationNumber;
         this.bank = bank;
         this.bankbookUrl = bankbookUrl;
         this.status = status;
     }
 
-    public Account(String accountHolder, String accountNumber, String bankbookUrl, String bank) {
-        this(accountHolder, accountNumber, bank, bankbookUrl, AccountStatus.UNREGISTERED);
+    public Account(String accountHolder, String accountNumber, String residentRegistrationNumber, String bankbookUrl, String bank) {
+        this(accountHolder, accountNumber, residentRegistrationNumber, bank, bankbookUrl, AccountStatus.UNREGISTERED);
     }
 
-    public void register(String accountHolder, String accountNumber, String bank, String bankbookUrl) {
+    public void register(String accountHolder, String accountNumber, String residentRegistrationNumber, String bank, String bankbookUrl) {
         validateRegisterAccount();
         this.accountHolder = accountHolder;
         this.accountNumber = accountNumber;
+        this.residentRegistrationNumber = residentRegistrationNumber;
         this.bank = bank;
         this.bankbookUrl = bankbookUrl;
         this.status = AccountStatus.REQUESTING;
