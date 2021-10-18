@@ -424,9 +424,9 @@ include::{snippets}/approveAccount/http-request.adoc[]
 include::{snippets}/approveAccount/http-response.adoc[]
 === 계좌 등록 요청 반려
 ==== Request
-include::{snippets}/cancelAccount/http-request.adoc[]
+include::{snippets}/rejectAccount/http-request.adoc[]
 ==== Response
-include::{snippets}/cancelAccount/http-response.adoc[]
+include::{snippets}/rejectAccount/http-response.adoc[]
 === 계좌 등록 요청 조회
 ==== Request
 include::{snippets}/requestingAccounts/http-request.adoc[]
