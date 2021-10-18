@@ -32,7 +32,7 @@ const useLogin = () => {
     setAccessToken('');
   }, []);
 
-  return { login };
+  return { accessToken, login };
 };
 
 export default useLogin;
