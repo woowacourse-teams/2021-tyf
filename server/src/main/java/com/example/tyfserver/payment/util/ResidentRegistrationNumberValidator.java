@@ -9,11 +9,6 @@ public class ResidentRegistrationNumberValidator implements ConstraintValidator<
     private final Pattern pattern = Pattern.compile("^\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|[3][01])\\-[1-4][0-9]{6}$");
 
     @Override
-    public void initialize(ResidentRegistrationNumber constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
-
-    @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
             return false;
