@@ -70,20 +70,20 @@ public class PaymentControllerTest {
     @DisplayName("/payments/charge/ready - success")
     public void readyCreatePayment() throws Exception {
         //given
-        PaymentPendingRequest pendingRequest = new PaymentPendingRequest(ITEM.name());
         Payment payment = PaymentTest.testPayment();
-        PaymentPendingResponse pendingResponse = new PaymentPendingResponse(payment);
         Member member = MemberTest.testMember();
+        PaymentPendingRequest request = new PaymentPendingRequest(ITEM.name());
+        PaymentPendingResponse response = new PaymentPendingResponse(payment);
 
         //when
         validInterceptorAndArgumentResolverLoginMemberMocking(member);
         when(paymentService.createPayment(Mockito.anyString(), Mockito.any(LoginMember.class)))
-                .thenReturn(pendingResponse);
+                .thenReturn(response);
 
         //then
         mockMvc.perform(post("/payments/charge/ready")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pendingRequest)))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("merchantUid").value(payment.getMerchantUid().toString()))
                 .andExpect(jsonPath("itemName").value(payment.getItemName()))
@@ -99,7 +99,7 @@ public class PaymentControllerTest {
     @DisplayName("/payments/charge/ready - 회원을 찾을 수 없음")
     public void readyCreatePaymentMemberNotFoundFailed() throws Exception {
         //given
-        PaymentPendingRequest pendingRequest = new PaymentPendingRequest(ITEM.name());
+        PaymentPendingRequest request = new PaymentPendingRequest(ITEM.name());
 
         //when
         validInterceptorAndArgumentResolverLoginMemberMocking(MemberTest.testMember());
@@ -110,7 +110,7 @@ public class PaymentControllerTest {
         //then
         mockMvc.perform(post("/payments/charge/ready")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pendingRequest)))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("paymentReadyMemberNotFoundFailed",
@@ -124,14 +124,14 @@ public class PaymentControllerTest {
     public void readyCreatePaymentRequestFailed() throws Exception {
         //given
         Member member = MemberTest.testMember();
-        PaymentPendingRequest pendingRequest = new PaymentPendingRequest("invalidateItemName");
+        PaymentPendingRequest request = new PaymentPendingRequest("invalidateItemName");
 
         validInterceptorAndArgumentResolverLoginMemberMocking(member);
 
         //when //then
         mockMvc.perform(post("/payments/charge/ready")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pendingRequest)))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentPendingRequestException.ERROR_CODE))
                 .andDo(document("paymentReadyRequestFailed",
@@ -144,19 +144,19 @@ public class PaymentControllerTest {
     @DisplayName("/payments/charge - success")
     public void createPayment() throws Exception {
         //given
-        PaymentCompleteRequest paymentCompleteRequest = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
-        PaymentCompleteResponse paymentCompleteResponse = new PaymentCompleteResponse(AMOUNT);
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+        PaymentCompleteResponse response = new PaymentCompleteResponse(AMOUNT);
         Member member = MemberTest.testMember();
 
         //when
         validInterceptorAndArgumentResolverLoginMemberMocking(member);
         when(paymentService.completePayment(any(PaymentCompleteRequest.class)))
-                .thenReturn(paymentCompleteResponse);
+                .thenReturn(response);
 
         //then
         mockMvc.perform(post("/payments/charge")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("point").value(AMOUNT))
                 .andDo(document("createPayment",
@@ -166,10 +166,33 @@ public class PaymentControllerTest {
     }
 
     @Test
-    @DisplayName("/payments/charge - 유효하지 않은 Request")
-    public void createPaymentPaymentCompleteRequestFailed() throws Exception {
+    @DisplayName("/payments/charge - 회원을 찾을 수 없음")
+    public void createPaymentMemberNotFoundFailed() throws Exception {
         //given
-        PaymentCompleteRequest paymentCompleteRequest = new PaymentCompleteRequest(IMP_UID, "Invalid UUID value");
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
+
+        //when
+        validInterceptorAndArgumentResolverLoginMemberMocking(MemberTest.testMember());
+        doThrow(new MemberNotFoundException())
+                .when(paymentService).completePayment(any(PaymentCompleteRequest.class));
+
+        //then
+        mockMvc.perform(post("/payments/charge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("createPaymentMemberNotFoundFailed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    @DisplayName("/payments/charge - 유효하지 않은 Request")
+    public void createPaymentRequestFailed() throws Exception {
+        //given
+        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, "Invalid UUID value");
 
         //when
         Member member = MemberTest.testMember();
@@ -178,7 +201,7 @@ public class PaymentControllerTest {
         //then
         mockMvc.perform(post("/payments/charge")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(paymentCompleteRequest)))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(PaymentCompleteRequestException.ERROR_CODE))
                 .andDo(document("createPaymentRequestFailed",
@@ -189,7 +212,7 @@ public class PaymentControllerTest {
 
     @Test
     @DisplayName("/payments/charge - 실 결제 정보 상태가 PAID가 아닐경우")
-    public void createDonationFailedStatusNotPaid() throws Exception {
+    public void createPaymentFailedStatusNotPaid() throws Exception {
         //given
         PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         //when
@@ -210,7 +233,7 @@ public class PaymentControllerTest {
 
     @Test
     @DisplayName("/payments/charge - 실 결제 정보의 id와 저장된 결제정보의 id가 일치하지 않을 경우")
-    public void createDonationFailedInvalidId() throws Exception {
+    public void createPaymentFailedStatusInvalidId() throws Exception {
         //given
         PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         //when
@@ -231,7 +254,7 @@ public class PaymentControllerTest {
 
     @Test
     @DisplayName("/payments/charge - 실 결제 정보의 Amount와 저장된 결제정보의 Amount가 일치하지 않을 경우")
-    public void createDonationFailedInvalidAmount() throws Exception {
+    public void createPaymentFailedInvalidAmount() throws Exception {
         //given
         PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         //when
@@ -252,7 +275,7 @@ public class PaymentControllerTest {
 
     @Test
     @DisplayName("/payments/charge - 실 결제 정보의 PageName과 저장된 결제정보의 PageName이 일치하지 않을 경우")
-    public void createDonationFailedInvalidPageName() throws Exception {
+    public void createPaymentFailedInvalidPageName() throws Exception {
         //given
         PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         //when
@@ -321,22 +344,21 @@ public class PaymentControllerTest {
     public void refundInfo() throws Exception {
         //given
         VerifiedRefunder verifiedRefunder = new VerifiedRefunder(MERCHANT_UID.toString());
-        RefundInfoResponse refundInfoResponse = new RefundInfoResponse(PaymentTest.testPayment());
+        RefundInfoResponse response = new RefundInfoResponse(PaymentTest.testPayment());
 
         //when
         validInterceptorAndArgumentResolverVerifiedRefunderMocking(verifiedRefunder);
         when(paymentService.refundInfo(any(VerifiedRefunder.class)))
-                .thenReturn(refundInfoResponse);
+                .thenReturn(response);
 
         //then
         mockMvc.perform(get("/payments/refund/info")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer {refundAccessToken}")
-        )
+                .header("Authorization", "Bearer {refundAccessToken}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("point").value(refundInfoResponse.getPoint()))
-                .andExpect(jsonPath("price").value(refundInfoResponse.getPrice()))
-                .andExpect(jsonPath("itemName").value(refundInfoResponse.getItemName()))
+                .andExpect(jsonPath("point").value(response.getPoint()))
+                .andExpect(jsonPath("price").value(response.getPrice()))
+                .andExpect(jsonPath("itemName").value(response.getItemName()))
                 .andDo(document("refundInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
