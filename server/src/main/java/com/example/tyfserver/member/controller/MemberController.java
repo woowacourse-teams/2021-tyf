@@ -118,7 +118,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.accountInfo(loginMember));
     }
 
-    @PostMapping("/me/account") //todo: 주민등록도 받게 변경!
+    @PostMapping("/me/account")
     public ResponseEntity<Void> registerAccount(LoginMember loginMember,
                                                 @Valid @ModelAttribute AccountRegisterRequest accountRegisterRequest,
                                                 BindingResult bindingResult) {
