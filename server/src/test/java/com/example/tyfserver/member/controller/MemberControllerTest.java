@@ -843,11 +843,38 @@ class MemberControllerTest {
                         .file(file)
                         .param("accountHolder", "")
                         .param("accountNumber", "")
+                        .param("residentRegistrationNumber", "")
                         .param("bank", "")
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AccountRegisterValidationRequestException.ERROR_CODE))
                 .andDo(document("registerAccountFailWhenInvalidValue",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"900101-100000", "900101-10000001", "900001-1000000", "900100-1000000", "900101-5000000"})
+    @DisplayName("Post - /members/me/account - fail - ResidentRegistrationNumber validation")
+    void registerAccountFailWhenInvalidResidentRegistrationNumber(String residentRegistrationNumber) throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
+                ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
+
+        validInterceptorAndArgumentResolverMocking();
+        doThrow(new AccountAlreadyRegisteredException()).when(memberService).registerAccount(Mockito.any(), Mockito.any());
+
+        //when
+        mockMvc.perform(multipart("/members/me/account")
+                        .file(file)
+                        .param("accountHolder", "test")
+                        .param("accountNumber", "1234-5678-1234")
+                        .param("residentRegistrationNumber", residentRegistrationNumber)
+                        .param("bank", "은행")
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errorCode").value(AccountRegisterValidationRequestException.ERROR_CODE))
+                .andDo(document("registerAccountFailWhenInvalidResidentRegistrationNumberValue",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())));
     }
