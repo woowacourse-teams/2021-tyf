@@ -6,6 +6,7 @@ import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.CurationsResponse;
@@ -130,8 +131,12 @@ class MemberRepositoryImplTest {
         initDonation(member6, 6000L);
         initDonation(member6, 7000L);
 
-        // todo 도네이션 합계 쿼리시 CANCELLED 도 포함해서 계산중임. 정상적인 도네이션만 쿼리 필요
-//        member2.getDonations().get(0).toCancelled();
+        member1.addInitialAccount(initUnregisteredAccount(1));
+        member2.addInitialAccount(initUnregisteredAccount(2));
+        member3.addInitialAccount(initUnregisteredAccount(3));
+        member4.addInitialAccount(initRegisteredAccount(4));
+        member5.addInitialAccount(initRegisteredAccount(5));
+        member6.addInitialAccount(initRegisteredAccount(6));
 
         em.flush();
         em.clear();
@@ -144,26 +149,22 @@ class MemberRepositoryImplTest {
                 curationsResponseFromMember(member6)
         );
 
-        assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member3)
-        );
+//        assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
+//                curationsResponseFromMember(member3)
+//        );
 
-        assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(
+        assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
                 curationsResponseFromMember(member5)
         );
 
-        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member2)
-        );
-
-        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member1)
-        );
-
-        // todo 개선 되면 위 두개 지우고 이거 통과해야함
 //        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-//                curationsResponseFromMember(member1, 1000L)
+//                curationsResponseFromMember(member2)
 //        );
+//
+//        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
+//                curationsResponseFromMember(member1)
+//        );
+
     }
 
     private Member initMember(int i) {
@@ -172,6 +173,19 @@ class MemberRepositoryImplTest {
         member.updateBio("I am test");
         em.persist(member);
         return member;
+    }
+
+    private Account initUnregisteredAccount(int i) {
+        Account account = new Account("holder", "number" + i, "bank", "url");
+        em.persist(account);
+        return account;
+    }
+
+    private Account initRegisteredAccount(int i) {
+        Account account = new Account("holder", "number" + i,
+                "bank", "url", AccountStatus.REGISTERED);
+        em.persist(account);
+        return account;
     }
 
     private void initDonation(Member member, long amount, DonationStatus status, LocalDateTime createAt) {

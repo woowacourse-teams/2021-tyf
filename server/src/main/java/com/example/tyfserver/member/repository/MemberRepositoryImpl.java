@@ -27,6 +27,7 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
                         new QCurationsResponse(member.nickname, member.pageName, member.profileImage, member.bio))
                 .from(member)
                 .leftJoin(member.receivedDonations, donation)
+                .innerJoin(member.account, account).on(member.account.status.eq(AccountStatus.valueOf("REGISTERED")))
                 .groupBy(member)
                 .orderBy(donation.point.sum().desc())
                 .offset(0)
