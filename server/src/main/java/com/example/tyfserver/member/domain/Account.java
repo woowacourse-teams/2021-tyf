@@ -21,7 +21,7 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String accountNumber;
 
-    @Column(unique = true) //todo: 현재 unique 속성을 걸면 이전 계정들이 다 문제가 생기는데 이 부분은 빼고 생각해야할까? (batch쪽도 문제 생김)
+    //todo: 현재 unique 속성을 걸면 이전 계정들이 다 문제가 생기는데 unique 제약을 안거는게 좋을까?
     private String residentRegistrationNumber;
 
     private String bank;
