@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { DEVICE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
+import { Z_INDEX } from '../../../constants/style';
 
 export const StyledHelpButton = styled.a`
   position: sticky;
@@ -10,6 +11,7 @@ export const StyledHelpButton = styled.a`
   height: 3rem;
   margin-left: auto;
   margin-right: 2rem;
+  z-index: ${Z_INDEX.FOREGROUND};
 
   bottom: 3rem;
   background-color: ${PALETTE.WHITE_400};
