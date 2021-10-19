@@ -21,7 +21,6 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String accountNumber;
 
-    //todo: 현재 unique 속성을 걸면 이전 계정들이 다 문제가 생기는데 unique 제약을 안거는게 좋을까?
     private String residentRegistrationNumber;
 
     private String bank;
