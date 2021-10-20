@@ -19,7 +19,7 @@ const DesktopSettlementInfo = () => {
   return (
     <StyledSettlementInfo>
       <InfoContainer>
-        <StyledSubTitle>현재 도네이션 받은 금액은</StyledSubTitle>
+        <StyledSubTitle>현재 도네이션 받은 tp는</StyledSubTitle>
         <AmountContainer>
           <span>
             <Amount>{toCommaSeparatedString(currentPoint ?? 0)}</Amount>tp
@@ -29,7 +29,7 @@ const DesktopSettlementInfo = () => {
         <Button disabled>도네이션 내역 확인하기</Button>
       </InfoContainer>
       <InfoContainer>
-        <StyledSubTitle>정산 받을 수 있는 금액은</StyledSubTitle>
+        <StyledSubTitle>정산 받을 수 있는 tp는</StyledSubTitle>
         <AmountContainer>
           <span>
             <Amount>{toCommaSeparatedString(exchangeablePoint ?? 0)}</Amount>tp
@@ -39,12 +39,12 @@ const DesktopSettlementInfo = () => {
         <Button onClick={applySettlement}>정산 신청하기</Button>
       </InfoContainer>
       <InfoContainer>
-        <StyledSubTitle>현재까지 정산 받은 금액은</StyledSubTitle>
+        <StyledSubTitle>현재까지 정산 받은 tp는</StyledSubTitle>
         <AmountContainer>
           <span>
             <Amount>{toCommaSeparatedString(exchangedTotalPoint ?? 0)}</Amount>tp
           </span>
-          <Caution>Thank You For 에서 정산받은 총 금액입니다</Caution>
+          <Caution>Thank You For 에서 정산받은 총 tp입니다</Caution>
         </AmountContainer>
         <Button disabled>정산 내역 확인하기</Button>
       </InfoContainer>
