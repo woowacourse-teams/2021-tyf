@@ -4,16 +4,18 @@ import { useRecoilValue } from 'recoil';
 import { CreatorId } from '../../types';
 import { requestSendDonationMessage } from '../@request/donation';
 import { donationState } from '../@state/donation';
+import useAccessToken from '../@shared/useAccessToken';
 
 const useDonationMessage = (creatorId: CreatorId) => {
   const donation = useRecoilValue(donationState);
   const history = useHistory();
+  const { accessToken } = useAccessToken();
 
   const sendDonationMessage = async (message: string, isSecret: boolean) => {
     const finalMessage = message || donation.message;
 
     try {
-      await requestSendDonationMessage(donation.donationId, finalMessage, isSecret);
+      await requestSendDonationMessage(donation.donationId, finalMessage, isSecret, accessToken);
 
       history.push(`/donation/${creatorId}/success`);
     } catch (error) {

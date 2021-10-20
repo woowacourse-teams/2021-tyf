@@ -16,7 +16,12 @@ export const requestDonation = (
 export const requestSendDonationMessage = (
   donationId: DonationId,
   message: string,
-  secret: boolean
+  secret: boolean,
+  accessToken: string
 ) => {
-  return apiClient.post(`/donations/${donationId}/messages`, { message, secret });
+  return apiClient.post(
+    `/donations/${donationId}/messages`,
+    { message, secret },
+    authorizationHeader(accessToken)
+  );
 };
