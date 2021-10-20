@@ -149,22 +149,9 @@ class MemberRepositoryImplTest {
                 curationsResponseFromMember(member6)
         );
 
-//        assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
-//                curationsResponseFromMember(member3)
-//        );
-
         assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
                 curationsResponseFromMember(member5)
         );
-
-//        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-//                curationsResponseFromMember(member2)
-//        );
-//
-//        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
-//                curationsResponseFromMember(member1)
-//        );
-
     }
 
     private Member initMember(int i) {
@@ -176,14 +163,14 @@ class MemberRepositoryImplTest {
     }
 
     private Account initUnregisteredAccount(int i) {
-        Account account = new Account("holder", "number" + i, "bank", "url");
+        Account account = new Account("holder", "number" + i, "000101-1000000", "bank", "url");
         em.persist(account);
         return account;
     }
 
     private Account initRegisteredAccount(int i) {
         Account account = new Account("holder", "number" + i,
-                "bank", "url", AccountStatus.REGISTERED);
+                "000101-1000000", "bank", "url", AccountStatus.REGISTERED);
         em.persist(account);
         return account;
     }
