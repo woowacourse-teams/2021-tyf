@@ -24,7 +24,7 @@ const DesktopSettlementInfo = () => {
           <span>
             <Amount>{toCommaSeparatedString(currentPoint ?? 0)}</Amount>tp
           </span>
-          <Caution>도네이션 받은 날짜 기준 7일 후 정산이 가능합니다.</Caution>
+          <Caution>10,000tp 이상부터 정산이 가능합니다.</Caution>
         </AmountContainer>
         <Button disabled>도네이션 내역 확인하기</Button>
       </InfoContainer>

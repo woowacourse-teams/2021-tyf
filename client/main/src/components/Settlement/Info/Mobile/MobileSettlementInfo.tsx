@@ -27,7 +27,7 @@ const MobileSettlementInfo = () => {
           <AmountContainer>
             <Amount>{toCommaSeparatedString(currentPoint ?? 0)}</Amount>원
           </AmountContainer>
-          <Caution>도네이션 받은 날짜 기준 7일 후 정산이 가능합니다.</Caution>
+          <Caution>10,000tp 이상부터 정산이 가능합니다.</Caution>
         </InfoContainer>
         <InfoContainer>
           <StyledSubTitle>정산 받을 수 있는 금액은</StyledSubTitle>
