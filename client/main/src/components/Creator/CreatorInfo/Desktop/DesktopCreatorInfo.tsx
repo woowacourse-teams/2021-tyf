@@ -1,3 +1,4 @@
+import React from 'react';
 import DefaultProfileImg from '../../../../assets/images/default-user-profile.png';
 import { Creator } from '../../../../types';
 import {
@@ -46,11 +47,11 @@ const DesktopCreatorInfo = ({
 
         <DescriptionContainer>
           <p>
-            {creator.bio.split('\n').map((line) => (
-              <>
+            {creator.bio.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
                 {line}
                 <br />
-              </>
+              </React.Fragment>
             ))}
           </p>
         </DescriptionContainer>
