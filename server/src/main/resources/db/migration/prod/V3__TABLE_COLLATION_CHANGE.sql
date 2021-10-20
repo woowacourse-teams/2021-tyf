@@ -1,0 +1,2 @@
+ALTER TABLE `tyf`.`member`
+    CHANGE COLUMN `bio` `bio` VARCHAR(1500) CHARACTER SET 'utf8mb4' NULL DEFAULT NULL ;
