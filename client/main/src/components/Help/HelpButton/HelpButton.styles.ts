@@ -4,7 +4,7 @@ import { DEVICE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
 import { Z_INDEX } from '../../../constants/style';
 
-export const StyledHelpButton = styled.a`
+export const StyledHelpButton = styled.div`
   position: sticky;
   display: block;
   width: 3rem;
