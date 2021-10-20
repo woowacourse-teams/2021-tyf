@@ -55,7 +55,19 @@ const CreatorGuide = () => {
       </StyledContentContainer>
 
       <StyledContentContainer>
-        <StyledSubTitle>2. 정산 신청하기</StyledSubTitle>
+        <StyledSubTitle>2. 내 페이지 공유하기</StyledSubTitle>
+        <StyledContents>
+          <StyledContent>
+            <p>1. 우측 메뉴바에서 [마이페이지] 를 선택하세요.</p>
+            <p>2. [도네이션 주소 공유하기]를 선택해주세요.</p>
+            <p>3. URL공유나 버튼공유 중 원하는 방법으로 텍스트를 복사해주세요.</p>
+            <p>4. 원하는 사이트 / 어플리케이션에 공유를 해주세요!</p>
+          </StyledContent>
+        </StyledContents>
+      </StyledContentContainer>
+
+      <StyledContentContainer>
+        <StyledSubTitle>3. 정산 신청하기</StyledSubTitle>
         <StyledContents>
           <StyledImage>
             <img

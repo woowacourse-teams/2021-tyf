@@ -34,7 +34,11 @@ const DesktopCreatorInfo = ({
           {isAdmin ? (
             <StyledButton onClick={shareUrl}>도네이션 주소 공유하기</StyledButton>
           ) : (
-            <StyledButton onClick={popupDonationAmountPage} disabled={!bankRegistered}>
+            <StyledButton
+              onClick={popupDonationAmountPage}
+              disabled={!bankRegistered}
+              title={!bankRegistered ? '아직 계좌인증을 받지 못했습니다.' : '도네이션 하기'}
+            >
               도네이션하기
             </StyledButton>
           )}

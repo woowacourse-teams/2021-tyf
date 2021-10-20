@@ -109,8 +109,9 @@ public class MemberService {
                 loginMember.getId());
 
         String encryptedAccountNumber = aes256Util.encrypt(accountRegisterRequest.getAccountNumber());
+        String encryptedResidentRegistrationNumber = aes256Util.encrypt(accountRegisterRequest.getResidentRegistrationNumber());
         member.registerAccount(accountRegisterRequest.getAccountHolder(),
-                encryptedAccountNumber, accountRegisterRequest.getBank(), uploadedBankBookUrl);
+                encryptedAccountNumber, encryptedResidentRegistrationNumber, accountRegisterRequest.getBank(), uploadedBankBookUrl);
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {

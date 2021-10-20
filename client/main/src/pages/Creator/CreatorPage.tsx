@@ -37,12 +37,7 @@ const CreatorPage = () => {
       >
         <Suspense fallback={<p>사용자 정보를 불러오는 중입니다.</p>}>
           <Transition>
-            <CreatorInfo
-              isAdmin={isAdmin}
-              creatorId={creatorId}
-              bankRegistered={userInfo?.bankRegistered ?? false}
-              toggleModal={toggleModal}
-            />
+            <CreatorInfo isAdmin={isAdmin} creatorId={creatorId} toggleModal={toggleModal} />
           </Transition>
         </Suspense>
 

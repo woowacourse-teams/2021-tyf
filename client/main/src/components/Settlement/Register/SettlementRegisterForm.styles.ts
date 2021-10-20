@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { DEVICE } from '../../../constants/device';
+import PALETTE from '../../../constants/palette';
+import Input from '../../@atom/Input/Input.styles';
 
 import SubTitle from '../../@atom/SubTitle/SubTitle.styles';
 import Title from '../../@atom/Title/Title.styles';
@@ -56,4 +58,20 @@ export const FileName = styled.span`
 
 export const UploadLabelButton = styled(OutlineButton)`
   pointer-events: none;
+`;
+
+export const RegistrationNumberContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const RegistrationNumberInput = styled(Input)`
+  width: 45%;
+`;
+
+export const RegistrationNumberSeparator = styled.span`
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: ${PALETTE.GRAY_400};
 `;
