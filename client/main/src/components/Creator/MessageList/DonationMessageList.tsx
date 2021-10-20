@@ -43,7 +43,14 @@ const DonationMessageList = ({ isAdmin }: Props) => {
                   </span>
                   <ItemDateInfo>{String(createdAt).slice(0, 10)}</ItemDateInfo>
                 </ItemInfo>
-                <ItemContent>{message}</ItemContent>
+                <ItemContent>
+                  {message.split('\n').map((line) => (
+                    <>
+                      {line}
+                      <br />
+                    </>
+                  ))}
+                </ItemContent>
               </CommentsListItem>
             ))}
           </CommentsList>
