@@ -1,6 +1,7 @@
 import Profile from '../../Profile/Profile';
 import { Creator } from '../../../../types';
 import { DescriptionContainer, StyledButton, StyledCreatorInfo } from './MobileCreatorInfo.styles';
+import React from 'react';
 
 interface Props {
   creator: Creator;
@@ -22,11 +23,11 @@ const MobileCreatorInfo = ({
       <Profile />
       <DescriptionContainer>
         <p>
-          {creator.bio.split('\n').map((line) => (
-            <>
+          {creator.bio.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
               {line}
               <br />
-            </>
+            </React.Fragment>
           ))}
         </p>
       </DescriptionContainer>
