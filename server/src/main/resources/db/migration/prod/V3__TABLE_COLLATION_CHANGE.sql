@@ -1,1 +1,1 @@
-alter table member character set = 'utf8mb4' collate = 'utf8mb4_unicode_ci';
+ALTER TABLE member CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
