@@ -221,7 +221,7 @@ class MemberServiceTest {
         //given
         LoginMember loginMember = new LoginMember(member.getId(), member.getEmail());
         final AccountRegisterRequest test = new AccountRegisterRequest("test",
-                "1234-5678-1234", null, "하나");
+                "1234-5678-1234", "900101-1000000", null, "하나");
         flushAndClear();
 
         //when
@@ -233,6 +233,7 @@ class MemberServiceTest {
         assertThat(account.getAccountHolder()).isEqualTo(test.getAccountHolder());
         assertThat(account.getBank()).isEqualTo(test.getBank());
         assertThat(account.getAccountNumber()).isEqualTo(aes256Util.encrypt(test.getAccountNumber()));
+        assertThat(account.getResidentRegistrationNumber()).isEqualTo(aes256Util.encrypt(test.getResidentRegistrationNumber()));
     }
 
     @Test

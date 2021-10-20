@@ -187,7 +187,7 @@ class MemberRepositoryImplTest {
     }
 
     private CurationsResponse curationsResponseFromMember(Member member6) {
-        return new CurationsResponse(member6.getNickname(),  member6.getPageName(),
+        return new CurationsResponse(member6.getNickname(), member6.getPageName(),
                 member6.getProfileImage(), member6.getBio());
     }
 
@@ -202,7 +202,7 @@ class MemberRepositoryImplTest {
         em.persist(defaultAccount1);
         member1.addInitialAccount(defaultAccount1);
         member1.registerAccount("테스트유저1", "1234-5678-1231",
-                "하나", "https://cloudfront.net/bankbook.png");
+                "900101-1000000", "하나", "https://cloudfront.net/bankbook.png");
 
         Member member2 = new Member("email2", "nick2", "page2",
                 Oauth2Type.GOOGLE, "https://cloudfront.net/profile2.png");
@@ -218,7 +218,7 @@ class MemberRepositoryImplTest {
         em.persist(defaultAccount3);
         member3.addInitialAccount(defaultAccount3);
         member3.registerAccount("테스트유저1", "1234-5678-1233",
-                "하나", "https://cloudfront.net/bankbook.png");
+                "900101-1000001", "하나", "https://cloudfront.net/bankbook.png");
 
         Member member4 = new Member("email4", "nick4", "page4",
                 Oauth2Type.GOOGLE, "https://cloudfront.net/profile4.png");
@@ -234,7 +234,7 @@ class MemberRepositoryImplTest {
         member5.addInitialAccount(defaultAccount5);
         em.persist(defaultAccount5);
         member5.registerAccount("테스트유저1", "1234-5678-1236",
-                "하나", "https://cloudfront.net/bankbook.png");
+                "900101-1000000", "하나", "https://cloudfront.net/bankbook.png");
 
         Member member6 = new Member("email6", "nick6", "page6",
                 Oauth2Type.GOOGLE, "https://cloudfront.net/profile6.png");

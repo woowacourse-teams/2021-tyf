@@ -34,8 +34,8 @@ public class DummyDataService {
         int idx = 1;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < batchSize; j++) {
-                accounts.add(new Account("test", String.valueOf(idx), "bank", null));
-                members.add(new Member("e" + idx + "@test.com", "n" + idx,  "p" + idx, Oauth2Type.KAKAO));
+                accounts.add(new Account("test", String.valueOf(idx), "900101-1000000", "bank", null));
+                members.add(new Member("e" + idx + "@test.com", "n" + idx, "p" + idx, Oauth2Type.KAKAO));
                 idx++;
             }
 
