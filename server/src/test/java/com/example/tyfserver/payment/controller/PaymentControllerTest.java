@@ -50,19 +50,15 @@ public class PaymentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
     private PaymentService paymentService;
-
     @MockBean
     private AuthenticationService authenticationService;
-
     @MockBean
     private AuthenticationInterceptor authenticationInterceptor;
-
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
 
