@@ -2,14 +2,16 @@ import styled from 'styled-components';
 
 import { DEVICE } from '../../../constants/device';
 import PALETTE from '../../../constants/palette';
+import { Z_INDEX } from '../../../constants/style';
 
-export const StyledHelpButton = styled.a`
+export const StyledHelpButton = styled.div`
   position: sticky;
   display: block;
   width: 3rem;
   height: 3rem;
   margin-left: auto;
   margin-right: 2rem;
+  z-index: ${Z_INDEX.FOREGROUND};
 
   bottom: 3rem;
   background-color: ${PALETTE.WHITE_400};

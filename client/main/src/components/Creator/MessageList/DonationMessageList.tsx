@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from 'react-router';
 
 import { ParamTypes } from '../../../App';
@@ -43,7 +44,14 @@ const DonationMessageList = ({ isAdmin }: Props) => {
                   </span>
                   <ItemDateInfo>{String(createdAt).slice(0, 10)}</ItemDateInfo>
                 </ItemInfo>
-                <ItemContent>{message}</ItemContent>
+                <ItemContent>
+                  {message.split('\n').map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </ItemContent>
               </CommentsListItem>
             ))}
           </CommentsList>

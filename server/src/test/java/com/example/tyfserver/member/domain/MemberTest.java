@@ -18,6 +18,7 @@ public class MemberTest {
     private static final String PROFILE_IMAGE = "https://test.com/profile.jpg";
     private static final String ACCOUNT_HOLDER = "홍길동";
     private static final String ACCOUNT_NUMBER = "1234-5678-1234";
+    private static final String RESIDENT_REGISTRATION_NUMBER = "900101-1000000";
     private static final String BANK = "하나";
     private static final String BANK_BOOK_URL = "https://test.com/bankbook.jpg";
 
@@ -35,7 +36,8 @@ public class MemberTest {
 
     public static Member testMemberWithAccount(int i, AccountStatus accountStatus) {
         Member member = new Member(EMAIL + i, NICKNAME + i, PAGE_NAME + i, Oauth2Type.NAVER, PROFILE_IMAGE);
-        member.addInitialAccount(new Account(ACCOUNT_HOLDER, ACCOUNT_NUMBER + i, BANK_BOOK_URL, BANK, accountStatus));
+        member.addInitialAccount(new Account(ACCOUNT_HOLDER, ACCOUNT_NUMBER + i, RESIDENT_REGISTRATION_NUMBER, BANK_BOOK_URL,
+                BANK, accountStatus));
         return member;
     }
 
@@ -88,7 +90,7 @@ public class MemberTest {
         Member member = generateMemberWithAccount();
 
         //when
-        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, BANK, BANK_BOOK_URL);
+        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, RESIDENT_REGISTRATION_NUMBER, BANK, BANK_BOOK_URL);
 
         //then
         Account memberAccount = member.getAccount();
@@ -105,9 +107,9 @@ public class MemberTest {
     public void registerAccountWhenRequesting() {
         //given
         Member member = generateMemberWithAccount();
-        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, BANK, BANK_BOOK_URL);
+        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, RESIDENT_REGISTRATION_NUMBER, BANK, BANK_BOOK_URL);
 
-        assertThatThrownBy(() -> member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER,
+        assertThatThrownBy(() -> member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, RESIDENT_REGISTRATION_NUMBER,
                 BANK, BANK_BOOK_URL))
                 .isExactlyInstanceOf(AccountRequestingException.class);
     }
@@ -117,7 +119,7 @@ public class MemberTest {
     public void approveAccount() {
         //given
         Member member = generateMemberWithAccount();
-        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, BANK, BANK_BOOK_URL);
+        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, RESIDENT_REGISTRATION_NUMBER, BANK, BANK_BOOK_URL);
 
         //when
         member.approveAccount();
@@ -132,7 +134,7 @@ public class MemberTest {
     public void cancelAccount() {
         //given
         Member member = generateMemberWithAccount();
-        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, BANK, BANK_BOOK_URL);
+        member.registerAccount(ACCOUNT_HOLDER, ACCOUNT_NUMBER, RESIDENT_REGISTRATION_NUMBER, BANK, BANK_BOOK_URL);
 
         //when
         member.rejectAccount();

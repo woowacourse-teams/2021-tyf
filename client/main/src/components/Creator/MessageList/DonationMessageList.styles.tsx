@@ -42,6 +42,8 @@ export const ItemInfo = styled.div`
 export const ItemContent = styled.div`
   display: flex;
   justify-content: flex-start;
+
+  line-height: 1.25;
   padding: 0.625rem;
   margin-bottom: 0.5rem;
 `;

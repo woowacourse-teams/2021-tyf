@@ -36,12 +36,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = AdminController.class)
 @AutoConfigureRestDocs
 class AdminControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private AdminService adminService;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private AdminService adminService;
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
@@ -83,16 +85,16 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("/admin/account/reject/{memberId} - success")
+    @DisplayName("계좌 등록 요청 반려")
     public void rejectAccount() throws Exception {
         //given
-        AccountRejectRequest accountRejectRequest = new AccountRejectRequest("테스트취소사유");
+        AccountRejectRequest request = new AccountRejectRequest("테스트취소사유");
         //when
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         doNothing().when(adminService).rejectAccount(Mockito.anyLong(), Mockito.any());
         //then
         mockMvc.perform(post("/admin/account/reject/1")
-                .content(objectMapper.writeValueAsString(accountRejectRequest))
+                .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("rejectAccount",
@@ -102,24 +104,28 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("/admin/account/reject/{memberId}- fail - member not found")
-    public void approveRejectFailWhenMemberNotFound() throws Exception {
+    @DisplayName("계좌 등록 요청 반려 - 실패 - member not found")
+    public void rejectAccountFailMemberNotFound() throws Exception {
+        //given
+        AccountRejectRequest request = new AccountRejectRequest("테스트취소사유");
         //when
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         doThrow(new MemberNotFoundException()).when(adminService).rejectAccount(anyLong(), any());
 
         //then
         mockMvc.perform(post("/admin/account/reject/1")
+                .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andDo(document("rejectAccountFailWhenMemberNotFound",
+                .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
+                .andDo(document("rejectAccountFailMemberNotFound",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
-    @DisplayName("/admin/list/account- success")
+    @DisplayName("계좌 등록 요청 목록 조회")
     public void requestingAccounts() throws Exception {
         //given
         List<RequestingAccountResponse> responses = new ArrayList<>();
@@ -240,6 +246,7 @@ class AdminControllerTest {
         ;
     }
 
+    @Test
     @DisplayName("/admin/login - success")
     public void login() throws Exception {
         //given
@@ -259,6 +266,7 @@ class AdminControllerTest {
         ;
     }
 
+    @Test
     @DisplayName("/admin/login - UnregisteredAdminMember Failed")
     public void loginUnregisteredMemberFailed() throws Exception {
         //given

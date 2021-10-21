@@ -4,7 +4,7 @@ import { FeeTable, KakaoIcon, StyledTemplate } from './FeeGuide.styles';
 const FeeGuide = () => {
   return (
     <StyledTemplate>
-      <SubTitle>정산 시 수수료 안내</SubTitle>
+      <SubTitle>정산 수수료 안내</SubTitle>
       <FeeTable>
         <tbody>
           <tr>
@@ -20,12 +20,11 @@ const FeeGuide = () => {
             <td>3.2%</td>
           </tr>
           <tr>
-            <td>
-              Thank You For ___ 수수료
-              <br />
-              (서버유지비 등 운영비)
-            </td>
-            <td>0.5%</td>
+            <td>Thank You For ___ 수수료</td>
+            <td>없음</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>정산을 위해서는 10,000tp 이상을 보유하고 있어야 합니다.</td>
           </tr>
         </tbody>
       </FeeTable>

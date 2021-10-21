@@ -6,6 +6,7 @@ import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.member.domain.Account;
+import com.example.tyfserver.member.domain.AccountStatus;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.domain.MemberTest;
 import com.example.tyfserver.member.dto.CurationsResponse;
@@ -130,8 +131,12 @@ class MemberRepositoryImplTest {
         initDonation(member6, 6000L);
         initDonation(member6, 7000L);
 
-        // todo 도네이션 합계 쿼리시 CANCELLED 도 포함해서 계산중임. 정상적인 도네이션만 쿼리 필요
-//        member2.getDonations().get(0).toCancelled();
+        member1.addInitialAccount(initUnregisteredAccount(1));
+        member2.addInitialAccount(initUnregisteredAccount(2));
+        member3.addInitialAccount(initUnregisteredAccount(3));
+        member4.addInitialAccount(initRegisteredAccount(4));
+        member5.addInitialAccount(initRegisteredAccount(5));
+        member6.addInitialAccount(initRegisteredAccount(6));
 
         em.flush();
         em.clear();
@@ -145,25 +150,8 @@ class MemberRepositoryImplTest {
         );
 
         assertThat(curations.get(1)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member3)
-        );
-
-        assertThat(curations.get(2)).usingRecursiveComparison().isEqualTo(
                 curationsResponseFromMember(member5)
         );
-
-        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member2)
-        );
-
-        assertThat(curations.get(4)).usingRecursiveComparison().isEqualTo(
-                curationsResponseFromMember(member1)
-        );
-
-        // todo 개선 되면 위 두개 지우고 이거 통과해야함
-//        assertThat(curations.get(3)).usingRecursiveComparison().isEqualTo(
-//                curationsResponseFromMember(member1, 1000L)
-//        );
     }
 
     private Member initMember(int i) {
@@ -172,6 +160,19 @@ class MemberRepositoryImplTest {
         member.updateBio("I am test");
         em.persist(member);
         return member;
+    }
+
+    private Account initUnregisteredAccount(int i) {
+        Account account = new Account("holder", "number" + i, "000101-1000000", "bank", "url");
+        em.persist(account);
+        return account;
+    }
+
+    private Account initRegisteredAccount(int i) {
+        Account account = new Account("holder", "number" + i,
+                "000101-1000000", "bank", "url", AccountStatus.REGISTERED);
+        em.persist(account);
+        return account;
     }
 
     private void initDonation(Member member, long amount, DonationStatus status, LocalDateTime createAt) {
@@ -187,7 +188,7 @@ class MemberRepositoryImplTest {
     }
 
     private CurationsResponse curationsResponseFromMember(Member member6) {
-        return new CurationsResponse(member6.getNickname(),  member6.getPageName(),
+        return new CurationsResponse(member6.getNickname(), member6.getPageName(),
                 member6.getProfileImage(), member6.getBio());
     }
 
@@ -202,7 +203,7 @@ class MemberRepositoryImplTest {
         em.persist(defaultAccount1);
         member1.addInitialAccount(defaultAccount1);
         member1.registerAccount("테스트유저1", "1234-5678-1231",
-                "하나", "https://cloudfront.net/bankbook.png");
+                "900101-1000000", "하나", "https://cloudfront.net/bankbook.png");
 
         Member member2 = new Member("email2", "nick2", "page2",
                 Oauth2Type.GOOGLE, "https://cloudfront.net/profile2.png");
@@ -218,7 +219,7 @@ class MemberRepositoryImplTest {
         em.persist(defaultAccount3);
         member3.addInitialAccount(defaultAccount3);
         member3.registerAccount("테스트유저1", "1234-5678-1233",
-                "하나", "https://cloudfront.net/bankbook.png");
+                "900101-1000001", "하나", "https://cloudfront.net/bankbook.png");
 
         Member member4 = new Member("email4", "nick4", "page4",
                 Oauth2Type.GOOGLE, "https://cloudfront.net/profile4.png");
@@ -234,7 +235,7 @@ class MemberRepositoryImplTest {
         member5.addInitialAccount(defaultAccount5);
         em.persist(defaultAccount5);
         member5.registerAccount("테스트유저1", "1234-5678-1236",
-                "하나", "https://cloudfront.net/bankbook.png");
+                "900101-1000000", "하나", "https://cloudfront.net/bankbook.png");
 
         Member member6 = new Member("email6", "nick6", "page6",
                 Oauth2Type.GOOGLE, "https://cloudfront.net/profile6.png");

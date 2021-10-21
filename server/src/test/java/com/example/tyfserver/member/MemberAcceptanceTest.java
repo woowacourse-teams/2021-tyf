@@ -1,6 +1,7 @@
 package com.example.tyfserver.member;
 
 import com.example.tyfserver.AcceptanceTest;
+import com.example.tyfserver.admin.dto.RequestingAccountResponse;
 import com.example.tyfserver.auth.dto.SignUpResponse;
 import com.example.tyfserver.auth.exception.InvalidTokenException;
 import com.example.tyfserver.common.dto.ErrorResponse;
@@ -23,8 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.tyfserver.admin.AdminAcceptanceTest.관리자_로그인;
-import static com.example.tyfserver.admin.AdminAcceptanceTest.요청_계좌_승인;
+import static com.example.tyfserver.admin.AdminAcceptanceTest.*;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원가입_후_로그인되어_있음;
 import static com.example.tyfserver.auth.AuthAcceptanceTest.회원생성을_요청;
 import static com.example.tyfserver.donation.DonationAcceptanceTest.후원_생성;
@@ -96,6 +96,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("accountHolder", name);
         requestBody.put("accountNumber", account);
+        requestBody.put("residentRegistrationNumber", "900101-1000000");
         requestBody.put("bank", bank);
 
         return RestAssured
@@ -284,18 +285,26 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("큐레이션 - 후원 금액을 많이 받은 순으로 10명의 창작자를 뽑는다.")
     public void curations() {
-        회원생성을_요청("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
+        MultiPartSpecification multiPartSpecification = generateMultiPartSpecification();
+        SignUpResponse creator4 = 회원가입_후_로그인되어_있음("user4@gmail.com", "KAKAO", "nickname4", "pagename4");
+        계좌_등록(multiPartSpecification, "name", "1234-5678-1234", "bank", creator4.getToken());
+
+        SignUpResponse creator3 = 회원가입_후_로그인되어_있음("user3@gmail.com", "KAKAO", "nickname3", "pagename3");
+        계좌_등록(multiPartSpecification, "name", "1234-5678-1233", "bank", creator3.getToken());
         회원생성을_요청("user2@gmail.com", "KAKAO", "nickname2", "pagename2");
 
+        String adminToken = 관리자_로그인("test-id", "test-password").getToken();
+        List<RequestingAccountResponse> requestingAccountResponses = 요청_계좌_목록_조회(adminToken).body().jsonPath().getList(".", RequestingAccountResponse.class);
+        requestingAccountResponses.forEach(it -> 요청_계좌_승인(it.getMemberId(), adminToken));
+
         SignUpResponse signUpResponse = 충전완료_된_사용자("donator@gmail.com", "KAKAO", "donator", "pagename");
-        후원_생성("pagename3", 1000L, signUpResponse.getToken());
-        후원_생성("pagename2", 2000L, signUpResponse.getToken());
+        후원_생성("pagename4", 1000L, signUpResponse.getToken());
+        후원_생성("pagename3", 2000L, signUpResponse.getToken());
         List<CurationsResponse> curations = 큐레이션_조회().body().jsonPath().getList(".", CurationsResponse.class);
 
-        assertThat(curations).hasSize(3);
-        assertThat(curations.get(0).getPageName()).isEqualTo("pagename2");
-        assertThat(curations.get(1).getPageName()).isEqualTo("pagename3");
-        assertThat(curations.get(2).getPageName()).isEqualTo("pagename");
+        assertThat(curations).hasSize(2);
+        assertThat(curations.get(0).getPageName()).isEqualTo("pagename3");
+        assertThat(curations.get(1).getPageName()).isEqualTo("pagename4");
     }
 
     @Test
