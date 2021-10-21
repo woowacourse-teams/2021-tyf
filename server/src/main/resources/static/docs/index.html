@@ -438,19 +438,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_members_회원">Members (회원)</a>
 <ul class="sectlevel2">
-<li><a href="#_페이지_유효성_검사_성공">페이지 유효성 검사 - 성공</a>
+<li><a href="#_페이지네임_유효성_검사_성공">페이지네임 유효성 검사 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request">Request</a></li>
 <li><a href="#_response">Response</a></li>
 </ul>
 </li>
-<li><a href="#_페이지_유효성_검사_유효하지_않은_request">페이지 유효성 검사 - 유효하지 않은 Request</a>
+<li><a href="#_페이지네임_유효성_검사_유효하지_않은_request">페이지네임 유효성 검사 - 유효하지 않은 Request</a>
 <ul class="sectlevel3">
 <li><a href="#_response_2">Response</a></li>
 <li><a href="#_response_3">Response</a></li>
 </ul>
 </li>
-<li><a href="#_페이지_유효성_검사_중복된_pagename">페이지 유효성 검사 - 중복된 pageName</a>
+<li><a href="#_페이지네임_유효성_검사_중복된_pagename">페이지네임 유효성 검사 - 중복된 pageName</a>
 <ul class="sectlevel3">
 <li><a href="#_response_4">Response</a></li>
 <li><a href="#_response_5">Response</a></li>
@@ -642,10 +642,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_38">Response</a></li>
 </ul>
 </li>
-<li><a href="#_자기_소개_수정_500자_초과_실패">자기 소개 수정 - 500자 초과 실패</a>
+<li><a href="#_자기_소개_수정_500자_초과한글">자기 소개 수정 - 500자 초과(한글)</a>
 <ul class="sectlevel3">
 <li><a href="#_request_31">Request</a></li>
 <li><a href="#_response_39">Response</a></li>
+</ul>
+</li>
+<li><a href="#_자기_소개_수정_500자_초과영어">자기 소개 수정 - 500자 초과(영어)</a>
+<ul class="sectlevel3">
 <li><a href="#_request_32">Request</a></li>
 <li><a href="#_response_40">Response</a></li>
 </ul>
@@ -738,88 +742,64 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_54">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_요청_결제정보_상태가_지불paid가_아님">후원 요청 - 결제정보 상태가 지불(PAID)가 아님</a>
+<li><a href="#_후원_메세지_전송_성공">후원 메세지 전송 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request_47">Request</a></li>
 <li><a href="#_response_55">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_요청_결제정보_결제_id_미일치">후원 요청 - 결제정보 결제 Id 미일치</a>
+<li><a href="#_후원_메세지_전송_후원을_찾을_수_없음">후원 메세지 전송 - 후원을 찾을 수 없음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_48">Request</a></li>
 <li><a href="#_response_56">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_요청_결제정보_결제금액_미일치">후원 요청 - 결제정보 결제금액 미일치</a>
+<li><a href="#_후원_메세지_전송_유효하지_않은_request">후원 메세지 전송 - 유효하지 않은 Request</a>
 <ul class="sectlevel3">
 <li><a href="#_request_49">Request</a></li>
 <li><a href="#_response_57">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_요청_결제정보_유저정보pagename_미일치">후원 요청 - 결제정보 유저정보(PageName) 미일치</a>
+<li><a href="#_후원_메세지_전송_donation의_주인이_아닌_경우">후원 메세지 전송 - Donation의 주인이 아닌 경우</a>
 <ul class="sectlevel3">
 <li><a href="#_request_50">Request</a></li>
 <li><a href="#_response_58">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_메세지_전송_성공">후원 메세지 전송 - 성공</a>
+<li><a href="#_전체_후원_리스트_성공">전체 후원 리스트 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request_51">Request</a></li>
 <li><a href="#_response_59">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_메세지_전송_후원을_찾을_수_없음">후원 메세지 전송 - 후원을 찾을 수 없음</a>
+<li><a href="#_전체_후원_리스트_회원을_찾을_수_없음">전체 후원 리스트 - 회원을 찾을 수 없음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_52">Request</a></li>
 <li><a href="#_response_60">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_메세지_전송_유효하지_않은_request">후원 메세지 전송 - 유효하지 않은 Request</a>
+<li><a href="#_전체_후원_리스트_authorization_헤더를_찾을_수_없음">전체 후원 리스트 - Authorization 헤더를 찾을 수 없음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_53">Request</a></li>
 <li><a href="#_response_61">Response</a></li>
 </ul>
 </li>
-<li><a href="#_후원_메세지_전송_donation의_주인이_아닌_경우">후원 메세지 전송 - Donation의 주인이 아닌 경우</a>
+<li><a href="#_전체_후원_리스트_유효하지_않은_토큰">전체 후원 리스트 - 유효하지 않은 토큰</a>
 <ul class="sectlevel3">
 <li><a href="#_request_54">Request</a></li>
 <li><a href="#_response_62">Response</a></li>
 </ul>
 </li>
-<li><a href="#_전체_후원_리스트_성공">전체 후원 리스트 - 성공</a>
+<li><a href="#_공개_후원_리스트_성공">공개 후원 리스트 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request_55">Request</a></li>
 <li><a href="#_response_63">Response</a></li>
 </ul>
 </li>
-<li><a href="#_전체_후원_리스트_회원을_찾을_수_없음">전체 후원 리스트 - 회원을 찾을 수 없음</a>
+<li><a href="#_공개_후원_리스트_회원을_찾을_수_없음">공개 후원 리스트 - 회원을 찾을 수 없음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_56">Request</a></li>
 <li><a href="#_response_64">Response</a></li>
-</ul>
-</li>
-<li><a href="#_전체_후원_리스트_authorization_헤더를_찾을_수_없음">전체 후원 리스트 - Authorization 헤더를 찾을 수 없음</a>
-<ul class="sectlevel3">
-<li><a href="#_request_57">Request</a></li>
-<li><a href="#_response_65">Response</a></li>
-</ul>
-</li>
-<li><a href="#_전체_후원_리스트_유효하지_않은_토큰">전체 후원 리스트 - 유효하지 않은 토큰</a>
-<ul class="sectlevel3">
-<li><a href="#_request_58">Request</a></li>
-<li><a href="#_response_66">Response</a></li>
-</ul>
-</li>
-<li><a href="#_공개_후원_리스트_성공">공개 후원 리스트 - 성공</a>
-<ul class="sectlevel3">
-<li><a href="#_request_59">Request</a></li>
-<li><a href="#_response_67">Response</a></li>
-</ul>
-</li>
-<li><a href="#_공개_후원_리스트_회원을_찾을_수_없음">공개 후원 리스트 - 회원을 찾을 수 없음</a>
-<ul class="sectlevel3">
-<li><a href="#_request_60">Request</a></li>
-<li><a href="#_response_68">Response</a></li>
 </ul>
 </li>
 </ul>
@@ -828,17 +808,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_결제_요청_성공">결제 요청 - 성공</a>
 <ul class="sectlevel3">
+<li><a href="#_request_57">Request</a></li>
+<li><a href="#_response_65">Response</a></li>
+</ul>
+</li>
+<li><a href="#_결제_요청_회원을_찾을_수_없음">결제 요청 - 회원을 찾을 수 없음</a>
+<ul class="sectlevel3">
+<li><a href="#_request_58">Request</a></li>
+<li><a href="#_response_66">Response</a></li>
+</ul>
+</li>
+<li><a href="#_결제_요청_유효하지_않은_request">결제 요청 - 유효하지 않은 Request</a>
+<ul class="sectlevel3">
+<li><a href="#_request_59">Request</a></li>
+<li><a href="#_response_67">Response</a></li>
+</ul>
+</li>
+<li><a href="#_결제_요청_결제정보_상태가_지불paid가_아님">결제 요청 - 결제정보 상태가 지불(PAID)가 아님</a>
+<ul class="sectlevel3">
+<li><a href="#_request_60">Request</a></li>
+<li><a href="#_response_68">Response</a></li>
+</ul>
+</li>
+<li><a href="#_결제_요청_결제정보_결제_id_미일치">결제 요청 - 결제정보 결제 Id 미일치</a>
+<ul class="sectlevel3">
 <li><a href="#_request_61">Request</a></li>
 <li><a href="#_response_69">Response</a></li>
 </ul>
 </li>
-<li><a href="#_결제_요청_실패_회원을_찾을_수_없음">결제 요청 - 실패 - 회원을 찾을 수 없음</a>
+<li><a href="#_결제_요청_결제정보_결제금액_미일치">결제 요청 - 결제정보 결제금액 미일치</a>
 <ul class="sectlevel3">
 <li><a href="#_request_62">Request</a></li>
 <li><a href="#_response_70">Response</a></li>
 </ul>
 </li>
-<li><a href="#_결제_요청_실패_유효하지_않은_request">결제 요청 - 실패 - 유효하지 않은 Request</a>
+<li><a href="#_결제_요청_결제정보_유저정보pagename_미일치">결제 요청 - 결제정보 유저정보(PageName) 미일치</a>
 <ul class="sectlevel3">
 <li><a href="#_request_63">Request</a></li>
 <li><a href="#_response_71">Response</a></li>
@@ -872,13 +876,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_oauth2_0_회원가입_및_인증">Oauth2.0 (회원가입 및 인증)</a>
 <ul class="sectlevel2">
-<li><a href="#_oauth를_이용한_로그인_성공">Oauth를 이용한 로그인 - 성공</a>
+<li><a href="#_oauth2를_이용한_로그인_성공">Oauth2를 이용한 로그인 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request_68">Request</a></li>
 <li><a href="#_response_76">Response</a></li>
 </ul>
 </li>
-<li><a href="#_oauth를_이용한_로그인_실패_등록되지_않은_회원임">Oauth를 이용한 로그인 - 실패 -  등록되지 않은 회원임</a>
+<li><a href="#_oauth2를_이용한_로그인_등록되지_않은_회원임">Oauth2를 이용한 로그인 - 등록되지 않은 회원임</a>
 <ul class="sectlevel3">
 <li><a href="#_request_69">Request</a></li>
 <li><a href="#_response_77">Response</a></li>
@@ -890,19 +894,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_78">Response</a></li>
 </ul>
 </li>
-<li><a href="#_회원가입_준비_실패_해당_플랫폼으로_이미_가입되어있음">회원가입 준비 - 실패 - 해당 플랫폼으로 이미 가입되어있음</a>
+<li><a href="#_회원가입_준비_해당_플랫폼으로_이미_가입되어있음">회원가입 준비 - 해당 플랫폼으로 이미 가입되어있음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_71">Request</a></li>
 <li><a href="#_response_79">Response</a></li>
 </ul>
 </li>
-<li><a href="#_회원가입_준비_실패_다른_플랫폼으로_이미_가입되어있음">회원가입 준비 - 실패 - 다른 플랫폼으로 이미 가입되어있음</a>
+<li><a href="#_회원가입_준비_다른_플랫폼으로_이미_가입되어있음">회원가입 준비 - 다른 플랫폼으로 이미 가입되어있음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_72">Request</a></li>
 <li><a href="#_response_80">Response</a></li>
 </ul>
 </li>
-<li><a href="#_회원가입_준비_실패_적절하지_않은_oauth_타입">회원가입 준비 - 실패 - 적절하지 않은 Oauth 타입</a>
+<li><a href="#_회원가입_준비_적절하지_않은_oauth2_타입">회원가입 준비 - 적절하지 않은 Oauth2 타입</a>
 <ul class="sectlevel3">
 <li><a href="#_request_73">Request</a></li>
 <li><a href="#_response_81">Response</a></li>
@@ -914,13 +918,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_82">Response</a></li>
 </ul>
 </li>
-<li><a href="#_회원가입_실패_유효하지_않은_request">회원가입 - 실패 - 유효하지 않은 Request</a>
+<li><a href="#_회원가입_유효하지_않은_request">회원가입 - 유효하지 않은 Request</a>
 <ul class="sectlevel3">
 <li><a href="#_request_75">Request</a></li>
 <li><a href="#_response_83">Response</a></li>
 </ul>
 </li>
-<li><a href="#_회원가입_실패_적절하지_않은_oauth_타입">회원가입 - 실패 - 적절하지 않은 Oauth 타입</a>
+<li><a href="#_회원가입_적절하지_않은_oauth2_타입">회원가입 - 적절하지 않은 Oauth2 타입</a>
 <ul class="sectlevel3">
 <li><a href="#_request_76">Request</a></li>
 <li><a href="#_response_84">Response</a></li>
@@ -930,22 +934,76 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_admin_관리자">Admin (관리자)</a>
 <ul class="sectlevel2">
-<li><a href="#_계좌_등록_요청_승인">계좌 등록 요청 승인</a>
+<li><a href="#_계좌_등록_요청_승인_성공">계좌 등록 요청 승인 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request_77">Request</a></li>
 <li><a href="#_response_85">Response</a></li>
 </ul>
 </li>
-<li><a href="#_계좌_등록_요청_반려">계좌 등록 요청 반려</a>
+<li><a href="#_계좌_등록_요청_승인_회원을_찾을_수_없음">계좌 등록 요청 승인 - 회원을 찾을 수 없음</a>
 <ul class="sectlevel3">
 <li><a href="#_request_78">Request</a></li>
 <li><a href="#_response_86">Response</a></li>
 </ul>
 </li>
-<li><a href="#_계좌_등록_요청_조회">계좌 등록 요청 조회</a>
+<li><a href="#_계좌_등록_요청_반려_성공">계좌 등록 요청 반려 - 성공</a>
 <ul class="sectlevel3">
 <li><a href="#_request_79">Request</a></li>
 <li><a href="#_response_87">Response</a></li>
+</ul>
+</li>
+<li><a href="#_계좌_등록_요청_반려_회원을_찾을_수_없음">계좌 등록 요청 반려 - 회원을 찾을 수 없음</a>
+<ul class="sectlevel3">
+<li><a href="#_request_80">Request</a></li>
+<li><a href="#_response_88">Response</a></li>
+</ul>
+</li>
+<li><a href="#_계좌_등록_요청_목록_조회_성공">계좌 등록 요청 목록 조회 - 성공</a>
+<ul class="sectlevel3">
+<li><a href="#_request_81">Request</a></li>
+<li><a href="#_response_89">Response</a></li>
+</ul>
+</li>
+<li><a href="#_정산_신청_목록_조회_성공">정산 신청 목록 조회 - 성공</a>
+<ul class="sectlevel3">
+<li><a href="#_request_82">Request</a></li>
+<li><a href="#_response_90">Response</a></li>
+</ul>
+</li>
+<li><a href="#_정산_승인_성공">정산 승인 - 성공</a>
+<ul class="sectlevel3">
+<li><a href="#_request_83">Request</a></li>
+<li><a href="#_response_91">Response</a></li>
+</ul>
+</li>
+<li><a href="#_정산_승인_회원을_찾을_수_없음">정산 승인 - 회원을 찾을 수 없음</a>
+<ul class="sectlevel3">
+<li><a href="#_request_84">Request</a></li>
+<li><a href="#_response_92">Response</a></li>
+</ul>
+</li>
+<li><a href="#_정산_거절_성공">정산 거절 - 성공</a>
+<ul class="sectlevel3">
+<li><a href="#_request_85">Request</a></li>
+<li><a href="#_response_93">Response</a></li>
+</ul>
+</li>
+<li><a href="#_정산_거절_회원을_찾을_수_없음">정산 거절 - 회원을 찾을 수 없음</a>
+<ul class="sectlevel3">
+<li><a href="#_request_86">Request</a></li>
+<li><a href="#_response_94">Response</a></li>
+</ul>
+</li>
+<li><a href="#_관리자_로그인_성공">관리자 로그인 - 성공</a>
+<ul class="sectlevel3">
+<li><a href="#_request_87">Request</a></li>
+<li><a href="#_response_95">Response</a></li>
+</ul>
+</li>
+<li><a href="#_관리자_로그인_인증실패">관리자 로그인 - 인증실패</a>
+<ul class="sectlevel3">
+<li><a href="#_request_88">Request</a></li>
+<li><a href="#_response_96">Response</a></li>
 </ul>
 </li>
 </ul>
@@ -958,7 +1016,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_members_회원">Members (회원)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_페이지_유효성_검사_성공">페이지 유효성 검사 - 성공</h3>
+<h3 id="_페이지네임_유효성_검사_성공">페이지네임 유효성 검사 - 성공</h3>
 <div class="sect3">
 <h4 id="_request">Request</h4>
 <div class="listingblock">
@@ -987,7 +1045,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_페이지_유효성_검사_유효하지_않은_request">페이지 유효성 검사 - 유효하지 않은 Request</h3>
+<h3 id="_페이지네임_유효성_검사_유효하지_않은_request">페이지네임 유효성 검사 - 유효하지 않은 Request</h3>
 <div class="sect3">
 <h4 id="_response_2">Response</h4>
 <div class="listingblock">
@@ -1023,7 +1081,7 @@ Content-Length: 95
 </div>
 </div>
 <div class="sect2">
-<h3 id="_페이지_유효성_검사_중복된_pagename">페이지 유효성 검사 - 중복된 pageName</h3>
+<h3 id="_페이지네임_유효성_검사_중복된_pagename">페이지네임 유효성 검사 - 중복된 pageName</h3>
 <div class="sect3">
 <h4 id="_response_4">Response</h4>
 <div class="listingblock">
@@ -2065,7 +2123,7 @@ Content-Length: 90
 </div>
 </div>
 <div class="sect2">
-<h3 id="_자기_소개_수정_500자_초과_실패">자기 소개 수정 - 500자 초과 실패</h3>
+<h3 id="_자기_소개_수정_500자_초과한글">자기 소개 수정 - 500자 초과(한글)</h3>
 <div class="sect3">
 <h4 id="_request_31">Request</h4>
 <div class="listingblock">
@@ -2099,6 +2157,9 @@ Content-Length: 90
 </div>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_자기_소개_수정_500자_초과영어">자기 소개 수정 - 500자 초과(영어)</h3>
 <div class="sect3">
 <h4 id="_request_32">Request</h4>
 <div class="listingblock">
@@ -2619,7 +2680,7 @@ Content-Length: 158
   "message" : "message",
   "pageName" : "pagename",
   "amount" : 1000,
-  "createdAt" : "2021-10-18T13:49:29.065732"
+  "createdAt" : "2021-10-21T10:47:45.487054"
 }</code></pre>
 </div>
 </div>
@@ -2675,7 +2736,7 @@ Host: localhost:8080
 
 {
   "impUid" : "  ",
-  "merchantUid" : "214c1cb3-c820-4a29-aad9-88ef9117f7ca"
+  "merchantUid" : "1672ed76-1939-4475-aa7b-d92b64966bda"
 }</code></pre>
 </div>
 </div>
@@ -2700,157 +2761,9 @@ Content-Length: 131
 </div>
 </div>
 <div class="sect2">
-<h3 id="_후원_요청_결제정보_상태가_지불paid가_아님">후원 요청 - 결제정보 상태가 지불(PAID)가 아님</h3>
-<div class="sect3">
-<h4 id="_request_47">Request</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 84
-Host: localhost:8080
-
-{
-  "impUid" : "imp_uid",
-  "merchantUid" : "152bc548-e3d1-4c85-b2fa-786609996292"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_55">Response</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 105
-
-{
-  "errorCode" : "payment-002",
-  "message" : "테스트모듈결제가 완료되지 않았습니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_후원_요청_결제정보_결제_id_미일치">후원 요청 - 결제정보 결제 Id 미일치</h3>
-<div class="sect3">
-<h4 id="_request_48">Request</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 84
-Host: localhost:8080
-
-{
-  "impUid" : "imp_uid",
-  "merchantUid" : "152bc548-e3d1-4c85-b2fa-786609996292"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_56">Response</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 124
-
-{
-  "errorCode" : "payment-003",
-  "message" : "테스트모듈결제 정보의 Merchant ID가 일치하지 않습니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_후원_요청_결제정보_결제금액_미일치">후원 요청 - 결제정보 결제금액 미일치</h3>
-<div class="sect3">
-<h4 id="_request_49">Request</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 84
-Host: localhost:8080
-
-{
-  "impUid" : "imp_uid",
-  "merchantUid" : "152bc548-e3d1-4c85-b2fa-786609996292"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_57">Response</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 124
-
-{
-  "errorCode" : "payment-003",
-  "message" : "테스트모듈결제 정보의 Merchant ID가 일치하지 않습니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_후원_요청_결제정보_유저정보pagename_미일치">후원 요청 - 결제정보 유저정보(PageName) 미일치</h3>
-<div class="sect3">
-<h4 id="_request_50">Request</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 84
-Host: localhost:8080
-
-{
-  "impUid" : "imp_uid",
-  "merchantUid" : "152bc548-e3d1-4c85-b2fa-786609996292"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_58">Response</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 135
-
-{
-  "errorCode" : "payment-005",
-  "message" : "테스트모듈결제 정보의 PageName(상품정보)가 일치하지 않습니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_후원_메세지_전송_성공">후원 메세지 전송 - 성공</h3>
 <div class="sect3">
-<h4 id="_request_51">Request</h4>
+<h4 id="_request_47">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /donations/1/messages HTTP/1.1
@@ -2866,7 +2779,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_59">Response</h4>
+<h4 id="_response_55">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
@@ -2880,7 +2793,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="sect2">
 <h3 id="_후원_메세지_전송_후원을_찾을_수_없음">후원 메세지 전송 - 후원을 찾을 수 없음</h3>
 <div class="sect3">
-<h4 id="_request_52">Request</h4>
+<h4 id="_request_48">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /donations/1/messages HTTP/1.1
@@ -2896,7 +2809,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_60">Response</h4>
+<h4 id="_response_56">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -2917,7 +2830,7 @@ Content-Length: 93
 <div class="sect2">
 <h3 id="_후원_메세지_전송_유효하지_않은_request">후원 메세지 전송 - 유효하지 않은 Request</h3>
 <div class="sect3">
-<h4 id="_request_53">Request</h4>
+<h4 id="_request_49">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /donations/1/messages HTTP/1.1
@@ -2933,7 +2846,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_61">Response</h4>
+<h4 id="_response_57">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -2954,7 +2867,7 @@ Content-Length: 141
 <div class="sect2">
 <h3 id="_후원_메세지_전송_donation의_주인이_아닌_경우">후원 메세지 전송 - Donation의 주인이 아닌 경우</h3>
 <div class="sect3">
-<h4 id="_request_54">Request</h4>
+<h4 id="_request_50">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /donations/1/messages HTTP/1.1
@@ -2970,7 +2883,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_62">Response</h4>
+<h4 id="_response_58">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -2991,7 +2904,7 @@ Content-Length: 104
 <div class="sect2">
 <h3 id="_전체_후원_리스트_성공">전체 후원 리스트 - 성공</h3>
 <div class="sect3">
-<h4 id="_request_55">Request</h4>
+<h4 id="_request_51">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
@@ -3001,7 +2914,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_63">Response</h4>
+<h4 id="_response_59">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3017,14 +2930,14 @@ Content-Length: 326
   "message" : "message1",
   "pageName" : "pagename",
   "amount" : 1000,
-  "createdAt" : "2021-10-18T13:49:28.112247"
+  "createdAt" : "2021-10-21T10:47:44.620008"
 }, {
   "donationId" : 2,
   "name" : "name2",
   "message" : "message2",
   "pageName" : "pagename",
   "amount" : 2000,
-  "createdAt" : "2021-10-18T13:49:28.112482"
+  "createdAt" : "2021-10-21T10:47:44.620725"
 } ]</code></pre>
 </div>
 </div>
@@ -3033,7 +2946,7 @@ Content-Length: 326
 <div class="sect2">
 <h3 id="_전체_후원_리스트_회원을_찾을_수_없음">전체 후원 리스트 - 회원을 찾을 수 없음</h3>
 <div class="sect3">
-<h4 id="_request_56">Request</h4>
+<h4 id="_request_52">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
@@ -3043,7 +2956,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_64">Response</h4>
+<h4 id="_response_60">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -3064,7 +2977,7 @@ Content-Length: 91
 <div class="sect2">
 <h3 id="_전체_후원_리스트_authorization_헤더를_찾을_수_없음">전체 후원 리스트 - Authorization 헤더를 찾을 수 없음</h3>
 <div class="sect3">
-<h4 id="_request_57">Request</h4>
+<h4 id="_request_53">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
@@ -3074,7 +2987,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_65">Response</h4>
+<h4 id="_response_61">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -3095,7 +3008,7 @@ Content-Length: 99
 <div class="sect2">
 <h3 id="_전체_후원_리스트_유효하지_않은_토큰">전체 후원 리스트 - 유효하지 않은 토큰</h3>
 <div class="sect3">
-<h4 id="_request_58">Request</h4>
+<h4 id="_request_54">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
@@ -3105,7 +3018,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_66">Response</h4>
+<h4 id="_response_62">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -3126,7 +3039,7 @@ Content-Length: 84
 <div class="sect2">
 <h3 id="_공개_후원_리스트_성공">공개 후원 리스트 - 성공</h3>
 <div class="sect3">
-<h4 id="_request_59">Request</h4>
+<h4 id="_request_55">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/public/pagename HTTP/1.1
@@ -3136,7 +3049,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_67">Response</h4>
+<h4 id="_response_63">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3144,7 +3057,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 345
+Content-Length: 344
 
 [ {
   "donationId" : 1,
@@ -3152,14 +3065,14 @@ Content-Length: 345
   "message" : "defaultMessage1",
   "pageName" : "pagename",
   "amount" : 1000,
-  "createdAt" : "2021-10-18T13:49:28.937814"
+  "createdAt" : "2021-10-21T10:47:45.39153"
 }, {
   "donationId" : 2,
   "name" : "default2",
   "message" : "defaultMessage2",
   "pageName" : "pagename",
   "amount" : 2000,
-  "createdAt" : "2021-10-18T13:49:28.937856"
+  "createdAt" : "2021-10-21T10:47:45.391552"
 } ]</code></pre>
 </div>
 </div>
@@ -3168,7 +3081,7 @@ Content-Length: 345
 <div class="sect2">
 <h3 id="_공개_후원_리스트_회원을_찾을_수_없음">공개 후원 리스트 - 회원을 찾을 수 없음</h3>
 <div class="sect3">
-<h4 id="_request_60">Request</h4>
+<h4 id="_request_56">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/public/pagename HTTP/1.1
@@ -3178,7 +3091,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_68">Response</h4>
+<h4 id="_response_64">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -3204,7 +3117,7 @@ Content-Length: 91
 <div class="sect2">
 <h3 id="_결제_요청_성공">결제 요청 - 성공</h3>
 <div class="sect3">
-<h4 id="_request_61">Request</h4>
+<h4 id="_request_57">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
@@ -3214,13 +3127,13 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "da22252f-8cb5-4771-b2ec-6a6a0da2b8d0"
+  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_69">Response</h4>
+<h4 id="_response_65">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
@@ -3238,9 +3151,9 @@ Content-Length: 20
 </div>
 </div>
 <div class="sect2">
-<h3 id="_결제_요청_실패_회원을_찾을_수_없음">결제 요청 - 실패 - 회원을 찾을 수 없음</h3>
+<h3 id="_결제_요청_회원을_찾을_수_없음">결제 요청 - 회원을 찾을 수 없음</h3>
 <div class="sect3">
-<h4 id="_request_62">Request</h4>
+<h4 id="_request_58">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
@@ -3250,13 +3163,13 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "da22252f-8cb5-4771-b2ec-6a6a0da2b8d0"
+  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_70">Response</h4>
+<h4 id="_response_66">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -3275,9 +3188,9 @@ Content-Length: 91
 </div>
 </div>
 <div class="sect2">
-<h3 id="_결제_요청_실패_유효하지_않은_request">결제 요청 - 실패 - 유효하지 않은 Request</h3>
+<h3 id="_결제_요청_유효하지_않은_request">결제 요청 - 유효하지 않은 Request</h3>
 <div class="sect3">
-<h4 id="_request_63">Request</h4>
+<h4 id="_request_59">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
@@ -3293,7 +3206,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_71">Response</h4>
+<h4 id="_response_67">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -3312,6 +3225,154 @@ Content-Length: 131
 </div>
 </div>
 <div class="sect2">
+<h3 id="_결제_요청_결제정보_상태가_지불paid가_아님">결제 요청 - 결제정보 상태가 지불(PAID)가 아님</h3>
+<div class="sect3">
+<h4 id="_request_60">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 84
+Host: localhost:8080
+
+{
+  "impUid" : "imp_uid",
+  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_68">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 105
+
+{
+  "errorCode" : "payment-002",
+  "message" : "테스트모듈결제가 완료되지 않았습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_결제_요청_결제정보_결제_id_미일치">결제 요청 - 결제정보 결제 Id 미일치</h3>
+<div class="sect3">
+<h4 id="_request_61">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 84
+Host: localhost:8080
+
+{
+  "impUid" : "imp_uid",
+  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_69">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 124
+
+{
+  "errorCode" : "payment-003",
+  "message" : "테스트모듈결제 정보의 Merchant ID가 일치하지 않습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_결제_요청_결제정보_결제금액_미일치">결제 요청 - 결제정보 결제금액 미일치</h3>
+<div class="sect3">
+<h4 id="_request_62">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 84
+Host: localhost:8080
+
+{
+  "impUid" : "imp_uid",
+  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_70">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 124
+
+{
+  "errorCode" : "payment-003",
+  "message" : "테스트모듈결제 정보의 Merchant ID가 일치하지 않습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_결제_요청_결제정보_유저정보pagename_미일치">결제 요청 - 결제정보 유저정보(PageName) 미일치</h3>
+<div class="sect3">
+<h4 id="_request_63">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /payments/charge HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 84
+Host: localhost:8080
+
+{
+  "impUid" : "imp_uid",
+  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_71">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 135
+
+{
+  "errorCode" : "payment-005",
+  "message" : "테스트모듈결제 정보의 PageName(상품정보)가 일치하지 않습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_환불_인증메일_발송_요청_성공">환불 인증메일 발송 요청 - 성공</h3>
 <div class="sect3">
 <h4 id="_request_64">Request</h4>
@@ -3323,7 +3384,7 @@ Content-Length: 60
 Host: localhost:8080
 
 {
-  "merchantUid" : "3594995a-00b0-4d12-84ce-b87a26e56579"
+  "merchantUid" : "ced4b0dc-f95f-497a-87b3-df940671e247"
 }</code></pre>
 </div>
 </div>
@@ -3360,7 +3421,7 @@ Content-Length: 93
 Host: localhost:8080
 
 {
-  "merchantUid" : "fb22cfbd-2022-48db-b43d-6a4d8357cc34",
+  "merchantUid" : "32d7b494-df53-444f-8cf5-f28c668e1344",
   "verificationCode" : "123456"
 }</code></pre>
 </div>
@@ -3449,7 +3510,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <h2 id="_oauth2_0_회원가입_및_인증">Oauth2.0 (회원가입 및 인증)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_oauth를_이용한_로그인_성공">Oauth를 이용한 로그인 - 성공</h3>
+<h3 id="_oauth2를_이용한_로그인_성공">Oauth2를 이용한 로그인 - 성공</h3>
 <div class="sect3">
 <h4 id="_request_68">Request</h4>
 <div class="listingblock">
@@ -3478,7 +3539,7 @@ Content-Length: 23
 </div>
 </div>
 <div class="sect2">
-<h3 id="_oauth를_이용한_로그인_실패_등록되지_않은_회원임">Oauth를 이용한 로그인 - 실패 -  등록되지 않은 회원임</h3>
+<h3 id="_oauth2를_이용한_로그인_등록되지_않은_회원임">Oauth2를 이용한 로그인 - 등록되지 않은 회원임</h3>
 <div class="sect3">
 <h4 id="_request_69">Request</h4>
 <div class="listingblock">
@@ -3538,7 +3599,7 @@ Content-Length: 61
 </div>
 </div>
 <div class="sect2">
-<h3 id="_회원가입_준비_실패_해당_플랫폼으로_이미_가입되어있음">회원가입 준비 - 실패 - 해당 플랫폼으로 이미 가입되어있음</h3>
+<h3 id="_회원가입_준비_해당_플랫폼으로_이미_가입되어있음">회원가입 준비 - 해당 플랫폼으로 이미 가입되어있음</h3>
 <div class="sect3">
 <h4 id="_request_71">Request</h4>
 <div class="listingblock">
@@ -3569,7 +3630,7 @@ Content-Length: 129
 </div>
 </div>
 <div class="sect2">
-<h3 id="_회원가입_준비_실패_다른_플랫폼으로_이미_가입되어있음">회원가입 준비 - 실패 - 다른 플랫폼으로 이미 가입되어있음</h3>
+<h3 id="_회원가입_준비_다른_플랫폼으로_이미_가입되어있음">회원가입 준비 - 다른 플랫폼으로 이미 가입되어있음</h3>
 <div class="sect3">
 <h4 id="_request_72">Request</h4>
 <div class="listingblock">
@@ -3599,7 +3660,7 @@ Content-Length: 96
 </div>
 </div>
 <div class="sect2">
-<h3 id="_회원가입_준비_실패_적절하지_않은_oauth_타입">회원가입 준비 - 실패 - 적절하지 않은 Oauth 타입</h3>
+<h3 id="_회원가입_준비_적절하지_않은_oauth2_타입">회원가입 준비 - 적절하지 않은 Oauth2 타입</h3>
 <div class="sect3">
 <h4 id="_request_73">Request</h4>
 <div class="listingblock">
@@ -3668,7 +3729,7 @@ Content-Length: 50
 </div>
 </div>
 <div class="sect2">
-<h3 id="_회원가입_실패_유효하지_않은_request">회원가입 - 실패 - 유효하지 않은 Request</h3>
+<h3 id="_회원가입_유효하지_않은_request">회원가입 - 유효하지 않은 Request</h3>
 <div class="sect3">
 <h4 id="_request_75">Request</h4>
 <div class="listingblock">
@@ -3707,7 +3768,7 @@ Content-Length: 109
 </div>
 </div>
 <div class="sect2">
-<h3 id="_회원가입_실패_적절하지_않은_oauth_타입">회원가입 - 실패 - 적절하지 않은 Oauth 타입</h3>
+<h3 id="_회원가입_적절하지_않은_oauth2_타입">회원가입 - 적절하지 않은 Oauth2 타입</h3>
 <div class="sect3">
 <h4 id="_request_76">Request</h4>
 <div class="listingblock">
@@ -3751,7 +3812,7 @@ Content-Length: 91
 <h2 id="_admin_관리자">Admin (관리자)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_계좌_등록_요청_승인">계좌 등록 요청 승인</h3>
+<h3 id="_계좌_등록_요청_승인_성공">계좌 등록 요청 승인 - 성공</h3>
 <div class="sect3">
 <h4 id="_request_77">Request</h4>
 <div class="listingblock">
@@ -3775,9 +3836,40 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_계좌_등록_요청_반려">계좌 등록 요청 반려</h3>
+<h3 id="_계좌_등록_요청_승인_회원을_찾을_수_없음">계좌 등록 요청 승인 - 회원을 찾을 수 없음</h3>
 <div class="sect3">
 <h4 id="_request_78">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/account/approve/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_86">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 91
+
+{
+  "errorCode" : "member-001",
+  "message" : "해당 회원을 찾을 수 없습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_계좌_등록_요청_반려_성공">계좌 등록 요청 반려 - 성공</h3>
+<div class="sect3">
+<h4 id="_request_79">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/account/reject/1 HTTP/1.1
@@ -3792,7 +3884,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_86">Response</h4>
+<h4 id="_response_87">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3804,9 +3896,45 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_계좌_등록_요청_조회">계좌 등록 요청 조회</h3>
+<h3 id="_계좌_등록_요청_반려_회원을_찾을_수_없음">계좌 등록 요청 반려 - 회원을 찾을 수 없음</h3>
 <div class="sect3">
-<h4 id="_request_79">Request</h4>
+<h4 id="_request_80">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/account/reject/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 46
+Host: localhost:8080
+
+{
+  "rejectReason" : "테스트취소사유"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_88">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 91
+
+{
+  "errorCode" : "member-001",
+  "message" : "해당 회원을 찾을 수 없습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_계좌_등록_요청_목록_조회_성공">계좌 등록 요청 목록 조회 - 성공</h3>
+<div class="sect3">
+<h4 id="_request_81">Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /admin/list/account HTTP/1.1
@@ -3815,7 +3943,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_87">Response</h4>
+<h4 id="_response_89">Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3848,12 +3976,229 @@ Content-Length: 506
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_정산_신청_목록_조회_성공">정산 신청 목록 조회 - 성공</h3>
+<div class="sect3">
+<h4 id="_request_82">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /admin/list/exchange HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_90">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 214
+
+[ {
+  "name" : "승윤",
+  "email" : "tyf@gmail.com",
+  "nickname" : "nickname",
+  "pageName" : "pagename",
+  "exchangeAmount" : 10000,
+  "createdAt" : "2021-10-21T10:48:34.46867",
+  "accountNumber" : "123-123"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_정산_승인_성공">정산 승인 - 성공</h3>
+<div class="sect3">
+<h4 id="_request_83">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/exchange/approve/pagename HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_91">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_정산_승인_회원을_찾을_수_없음">정산 승인 - 회원을 찾을 수 없음</h3>
+<div class="sect3">
+<h4 id="_request_84">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/exchange/approve/pagename HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_92">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 91
+
+{
+  "errorCode" : "member-001",
+  "message" : "해당 회원을 찾을 수 없습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_정산_거절_성공">정산 거절 - 성공</h3>
+<div class="sect3">
+<h4 id="_request_85">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/exchange/reject HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 64
+Host: localhost:8080
+
+{
+  "pageName" : "pagename",
+  "reason" : "no reason just fun"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_93">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_정산_거절_회원을_찾을_수_없음">정산 거절 - 회원을 찾을 수 없음</h3>
+<div class="sect3">
+<h4 id="_request_86">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/exchange/reject HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 64
+Host: localhost:8080
+
+{
+  "pageName" : "pagename",
+  "reason" : "no reason just fun"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_94">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 91
+
+{
+  "errorCode" : "member-001",
+  "message" : "해당 회원을 찾을 수 없습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_관리자_로그인_성공">관리자 로그인 - 성공</h3>
+<div class="sect3">
+<h4 id="_request_87">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /oauth2/login/KAKAO?code=anycode HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_95">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 23
+
+{
+  "token" : "token"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_관리자_로그인_인증실패">관리자 로그인 - 인증실패</h3>
+<div class="sect3">
+<h4 id="_request_88">Request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /oauth2/login/KAKAO?code=anycode HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_96">Response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 94
+
+{
+  "errorCode" : "auth-006",
+  "message" : "가입되어 있지 않은 사용자입니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-18 13:38:19 +0900
+Last updated 2021-10-21 10:34:48 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

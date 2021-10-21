@@ -8,17 +8,17 @@ endif::[]
 :toclevels: 4
 == Members (회원)
 
-=== 페이지 유효성 검사 - 성공
+=== 페이지네임 유효성 검사 - 성공
 ==== Request
 include::{snippets}/validatePageName/http-request.adoc[]
 ==== Response
 include::{snippets}/validatePageName/http-response.adoc[]
-=== 페이지 유효성 검사 - 유효하지 않은 Request
+=== 페이지네임 유효성 검사 - 유효하지 않은 Request
 ==== Response
 include::{snippets}/validatePageNameRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/validatePageNameRequestFailed/http-response.adoc[]
-=== 페이지 유효성 검사 - 중복된 pageName
+=== 페이지네임 유효성 검사 - 중복된 pageName
 ==== Response
 include::{snippets}/validatePageNameDuplicatedFailed/http-request.adoc[]
 ==== Response
@@ -178,17 +178,16 @@ include::{snippets}/updateBio/http-response.adoc[]
 include::{snippets}/updateBioInvalidBioValueRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/updateBioInvalidBioValueRequestFailed/http-response.adoc[]
-=== 자기 소개 수정 - 500자 초과 실패
+=== 자기 소개 수정 - 500자 초과(한글)
 ==== Request
 include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongKor/http-request.adoc[]
 ==== Response
 include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongKor/http-response.adoc[]
-
+=== 자기 소개 수정 - 500자 초과(영어)
 ==== Request
 include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongEng/http-request.adoc[]
 ==== Response
 include::{snippets}/updateBioInvalidBioValueRequestFailedWhenTooLongEng/http-response.adoc[]
-
 === 닉네임 수정 - 성공
 ==== Request
 include::{snippets}/updateNickName/http-request.adoc[]
@@ -261,26 +260,6 @@ include::{snippets}/createDonationMemberNotFoundFailed/http-response.adoc[]
 include::{snippets}/createDonationRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createDonationRequestFailed/http-response.adoc[]
-=== 후원 요청 - 결제정보 상태가 지불(PAID)가 아님
-==== Request
-include::{snippets}/createDonationFailedStatusNotPaid/http-request.adoc[]
-==== Response
-include::{snippets}/createDonationFailedStatusNotPaid/http-response.adoc[]
-=== 후원 요청 - 결제정보 결제 Id 미일치
-==== Request
-include::{snippets}/createDonationFailedStatusInvalidId/http-request.adoc[]
-==== Response
-include::{snippets}/createDonationFailedStatusInvalidId/http-response.adoc[]
-=== 후원 요청 - 결제정보 결제금액 미일치
-==== Request
-include::{snippets}/createDonationFailedStatusInvalidId/http-request.adoc[]
-==== Response
-include::{snippets}/createDonationFailedStatusInvalidId/http-response.adoc[]
-=== 후원 요청 - 결제정보 유저정보(PageName) 미일치
-==== Request
-include::{snippets}/createDonationFailedInvalidPageName/http-request.adoc[]
-==== Response
-include::{snippets}/createDonationFailedInvalidPageName/http-response.adoc[]
 === 후원 메세지 전송 - 성공
 ==== Request
 include::{snippets}/addDonationMessage/http-request.adoc[]
@@ -338,16 +317,36 @@ include::{snippets}/publicDonationsMemberNotFoundFailed/http-response.adoc[]
 include::{snippets}/createPayment/http-request.adoc[]
 ==== Response
 include::{snippets}/createPayment/http-response.adoc[]
-=== 결제 요청 - 실패 - 회원을 찾을 수 없음
+=== 결제 요청 - 회원을 찾을 수 없음
 ==== Request
 include::{snippets}/createPaymentMemberNotFoundFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createPaymentMemberNotFoundFailed/http-response.adoc[]
-=== 결제 요청 - 실패 - 유효하지 않은 Request
+=== 결제 요청 - 유효하지 않은 Request
 ==== Request
 include::{snippets}/createPaymentRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/createPaymentRequestFailed/http-response.adoc[]
+=== 결제 요청 - 결제정보 상태가 지불(PAID)가 아님
+==== Request
+include::{snippets}/createPaymentFailedStatusNotPaid/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentFailedStatusNotPaid/http-response.adoc[]
+=== 결제 요청 - 결제정보 결제 Id 미일치
+==== Request
+include::{snippets}/createPaymentFailedStatusInvalidId/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentFailedStatusInvalidId/http-response.adoc[]
+=== 결제 요청 - 결제정보 결제금액 미일치
+==== Request
+include::{snippets}/createPaymentFailedStatusInvalidId/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentFailedStatusInvalidId/http-response.adoc[]
+=== 결제 요청 - 결제정보 유저정보(PageName) 미일치
+==== Request
+include::{snippets}/createPaymentFailedInvalidPageName/http-request.adoc[]
+==== Response
+include::{snippets}/createPaymentFailedInvalidPageName/http-response.adoc[]
 === 환불 인증메일 발송 요청 - 성공
 ==== Request
 include::{snippets}/refundVerificationReady/http-request.adoc[]
@@ -370,12 +369,12 @@ include::{snippets}/refundPayment/http-request.adoc[]
 include::{snippets}/refundPayment/http-response.adoc[]
 
 == Oauth2.0 (회원가입 및 인증)
-=== Oauth를 이용한 로그인 - 성공
+=== Oauth2를 이용한 로그인 - 성공
 ==== Request
 include::{snippets}/login/http-request.adoc[]
 ==== Response
 include::{snippets}/login/http-response.adoc[]
-=== Oauth를 이용한 로그인 - 실패 -  등록되지 않은 회원임
+=== Oauth2를 이용한 로그인 - 등록되지 않은 회원임
 ==== Request
 include::{snippets}/loginUnregisteredMemberFailed/http-request.adoc[]
 ==== Response
@@ -385,17 +384,17 @@ include::{snippets}/loginUnregisteredMemberFailed/http-response.adoc[]
 include::{snippets}/readySignUp/http-request.adoc[]
 ==== Response
 include::{snippets}/readySignUp/http-response.adoc[]
-=== 회원가입 준비 - 실패 - 해당 플랫폼으로 이미 가입되어있음
+=== 회원가입 준비 - 해당 플랫폼으로 이미 가입되어있음
 ==== Request
 include::{snippets}/readySignUpAlreadyRegisteredInSameOauth2TypeFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/readySignUpAlreadyRegisteredInSameOauth2TypeFailed/http-response.adoc[]
-=== 회원가입 준비 - 실패 - 다른 플랫폼으로 이미 가입되어있음
+=== 회원가입 준비 - 다른 플랫폼으로 이미 가입되어있음
 ==== Request
 include::{snippets}/readySignUpAlreadyRegisteredFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/readySignUpAlreadyRegisteredFailed/http-response.adoc[]
-=== 회원가입 준비 - 실패 - 적절하지 않은 Oauth 타입
+=== 회원가입 준비 - 적절하지 않은 Oauth2 타입
 ==== Request
 include::{snippets}/readySignUpInvalidOauth2TypeFailed/http-request.adoc[]
 ==== Response
@@ -405,30 +404,75 @@ include::{snippets}/readySignUpInvalidOauth2TypeFailed/http-response.adoc[]
 include::{snippets}/signUp/http-request.adoc[]
 ==== Response
 include::{snippets}/signUp/http-response.adoc[]
-=== 회원가입 - 실패 - 유효하지 않은 Request
+=== 회원가입 - 유효하지 않은 Request
 ==== Request
 include::{snippets}/signUpRequestFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/signUpRequestFailed/http-response.adoc[]
-=== 회원가입 - 실패 - 적절하지 않은 Oauth 타입
+=== 회원가입 - 적절하지 않은 Oauth2 타입
 ==== Request
 include::{snippets}/signUpInvalidOauth2TypeFailed/http-request.adoc[]
 ==== Response
 include::{snippets}/signUpInvalidOauth2TypeFailed/http-response.adoc[]
 
 == Admin (관리자)
-=== 계좌 등록 요청 승인
+=== 계좌 등록 요청 승인 - 성공
 ==== Request
 include::{snippets}/approveAccount/http-request.adoc[]
 ==== Response
 include::{snippets}/approveAccount/http-response.adoc[]
-=== 계좌 등록 요청 반려
+=== 계좌 등록 요청 승인 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/approveAccountFailWhenMemberNotFound/http-request.adoc[]
+==== Response
+include::{snippets}/approveAccountFailWhenMemberNotFound/http-response.adoc[]
+=== 계좌 등록 요청 반려 - 성공
 ==== Request
 include::{snippets}/rejectAccount/http-request.adoc[]
 ==== Response
 include::{snippets}/rejectAccount/http-response.adoc[]
-=== 계좌 등록 요청 조회
+=== 계좌 등록 요청 반려 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/rejectAccountFailMemberNotFound/http-request.adoc[]
+==== Response
+include::{snippets}/rejectAccountFailMemberNotFound/http-response.adoc[]
+=== 계좌 등록 요청 목록 조회 - 성공
 ==== Request
 include::{snippets}/requestingAccounts/http-request.adoc[]
 ==== Response
 include::{snippets}/requestingAccounts/http-response.adoc[]
+=== 정산 신청 목록 조회 - 성공
+==== Request
+include::{snippets}/exchangeList/http-request.adoc[]
+==== Response
+include::{snippets}/exchangeList/http-response.adoc[]
+=== 정산 승인 - 성공
+==== Request
+include::{snippets}/approveExchange/http-request.adoc[]
+==== Response
+include::{snippets}/approveExchange/http-response.adoc[]
+=== 정산 승인 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/approveExchangeMemberNotFound/http-request.adoc[]
+==== Response
+include::{snippets}/approveExchangeMemberNotFound/http-response.adoc[]
+=== 정산 거절 - 성공
+==== Request
+include::{snippets}/rejectExchange/http-request.adoc[]
+==== Response
+include::{snippets}/rejectExchange/http-response.adoc[]
+=== 정산 거절 - 회원을 찾을 수 없음
+==== Request
+include::{snippets}/rejectExchangeMemberNotFound/http-request.adoc[]
+==== Response
+include::{snippets}/rejectExchangeMemberNotFound/http-response.adoc[]
+=== 관리자 로그인 - 성공
+==== Request
+include::{snippets}/login/http-request.adoc[]
+==== Response
+include::{snippets}/login/http-response.adoc[]
+=== 관리자 로그인 - 인증실패
+==== Request
+include::{snippets}/loginUnregisteredMemberFailed/http-request.adoc[]
+==== Response
+include::{snippets}/loginUnregisteredMemberFailed/http-response.adoc[]
