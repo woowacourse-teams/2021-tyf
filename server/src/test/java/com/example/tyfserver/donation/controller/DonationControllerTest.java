@@ -44,8 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DonationControllerTest {
 
     private static final String MERCHANT_UID = UUID.randomUUID().toString();
-    private static final String IMP_ID = "imp_id";
-    private static final String MODULE = "테스트모듈";
     private static final String PAGENAME = "pagename";
 
     @Autowired
@@ -133,91 +131,6 @@ class DonationControllerTest {
                         preprocessResponse(prettyPrint())))
         ;
     }
-
-    // todo PaymentsController 테스트로 옮겨야 함 (아임포트 실 결제 정보 상태에 대한 테스트들)
-//    @Test
-//    @DisplayName("/donations - 실 결제 정보 상태가 PAID가 아닐경우")
-//    public void createDonationFailedStatusNotPaid() throws Exception {
-//        //given
-//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-//        //when
-//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_NOT_PAID, "테스트모듈"))
-//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
-//
-//        //then
-//        mockMvc.perform(post("/donations")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_NOT_PAID))
-//                .andDo(document("createDonationFailedStatusNotPaid",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint())))
-//        ;
-//    }
-
-//    @Test
-//    @DisplayName("/donations - 실 결제 정보의 id와 저장된 결제정보의 id가 일치하지 않을 경우")
-//    public void createDonationFailedInvalidId() throws Exception {
-//        //given
-//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-//        //when
-//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
-//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
-//
-//        //then
-//        mockMvc.perform(post("/donations")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_ID))
-//                .andDo(document("createDonationFailedStatusInvalidId",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint())))
-//        ;
-//    }
-
-//    @Test
-//    @DisplayName("/donations - 실 결제 정보의 Amount와 저장된 결제정보의 Amount가 일치하지 않을 경우")
-//    public void createDonationFailedInvalidAmount() throws Exception {
-//        //given
-//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-//        //when
-//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_AMOUNT, MODULE))
-//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
-//
-//        //then
-//        mockMvc.perform(post("/donations")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_AMOUNT))
-//                .andDo(document("createDonationFailedInvalidAmount",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint())))
-//        ;
-//    }
-
-//    @Test
-//    @DisplayName("/donations - 실 결제 정보의 PageName과 저장된 결제정보의 PageName이 일치하지 않을 경우")
-//    public void createDonationFailedInvalidPageName() throws Exception {
-//        //given
-//        PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_ID, MERCHANT_UID);
-//        //when
-//        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_CREATOR, MODULE))
-//                .when(donationService).createDonation(any(DonationRequest.class), anyLong());
-//
-//        //then
-//        mockMvc.perform(post("/donations")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_CREATOR))
-//                .andDo(document("createDonationFailedInvalidPageName",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint())))
-//        ;
-//    }
 
     @Test
     @DisplayName("/donations/{donationId}/messages - success")

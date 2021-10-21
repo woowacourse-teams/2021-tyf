@@ -24,11 +24,9 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.Arrays;
 
@@ -48,9 +46,9 @@ class MemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private AuthenticationArgumentResolver authenticationArgumentResolver;
     @MockBean
@@ -59,6 +57,23 @@ class MemberControllerTest {
     private MemberService memberService;
     @MockBean
     private AuthenticationService authenticationService;
+
+    private void validInterceptorAndArgumentResolverMocking() {
+        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
+        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(new LoginMember(1L, "email"));
+    }
+
+    private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
+        MockMultipartHttpServletRequestBuilder putRequest = multipart(url);
+        putRequest.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        return putRequest;
+    }
 
     @Test
     @DisplayName("/members/validate/pageName - success")
@@ -570,7 +585,6 @@ class MemberControllerTest {
         ;
     }
 
-
     @Test
     @DisplayName("DELETE -  /members/profile - authorization header not found")
     public void deleteProfileHeaderNotFoundFailed() throws Exception {
@@ -585,7 +599,6 @@ class MemberControllerTest {
                         preprocessResponse(prettyPrint())))
         ;
     }
-
 
     @Test
     @DisplayName("DELETE - /members/profile - invalid token")
@@ -622,7 +635,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("PUT - /members/me/bio - success")
-    void updateBio() throws Exception {
+    public void updateBio() throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest("안녕하세요! 로키입니다.");
 
@@ -644,7 +657,7 @@ class MemberControllerTest {
     @NullAndEmptySource
     @ValueSource(strings = {" ", "       "})
     @DisplayName("PUT - /members/me/bio - invalid bio")
-    void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
+    public void updateBioInvalidBioValueRequestFailed(String invalidBioValue) throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest(invalidBioValue);
 
@@ -665,7 +678,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("PUT - /members/me/bio - bio too Long")
-    void updateBioInvalidBioValueRequestFailedWhenTooLongKor() throws Exception {
+    public void updateBioInvalidBioValueRequestFailedWhenTooLongKor() throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest("한글테스트".repeat(100) + "한");
 
@@ -686,7 +699,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("PUT - /members/me/bio - bio too Long")
-    void updateBioInvalidBioValueRequestFailedWhenTooLongEng() throws Exception {
+    public void updateBioInvalidBioValueRequestFailedWhenTooLongEng() throws Exception {
         //given
         MemberBioUpdateRequest request = new MemberBioUpdateRequest("apple".repeat(100) + "a");
 
@@ -706,11 +719,9 @@ class MemberControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-            "로키", "로키1", "로1키", "1로키"
-    })
+    @ValueSource(strings = {"로키", "로키1", "로1키", "1로키"})
     @DisplayName("PUT - /me/nick-name - success")
-    void updateNickname(String validNickname) throws Exception {
+    public void updateNickname(String validNickname) throws Exception {
         //given
         NicknameRequest request = new NicknameRequest(validNickname);
 
@@ -734,7 +745,7 @@ class MemberControllerTest {
             "로", "_로키", "로키_", "_로키_", "-로키", "로키-", " 로키", "로키 ", " 로키 ", "   "
     })
     @DisplayName("PUT - /me/nick-name - invalid nickname")
-    void updateNicknameInvalidNicknameValueRequestFailed(String invalidNickname) throws Exception {
+    public void updateNicknameInvalidNicknameValueRequestFailed(String invalidNickname) throws Exception {
         //given
         NicknameRequest request = new NicknameRequest(invalidNickname);
 
@@ -755,7 +766,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Get - /members/me/account - success")
-    void getAccountInfo() throws Exception {
+    public void getAccountInfo() throws Exception {
         //given
         AccountInfoResponse accountInfoResponse =
                 AccountInfoResponse.of(new Account("", "", "", "", ""));
@@ -776,7 +787,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Get - /members/me/account - fail - authorization header not found")
-    void getAccountInfoHeaderNotFoundFailed() throws Exception {
+    public void getAccountInfoHeaderNotFoundFailed() throws Exception {
         //when
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
 
@@ -791,7 +802,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Get - /members/me/account - success")
-    void getAccountInfoInvalidTokenFailed() throws Exception {
+    public void getAccountInfoInvalidTokenFailed() throws Exception {
         //when
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
 
@@ -806,7 +817,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Post - /members/me/account - success")
-    void registerAccount() throws Exception {
+    public void registerAccount() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
@@ -830,7 +841,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Post - /members/me/account - fail - validation")
-    void registerAccountFailWhenInvalidValue() throws Exception {
+    public void registerAccountFailWhenInvalidValue() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
@@ -881,7 +892,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Post - /members/me/account - fail - account registered")
-    void registerAccountFailWhenAccountRegistered() throws Exception {
+    public void registerAccountFailWhenAccountRegistered() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
@@ -906,7 +917,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("Post - /members/me/account - fail - account requesting")
-    void registerAccountFailWhenAccountRequesting() throws Exception {
+    public void registerAccountFailWhenAccountRequesting() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("bankbookImage", "testImage1.jpg",
                 ContentType.IMAGE_JPEG.getMimeType(), "testImageBinary".getBytes());
@@ -953,7 +964,6 @@ class MemberControllerTest {
         ;
     }
 
-
     @Test
     @DisplayName("Post - /members/me/account - fail invalid token")
     public void registerAccountInvalidTokenFailed() throws Exception {
@@ -977,29 +987,6 @@ class MemberControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
         ;
-    }
-
-
-    private void validInterceptorAndArgumentResolverMocking() {
-        when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(true);
-        when(authenticationArgumentResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(new LoginMember(1L, "email"));
-    }
-
-    private MockMultipartHttpServletRequestBuilder generateMultipartPutRequest(String url) {
-        MockMultipartHttpServletRequestBuilder putRequest = multipart(url);
-
-        putRequest.with(new RequestPostProcessor() {
-            @Override
-            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
-                request.setMethod("PUT");
-                return request;
-            }
-        });
-
-        return putRequest;
-
     }
 
     @Test
