@@ -21,7 +21,7 @@ public class DonationResponse {
 
     public DonationResponse(Donation donation) {
         this(donation.getId(), donation.getName(), donation.getMessage(),
-                donation.getPoint(), donation.getCreatedAt(), donation.getCreator().getPageName());
+                donation.getPoint(), donation.getCreatedAt(), donation.getDonator().getPageName());
     }
 
     public DonationResponse(Long donationId, String name, String message, Long amount,
@@ -37,7 +37,7 @@ public class DonationResponse {
     public static DonationResponse forPublic(Donation donation) {
         if (donation.isSecret()) {
             return new DonationResponse(donation.getId(), Message.SECRET_NAME, Message.SECRET_MESSAGE,
-                    donation.getPoint(), donation.getCreatedAt(), donation.getCreator().getPageName());
+                    donation.getPoint(), donation.getCreatedAt(), Message.SECRET_PAGE_NAME);
         }
         return new DonationResponse(donation);
     }
