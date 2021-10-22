@@ -22,7 +22,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
 
   profiles:
     include: dev-secret, aws
