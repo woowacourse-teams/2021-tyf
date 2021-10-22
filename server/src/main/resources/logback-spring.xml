@@ -17,6 +17,13 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
+    <springProfile name="performance">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+
     <springProfile name ="prod">
         <include resource ="appender/slack-async-error-appender.xml"/>
         <include resource="appender/aws-log-appender-debug.xml"/>
