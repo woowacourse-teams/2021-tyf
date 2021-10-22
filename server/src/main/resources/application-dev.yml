@@ -15,7 +15,7 @@ spring:
   flyway:
     baseline-version: 0
     baseline-on-migrate: true
-    enabled: false
+    enabled: true
 
   jpa:
     properties:
