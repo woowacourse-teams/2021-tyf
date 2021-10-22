@@ -18,6 +18,7 @@ import java.util.UUID;
 public class S3Connector {
 
     private final AmazonS3 awsS3Client;
+    private final Aes256Util aes256Util;
 
     @Value("${cloudfront.url}")
     private String cloudfrontUrl;
@@ -27,8 +28,8 @@ public class S3Connector {
 
     public String uploadProfile(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = "users/"
-                + memberId + "/profiles/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
+        String fileName = "users/profiles/" + aes256Util.encrypt(
+                memberId + multipartFile.getOriginalFilename() + UUID.randomUUID());
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
@@ -37,8 +38,8 @@ public class S3Connector {
 
     public String uploadBankBook(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = "users/"
-                + memberId + "/bankbook/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
+        String fileName = "users/bankbook/" + aes256Util.encrypt(
+                memberId + multipartFile.getOriginalFilename() + UUID.randomUUID());
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
