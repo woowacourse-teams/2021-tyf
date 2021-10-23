@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class S3ConnectorTest {
 
-    @Autowired
     Tika tika = new Tika();
 
     @Test
