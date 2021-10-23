@@ -23,7 +23,7 @@ public class S3Connector {
 
     private final AmazonS3 awsS3Client;
     private final Aes256Util aes256Util;
-    private final Tika tika;
+    private final Tika tika = new Tika();
 
     @Value("${cloudfront.url}")
     private String cloudfrontUrl;
