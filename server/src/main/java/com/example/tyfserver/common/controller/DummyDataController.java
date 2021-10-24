@@ -1,7 +1,6 @@
 package com.example.tyfserver.common.controller;
 
 import com.example.tyfserver.auth.util.JwtTokenProvider;
-import com.example.tyfserver.common.service.DummyDataService;
 import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
@@ -14,24 +13,24 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class DummyDataController {
 
-    private final DummyDataService dummyDataService;
+//    private final DummyDataService dummyDataService;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/members")
-    public void putMemberDummyData() {
-        dummyDataService.putMemberDummyData();
-    }
-
-    @GetMapping("/payments")
-    public void putPaymentAndRefundFailureDummyData() {
-        dummyDataService.putPaymentAndRefundFailiureDummyData();
-    }
-
-    @GetMapping("/donations")
-    public void putDonationDummyData() {
-        dummyDataService.putDonationDummyData();
-    }
+//    @GetMapping("/members")
+//    public void putMemberDummyData() {
+//        dummyDataService.putMemberDummyData();
+//    }
+//
+//    @GetMapping("/payments")
+//    public void putPaymentAndRefundFailureDummyData() {
+//        dummyDataService.putPaymentAndRefundFailiureDummyData();
+//    }
+//
+//    @GetMapping("/donations")
+//    public void putDonationDummyData() {
+//        dummyDataService.putDonationDummyData();
+//    }
 
     @PostMapping("/master-token/{memberId}")
     public ResponseEntity<String> createMasterToken(@PathVariable Long memberId) {
