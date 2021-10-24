@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static com.example.tyfserver.common.config.replication.ReplicationDataSourceProperties.*;
 
-//@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 @Profile({"prod", "performance"})
 @EnableConfigurationProperties(ReplicationDataSourceProperties.class)
 @Configuration
