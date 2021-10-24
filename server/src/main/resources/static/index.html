@@ -39,7 +39,7 @@
 
     async function requestPay() {
         // 가맹점 서버에 Payment 생성 요청
-        const amount = 1000;
+        const amount = 1100;
         const email = "ssop6403@gmail.com";
         const pageName = "hwanorama";
         const merchantUid = await createMerchantUid(amount, email, pageName);
@@ -56,9 +56,10 @@
                 console.log("아임포트 요청 성공");
                 console.log(rsp);
                 await jQuery.ajax({
-                    url: "http://localhost:8080/donations", // 가맹점 서버
+                    url: "http://localhost:8080/payments/charge", // 가맹점 서버
                     method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    headers: {"Content-Type": "application/json",
+                        "Authorization" : ""},
                     data: JSON.stringify({
                         impUid: rsp.imp_uid,
                         merchantUid: rsp.merchant_uid
@@ -68,7 +69,7 @@
                     console.log("결제 끝!");
                     console.log(data);
                     result = {
-                        "impUid": data.impUid,
+                        "itemId": data.impUid,
                         "merchantUid": data.merchantUid
                     };
                     if(data.status === "success") {
@@ -88,13 +89,12 @@
     async function createMerchantUid(amount, email, pageName) {
         let merchantUid;
         await jQuery.ajax({
-            url: "http://localhost:8080/payments", // 가맹점 서버
+            url: "http://localhost:8080/payments/charge/ready", // 가맹점 서버
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json",
+                "Authorization" : ""},
             data: JSON.stringify({
-                amount: amount,
-                email: email,
-                pageName: pageName,
+                itemId: "ITEM_1"
             }),
             contentType: "application/json",
             dataType: "json"
