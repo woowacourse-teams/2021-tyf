@@ -55,8 +55,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     @Override
     public List<Donation> findDonationsToExchange(Member creator, YearMonth exchangeOn) {
         return queryFactory
-                .select(donation)
-                .from(donation)
+                .selectFrom(donation)
                 .where(
                         donationOwner(creator.getId()),
                         waitingForExchangeStatus(),
