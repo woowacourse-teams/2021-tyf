@@ -1,16 +1,6 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/tyfH2Db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
     baseline-version: 0
@@ -22,7 +12,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
 
   profiles:
     include: dev-secret, aws

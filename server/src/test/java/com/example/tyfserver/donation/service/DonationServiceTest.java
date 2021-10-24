@@ -19,10 +19,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
+import supports.IntegrationTest;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -33,8 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 
-@SpringBootTest
-@Transactional
+@IntegrationTest
 class DonationServiceTest {
 
     @Autowired
@@ -156,11 +154,11 @@ class DonationServiceTest {
         assertThat(publicDonationsBefore).hasSize(0);
 
         DonationRequest donationRequest = donationRequest(creator, 1000L);
+
         DonationResponse donationResponse = createDonation(donationRequest, donator);
         DonationMessageRequest secretMessageRequest = new DonationMessageRequest("secretMessage", true);
         donationService.addMessageToDonation(donator.getId(), donationResponse.getDonationId(), secretMessageRequest);
 
-        DonationRequest donationRequest2 = donationRequest(creator, 1000L);
         DonationResponse donationResponse2 = createDonation(donationRequest, donator);
         DonationMessageRequest nonSecretMessageRequest = new DonationMessageRequest("nonSecretMessage", false);
         donationService.addMessageToDonation(donator.getId(), donationResponse2.getDonationId(), nonSecretMessageRequest);
@@ -170,10 +168,14 @@ class DonationServiceTest {
 
         //then
         assertThat(publicDonationsAfter).hasSize(2);
+
         assertThat(publicDonationsAfter.get(1).getMessage()).isEqualTo(Message.SECRET_MESSAGE);
         assertThat(publicDonationsAfter.get(1).getName()).isEqualTo(Message.SECRET_NAME);
+        assertThat(publicDonationsAfter.get(1).getPageName()).isEqualTo(Message.SECRET_PAGE_NAME);
+
         assertThat(publicDonationsAfter.get(0).getMessage()).isEqualTo(nonSecretMessageRequest.getMessage());
         assertThat(publicDonationsAfter.get(0).getName()).isEqualTo(donator.getNickname());
+        assertThat(publicDonationsAfter.get(0).getPageName()).isEqualTo(donator.getPageName());
     }
 
     private DonationRequest donationRequest(Member member, Long point) {

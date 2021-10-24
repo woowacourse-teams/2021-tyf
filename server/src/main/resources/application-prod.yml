@@ -11,7 +11,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect # 지워도 되는지 확인
     hibernate:
       ddl-auto: none
 

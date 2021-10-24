@@ -1,4 +1,2 @@
-
 server/logs/
-
-server/src/main/resources/application-performance-secret.yml
+.idea

@@ -4,6 +4,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.tyfserver.common.exception.S3FileNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.Tika;
+import org.apache.tika.mime.MimeType;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.mime.MimeTypes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +22,8 @@ import java.util.UUID;
 public class S3Connector {
 
     private final AmazonS3 awsS3Client;
+    private final Aes256Util aes256Util;
+    private final Tika tika = new Tika();
 
     @Value("${cloudfront.url}")
     private String cloudfrontUrl;
@@ -27,8 +33,8 @@ public class S3Connector {
 
     public String uploadProfile(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = "users/"
-                + memberId + "/profiles/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
+        String fileName = "users/profiles/" + aes256Util.encrypt(
+                memberId + multipartFile.getOriginalFilename() + UUID.randomUUID()) + extension(multipartFile);
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
@@ -37,8 +43,8 @@ public class S3Connector {
 
     public String uploadBankBook(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = "users/"
-                + memberId + "/bankbook/" + UUID.randomUUID() + multipartFile.getOriginalFilename();
+        String fileName = "users/bankbook/" + aes256Util.encrypt(
+                memberId + multipartFile.getOriginalFilename() + UUID.randomUUID()) + extension(multipartFile);
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
@@ -66,5 +72,17 @@ public class S3Connector {
 
     public String detachCloudFrontUrl(String fileName) {
         return fileName.split("cloudfront.net/")[1];
+    }
+
+    private String extension(MultipartFile multipartFile) {
+        MimeTypes mTypes = MimeTypes.getDefaultMimeTypes();
+        try {
+            MimeType mimeType = mTypes.forName(
+                    tika.detect(multipartFile.getBytes())
+            );
+            return mimeType.getExtension();
+        } catch (MimeTypeException | IOException e) {
+            throw new IllegalStateException("확장자를 출력할 수가 없습니다.");
+        }
     }
 }

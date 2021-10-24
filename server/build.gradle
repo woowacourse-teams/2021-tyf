@@ -75,6 +75,9 @@ dependencies {
 
     //flyway
     implementation 'org.flywaydb:flyway-core:6.4.2'
+
+    //tika, PPT, CSV ,PDF 등 다양한 형태의, 파일의 메타 데이터와 텍스트를 감지하고 추출하는 라이브러리
+    implementation 'org.apache.tika:tika-core:1.24.1'
 }
 
 test {

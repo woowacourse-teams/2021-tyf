@@ -1,21 +1,18 @@
 package com.example.tyfserver.payment.repository;
 
-import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.payment.domain.Item;
 import com.example.tyfserver.payment.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import supports.RepositoryTest;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@Import(JpaAuditingConfig.class)
+@RepositoryTest
 class PaymentRepositoryTest {
 
     @Autowired
