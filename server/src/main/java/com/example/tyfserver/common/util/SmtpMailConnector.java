@@ -8,6 +8,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 @Component
 @RequiredArgsConstructor
 public class SmtpMailConnector {
-    // todo 메일 전송 시간이 김. 비동기로 해볼까?
 
     private static final String PREFIX_SUBJECT = "[Thank You For]";
 
@@ -30,6 +30,7 @@ public class SmtpMailConnector {
     private final TemplateEngine templateEngine;
 
 
+    @Async
     public void sendVerificationCode(String mailAddress, String verificationCode) {
         Context context = new Context();
         context.setVariable("code", verificationCode);
@@ -37,6 +38,7 @@ public class SmtpMailConnector {
         sendMail("환불 인증번호", message, mailAddress);
     }
 
+    @Async
     public void sendExchangeApprove(String mailAddress) {
         Context context = new Context();
         context.setVariable("head", "정산 승인 완료");
@@ -45,6 +47,7 @@ public class SmtpMailConnector {
         sendMail("정산 승인 완료", message, mailAddress);
     }
 
+    @Async
     public void sendExchangeReject(String mailAddress, String rejectReason) {
         Context context = new Context();
         context.setVariable("head", "정산 승인 반려");
@@ -54,6 +57,7 @@ public class SmtpMailConnector {
         sendMail("정산 승인 반려", message, mailAddress);
     }
 
+    @Async
     public void sendAccountApprove(String mailAddress) {
         Context context = new Context();
         context.setVariable("head", "정산 계좌 승인 완료");
@@ -62,6 +66,7 @@ public class SmtpMailConnector {
         sendMail("정산 계좌 승인 완료", message, mailAddress);
     }
 
+    @Async
     public void sendAccountReject(String mailAddress, String rejectReason) {
         Context context = new Context();
         context.setVariable("head", "정산 계좌 승인 반려");
@@ -71,6 +76,7 @@ public class SmtpMailConnector {
         sendMail("정산 계좌 승인 반려", message, mailAddress);
     }
 
+    @Async
     public void sendChargeComplete(Payment payment) {
         Context context = new Context();
         context.setVariable("item_name", payment.getItemName());
