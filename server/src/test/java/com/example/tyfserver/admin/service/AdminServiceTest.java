@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
-import supports.ServiceTest;
+import supports.IntegrationTest;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-@ServiceTest
+@IntegrationTest
 class AdminServiceTest {
 
     private static final YearMonth EXCHANGE_ON_2021_1 = YearMonth.of(2021, 1);
