@@ -16,19 +16,19 @@
 
 <script>
     async function cancelPay() {
-      await jQuery.ajax({
-        url: "http://localhost:8080/payments/cancel",
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: JSON.stringify({
-          merchantUid: "935cfb0e-86e5-4458-8994-993cd7dc4e19"
-        })
-      }).done(await function (data) {
-          console.log("환불 성공");
-          console.log(data);
-      }).fail(function (e) {
-          alert("실패!")
-      });
+        await jQuery.ajax({
+            url: "http://localhost:8080/payments/cancel",
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            data: JSON.stringify({
+                merchantUid: "935cfb0e-86e5-4458-8994-993cd7dc4e19"
+            })
+        }).done(await function (data) {
+            console.log("환불 성공");
+            console.log(data);
+        }).fail(function (e) {
+            alert("실패!")
+        });
     }
 </script>
 
@@ -41,14 +41,14 @@
         // 가맹점 서버에 Payment 생성 요청
         const amount = 1100;
         const email = "ssop6403@gmail.com";
-        const pageName = "hwanorama";
-        const merchantUid = await createMerchantUid(amount, email, pageName);
+        const itemId = "ITEM_1";
+        const merchantUid = await createMerchantUid(amount,itemId);
         // IMP.request_pay(param, callback) 호출
         let result;
         await IMP.request_pay({ // param
             pay_method: "card",
             merchant_uid: merchantUid,
-            name: pageName,
+            name: itemId,
             amount: amount,
             buyer_email: email
         }, async function (rsp) { // callback
@@ -86,7 +86,7 @@
         });
     }
 
-    async function createMerchantUid(amount, email, pageName) {
+    async function createMerchantUid(amount, itemId) {
         let merchantUid;
         await jQuery.ajax({
             url: "http://localhost:8080/payments/charge/ready", // 가맹점 서버
@@ -94,7 +94,7 @@
             headers: {"Content-Type": "application/json",
                 "Authorization" : ""},
             data: JSON.stringify({
-                itemId: "ITEM_1"
+                itemId: itemId
             }),
             contentType: "application/json",
             dataType: "json"
