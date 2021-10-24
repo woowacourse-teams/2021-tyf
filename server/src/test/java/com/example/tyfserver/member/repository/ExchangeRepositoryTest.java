@@ -1,6 +1,5 @@
 package com.example.tyfserver.member.repository;
 
-import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationTest;
 import com.example.tyfserver.donation.repository.DonationRepository;
@@ -10,8 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import supports.RepositoryTest;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -21,8 +19,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@Import(JpaAuditingConfig.class)
+@RepositoryTest
 class ExchangeRepositoryTest {
 
     @Autowired
