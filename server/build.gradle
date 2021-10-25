@@ -99,11 +99,17 @@ build {
 }
 
 processResources.dependsOn('copySecret')
+processResources.dependsOn('copyDeployShellScript')
 
 task copySecret(type: Copy) {
-    from 'securityKey/application-dev-secret.yml', 'securityKey/application-prod-secret.yml',
-            'securityKey/application-performance-secret.yml'
+    from 'securityKey/'
+    include "*.yml"
     into 'src/main/resources'
+}
+
+task copyDeployShellScript(type: Copy) {
+    from 'securityKey/deploy'
+    into 'src/main/resources/deploy'
 }
 
 //queryDsl

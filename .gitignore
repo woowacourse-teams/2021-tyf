@@ -2,3 +2,5 @@
 server/logs/
 
 server/src/main/resources/application-performance-secret.yml
+
+server/src/main/resources/deploy/
