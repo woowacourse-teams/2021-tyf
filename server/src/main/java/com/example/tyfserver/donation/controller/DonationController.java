@@ -50,7 +50,6 @@ public class DonationController {
         return ResponseEntity.ok(donationService.findMyDonations(loginMember.getId(), pageable));
     }
 
-    @Transactional(readOnly = true)
     @GetMapping("/public/{pageName}")
     public ResponseEntity<List<DonationResponse>> publicDonations(@PathVariable String pageName) {
         return ResponseEntity.ok(donationService.findPublicDonations(pageName));

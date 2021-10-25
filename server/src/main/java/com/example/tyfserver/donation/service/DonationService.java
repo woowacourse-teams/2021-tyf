@@ -41,6 +41,7 @@ public class DonationService {
         return new DonationResponse(savedDonation);
     }
 
+    @Transactional(readOnly = true)
     public void addMessageToDonation(final Long requestMemberId,
                                      final Long donationId, final DonationMessageRequest donationMessageRequest) {
         Member requestMember = findMember(requestMemberId);
@@ -51,6 +52,7 @@ public class DonationService {
         donation.addMessage(donationMessageRequest.toEntity(requestMember.getNickname()));
     }
 
+    @Transactional(readOnly = true)
     public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
         Member findMember = findMember(memberId);
 
