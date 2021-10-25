@@ -227,8 +227,7 @@ class DonationControllerTest {
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("pageStartId", "0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..donationId").exists())
                 .andExpect(jsonPath("$..name").exists())
@@ -252,8 +251,7 @@ class DonationControllerTest {
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("pageStartId", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("totalDonationsMemberNotFoundFailed",
@@ -271,8 +269,7 @@ class DonationControllerTest {
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("pageStartId", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("totalDonationsHeaderNotFoundFailed",
@@ -290,8 +287,7 @@ class DonationControllerTest {
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("pageStartId", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("totalDonationsInvalidTokenFailed",

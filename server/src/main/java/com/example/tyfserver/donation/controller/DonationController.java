@@ -45,8 +45,8 @@ public class DonationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember, Pageable pageable) {
-        return ResponseEntity.ok(donationService.findMyDonations(loginMember.getId(), pageable));
+    public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember, @RequestParam(defaultValue = "0") Long lastPageId) {
+        return ResponseEntity.ok(donationService.findMyDonations(loginMember.getId(), lastPageId));
     }
 
     @GetMapping("/public/{pageName}")

@@ -11,8 +11,6 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,11 +49,11 @@ public class DonationService {
         donation.addMessage(donationMessageRequest.toEntity(requestMember.getNickname()));
     }
 
-    public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
+    public List<DonationResponse> findMyDonations(Long memberId, Long lastPageId) {
         Member findMember = findMember(memberId);
 
         return privateDonationResponses(
-                donationRepository.findDonationByCreatorOrderByCreatedAtDesc(findMember, pageable)
+                donationRepository.find5NewestDonationsPage(findMember, lastPageId)
         );
     }
 
@@ -64,7 +62,7 @@ public class DonationService {
                 .orElseThrow(MemberNotFoundException::new);
 
         return publicDonationResponses(
-                donationRepository.findDonationByCreatorOrderByCreatedAtDesc(findMember, PageRequest.of(0, 5))
+                donationRepository.find5NewestDonationsPage(findMember, 0L)
         );
     }
 
