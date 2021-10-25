@@ -59,6 +59,7 @@ public class DonationService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<DonationResponse> findPublicDonations(String pageName) {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
