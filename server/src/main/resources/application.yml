@@ -53,7 +53,12 @@ logging:
   slack:
     webhook-uri: https://hooks.slack.com/services/token
 
-logging.level:
+
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
@@ -74,3 +79,4 @@ aes:
     tyftesttyftesttyftesttyftesttyft
 
 batch_size: 1000
+
