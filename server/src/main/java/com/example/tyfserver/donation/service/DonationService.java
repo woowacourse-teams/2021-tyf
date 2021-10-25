@@ -49,6 +49,7 @@ public class DonationService {
         donation.addMessage(donationMessageRequest.toEntity(requestMember.getNickname()));
     }
 
+    @Transactional(readOnly = true)
     public List<DonationResponse> findMyDonations(Long memberId, Long lastPageId) {
         Member findMember = findMember(memberId);
 
@@ -57,6 +58,7 @@ public class DonationService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<DonationResponse> findPublicDonations(String pageName) {
         Member findMember = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);

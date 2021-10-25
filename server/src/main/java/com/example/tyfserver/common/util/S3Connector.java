@@ -33,8 +33,7 @@ public class S3Connector {
 
     public String uploadProfile(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = "users/profiles/" + aes256Util.encrypt(
-                memberId + multipartFile.getOriginalFilename() + UUID.randomUUID()) + extension(multipartFile);
+        String fileName = "users/profiles/" + UUID.randomUUID() + extension(multipartFile);
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 
@@ -43,8 +42,7 @@ public class S3Connector {
 
     public String uploadBankBook(MultipartFile multipartFile, Long memberId) {
         File file = convertToFile(multipartFile);
-        String fileName = "users/bankbook/" + aes256Util.encrypt(
-                memberId + multipartFile.getOriginalFilename() + UUID.randomUUID()) + extension(multipartFile);
+        String fileName = "users/bankbook/" + UUID.randomUUID() + extension(multipartFile);
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
         file.delete();
 

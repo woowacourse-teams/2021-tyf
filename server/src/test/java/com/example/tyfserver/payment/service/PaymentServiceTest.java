@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import supports.SliceTest;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SliceTest
 class PaymentServiceTest {
 
     private static final UUID MERCHANT_UID = UUID.randomUUID();

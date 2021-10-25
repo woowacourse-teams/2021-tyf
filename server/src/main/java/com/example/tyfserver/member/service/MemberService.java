@@ -31,34 +31,40 @@ public class MemberService {
     private final S3Connector s3Connector;
     private final Aes256Util aes256Util;
 
+    @Transactional(readOnly = true)
     public void validatePageName(PageNameRequest request) {
         if (memberRepository.existsByPageName(request.getPageName())) {
             throw new DuplicatedPageNameException();
         }
     }
 
+    @Transactional(readOnly = true)
     public void validateNickname(NicknameRequest request) {
         if (memberRepository.existsByNickname(request.getNickname())) {
             throw new DuplicatedNicknameException();
         }
     }
 
+    @Transactional(readOnly = true)
     public MemberResponse findMemberByPageName(String pageName) {
         Member member = memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
         return new MemberResponse(member);
     }
 
+    @Transactional(readOnly = true)
     public MemberResponse findMemberById(Long id) {
         Member member = findMember(id);
         return new MemberResponse(member);
     }
 
+    @Transactional(readOnly = true)
     public PointResponse findMemberPoint(Long id) {
         Member member = findMember(id);
         return new PointResponse(donationRepository.waitingTotalPoint(member.getId()));
     }
 
+    @Transactional(readOnly = true)
     public List<CurationsResponse> findCurations() {
         return memberRepository.findCurations();
     }
@@ -96,6 +102,7 @@ public class MemberService {
     }
 
     // todo 메서드 이름 변경. 한눈에 알아보거나, 어디서 쓰이는지 유추하기 힘듬. 정산관련 포인트 합계? 그런 의미를 담고 있으면 좋을 듯.
+    @Transactional(readOnly = true)
     public DetailedPointResponse detailedPoint(Long id) {
         Long waitingTotalPoint = donationRepository.waitingTotalPoint(id);
         Long exchangedTotalPoint = donationRepository.exchangedTotalPoint(id);

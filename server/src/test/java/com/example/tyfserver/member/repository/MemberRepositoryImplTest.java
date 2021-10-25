@@ -1,7 +1,6 @@
 package com.example.tyfserver.member.repository;
 
 import com.example.tyfserver.auth.domain.Oauth2Type;
-import com.example.tyfserver.common.config.JpaAuditingConfig;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.donation.domain.DonationTest;
@@ -17,8 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import supports.RepositoryTest;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -28,8 +26,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DataJpaTest
-@Import(JpaAuditingConfig.class)
+@RepositoryTest
 class MemberRepositoryImplTest {
 
     @Autowired
