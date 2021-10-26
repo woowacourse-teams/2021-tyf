@@ -14,5 +14,5 @@ public interface DonationQueryRepository {
 
     List<Donation> findDonationsToExchange(Member creator, YearMonth exchangeOn);
 
-    List<Donation> find5NewestDonationsPage(Member creator, Long lastPageId);
+    List<Donation> find5NewestDonationsPage(Member creator, long cursorId);
 }

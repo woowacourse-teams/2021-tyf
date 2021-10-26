@@ -27,8 +27,7 @@ public class DonationService {
 
     public DonationResponse createDonation(DonationRequest donationRequest, long donatorId) {
         Member donator = findMember(donatorId);
-        Member creator = memberRepository.findByPageName(donationRequest.getPageName())
-                .orElseThrow(MemberNotFoundException::new);
+        Member creator = findMember(donationRequest.getPageName());
 
         donator.validateEnoughPoint(donationRequest.getPoint());
 
@@ -50,18 +49,17 @@ public class DonationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DonationResponse> findMyDonations(Long memberId, Long lastPageId) {
+    public List<DonationResponse> findMyDonations(Long memberId, long cursorId) {
         Member findMember = findMember(memberId);
 
         return privateDonationResponses(
-                donationRepository.find5NewestDonationsPage(findMember, lastPageId)
+                donationRepository.find5NewestDonationsPage(findMember, cursorId)
         );
     }
 
     @Transactional(readOnly = true)
     public List<DonationResponse> findPublicDonations(String pageName) {
-        Member findMember = memberRepository.findByPageName(pageName)
-                .orElseThrow(MemberNotFoundException::new);
+        Member findMember = findMember(pageName);
 
         return publicDonationResponses(
                 donationRepository.find5NewestDonationsPage(findMember, 0L)
@@ -82,6 +80,11 @@ public class DonationService {
 
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    private Member findMember(String pageName) {
+        return memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
     }
 }

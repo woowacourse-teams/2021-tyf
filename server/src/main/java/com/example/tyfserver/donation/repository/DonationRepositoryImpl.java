@@ -66,13 +66,13 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     }
 
     @Override
-    public List<Donation> find5NewestDonationsPage(Member creator, Long lastPageId) {
+    public List<Donation> find5NewestDonationsPage(Member creator, long cursorId) {
         return queryFactory
                 .selectFrom(donation)
                 .join(donation.donator, member)
                 .fetchJoin()
                 .where(
-                        lessThanDonationId(lastPageId),
+                        lessThanDonationId(cursorId),
                         donationReceiver(creator.getId())
                 )
                 .orderBy(donation.id.desc())
@@ -80,11 +80,11 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .fetch();
     }
 
-    private BooleanExpression lessThanDonationId(long offset) {
-        if (offset == 0) {
+    private BooleanExpression lessThanDonationId(long cursorId) {
+        if (cursorId == 0) {
             return null;
         }
-        return donation.id.lt(offset);
+        return donation.id.lt(cursorId);
     }
 
     private BooleanExpression waitingForExchangeStatus() {
