@@ -3,7 +3,6 @@ package com.example.tyfserver.donation.repository;
 import com.example.tyfserver.donation.domain.Donation;
 import com.example.tyfserver.donation.domain.DonationStatus;
 import com.example.tyfserver.member.domain.Member;
-import com.example.tyfserver.member.domain.QMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.tyfserver.donation.domain.QDonation.donation;
+import static com.example.tyfserver.member.domain.QMember.member;
 
 public class DonationRepositoryImpl implements DonationQueryRepository {
 
@@ -69,7 +69,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     public List<Donation> find5NewestDonationsPage(Member creator, Long lastPageId) {
         return queryFactory
                 .selectFrom(donation)
-                .join(donation.donator, QMember.member)
+                .join(donation.donator, member)
                 .fetchJoin()
                 .where(
                         lessThanDonationId(lastPageId),
