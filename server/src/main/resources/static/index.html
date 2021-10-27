@@ -16,19 +16,19 @@
 
 <script>
     async function cancelPay() {
-      await jQuery.ajax({
-        url: "http://localhost:8080/payments/cancel",
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: JSON.stringify({
-          merchantUid: "935cfb0e-86e5-4458-8994-993cd7dc4e19"
-        })
-      }).done(await function (data) {
-          console.log("환불 성공");
-          console.log(data);
-      }).fail(function (e) {
-          alert("실패!")
-      });
+        await jQuery.ajax({
+            url: "http://localhost:8080/payments/cancel",
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            data: JSON.stringify({
+                merchantUid: "935cfb0e-86e5-4458-8994-993cd7dc4e19"
+            })
+        }).done(await function (data) {
+            console.log("환불 성공");
+            console.log(data);
+        }).fail(function (e) {
+            alert("실패!")
+        });
     }
 </script>
 
@@ -39,16 +39,16 @@
 
     async function requestPay() {
         // 가맹점 서버에 Payment 생성 요청
-        const amount = 1000;
+        const amount = 1100;
         const email = "ssop6403@gmail.com";
-        const pageName = "hwanorama";
-        const merchantUid = await createMerchantUid(amount, email, pageName);
+        const itemId = "ITEM_1";
+        const merchantUid = await createMerchantUid(amount,itemId);
         // IMP.request_pay(param, callback) 호출
         let result;
         await IMP.request_pay({ // param
             pay_method: "card",
             merchant_uid: merchantUid,
-            name: pageName,
+            name: itemId,
             amount: amount,
             buyer_email: email
         }, async function (rsp) { // callback
@@ -56,9 +56,10 @@
                 console.log("아임포트 요청 성공");
                 console.log(rsp);
                 await jQuery.ajax({
-                    url: "http://localhost:8080/donations", // 가맹점 서버
+                    url: "http://localhost:8080/payments/charge", // 가맹점 서버
                     method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    headers: {"Content-Type": "application/json",
+                        "Authorization" : ""},
                     data: JSON.stringify({
                         impUid: rsp.imp_uid,
                         merchantUid: rsp.merchant_uid
@@ -68,7 +69,7 @@
                     console.log("결제 끝!");
                     console.log(data);
                     result = {
-                        "impUid": data.impUid,
+                        "itemId": data.impUid,
                         "merchantUid": data.merchantUid
                     };
                     if(data.status === "success") {
@@ -85,16 +86,15 @@
         });
     }
 
-    async function createMerchantUid(amount, email, pageName) {
+    async function createMerchantUid(amount, itemId) {
         let merchantUid;
         await jQuery.ajax({
-            url: "http://localhost:8080/payments", // 가맹점 서버
+            url: "http://localhost:8080/payments/charge/ready", // 가맹점 서버
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json",
+                "Authorization" : ""},
             data: JSON.stringify({
-                amount: amount,
-                email: email,
-                pageName: pageName,
+                itemId: itemId
             }),
             contentType: "application/json",
             dataType: "json"
