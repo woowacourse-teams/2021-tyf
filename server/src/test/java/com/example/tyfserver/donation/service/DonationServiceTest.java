@@ -66,13 +66,6 @@ class DonationServiceTest {
         doNothing().when(mailConnector).sendChargeComplete(any(Payment.class));
     }
 
-    @AfterEach
-    void tearDown() {
-        paymentRepository.delete(payment);
-        memberRepository.delete(donator);
-        memberRepository.delete(creator);
-    }
-
     @Test
     @DisplayName("createDonation")
     public void createDonationTest() {
@@ -134,13 +127,13 @@ class DonationServiceTest {
     @DisplayName("findMyDonations")
     public void findMyDonationsTest() {
         //given
-        List<DonationResponse> donationsBefore = donationService.findMyDonations(creator.getId(), PageRequest.of(0, 1));
+        List<DonationResponse> donationsBefore = donationService.findMyDonations(creator.getId(), 0L);
         assertThat(donationsBefore).hasSize(0);
         DonationRequest donationRequest = donationRequest(creator, 1000L);
         donationService.createDonation(donationRequest, donator.getId());
 
         //when
-        List<DonationResponse> donationsAfter = donationService.findMyDonations(creator.getId(), PageRequest.of(0, 1));
+        List<DonationResponse> donationsAfter = donationService.findMyDonations(creator.getId(), 0L);
 
         //then
         assertThat(donationsAfter).hasSize(1);

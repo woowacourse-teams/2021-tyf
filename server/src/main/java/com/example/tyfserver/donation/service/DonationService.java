@@ -11,8 +11,6 @@ import com.example.tyfserver.member.domain.Member;
 import com.example.tyfserver.member.exception.MemberNotFoundException;
 import com.example.tyfserver.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +27,7 @@ public class DonationService {
 
     public DonationResponse createDonation(DonationRequest donationRequest, long donatorId) {
         Member donator = findMember(donatorId);
-        Member creator = memberRepository.findByPageName(donationRequest.getPageName())
-                .orElseThrow(MemberNotFoundException::new);
+        Member creator = findMember(donationRequest.getPageName());
 
         donator.validateEnoughPoint(donationRequest.getPoint());
 
@@ -52,21 +49,20 @@ public class DonationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DonationResponse> findMyDonations(Long memberId, Pageable pageable) {
+    public List<DonationResponse> findMyDonations(Long memberId, long cursorId) {
         Member findMember = findMember(memberId);
 
         return privateDonationResponses(
-                donationRepository.findDonationByCreatorOrderByCreatedAtDesc(findMember, pageable)
+                donationRepository.find5NewerDonationPage(findMember, cursorId)
         );
     }
 
     @Transactional(readOnly = true)
     public List<DonationResponse> findPublicDonations(String pageName) {
-        Member findMember = memberRepository.findByPageName(pageName)
-                .orElseThrow(MemberNotFoundException::new);
+        Member findMember = findMember(pageName);
 
         return publicDonationResponses(
-                donationRepository.findDonationByCreatorOrderByCreatedAtDesc(findMember, PageRequest.of(0, 5))
+                donationRepository.find5NewerDonationPage(findMember, 0L)
         );
     }
 
@@ -84,6 +80,11 @@ public class DonationService {
 
     private Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    private Member findMember(String pageName) {
+        return memberRepository.findByPageName(pageName)
                 .orElseThrow(MemberNotFoundException::new);
     }
 }

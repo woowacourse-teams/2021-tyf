@@ -214,12 +214,12 @@ class DonationControllerTest {
 
     @Test
     @DisplayName("/donations/me - success")
-    public void totalDonations() throws Exception {
+    public void myDonations() throws Exception {
         //given
         //when
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(false);
-        when(donationService.findMyDonations(any(), any()))
+        when(donationService.findMyDonations(any(), anyLong()))
                 .thenReturn(Arrays.asList(
                         new DonationResponse(1L, "name1", "message1", 1000L, LocalDateTime.now(), "pagename"),
                         new DonationResponse(2L, "name2", "message2", 2000L, LocalDateTime.now(), "pagename")
@@ -227,8 +227,7 @@ class DonationControllerTest {
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("cursorId", "0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..donationId").exists())
                 .andExpect(jsonPath("$..name").exists())
@@ -243,17 +242,16 @@ class DonationControllerTest {
 
     @Test
     @DisplayName("/donations/me - 회원을 찾을 수 없음")
-    public void totalDonationsMemberNotFoundFailed() throws Exception {
+    public void myDonationsMemberNotFoundFailed() throws Exception {
         //given
         //when
         when(authenticationInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
         when(authenticationArgumentResolver.supportsParameter(Mockito.any())).thenReturn(false);
-        doThrow(new MemberNotFoundException()).when(donationService).findMyDonations(any(), any());
+        doThrow(new MemberNotFoundException()).when(donationService).findMyDonations(any(), anyLong());
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("cursorId", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(MemberNotFoundException.ERROR_CODE))
                 .andDo(document("totalDonationsMemberNotFoundFailed",
@@ -264,15 +262,14 @@ class DonationControllerTest {
 
     @Test
     @DisplayName("/donations/me - Authorization 헤더를 찾을 수 없음")
-    public void totalDonationsHeaderNotFoundFailed() throws Exception {
+    public void myDonationsHeaderNotFoundFailed() throws Exception {
         //given
         //when
         doThrow(new AuthorizationHeaderNotFoundException()).when(authenticationInterceptor).preHandle(any(), any(), any());
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("cursorId", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(AuthorizationHeaderNotFoundException.ERROR_CODE))
                 .andDo(document("totalDonationsHeaderNotFoundFailed",
@@ -283,15 +280,14 @@ class DonationControllerTest {
 
     @Test
     @DisplayName("/donations/me - 유효하지 않은 토큰")
-    public void totalDonationsInvalidTokenFailed() throws Exception {
+    public void myDonationsInvalidTokenFailed() throws Exception {
         //given
         //when
         doThrow(new InvalidTokenException()).when(authenticationInterceptor).preHandle(any(), any(), any());
         //then
         mockMvc.perform(get("/donations/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "2")
-                .param("page", "1"))
+                .param("cursorId", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errorCode").value(InvalidTokenException.ERROR_CODE))
                 .andDo(document("totalDonationsInvalidTokenFailed",
