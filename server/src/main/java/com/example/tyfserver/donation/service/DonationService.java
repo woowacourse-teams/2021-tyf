@@ -53,7 +53,7 @@ public class DonationService {
         Member findMember = findMember(memberId);
 
         return privateDonationResponses(
-                donationRepository.find5NewestDonationsPage(findMember, cursorId)
+                donationRepository.find5NewerDonationPage(findMember, cursorId)
         );
     }
 
@@ -62,7 +62,7 @@ public class DonationService {
         Member findMember = findMember(pageName);
 
         return publicDonationResponses(
-                donationRepository.find5NewestDonationsPage(findMember, 0L)
+                donationRepository.find5NewerDonationPage(findMember, 0L)
         );
     }
 

@@ -66,7 +66,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     }
 
     @Override
-    public List<Donation> find5NewestDonationsPage(Member creator, long cursorId) {
+    public List<Donation> find5NewerDonationPage(Member creator, long cursorId) {
         return queryFactory
                 .selectFrom(donation)
                 .join(donation.donator, member)
