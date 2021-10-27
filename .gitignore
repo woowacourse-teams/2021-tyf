@@ -1,2 +1,4 @@
 server/logs/
 .idea
+
+server/src/main/resources/deploy/
