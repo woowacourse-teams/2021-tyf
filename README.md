@@ -1,43 +1,36 @@
-# 2021-tyf 
+<a href="https://thankyou-for.com"><img src="https://user-images.githubusercontent.com/11311739/139101550-ebdf44d2-8019-4f84-88b3-51e14d2597d8.png"></a>
 
-![image](https://user-images.githubusercontent.com/45073750/129145619-fcd8061b-2deb-4e09-9055-fc575a0c6214.png)
+<p align="center">
+  <img src="https://img.shields.io/github/repo-size/woowacourse-teams/2021-tyf?style=flat-square" />
+  <img src="https://img.shields.io/github/issues/woowacourse-teams/2021-tyf?style=flat-square" />
+  <img src="https://img.shields.io/github/v/release/woowacourse-teams/2021-tyf?color=red&include_prereleases&style=flat-square" />
+  <img src="https://img.shields.io/website?down_color=lightgrey&down_message=offline&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fthankyou-for.com" />
+</p>
 
-- 누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 모듈 서비스
+<h3 align="center"><a href="https://thankyou-for.com">https://thankyou-for.com</a></h3>
+
+<br />
+
+## 🤗 Introduce
+**누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 플랫폼 서비스**
+
+[서비스 소개 페이지](https://sites.google.com/woowahan.com/wooteco-demo-3rd/thank-you-for?authuser=0)
+
+<br />
 
 ## 🥰 Members
 
-|              [파노](https://github.com/jho2301)              |              [인치](https://github.com/hchayan)              |               [수리](https://github.com/DWL5)                |              [파즈](https://github.com/Be-poz)               |              [조이](https://github.com/Joyykim)              |               [로키](https://github.com/Rok93)               |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                      [파노(전환오)](https://github.com/jho2301)                       |                      [인치(한창희)](https://github.com/hchayan)                       |                        [수리(이다원)](https://github.com/DWL5)                        |                      [파즈(강승윤)](https://github.com/Be-poz)                       |                      [조이(김주원)](https://github.com/Joyykim)                      |                       [로키(김경록)](https://github.com/Rok93)                       |
+| :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
 | <img src="https://avatars.githubusercontent.com/u/44419181?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/11311739?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/18106839?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/45073750?v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/56679885?v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/47850258?v=4" width=200px alt="_"> |
+|                                       Front-End                                       |                                       Front-End                                       |                                       Back-End                                        |                                       Back-End                                       |                                       Back-End                                       |                                       Back-End                                       |
 
-### 💻 커밋 메세지 컨벤션
+<br />
 
-- 앵귤러 커밋 컨벤션을 따릅니다.
-  - (#[이슈번호])  이슈 제목
-  - feat :  새로운 기능 추가
-  - fix : 버그 수정
-  - docs : 문서 관련
-  - style : 스타일 변경 (포매팅 수정, 들여쓰기 추가, …)
-  - refactor : 코드 리팩토링
-  - test : 테스트 관련 코드
-  - build : 빌드 관련 파일 수정
-  - ci : CI 설정 파일 수정
-  - perf : 성능 개선
-  - chore : 그 외 자잘한 수정
+## 📽 Video
+> 아래 영상을 클릭하면 전체 영상을 볼 수 있습니다.
 
-### Pull Request 컨벤션
-
-- [#이슈번호] 이슈에 대한 내용
-  - 이슈에 대한 내용
-    - 깔끔하게 정리해서 쓰기 (문장형식 아님)
-  - 라벨 꼼꼼히 붙히기
-  - Assignee 할당 잘하기
-  - 관련 이슈 할당 잘하기
-
-### Branch 컨벤션
-- feature/{feature-name}
-- 본인 fork 레포지토리에 위와 같이 브랜치를 만들어 작업한다.
-- 완료되면 upstream의 develop-server develop-client로 pr 요청
+<a href="https://youtu.be/AMPssNBZX_M"><img src="https://user-images.githubusercontent.com/11311739/139111170-ff173669-ce2c-4417-bd2e-acf71fcf6528.gif" alt="서비스 소개 영상"></a>
 
 [백엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/server/README.md)  
 [프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/README.md)
