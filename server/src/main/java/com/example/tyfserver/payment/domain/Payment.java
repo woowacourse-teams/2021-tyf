@@ -124,7 +124,7 @@ public class Payment extends BaseTimeEntity {
     private void validatePaymentInfo(PaymentInfo paymentInfo) {
         if (!merchantUid.equals(paymentInfo.getMerchantUid())) {
             updateStatus(PaymentStatus.INVALID);
-            throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, paymentInfo.getModule());
+            throw IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_UID, paymentInfo.getModule());
         }
 
         if (!amount.equals(paymentInfo.getAmount())) {

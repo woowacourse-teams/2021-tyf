@@ -93,7 +93,7 @@ public class PaymentTest {
         //then
         assertThatThrownBy(() -> payment.complete(paymentInfo))
                 .isExactlyInstanceOf(IllegalPaymentInfoException.class)
-                .extracting(ERROR_CODE).isEqualTo(ERROR_CODE_INVALID_MERCHANT_ID);
+                .extracting(ERROR_CODE).isEqualTo(ERROR_CODE_INVALID_MERCHANT_UID);
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.INVALID);
     }

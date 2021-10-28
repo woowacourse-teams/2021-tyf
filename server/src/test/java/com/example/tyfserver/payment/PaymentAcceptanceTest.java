@@ -47,8 +47,8 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
         return authPost("/payments/charge/ready", token, new PaymentPendingRequest(itemId)).extract();
     }
 
-    public static ExtractableResponse<Response> 페이먼트_완료(String impUid, String merchantId, String token) {
-        return authPost("/payments/charge", token, new PaymentCompleteRequest(impUid, merchantId)).extract();
+    public static ExtractableResponse<Response> 페이먼트_완료(String impUid, String merchantUid, String token) {
+        return authPost("/payments/charge", token, new PaymentCompleteRequest(impUid, merchantUid)).extract();
     }
 
     public static ExtractableResponse<Response> 환불정보_조회(String token) {
@@ -370,7 +370,7 @@ public class PaymentAcceptanceTest extends AcceptanceTest {
 
         ErrorResponse errorResponse = 환불_요청_실패(token, UUID.randomUUID().toString(), 10000L, "refunder", PaymentStatus.CANCELLED).as(ErrorResponse.class);
 
-        assertThat(errorResponse.getErrorCode()).isEqualTo(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_UID);
     }
 
     private ExtractableResponse<Response> 환불_요청_성공(String token, String merchantUid) {

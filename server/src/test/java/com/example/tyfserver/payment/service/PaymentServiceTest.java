@@ -18,11 +18,9 @@ import com.example.tyfserver.payment.exception.IllegalPaymentInfoException;
 import com.example.tyfserver.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import supports.SliceTest;
 
 import java.time.LocalDateTime;
@@ -143,7 +141,7 @@ class PaymentServiceTest {
 
     @DisplayName("저장된 결제 ID와 외부 전달받은 결제 정보 ID가 다를 경우 결제승인 실패한다")
     @Test
-    void failCompletePaymentInvalidMerchantId() {
+    void failCompletePaymentInvalidMerchantUid() {
         //given
         UUID invalidMerchantUid = UUID.randomUUID();
         PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
@@ -160,7 +158,7 @@ class PaymentServiceTest {
         //then
         assertThatThrownBy(() -> paymentService.completePayment(request))
                 .isInstanceOf(IllegalPaymentInfoException.class)
-                .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_ID);
+                .hasFieldOrPropertyWithValue(ERROR_CODE, IllegalPaymentInfoException.ERROR_CODE_INVALID_MERCHANT_UID);
     }
 
     @DisplayName("저장된 결제 금액과 외부 결제모듈의 결제 금액 정보가 다를 경우 결제승인 실패한다")

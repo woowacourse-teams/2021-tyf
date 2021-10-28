@@ -106,14 +106,14 @@ public class PaymentService {
 
     @Transactional(noRollbackFor = {VerificationFailedException.class, RefundVerificationBlockedException.class})
     public RefundVerificationResponse refundVerification(RefundVerificationRequest verificationRequest) {
-        String merChantUid = verificationRequest.getMerchantUid();
-        Payment payment = paymentRepository.findByMerchantUidWithRefundFailure(UUID.fromString(merChantUid))
+        String merchantUid = verificationRequest.getMerchantUid();
+        Payment payment = paymentRepository.findByMerchantUidWithRefundFailure(UUID.fromString(merchantUid))
                 .orElseThrow(PaymentNotFoundException::new);
 
         payment.checkRemainTryCount();
-        verify(verificationRequest.getVerificationCode(), payment, merChantUid);
+        verify(verificationRequest.getVerificationCode(), payment, merchantUid);
 
-        String refundToken = authenticationService.createRefundToken(merChantUid);
+        String refundToken = authenticationService.createRefundToken(merchantUid);
         return new RefundVerificationResponse(refundToken);
     }
 

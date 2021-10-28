@@ -74,7 +74,7 @@ public class SmtpMailConnector {
     public void sendChargeComplete(Payment payment) {
         Context context = new Context();
         context.setVariable("item_name", payment.getItemName());
-        context.setVariable("merchant_id", payment.getMerchantUid());
+        context.setVariable("merchant_uid", payment.getMerchantUid());
         context.setVariable("charge_amount", payment.getAmount());
         context.setVariable("date", formatDateTime(payment.getCreatedAt()));
 
