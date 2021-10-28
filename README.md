@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/website?down_color=lightgrey&down_message=offline&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fthankyou-for.com" />
 </p>
 
-<h3 align="center"><a href="https://thankyou-for.com">https://thankyou-for.com</a></h3>
+<h3 align="center"><a href="https://thankyou-for.com">🎉 https://thankyou-for.com 🎉</a></h3>
 
 <br />
 
