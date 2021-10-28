@@ -1,25 +1,29 @@
 import { useEffect, useState } from 'react';
 
+let onScrollThrottle: null | NodeJS.Timeout;
+
 const useScroll = () => {
   const [isScrollEnd, setIsScrollEnd] = useState(false);
 
   const onScroll = () => {
-    setIsScrollEnd(window.scrollY >= window.innerHeight);
+    if (!onScrollThrottle) {
+      onScrollThrottle = setTimeout(() => {
+        onScrollThrottle = null;
+        console.log('run');
+        setIsScrollEnd(window.scrollY >= window.innerHeight);
+      }, 1000);
+    }
   };
 
-  const useScrollEffect = () => {
-    useEffect(() => {
-      window.requestAnimationFrame(() => {
-        window.addEventListener('scroll', onScroll);
-      });
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
 
-      return () => {
-        window.removeEventListener('resize', onScroll);
-      };
-    }, []);
-  };
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
 
-  return { isScrollEnd, useScrollEffect };
+  return { isScrollEnd };
 };
 
 export default useScroll;

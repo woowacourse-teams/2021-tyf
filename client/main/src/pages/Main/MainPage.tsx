@@ -24,9 +24,7 @@ import useScroll from '../../utils/useScroll';
 const MainPage = () => {
   const history = useHistory();
   const { userInfo } = useUserInfo();
-  const { isScrollEnd, useScrollEffect } = useScroll();
-
-  useScrollEffect();
+  const { isScrollEnd } = useScroll();
 
   return (
     <MainTemplate>
