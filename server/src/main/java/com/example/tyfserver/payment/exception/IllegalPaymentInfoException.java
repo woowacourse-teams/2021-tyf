@@ -7,8 +7,8 @@ public class IllegalPaymentInfoException extends BaseException {
     public static final String ERROR_CODE_NOT_PAID = "payment-002";
     private static final String MESSAGE_NOT_PAID = "결제가 완료되지 않았습니다.";
 
-    public static final String ERROR_CODE_INVALID_MERCHANT_ID = "payment-003";
-    private static final String MESSAGE_INVALID_MERCHANT_ID = "결제 정보의 Merchant ID가 일치하지 않습니다.";
+    public static final String ERROR_CODE_INVALID_MERCHANT_UID = "payment-003";
+    private static final String MESSAGE_INVALID_MERCHANT_UID = "결제 정보의 Merchant ID가 일치하지 않습니다.";
 
     public static final String ERROR_CODE_INVALID_AMOUNT = "payment-004";
     private static final String MESSAGE_INVALID_AMOUNT = "결제 정보의 Amount가 일치하지 않습니다.";
@@ -30,8 +30,8 @@ public class IllegalPaymentInfoException extends BaseException {
             return new IllegalPaymentInfoException(code, module + MESSAGE_NOT_PAID);
         }
 
-        if (ERROR_CODE_INVALID_MERCHANT_ID.equals(code)) {
-            return new IllegalPaymentInfoException(code, module + MESSAGE_INVALID_MERCHANT_ID);
+        if (ERROR_CODE_INVALID_MERCHANT_UID.equals(code)) {
+            return new IllegalPaymentInfoException(code, module + MESSAGE_INVALID_MERCHANT_UID);
         }
 
         if (ERROR_CODE_INVALID_AMOUNT.equals(code)) {

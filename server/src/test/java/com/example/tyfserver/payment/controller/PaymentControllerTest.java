@@ -233,7 +233,7 @@ public class PaymentControllerTest {
         //given
         PaymentCompleteRequest request = new PaymentCompleteRequest(IMP_UID, MERCHANT_UID.toString());
         //when
-        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_ID, MODULE))
+        doThrow(IllegalPaymentInfoException.from(ERROR_CODE_INVALID_MERCHANT_UID, MODULE))
                 .when(paymentService).completePayment(any(PaymentCompleteRequest.class));
 
         //then
@@ -241,7 +241,7 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_ID))
+                .andExpect(jsonPath("errorCode").value(ERROR_CODE_INVALID_MERCHANT_UID))
                 .andDo(document("createPaymentFailedStatusInvalidId",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))

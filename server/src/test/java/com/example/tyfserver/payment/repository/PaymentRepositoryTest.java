@@ -27,8 +27,8 @@ class PaymentRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByMerchantId")
-    public void findByMerchantIdTest() {
+    @DisplayName("findByMerchantUid")
+    public void findByMerchantUidTest() {
         //given&then
         Payment payment = paymentRepository.findByMerchantUid(uuid).get();
 
