@@ -27,6 +27,7 @@ export const FixedLogo = styled(IconButton).attrs({
 
   @media ${DEVICE.DESKTOP_LARGE} {
     width: 12rem;
+    height: auto;
   }
 `;
 

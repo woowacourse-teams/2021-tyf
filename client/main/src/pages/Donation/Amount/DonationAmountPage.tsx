@@ -24,7 +24,7 @@ const DonationAmountPage = () => {
     <DonationAmountPageTemplate>
       <FixedLogo onClick={() => popupWindow(window.location.origin)} />
       <section>
-        <PointAnchor href={`${window.location.origin}/mypoint`} target="_blank" rel="noreferrer">
+        <PointAnchor to={`/mypoint`} target="_blank" rel="noreferrer">
           {toCommaSeparatedString(userInfo?.point ?? 0)} tp
         </PointAnchor>
       </section>
