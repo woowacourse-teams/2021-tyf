@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/repo-size/woowacourse-teams/2021-tyf?style=flat-square" />
-  <img src="https://img.shields.io/github/issues/woowacourse-teams/2021-tyf?style=flat-square" />
   <img src="https://img.shields.io/github/v/release/woowacourse-teams/2021-tyf?color=red&include_prereleases&style=flat-square" />
   <img src="https://img.shields.io/website?down_color=lightgrey&down_message=offline&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fthankyou-for.com" />
 </p>
