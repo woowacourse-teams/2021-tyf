@@ -1,8 +1,13 @@
-# <center>🔥🔥🔥THIS IS BACKEND README🔥🔥🔥</center>
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/45073750/139287522-5dfbc039-c20e-43c4-ab5f-dccc4f441d78.png"/>
+</p> 
 
 <p align="center">
   <img src = "https://img.shields.io/badge/spring--boot-v2.4.3-green?style=flat-square&logo=spring-boot&logoColor=white"/>
+  <img src = "https://img.shields.io/badge/QueryDsl-1.0.10-Pink"/>
+  <img src = "https://img.shields.io/badge/Java-11-important"/>
 </p> 
+
 
 
 <br/>
