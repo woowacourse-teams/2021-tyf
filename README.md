@@ -16,7 +16,7 @@
 - [서비스 소개 페이지](https://sites.google.com/woowahan.com/wooteco-demo-3rd/thank-you-for?authuser=0) <br/>
 - [TYF 위키](https://github.com/woowacourse-teams/2021-tyf/wiki)<br/>
 - [백엔드 README](https://github.com/woowacourse-teams/2021-tyf/tree/develop/server)  <br/>
-- [프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/README.md) <br/>
+- [프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/main/README.md) <br/>
 
 <br />
 
