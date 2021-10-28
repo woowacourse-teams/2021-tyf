@@ -10,6 +10,10 @@
 
 <br />
 
+<p align="center"><a href="https://thankyou-for.com/creator/fano" target="_blank"><img height="40" style="border:0px;height:40px;" src="https://de56jrhz7aye2.cloudfront.net/banner/red.svg" border="0" alt="thank you for button" /></a></p>
+
+<br />
+
 ## 🤗 Introduce
 **누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 플랫폼 서비스**
 
