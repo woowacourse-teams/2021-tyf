@@ -14,7 +14,8 @@
 ## 🤗 Introduce
 **누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 플랫폼 서비스**
 
-[서비스 소개 페이지](https://sites.google.com/woowahan.com/wooteco-demo-3rd/thank-you-for?authuser=0)
+- [서비스 소개 페이지](https://sites.google.com/woowahan.com/wooteco-demo-3rd/thank-you-for?authuser=0) <br/>
+- [TYF 위키](https://github.com/woowacourse-teams/2021-tyf/wiki)
 
 <br />
 
