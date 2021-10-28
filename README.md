@@ -15,7 +15,9 @@
 **누구나 쉽게 창작자를 응원할 수 있는 간편 도네이션 플랫폼 서비스**
 
 - [서비스 소개 페이지](https://sites.google.com/woowahan.com/wooteco-demo-3rd/thank-you-for?authuser=0) <br/>
-- [TYF 위키](https://github.com/woowacourse-teams/2021-tyf/wiki)
+- [TYF 위키](https://github.com/woowacourse-teams/2021-tyf/wiki)<br/>
+- [백엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/server/README.md)  <br/>
+- [프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/README.md) <br/>
 
 <br />
 
@@ -32,6 +34,3 @@
 > 아래 영상을 클릭하면 전체 영상을 볼 수 있습니다.
 
 <a href="https://youtu.be/AMPssNBZX_M"><img src="https://user-images.githubusercontent.com/11311739/139111170-ff173669-ce2c-4417-bd2e-acf71fcf6528.gif" alt="서비스 소개 영상"></a>
-
-[백엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/server/README.md)  
-[프론트엔드 README](https://github.com/woowacourse-teams/2021-tyf/blob/main/client/README.md)
