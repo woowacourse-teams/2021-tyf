@@ -21,13 +21,35 @@ public class MemberRepositoryImpl implements MemberQueryRepository {
         queryFactory = new JPAQueryFactory(em);
     }
 
+    // todo 쿼리 개선필요 - 14sec 걸림
+
+    //     select
+    //        member0_.nickname as col_0_0_,
+    //        member0_.page_name as col_1_0_,
+    //        member0_.profile_image as col_2_0_,
+    //        member0_.bio as col_3_0_
+    //    from
+    //        member member0_
+    //    left outer join
+    //        donation receiveddo1_
+    //            on member0_.id=receiveddo1_.creator_id
+    //    inner join
+    //        account account2_
+    //            on member0_.account_id=account2_.id
+    //            and (
+    //                account2_.status=REGISTERED
+    //            )
+    //    group by
+    //        member0_.id
+    //    order by
+    //        sum(receiveddo1_.point) desc limit ?
     public List<CurationsResponse> findCurations() {
         return queryFactory
                 .select(
                         new QCurationsResponse(member.nickname, member.pageName, member.profileImage, member.bio))
                 .from(member)
                 .leftJoin(member.receivedDonations, donation)
-                .innerJoin(member.account, account).on(member.account.status.eq(AccountStatus.valueOf("REGISTERED")))
+                .innerJoin(member.account, account).on(member.account.status.eq(AccountStatus.REGISTERED))
                 .groupBy(member)
                 .orderBy(donation.point.sum().desc())
                 .offset(0)

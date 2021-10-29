@@ -1,9 +1,11 @@
 package com.example.tyfserver.payment.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+@NoArgsConstructor
 @Getter
 public class PaymentInfo {
     private UUID merchantUid;

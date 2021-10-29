@@ -2370,6 +2370,10 @@ Content-Disposition: form-data; name=accountNumber
 
 1234-5678-1234
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Content-Disposition: form-data; name=residentRegistrationNumber
+
+900101-1000000
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=bank
 
 은행
@@ -2410,6 +2414,10 @@ Content-Disposition: form-data; name=accountHolder
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=accountNumber
+
+
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Content-Disposition: form-data; name=residentRegistrationNumber
 
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2463,6 +2471,10 @@ Content-Disposition: form-data; name=accountNumber
 
 1234-5678-1234
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Content-Disposition: form-data; name=residentRegistrationNumber
+
+900101-1000000
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=bank
 
 은행
@@ -2512,6 +2524,10 @@ test
 Content-Disposition: form-data; name=accountNumber
 
 1234-5678-1234
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Content-Disposition: form-data; name=residentRegistrationNumber
+
+900101-1000000
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=bank
 
@@ -2680,7 +2696,7 @@ Content-Length: 158
   "message" : "message",
   "pageName" : "pagename",
   "amount" : 1000,
-  "createdAt" : "2021-10-21T10:47:45.487054"
+  "createdAt" : "2021-10-27T23:40:41.173586"
 }</code></pre>
 </div>
 </div>
@@ -2736,7 +2752,7 @@ Host: localhost:8080
 
 {
   "impUid" : "  ",
-  "merchantUid" : "1672ed76-1939-4475-aa7b-d92b64966bda"
+  "merchantUid" : "1457fc79-d743-4db9-bc93-e8a95a721fbb"
 }</code></pre>
 </div>
 </div>
@@ -2907,7 +2923,7 @@ Content-Length: 104
 <h4 id="_request_51">Request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?cursorId=0 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -2930,14 +2946,14 @@ Content-Length: 326
   "message" : "message1",
   "pageName" : "pagename",
   "amount" : 1000,
-  "createdAt" : "2021-10-21T10:47:44.620008"
+  "createdAt" : "2021-10-27T23:40:40.692097"
 }, {
   "donationId" : 2,
   "name" : "name2",
   "message" : "message2",
   "pageName" : "pagename",
   "amount" : 2000,
-  "createdAt" : "2021-10-21T10:47:44.620725"
+  "createdAt" : "2021-10-27T23:40:40.692217"
 } ]</code></pre>
 </div>
 </div>
@@ -2949,7 +2965,7 @@ Content-Length: 326
 <h4 id="_request_52">Request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?cursorId=0 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -2980,7 +2996,7 @@ Content-Length: 91
 <h4 id="_request_53">Request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?cursorId=0 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -3011,7 +3027,7 @@ Content-Length: 99
 <h4 id="_request_54">Request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?size=2&amp;page=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /donations/me?cursorId=0 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -3057,7 +3073,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 344
+Content-Length: 345
 
 [ {
   "donationId" : 1,
@@ -3065,14 +3081,14 @@ Content-Length: 344
   "message" : "defaultMessage1",
   "pageName" : "pagename",
   "amount" : 1000,
-  "createdAt" : "2021-10-21T10:47:45.39153"
+  "createdAt" : "2021-10-27T23:40:41.093818"
 }, {
   "donationId" : 2,
   "name" : "default2",
   "message" : "defaultMessage2",
   "pageName" : "pagename",
   "amount" : 2000,
-  "createdAt" : "2021-10-21T10:47:45.391552"
+  "createdAt" : "2021-10-27T23:40:41.093852"
 } ]</code></pre>
 </div>
 </div>
@@ -3127,7 +3143,7 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+  "merchantUid" : "1e4a6874-e903-46f5-ae49-9e473e564406"
 }</code></pre>
 </div>
 </div>
@@ -3163,7 +3179,7 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+  "merchantUid" : "1e4a6874-e903-46f5-ae49-9e473e564406"
 }</code></pre>
 </div>
 </div>
@@ -3237,7 +3253,7 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+  "merchantUid" : "1e4a6874-e903-46f5-ae49-9e473e564406"
 }</code></pre>
 </div>
 </div>
@@ -3274,7 +3290,7 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+  "merchantUid" : "1e4a6874-e903-46f5-ae49-9e473e564406"
 }</code></pre>
 </div>
 </div>
@@ -3311,7 +3327,7 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+  "merchantUid" : "1e4a6874-e903-46f5-ae49-9e473e564406"
 }</code></pre>
 </div>
 </div>
@@ -3348,7 +3364,7 @@ Host: localhost:8080
 
 {
   "impUid" : "imp_uid",
-  "merchantUid" : "420bb5a2-23c3-4613-bd3f-05315b9903c3"
+  "merchantUid" : "1e4a6874-e903-46f5-ae49-9e473e564406"
 }</code></pre>
 </div>
 </div>
@@ -3384,7 +3400,7 @@ Content-Length: 60
 Host: localhost:8080
 
 {
-  "merchantUid" : "ced4b0dc-f95f-497a-87b3-df940671e247"
+  "merchantUid" : "a76152e0-4cd4-4bb0-b802-34cfef4b5e69"
 }</code></pre>
 </div>
 </div>
@@ -3421,7 +3437,7 @@ Content-Length: 93
 Host: localhost:8080
 
 {
-  "merchantUid" : "32d7b494-df53-444f-8cf5-f28c668e1344",
+  "merchantUid" : "39059413-8012-435f-8306-98b1ed3d4fb1",
   "verificationCode" : "123456"
 }</code></pre>
 </div>
@@ -3997,7 +4013,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 214
+Content-Length: 215
 
 [ {
   "name" : "승윤",
@@ -4005,7 +4021,7 @@ Content-Length: 214
   "nickname" : "nickname",
   "pageName" : "pagename",
   "exchangeAmount" : 10000,
-  "createdAt" : "2021-10-21T10:48:34.46867",
+  "createdAt" : "2021-10-27T23:41:17.096593",
   "accountNumber" : "123-123"
 } ]</code></pre>
 </div>
@@ -4198,7 +4214,7 @@ Content-Length: 94
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-21 10:34:48 +0900
+Last updated 2021-10-21 21:45:48 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

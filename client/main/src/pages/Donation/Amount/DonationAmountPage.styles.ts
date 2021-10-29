@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import Template from '../../../components/@atom/Template/Template';
+import PALETTE from '../../../constants/palette';
 import { Z_INDEX } from '../../../constants/style';
 
 export const popupStyle = css`
@@ -33,7 +35,13 @@ export const DonationAmountPageTemplate = styled(Template)`
   }
 `;
 
-export const PointAnchor = styled.a`
+export const PointAnchor = styled(Link)`
   font-weight: 600;
   font-size: 1.125rem;
+  color: ${PALETTE.BLACK_400};
+
+  &:active,
+  &:hover {
+    color: ${PALETTE.BLACK_400};
+  }
 `;

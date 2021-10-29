@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.tyfserver.donation.domain.QDonation.donation;
+import static com.example.tyfserver.member.domain.QMember.member;
 
 public class DonationRepositoryImpl implements DonationQueryRepository {
 
@@ -28,7 +29,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .select(donation.point.sum())
                 .from(donation)
                 .where(
-                        donationOwner(creatorId),
+                        donationReceiver(creatorId),
                         waitingForExchangeStatus()
                 )
                 .groupBy(donation.creator)
@@ -43,7 +44,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
                 .select(donation.point.sum())
                 .from(donation)
                 .where(
-                        donationOwner(creatorId),
+                        donationReceiver(creatorId),
                         exchangedStatus()
                 )
                 .groupBy(donation.creator)
@@ -55,10 +56,9 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     @Override
     public List<Donation> findDonationsToExchange(Member creator, YearMonth exchangeOn) {
         return queryFactory
-                .select(donation)
-                .from(donation)
+                .selectFrom(donation)
                 .where(
-                        donationOwner(creator.getId()),
+                        donationReceiver(creator.getId()),
                         waitingForExchangeStatus(),
                         beforeStartOfNextMonth(exchangeOn)
                 )
@@ -66,16 +66,25 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
     }
 
     @Override
-    public Long calculateExchangeAmountFromDonation(Member creator, YearMonth exchangeOn) {
+    public List<Donation> find5NewerDonationPage(Member creator, long cursorId) {
         return queryFactory
-                .select(donation.point.sum())
-                .from(donation)
+                .selectFrom(donation)
+                .join(donation.donator, member)
+                .fetchJoin()
                 .where(
-                        donationOwner(creator.getId()),
-                        waitingForExchangeStatus(),
-                        beforeStartOfNextMonth(exchangeOn)
+                        lessThanDonationId(cursorId),
+                        donationReceiver(creator.getId())
                 )
-                .fetchOne();
+                .orderBy(donation.id.desc())
+                .limit(5)
+                .fetch();
+    }
+
+    private BooleanExpression lessThanDonationId(long cursorId) {
+        if (cursorId == 0) {
+            return null;
+        }
+        return donation.id.lt(cursorId);
     }
 
     private BooleanExpression waitingForExchangeStatus() {
@@ -86,7 +95,7 @@ public class DonationRepositoryImpl implements DonationQueryRepository {
         return donation.status.eq(DonationStatus.EXCHANGED);
     }
 
-    private BooleanExpression donationOwner(Long creatorId) {
+    private BooleanExpression donationReceiver(Long creatorId) {
         return donation.creator.id.eq(creatorId);
     }
 

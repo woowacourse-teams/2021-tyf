@@ -8,6 +8,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -20,15 +21,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
+@Async("mailExecutor")
 @RequiredArgsConstructor
 public class SmtpMailConnector {
-    // todo 메일 전송 시간이 김. 비동기로 해볼까?
 
     private static final String PREFIX_SUBJECT = "[Thank You For]";
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
-
 
     public void sendVerificationCode(String mailAddress, String verificationCode) {
         Context context = new Context();
@@ -74,7 +74,7 @@ public class SmtpMailConnector {
     public void sendChargeComplete(Payment payment) {
         Context context = new Context();
         context.setVariable("item_name", payment.getItemName());
-        context.setVariable("merchant_id", payment.getMerchantUid());
+        context.setVariable("merchant_uid", payment.getMerchantUid());
         context.setVariable("charge_amount", payment.getAmount());
         context.setVariable("date", formatDateTime(payment.getCreatedAt()));
 

@@ -1,6 +1,5 @@
 import { SIZE } from '../../../constants/device';
 import useModal from '../../../utils/useModal';
-import useScrollLock from '../../../utils/useScrollLock';
 import { useWindowResize } from '../../../utils/useWindowResize';
 import {
   DropDownList,
@@ -24,8 +23,6 @@ const Select = ({ placeholder, selectOptions, value, onChange }: SelectProps) =>
   const onOptionClicked = (optionValue: string) => onChange(optionValue);
 
   const isDesktop = windowWidth > SIZE.DESKTOP_LARGE;
-
-  useScrollLock();
 
   return (
     <StyledSelectBox onClick={toggleModal}>
