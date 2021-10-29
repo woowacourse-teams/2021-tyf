@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import supports.RepositoryTest;
 
 import java.time.LocalDate;
@@ -78,20 +79,20 @@ class DonationRepositoryTest {
 
     @Test
     @DisplayName("해당 Member가 받은 최신 5개의 도네이션을 가져온다.")
-    public void find5NewerDonationPage() {
+    public void findDonationByCreatorOrderByCreatedAtDesc() {
         List<Donation> donations = donationRepository
-                .find5NewerDonationPage(creator, 0L);
+                .findDonationByCreatorOrderByCreatedAtDesc(creator, PageRequest.of(0, 5));
 
-        assertThat(donations).containsExactly(donation7, donation6, donation5, donation4, donation3);
+        assertThat(donations).containsExactlyInAnyOrder(donation7, donation6, donation5, donation4, donation3);
     }
 
     @Test
-    @DisplayName("해당 Member가 받은 도네이션을 donation7부터 최신순으로 5개 가져온다.")
-    public void find5NewerDonationPage_2() {
+    @DisplayName("해당 Member가 받은 최신 도네이션을 가져온다. size 3에 두 번째 page인 경우")
+    public void findDonationByCreatorOrderByCreatedAtDesc_2() {
         List<Donation> donations = donationRepository
-                .find5NewerDonationPage(creator, donation7.getId());
+                .findDonationByCreatorOrderByCreatedAtDesc(creator, PageRequest.of(1, 3));
 
-        assertThat(donations).containsExactly(donation6, donation5, donation4, donation3, donation2);
+        assertThat(donations).containsExactlyInAnyOrder(donation4, donation3, donation2);
     }
 
     @Test

@@ -8,8 +8,10 @@ import com.example.tyfserver.donation.exception.DonationMessageRequestException;
 import com.example.tyfserver.donation.exception.DonationRequestException;
 import com.example.tyfserver.donation.service.DonationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +46,8 @@ public class DonationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember, @RequestParam(defaultValue = "0") long cursorId) {
-        return ResponseEntity.ok(donationService.findMyDonations(loginMember.getId(), cursorId));
+    public ResponseEntity<List<DonationResponse>> totalDonations(LoginMember loginMember, Pageable pageable) {
+        return ResponseEntity.ok(donationService.findMyDonations(loginMember.getId(), pageable));
     }
 
     @GetMapping("/public/{pageName}")

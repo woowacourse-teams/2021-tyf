@@ -34,11 +34,11 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         return authPost("/donations/" + donationId + "/messages", token, new DonationMessageRequest(message, secret)).extract();
     }
 
-    public static ExtractableResponse<Response> 나의_후원목록_조회(String token) {
-        return authGet("/donations/me?lastPageId=0", token).extract();
+    public static ExtractableResponse<Response> 총_후원목록(String token) {
+        return authGet("/donations/me", token).extract();
     }
 
-    public static ExtractableResponse<Response> 공개_후원목록_조회(String pageName) {
+    public static ExtractableResponse<Response> 공개_후원목록(String pageName) {
         return get("/donations/public/" + pageName).extract();
     }
 
@@ -146,7 +146,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         후원_메세지_생성(donationId,"thisismessage", true, signUpResponse.getToken());
 
         //when
-        List<DonationResponse> responses = 나의_후원목록_조회(creatorSignUpResponse.getToken())
+        List<DonationResponse> responses = 총_후원목록(creatorSignUpResponse.getToken())
                 .body().jsonPath().getList(".", DonationResponse.class);
 
         //then
@@ -168,7 +168,7 @@ public class DonationAcceptanceTest extends AcceptanceTest {
         후원_메세지_생성(secretDonationId, "thisismessage", true, signUpResponse.getToken());
 
         //when
-        List<DonationResponse> responses = 공개_후원목록_조회("creator")
+        List<DonationResponse> responses = 공개_후원목록("creator")
                 .body().jsonPath().getList(".", DonationResponse.class);
 
         //then

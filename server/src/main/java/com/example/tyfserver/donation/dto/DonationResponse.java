@@ -20,7 +20,6 @@ public class DonationResponse {
     private LocalDateTime createdAt;
 
     public DonationResponse(Donation donation) {
-        // todo Message name 제거하면서 수정필요 donation.getName() -> donation.getDonator().getNickname()
         this(donation.getId(), donation.getName(), donation.getMessage(),
                 donation.getPoint(), donation.getCreatedAt(), donation.getDonator().getPageName());
     }
