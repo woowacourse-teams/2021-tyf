@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
+import { throttleGenerator } from './throttle';
 
-let onScrollThrottle: null | NodeJS.Timeout;
+const throttle = throttleGenerator(1000);
 
 const useScroll = () => {
   const [isScrollEnd, setIsScrollEnd] = useState(false);
 
+  const getIsScrollEnd = () => {
+    setIsScrollEnd(window.scrollY >= window.innerHeight);
+  };
+
   const onScroll = () => {
-    if (!onScrollThrottle) {
-      onScrollThrottle = setTimeout(() => {
-        onScrollThrottle = null;
-        console.log('run');
-        setIsScrollEnd(window.scrollY >= window.innerHeight);
-      }, 1000);
-    }
+    throttle(getIsScrollEnd);
   };
 
   useEffect(() => {
