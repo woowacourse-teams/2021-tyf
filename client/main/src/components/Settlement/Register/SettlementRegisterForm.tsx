@@ -58,6 +58,7 @@ const SettlementRegisterForm = () => {
           />
           <RegistrationNumberSeparator>{'-'}</RegistrationNumberSeparator>
           <RegistrationNumberInput
+            type="password"
             value={form.residentRegistrationNumber[1]}
             onChange={({ target }) => setResidentRegistrationNumberRear(target.value)}
           />
