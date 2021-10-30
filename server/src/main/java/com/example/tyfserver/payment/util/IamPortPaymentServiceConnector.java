@@ -93,9 +93,9 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         int status = 0;
         try {
             return ApiSender.send(
-                    IAMPORT_API_URL + "/vbanks/holder",
+                    IAMPORT_API_URL + "/vbanks/holder?bank_code=" + bankCode + "&" + "bank_num=" + bankNum,
                     HttpMethod.GET,
-                    holderNameOfAccountRequest(accessToken, bankCode, bankNum),
+                    holderNameOfAccountRequest(accessToken),
                     AccountInfo.class
             );
         } catch (HttpClientErrorException e) {
@@ -107,16 +107,12 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         throw new BaseException("error-002", "계좌인증API오류: " + status);
     }
 
-    private HttpEntity<String> holderNameOfAccountRequest(String accessToken, String bankCode, String bankNum) {
+    private HttpEntity<String> holderNameOfAccountRequest(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, accessToken);
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("bank_code", bankCode);
-        jsonObject.put("bank_num", bankNum);
-
-        return new HttpEntity<>(jsonObject.toString(), headers);
+        return new HttpEntity<>(headers);
     }
 
     private String getAccessToken() {
