@@ -7,4 +7,6 @@ public interface PaymentServiceConnector {
     PaymentInfo requestPaymentInfo(UUID merchantUid);
 
     PaymentInfo requestPaymentRefund(UUID merchantUid);
+
+    AccountInfo requestHolderNameOfAccount(String bankCode, String bankNum);
 }

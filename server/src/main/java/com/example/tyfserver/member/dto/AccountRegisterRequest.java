@@ -20,14 +20,11 @@ public class AccountRegisterRequest {
     private String residentRegistrationNumber;
     @NotBlank
     private String bank;
-    @NotNull
-    private MultipartFile bankbookImage;
 
-    public AccountRegisterRequest(String accountHolder, String accountNumber, String residentRegistrationNumber, MultipartFile bankbookImage, String bank) {
+    public AccountRegisterRequest(String accountHolder, String accountNumber, String residentRegistrationNumber, String bank) {
         this.accountHolder = accountHolder;
         this.accountNumber = accountNumber;
         this.residentRegistrationNumber = residentRegistrationNumber;
-        this.bankbookImage = bankbookImage;
         this.bank = bank;
     }
 }

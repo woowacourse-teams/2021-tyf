@@ -17,6 +17,7 @@ export const StyledSelectBox = styled.div`
   align-items: center;
   padding: 0 1.5rem;
   white-space: nowrap;
+  cursor: pointer;
 
   &::after {
     content: '';
@@ -72,6 +73,7 @@ export const ListItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   &:hover {
     font-weight: 700;

@@ -1,6 +1,9 @@
 package com.example.tyfserver.payment.util;
 
+import com.example.tyfserver.common.exception.BaseException;
 import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.member.exception.AccountInvalidException;
+import com.example.tyfserver.payment.domain.AccountInfo;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
@@ -8,11 +11,9 @@ import com.example.tyfserver.payment.dto.IamPortPaymentInfo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.UUID;
 
@@ -80,6 +81,38 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
         jsonObject.put("merchant_uid", merchantUid);
 
         return new HttpEntity<>(jsonObject.toString(), headers);
+    }
+
+    @Override
+    public AccountInfo requestHolderNameOfAccount(String bankCode, String bankNum) {
+        String accessToken = getAccessToken();
+        return holderNameOfAccount(bankCode, bankNum, accessToken);
+    }
+
+    private AccountInfo holderNameOfAccount(String bankCode, String bankNum, String accessToken) {
+        int status = 0;
+        try {
+            return ApiSender.send(
+                    IAMPORT_API_URL + "/vbanks/holder?bank_code=" + bankCode + "&" + "bank_num=" + bankNum,
+                    HttpMethod.GET,
+                    holderNameOfAccountRequest(accessToken),
+                    AccountInfo.class
+            );
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                throw new AccountInvalidException();
+            }
+            status = e.getRawStatusCode();
+        }
+        throw new BaseException("error-002", "계좌인증API오류: " + status);
+    }
+
+    private HttpEntity<String> holderNameOfAccountRequest(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+
+        return new HttpEntity<>(headers);
     }
 
     private String getAccessToken() {

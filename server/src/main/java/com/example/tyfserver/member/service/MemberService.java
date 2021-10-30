@@ -13,12 +13,15 @@ import com.example.tyfserver.member.dto.*;
 import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
+import com.example.tyfserver.payment.domain.AccountInfo;
+import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class MemberService {
     private final DonationRepository donationRepository;
     private final ExchangeRepository exchangeRepository;
     private final S3Connector s3Connector;
+    private final PaymentServiceConnector paymentServiceConnector;
     private final Aes256Util aes256Util;
 
     @Transactional(readOnly = true)
@@ -112,13 +116,19 @@ public class MemberService {
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());
 
-        String uploadedBankBookUrl = s3Connector.uploadBankBook(accountRegisterRequest.getBankbookImage(),
-                loginMember.getId());
+        AccountInfo accountInfo = paymentServiceConnector
+                .requestHolderNameOfAccount(accountRegisterRequest.getBank(), accountRegisterRequest.getAccountNumber());
+        String holderName = accountInfo.getResponse().getBank_holder();
+        if (!Objects.equals(holderName, accountRegisterRequest.getAccountHolder())) {
+            throw new AccountHolderNameInvalidException();
+        }
 
         String encryptedAccountNumber = aes256Util.encrypt(accountRegisterRequest.getAccountNumber());
         String encryptedResidentRegistrationNumber = aes256Util.encrypt(accountRegisterRequest.getResidentRegistrationNumber());
+
+        // todo 계좌등록신청API 긴급수정으로 bankBookUrl에 임시로 "temp"넣어놈. 추후 제거 해야함
         member.registerAccount(accountRegisterRequest.getAccountHolder(),
-                encryptedAccountNumber, encryptedResidentRegistrationNumber, accountRegisterRequest.getBank(), uploadedBankBookUrl);
+                encryptedAccountNumber, encryptedResidentRegistrationNumber, accountRegisterRequest.getBank(), "temp");
     }
 
     public AccountInfoResponse accountInfo(LoginMember loginMember) {
