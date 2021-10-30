@@ -14,7 +14,6 @@ import com.example.tyfserver.member.exception.*;
 import com.example.tyfserver.member.repository.ExchangeRepository;
 import com.example.tyfserver.member.repository.MemberRepository;
 import com.example.tyfserver.payment.domain.AccountInfo;
-import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -119,7 +118,7 @@ public class MemberService {
 
         AccountInfo accountInfo = paymentServiceConnector
                 .requestHolderNameOfAccount(accountRegisterRequest.getBank(), accountRegisterRequest.getAccountNumber());
-        String holderName = accountInfo.getResponse().getBankHolder();
+        String holderName = accountInfo.getResponse().getBank_holder();
         if (!Objects.equals(holderName, accountRegisterRequest.getAccountHolder())) {
             throw new AccountHolderNameInvalidException();
         }
