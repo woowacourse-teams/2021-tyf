@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.util;
 
 import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.payment.domain.AccountInfo;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import com.example.tyfserver.payment.domain.PaymentStatus;
@@ -78,6 +79,33 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("merchant_uid", merchantUid);
+
+        return new HttpEntity<>(jsonObject.toString(), headers);
+    }
+
+    @Override
+    public AccountInfo requestHolderNameOfAccount(String bankCode, String bankNum) {
+        String accessToken = getAccessToken();
+        return holderNameOfAccount(bankCode, bankNum, accessToken);
+    }
+
+    private AccountInfo holderNameOfAccount(String bankCode, String bankNum, String accessToken) {
+        return ApiSender.send(
+                IAMPORT_API_URL + "/vbanks/holder",
+                HttpMethod.GET,
+                holderNameOfAccountRequest(accessToken, bankCode, bankNum),
+                AccountInfo.class
+        );
+    }
+
+    private HttpEntity<String> holderNameOfAccountRequest(String accessToken, String bankCode, String bankNum) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("bank_code", bankCode);
+        jsonObject.put("bank_num", bankNum);
 
         return new HttpEntity<>(jsonObject.toString(), headers);
     }

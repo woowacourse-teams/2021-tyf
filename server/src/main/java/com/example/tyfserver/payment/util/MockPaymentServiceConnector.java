@@ -1,6 +1,7 @@
 package com.example.tyfserver.payment.util;
 
 import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.payment.domain.AccountInfo;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
 import org.json.JSONObject;
@@ -62,5 +63,11 @@ public class MockPaymentServiceConnector implements PaymentServiceConnector {
         jsonObject.put("merchant_uid", merchantUid);
 
         return new HttpEntity<>(jsonObject.toString(), headers);
+    }
+
+    @Override
+    public AccountInfo requestHolderNameOfAccount(String bankCode, String bankNum) {
+        // todo 일단 급해서 아직 안함!!
+        return new AccountInfo();
     }
 }
