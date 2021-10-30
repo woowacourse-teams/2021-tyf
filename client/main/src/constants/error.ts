@@ -99,9 +99,9 @@ export const SETTLEMENT_ACCOUNT_ERROR_MESSAGE = {
   [SETTLEMENT_ACCOUNT_ERROR.INVALID_FORM]:
     '작성한 계좌등록 정보가 잘못되었습니다. 다시 확인해주세요.',
   [SETTLEMENT_ACCOUNT_ERROR.EMPTY_AUTH]: '로그인이 만료되었습니다. 다시 로그인해주세요.',
-  [SETTLEMENT_ACCOUNT_ERROR.INVALID_AUTH]:
-    '계좌주 이름과 입력하신 이름이 일치하지 않습니다. 다시 한 번 확인해주세요',
-  [SETTLEMENT_ACCOUNT_ERROR.INVALID_NAME]: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+  [SETTLEMENT_ACCOUNT_ERROR.INVALID_AUTH]: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+  [SETTLEMENT_ACCOUNT_ERROR.INVALID_NAME]:
+    '계좌주 이름과 입력하신 이름이 일치하지 않습니다. 다시 한 번 확인해주세요.',
   [SETTLEMENT_ACCOUNT_ERROR.INVALID_ACCOUNT]:
     '유효하지 않은 계좌입니다. 은행과 계좌 번호를 다시 확인 해주세요.',
 };
