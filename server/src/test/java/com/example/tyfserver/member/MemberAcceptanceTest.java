@@ -15,6 +15,7 @@ import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.MultiPartSpecification;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -283,6 +284,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("큐레이션 - 후원 금액을 많이 받은 순으로 10명의 창작자를 뽑는다.")
     public void curations() {
         MultiPartSpecification multiPartSpecification = generateMultiPartSpecification();
@@ -337,6 +339,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("계좌 정보 조회 요청 - 계좌 등록 후")
     public void getAccountInfoAfterAccountRegistered() {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com",
@@ -357,6 +360,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("계좌 등록 요청")
     public void registerAccount() {
         SignUpResponse signUpResponse = 회원가입_후_로그인되어_있음("email@email.com", "KAKAO", "nickname", "pagename");

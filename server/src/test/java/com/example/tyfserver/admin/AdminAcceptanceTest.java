@@ -12,6 +12,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.MultiPartSpecification;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.MimeTypeUtils;
@@ -54,6 +55,7 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("승인 요청된 계좌목록을 조회 한다.")
     public void requestingAccounts() {
         //given
@@ -74,6 +76,7 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("요청된 계좌를 승인한다.")
     public void approveAccount() {
         //given
@@ -89,6 +92,7 @@ public class AdminAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("요청된 계좌를 반려한다.")
     public void cancelAccount() {
         //given

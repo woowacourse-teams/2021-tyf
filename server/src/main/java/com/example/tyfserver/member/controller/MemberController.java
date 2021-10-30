@@ -118,6 +118,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.accountInfo(loginMember));
     }
 
+    // todo 이미지 빼고, 아임포트 api 붙이기
     @PostMapping("/me/account")
     public ResponseEntity<Void> registerAccount(LoginMember loginMember,
                                                 @Valid @ModelAttribute AccountRegisterRequest accountRegisterRequest,
