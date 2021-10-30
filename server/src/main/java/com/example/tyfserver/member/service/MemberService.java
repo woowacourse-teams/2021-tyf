@@ -116,9 +116,8 @@ public class MemberService {
     public void registerAccount(LoginMember loginMember, AccountRegisterRequest accountRegisterRequest) {
         Member member = findMember(loginMember.getId());
 
-        AccountInfo accountInfo = paymentServiceConnector
+        String holderName = paymentServiceConnector
                 .requestHolderNameOfAccount(accountRegisterRequest.getBank(), accountRegisterRequest.getAccountNumber());
-        String holderName = accountInfo.getResponse().getBank_holder();
         if (!Objects.equals(holderName, accountRegisterRequest.getAccountHolder())) {
             throw new AccountHolderNameInvalidException();
         }
@@ -126,7 +125,7 @@ public class MemberService {
         String encryptedAccountNumber = aes256Util.encrypt(accountRegisterRequest.getAccountNumber());
         String encryptedResidentRegistrationNumber = aes256Util.encrypt(accountRegisterRequest.getResidentRegistrationNumber());
 
-        // todo 계좌등록신청API 긴급수정으로 bankBookUrl에 임시로 "temp"넣어놈. 추후 제거 해야함
+        // todo 정산계좌등록신청API 긴급수정으로 bankBookUrl에 임시로 "temp"로 넣어놈. 추후 제거 해야함.
         member.registerAccount(accountRegisterRequest.getAccountHolder(),
                 encryptedAccountNumber, encryptedResidentRegistrationNumber, accountRegisterRequest.getBank(), "temp");
     }

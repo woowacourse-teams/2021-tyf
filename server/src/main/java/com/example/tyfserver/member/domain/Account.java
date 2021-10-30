@@ -25,7 +25,7 @@ public class Account extends BaseTimeEntity {
 
     private String bank;
 
-    private String bankbookUrl;
+    private String bankbookUrl; // todo 필요없어진 컬럼. 제거해야함.
 
     @Enumerated(value = EnumType.STRING)
     private AccountStatus status = AccountStatus.UNREGISTERED;

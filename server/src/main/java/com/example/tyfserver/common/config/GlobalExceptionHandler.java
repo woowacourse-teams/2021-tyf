@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleNotDefinedException(Exception exception) {
         logger.error("=== UNDEFINED EXCEPTION ===", exception);
-        return ResponseEntity.badRequest().body(new ErrorResponse("error-000", "예상하지 못한 에러가 발생했습니다."));
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse("error-000", "예상하지 못한 에러가 발생했습니다."));
     }
 }

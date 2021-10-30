@@ -66,8 +66,8 @@ public class MockPaymentServiceConnector implements PaymentServiceConnector {
     }
 
     @Override
-    public AccountInfo requestHolderNameOfAccount(String bankCode, String bankNum) {
+    public String requestHolderNameOfAccount(String bankCode, String bankNum) {
         // todo 일단 급해서 아직 안함!!
-        return new AccountInfo();
+        return "홍길동";
     }
 }

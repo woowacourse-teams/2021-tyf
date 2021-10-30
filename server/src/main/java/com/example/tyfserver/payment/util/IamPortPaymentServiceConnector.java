@@ -84,13 +84,14 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     }
 
     @Override
-    public AccountInfo requestHolderNameOfAccount(String bankCode, String bankNum) {
+    public String requestHolderNameOfAccount(String bankCode, String bankNum) {
         String accessToken = getAccessToken();
-        return holderNameOfAccount(bankCode, bankNum, accessToken);
+        return holderNameOfAccount(bankCode, bankNum, accessToken)
+                .getResponse()
+                .getBank_holder();
     }
 
     private AccountInfo holderNameOfAccount(String bankCode, String bankNum, String accessToken) {
-        int status = 0;
         try {
             return ApiSender.send(
                     IAMPORT_API_URL + "/vbanks/holder?bank_code=" + bankCode + "&" + "bank_num=" + bankNum,
@@ -102,9 +103,9 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
             if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
                 throw new AccountInvalidException();
             }
-            status = e.getRawStatusCode();
+            int status = e.getRawStatusCode();
+            throw new BaseException("error-002", "계좌인증API오류: " + status);
         }
-        throw new BaseException("error-002", "계좌인증API오류: " + status);
     }
 
     private HttpEntity<String> holderNameOfAccountRequest(String accessToken) {
