@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BANK_CODE } from '../../constants/bank';
 
 import { SettlementAccountForm } from '../../types';
 
@@ -11,25 +12,20 @@ const useSettlementAccountForm = () => {
     accountNumber: '',
     residentRegistrationNumber: ['', ''],
     bank: null,
-    bankbookImage: null,
   });
 
   const setAccountHolder = (value: string) => {
     setForm({ ...form, accountHolder: value.trim() });
   };
 
-  const setBank = (bank: string) => {
-    setForm({ ...form, bank });
+  const setBank = (bankName: string) => {
+    setForm({ ...form, bank: BANK_CODE[bankName] });
   };
 
   const setAccountNumber = (value: string) => {
     if (isNaN(Number(value))) return;
 
     setForm({ ...form, accountNumber: value.trim() });
-  };
-
-  const setBankbookImage = (bankbookImage: File) => {
-    setForm({ ...form, bankbookImage });
   };
 
   const setResidentRegistrationNumberFront = (value: string) => {
@@ -48,7 +44,6 @@ const useSettlementAccountForm = () => {
     form.accountHolder &&
     form.bank &&
     form.accountNumber &&
-    form.bankbookImage &&
     form.residentRegistrationNumber[0] &&
     form.residentRegistrationNumber[1];
 
@@ -57,7 +52,6 @@ const useSettlementAccountForm = () => {
     setAccountHolder,
     setBank,
     setAccountNumber,
-    setBankbookImage,
     setResidentRegistrationNumberFront,
     setResidentRegistrationNumberRear,
     isFormValid,

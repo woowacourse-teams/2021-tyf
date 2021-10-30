@@ -11,7 +11,6 @@ export const requestRegisterSettlementAccount = (
 ) => {
   const formData = new FormData();
 
-  formData.append('bankbookImage', form.bankbookImage!, form.bankbookImage!.name);
   formData.append('accountHolder', form.accountHolder);
   formData.append('accountNumber', form.accountNumber);
   formData.append('residentRegistrationNumber', form.residentRegistrationNumber.join('-'));

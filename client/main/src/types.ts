@@ -82,7 +82,6 @@ export interface SettlementAccount {
 export interface SettlementAccountForm {
   accountHolder: string;
   bank: string | null;
-  bankbookImage: File | null;
   accountNumber: string;
   residentRegistrationNumber: [string, string];
 }
