@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BANK_CODE } from '../../constants/bank';
 
 import { SettlementAccountForm } from '../../types';
 
@@ -18,8 +19,8 @@ const useSettlementAccountForm = () => {
     setForm({ ...form, accountHolder: value.trim() });
   };
 
-  const setBank = (bank: string) => {
-    setForm({ ...form, bank });
+  const setBank = (bankName: string) => {
+    setForm({ ...form, bank: BANK_CODE[bankName] });
   };
 
   const setAccountNumber = (value: string) => {

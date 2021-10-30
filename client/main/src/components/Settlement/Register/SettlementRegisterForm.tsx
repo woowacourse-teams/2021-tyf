@@ -92,7 +92,7 @@ const SettlementRegisterForm = () => {
         />
       </InputContainer>
       <InputContainer>
-        <StyledSubTitle>통장사본</StyledSubTitle>
+        <StyledSubTitle>아무 이미지나 올려주세요!</StyledSubTitle>
         <FileName>{form.bankbookImage?.name ?? '선택된 이미지가 없습니다.'}</FileName>
         <UploadLabel>
           <input
