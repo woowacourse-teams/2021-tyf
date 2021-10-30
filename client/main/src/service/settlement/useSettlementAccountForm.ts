@@ -18,8 +18,8 @@ const useSettlementAccountForm = () => {
     setForm({ ...form, accountHolder: value.trim() });
   };
 
-  const setBank = (bankName: string) => {
-    setForm({ ...form, bank: BANK_CODE[bankName] });
+  const setBank = (bank: string) => {
+    setForm({ ...form, bank });
   };
 
   const setAccountNumber = (value: string) => {

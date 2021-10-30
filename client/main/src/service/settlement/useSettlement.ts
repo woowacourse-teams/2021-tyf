@@ -12,6 +12,7 @@ import {
 } from '../@state/settlement';
 import useAccessToken from '../@shared/useAccessToken';
 import { SETTLEMENT_ACCOUNT_ERROR_MESSAGE, SETTLEMENT_ERROR_MESSAGE } from '../../constants/error';
+import { BANK_CODE } from '../../constants/bank';
 
 const useSettlement = () => {
   const { accessToken } = useAccessToken();
@@ -40,7 +41,7 @@ const useSettlement = () => {
 
   const registerSettlementAccount = async (form: SettlementAccountForm) => {
     try {
-      await requestRegisterSettlementAccount(form, accessToken);
+      await requestRegisterSettlementAccount({ ...form, bank: BANK_CODE[form.bank!] }, accessToken);
 
       alert('계좌정보 등록에 전송되었습니다. 검토에는 2~3일정도 소요됩니다.');
       history.push('/');
