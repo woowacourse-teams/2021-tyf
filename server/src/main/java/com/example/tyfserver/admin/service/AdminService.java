@@ -42,7 +42,6 @@ public class AdminService {
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
     private final SmtpMailConnector mailConnector;
-    private final S3Connector s3Connector;
     private final SmtpMailConnector smtpMailConnector;
     private final AdminAccount adminAccount;
     private final AuthenticationService authenticationService;
@@ -51,7 +50,6 @@ public class AdminService {
     public void approveAccount(Long memberId) {
         Member member = findMember(memberId);
         member.approveAccount();
-        s3Connector.delete(member.getBankBookUrl());
         smtpMailConnector.sendAccountApprove(member.getEmail());
     }
 
