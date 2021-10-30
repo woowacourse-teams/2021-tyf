@@ -41,7 +41,6 @@ public class AdminService {
     private final ExchangeRepository exchangeRepository;
     private final DonationRepository donationRepository;
     private final MemberRepository memberRepository;
-    private final SmtpMailConnector mailConnector;
     private final SmtpMailConnector smtpMailConnector;
     private final AdminAccount adminAccount;
     private final AuthenticationService authenticationService;
@@ -104,7 +103,7 @@ public class AdminService {
         exchange.toApproved();
         donations.forEach(Donation::toExchanged);
 
-        mailConnector.sendExchangeApprove(member.getEmail());
+        smtpMailConnector.sendExchangeApprove(member.getEmail());
     }
 
     public void rejectExchange(String pageName, String rejectReason) {
@@ -113,7 +112,7 @@ public class AdminService {
         Exchange exchange = findExchangeToApprove(member);
         exchange.toRejected();
 
-        mailConnector.sendExchangeReject(member.getEmail(), rejectReason);
+        smtpMailConnector.sendExchangeReject(member.getEmail(), rejectReason);
     }
 
     private void validateRegisteredAccount(Member member) {
