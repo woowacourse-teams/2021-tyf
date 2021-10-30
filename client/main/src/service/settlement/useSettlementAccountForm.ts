@@ -12,7 +12,6 @@ const useSettlementAccountForm = () => {
     accountNumber: '',
     residentRegistrationNumber: ['', ''],
     bank: null,
-    bankbookImage: null,
   });
 
   const setAccountHolder = (value: string) => {
@@ -27,10 +26,6 @@ const useSettlementAccountForm = () => {
     if (isNaN(Number(value))) return;
 
     setForm({ ...form, accountNumber: value.trim() });
-  };
-
-  const setBankbookImage = (bankbookImage: File) => {
-    setForm({ ...form, bankbookImage });
   };
 
   const setResidentRegistrationNumberFront = (value: string) => {
@@ -49,7 +44,6 @@ const useSettlementAccountForm = () => {
     form.accountHolder &&
     form.bank &&
     form.accountNumber &&
-    form.bankbookImage &&
     form.residentRegistrationNumber[0] &&
     form.residentRegistrationNumber[1];
 
@@ -58,7 +52,6 @@ const useSettlementAccountForm = () => {
     setAccountHolder,
     setBank,
     setAccountNumber,
-    setBankbookImage,
     setResidentRegistrationNumberFront,
     setResidentRegistrationNumberRear,
     isFormValid,
