@@ -1,6 +1,8 @@
 package com.example.tyfserver.payment.util;
 
+import com.example.tyfserver.common.exception.BaseException;
 import com.example.tyfserver.common.util.ApiSender;
+import com.example.tyfserver.member.exception.AccountInvalidException;
 import com.example.tyfserver.payment.domain.AccountInfo;
 import com.example.tyfserver.payment.domain.PaymentInfo;
 import com.example.tyfserver.payment.domain.PaymentServiceConnector;
@@ -9,11 +11,9 @@ import com.example.tyfserver.payment.dto.IamPortPaymentInfo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.UUID;
 
@@ -90,12 +90,21 @@ public class IamPortPaymentServiceConnector implements PaymentServiceConnector {
     }
 
     private AccountInfo holderNameOfAccount(String bankCode, String bankNum, String accessToken) {
-        return ApiSender.send(
-                IAMPORT_API_URL + "/vbanks/holder",
-                HttpMethod.GET,
-                holderNameOfAccountRequest(accessToken, bankCode, bankNum),
-                AccountInfo.class
-        );
+        int status = 0;
+        try {
+            return ApiSender.send(
+                    IAMPORT_API_URL + "/vbanks/holder",
+                    HttpMethod.GET,
+                    holderNameOfAccountRequest(accessToken, bankCode, bankNum),
+                    AccountInfo.class
+            );
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                throw new AccountInvalidException();
+            }
+            status = e.getRawStatusCode();
+        }
+        throw new BaseException("error-002", "계좌인증API오류: " + status);
     }
 
     private HttpEntity<String> holderNameOfAccountRequest(String accessToken, String bankCode, String bankNum) {

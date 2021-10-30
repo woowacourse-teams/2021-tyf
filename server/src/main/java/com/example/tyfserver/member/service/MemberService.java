@@ -119,9 +119,6 @@ public class MemberService {
 
         AccountInfo accountInfo = paymentServiceConnector
                 .requestHolderNameOfAccount(accountRegisterRequest.getBank(), accountRegisterRequest.getAccountNumber());
-        if (accountInfo.getCode() == 404) {
-            throw new AccountInvalidException();
-        }
         String holderName = accountInfo.getResponse().getBankHolder();
         if (!Objects.equals(holderName, accountRegisterRequest.getAccountHolder())) {
             throw new AccountHolderNameInvalidException();
