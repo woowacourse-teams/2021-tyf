@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import supports.RepositoryTest;
+import com.thankyou_for.supports.RepositoryTest;
 
 import java.util.UUID;
 

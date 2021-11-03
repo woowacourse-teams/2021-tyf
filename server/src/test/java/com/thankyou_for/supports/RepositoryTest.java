@@ -1,4 +1,4 @@
-package supports;
+package com.thankyou_for.supports;
 
 import com.thankyou_for.common.config.JpaAuditingConfig;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

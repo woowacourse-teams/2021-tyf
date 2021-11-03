@@ -1,4 +1,4 @@
-package supports;
+package com.thankyou_for.supports;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import supports.RepositoryTest;
+import com.thankyou_for.supports.RepositoryTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

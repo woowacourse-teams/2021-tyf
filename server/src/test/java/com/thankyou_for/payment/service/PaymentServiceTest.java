@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import supports.SliceTest;
+import com.thankyou_for.supports.SliceTest;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

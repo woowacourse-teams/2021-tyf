@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class S3ConnectorTest {
 
-    Tika tika = new Tika();
+    private final Tika tika = new Tika();
 
     @Test
     public void extension() throws IOException, MimeTypeException {

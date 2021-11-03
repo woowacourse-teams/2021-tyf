@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
-import supports.IntegrationTest;
+import com.thankyou_for.supports.IntegrationTest;
 
 import javax.persistence.EntityManager;
 import java.util.List;

@@ -1,4 +1,4 @@
-package supports;
+package com.thankyou_for.supports;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

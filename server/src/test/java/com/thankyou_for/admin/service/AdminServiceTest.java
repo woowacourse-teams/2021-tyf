@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
-import supports.IntegrationTest;
+import com.thankyou_for.supports.IntegrationTest;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;

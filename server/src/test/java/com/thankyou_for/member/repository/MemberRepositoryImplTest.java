@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import supports.RepositoryTest;
+import com.thankyou_for.supports.RepositoryTest;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
