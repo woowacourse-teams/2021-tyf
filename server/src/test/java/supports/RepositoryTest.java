@@ -1,6 +1,6 @@
 package supports;
 
-import com.example.tyfserver.common.config.JpaAuditingConfig;
+import com.thankyou_for.common.config.JpaAuditingConfig;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
