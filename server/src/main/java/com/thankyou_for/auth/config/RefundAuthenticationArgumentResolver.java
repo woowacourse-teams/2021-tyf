@@ -1,0 +1,34 @@
+package com.thankyou_for.auth.config;
+
+import com.thankyou_for.auth.dto.VerifiedRefunder;
+import com.thankyou_for.auth.service.AuthenticationService;
+import com.thankyou_for.auth.util.AuthorizationExtractor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Component
+@RequiredArgsConstructor
+public class RefundAuthenticationArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final AuthenticationService authenticationService;
+
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return parameter.getParameterType().equals(VerifiedRefunder.class);
+    }
+
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+        String token = AuthorizationExtractor.extract(request);
+        return authenticationService.createVerifiedRefundRequestByToken(token);
+    }
+}
