@@ -19,10 +19,12 @@ import Logo from '../../components/@molecule/Logo/Logo';
 import MainImage from '../../assets/images/hero-content.svg';
 import Transition from '../../components/@atom/Transition/Transition.styles';
 import HelpButton from '../../components/Help/HelpButton/HelpButton';
+import useScroll from '../../utils/useScroll';
 
 const MainPage = () => {
   const history = useHistory();
   const { userInfo } = useUserInfo();
+  const { isScrollEnd } = useScroll();
 
   return (
     <MainTemplate>
@@ -67,7 +69,7 @@ const MainPage = () => {
         </section>
       )}
       <HelpButton />
-      <DownIcon />
+      {!isScrollEnd && <DownIcon />}
     </MainTemplate>
   );
 };
