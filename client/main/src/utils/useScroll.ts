@@ -6,12 +6,8 @@ const throttle = throttleGenerator(1000);
 const useScroll = () => {
   const [isScrollEnd, setIsScrollEnd] = useState(false);
 
-  const getIsScrollEnd = () => {
-    setIsScrollEnd(window.scrollY >= window.innerHeight);
-  };
-
   const onScroll = () => {
-    throttle(getIsScrollEnd);
+    throttle(() => setIsScrollEnd(window.scrollY >= window.innerHeight));
   };
 
   useEffect(() => {
