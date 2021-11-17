@@ -1,9 +1,10 @@
 package com.thankyou_for.payment.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class IamPortPaymentInfo {
 
@@ -13,7 +14,7 @@ public class IamPortPaymentInfo {
         this.response = response;
     }
 
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
     public static class Response {
         String status;

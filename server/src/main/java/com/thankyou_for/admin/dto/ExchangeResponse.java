@@ -1,13 +1,14 @@
 package com.thankyou_for.admin.dto;
 
 import com.thankyou_for.member.domain.Exchange;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExchangeResponse {
 
     private String name;

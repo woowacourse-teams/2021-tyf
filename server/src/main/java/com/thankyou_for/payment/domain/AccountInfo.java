@@ -1,9 +1,10 @@
 package com.thankyou_for.payment.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class AccountInfo {
 
@@ -17,7 +18,7 @@ public class AccountInfo {
         this.response = response;
     }
 
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
     public static class Response {
 
