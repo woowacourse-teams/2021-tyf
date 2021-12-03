@@ -60,7 +60,7 @@ dependencies {
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
     // aws cloudwatch log
-    implementation 'ca.pjer:logback-awslogs-appender:1.4.0'
+//    implementation 'ca.pjer:logback-awslogs-appender:1.4.0'
 
     //static method mocking 가능하게해줌
     testImplementation 'org.mockito:mockito-inline:3.4.0'
