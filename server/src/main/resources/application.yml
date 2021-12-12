@@ -5,6 +5,9 @@ spring:
 #    url: jdbc:mysql://localhost:13306/flywaytest?serverTimezone=UTC&characterEncoding=UTF-8
     username: sa
     password:
+    hikari:
+      pool-name: tyfHikari
+      maximum-pool-size: 10
 
   h2:
     console:
@@ -79,4 +82,8 @@ aes:
     tyftesttyftesttyftesttyftesttyft
 
 batch_size: 1000
+
+server:
+  compression:
+    enabled: true
 
