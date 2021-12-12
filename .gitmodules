@@ -1,4 +1,0 @@
-[submodule "server/securityKey"]
-	path = server/securityKey
-	url = https://github.com/2021-tyf/securityKey.git
-	branch = main
