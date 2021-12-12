@@ -1,3 +1,4 @@
+import { S3_URL } from '../../../constants/s3';
 import {
   StyledContentContainer,
   StyledCreatorGuideContent,
@@ -16,10 +17,7 @@ const CreatorGuide = () => {
         <StyledSubTitle>1. 계좌 인증하기</StyledSubTitle>
         <StyledContents>
           <StyledImage>
-            <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/account_1.png"
-              alt="정산 관리 버튼 선택 이미지"
-            />
+            <img src={`${S3_URL}/guides/creator/account_1.png`} alt="정산 관리 버튼 선택 이미지" />
           </StyledImage>
           <StyledContent>
             <p>1. 우측 메뉴바에서 [정산 관리] 를 선택하세요.</p>
@@ -27,10 +25,7 @@ const CreatorGuide = () => {
         </StyledContents>
         <StyledContents>
           <StyledImage>
-            <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/account_2.png"
-              alt="정산 계좌 등록 이미지"
-            />
+            <img src={`${S3_URL}/guides/creator/account_2.png`} alt="정산 계좌 등록 이미지" />
           </StyledImage>
           <StyledContent>
             <p>2. 본인 명의 계좌 정보를 입력해주세요.</p>
@@ -39,10 +34,7 @@ const CreatorGuide = () => {
         </StyledContents>
         <StyledContents>
           <StyledImage>
-            <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/account_3.png"
-              alt="등록 요청 확인 이미지"
-            />
+            <img src={`${S3_URL}/guides/creator/account_3.png`} alt="등록 요청 확인 이미지" />
           </StyledImage>
           <StyledContent>
             <p>
@@ -70,10 +62,7 @@ const CreatorGuide = () => {
         <StyledSubTitle>3. 정산 신청하기</StyledSubTitle>
         <StyledContents>
           <StyledImage>
-            <img
-              src="https://de56jrhz7aye2.cloudfront.net/guides/creator/settlement_1.png"
-              alt="정산 신청하기 이미지"
-            />
+            <img src={`${S3_URL}/guides/creator/settlement_1.png`} alt="정산 신청하기 이미지" />
           </StyledImage>
           <StyledContent>
             <p>
