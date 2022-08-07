@@ -27,8 +27,7 @@ import SettlementPage from './pages/Settlement/SettlementPage';
 import SettlementRegisterPage from './pages/Settlement/Register/SettlementRegisterPage';
 import MyPointPage from './pages/MyPoint/MyPointPage';
 import GuidePage from './pages/Guide/GuidePage';
-
-
+import Exit from './pages/Exit/Exit';
 
 export interface ParamTypes {
   oauthProvider: OAuthProvider;
@@ -45,7 +44,8 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
+      <Exit />
+      {/* <NavBar />
       <Switch>
         <Route path="/" component={MainPage} exact />
 
@@ -125,7 +125,7 @@ const App = () => {
 
         <Redirect from="*" to="/" />
       </Switch>
-      <Footer />
+      <Footer /> */}
     </>
   );
 };
